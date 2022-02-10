@@ -10,7 +10,7 @@ Add your own name (do not add the names for others!) to the section below.
 
 | Profile Picture | Name | Email |
 |---|---|---|
-| ![](https://secure.gravatar.com/avatar/c96c83ba29b1a73251600ec9bd1f4c11?s=180&d=identicon) | Andrei Visoiu | a.i.visoiu@student.tudelft.nl |
+|<img src="https://secure.gravatar.com/avatar/c96c83ba29b1a73251600ec9bd1f4c11?s=180&d=identicon" width="50" height="50"> | Andrei Visoiu | a.i.visoiu@student.tudelft.nl |
 
 <!-- Instructions (remove once assignment has been completed -->
 <!-- - Add (only!) your own name to the table above (use Markdown formatting) -->
