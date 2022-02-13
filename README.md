@@ -15,6 +15,7 @@ Add your own name (do not add the names for others!) to the section below.
 | <img src="https://secure.gravatar.com/avatar/9b498f4dab0f22afbcdcac94b67ec66c?s=800&d=identicon" height=50 width=50> | Irina-Ioana Marinescu | I.I.Marinescu@student.tudelft.nl |
 |<img src="https://secure.gravatar.com/avatar/c96c83ba29b1a73251600ec9bd1f4c11?s=180&d=identicon" width="50" height="50"> | Andrei Visoiu | a.i.visoiu@student.tudelft.nl |
 | <img src="https://secure.gravatar.com/avatar/ecda8f54079e20a5f22fc7b4c1dae20f?s=180&d=identicon" width="50" height="50"> | Yannick Zuurbier | Y.R.Zuurbier@student.tudelft.nl |
+| <img src="https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/4626/avatar.png?width=400" width="50" height="50"> | Mirella Günther | M.Gunther-1@student.tudelft.nl |
 
 <!-- Instructions (remove once assignment has been completed -->
 <!-- - Add (only!) your own name to the table above (use Markdown formatting) -->
