@@ -1,0 +1,80 @@
+Agenda meeting #1
+
+
+Meeting focus: starting code of conduct & backlog, look into Information Literacy & HCI assignments.
+Location: Drebbelweg
+Date: 15.02.2022
+Time: 15:15
+Chair: Mirella Günther
+Note taker: Irina-Ioana Marinescu
+Attendees: Per Skullerud, Krzysztof Muniak, Irina-Ioana Marinescu, Andrei Visoiu, Yannick Zuurbier, Mirella Günther
+
+
+Agenda items:
+
+[14:15 - 15:20] Opening by chair
+[15:20 - 15:25] Check-in
+[15:25 - 15:35] Start drafting a Code of Conduct
+
+
+[15:35 - 15:45] Backlog draft
+- we completed the backlog draft #1
+
+[15:45 - 16:00] Ask TA for feedback about the drafts
+
+Backlog:
+ - a lot of must haves - jokers not as critical for the funcitonal part of the app; we could move it to the should have
+ - must have = stuff that makes the application JUST work
+ - not enough user stories( eg The user must be able to); all the features should be described that way(put in the description)
+ - compact tasks(doable in one sprint, pref by one person too)
+
+Code of Conduct:
+ - might want to be a little more elaborate
+ - give specific situations with clear rules that we agree on beforehand; all rules must be documented
+
+[16:00 - 16:15] Check on the Information Literacy Assignment
+
+- everyone signed up for the HCI
+- the resit is an oportunity to redo the assignment(which will be harder in week 9)
+
+[16:15 - 16:30] Check on the HCI Assignment
+
+- we will check the HCI assignment with group 69
+- we could use LucidCharts or figma for the GUI
+- the draft is not graded
+
+[16:30 - 16:45] Tips, tops, questions and feedback
+
+From questions:
+- no merge requests this week
+- we will start coding next week
+- we will have to learn javaFX from google :D
+- we could play around with spring in a separate project beforehand
+- clients should be on the same machine adn should be able to interact with each other 
+- do merge requests on gitlab
+- tuesday meetings are for checkins
+- stand up meetings: everyone has to tell what they did that week for half a minute
+
+Tips:
+- get mroe used with the agenda; find a solution for online meetings;
+- we were not organized at the beginning;
+- flooded with templates caught us off-guard; we should read more of the stuff on brightspace
+- we need to keep the pace
+
+Tops:
+- all assigments went well
+- everyone is involved in the project
+- we are improving at organizing stuff
+- its not going bad
+
+Feedback:
+- send the agenda beforehand(upload it to git, main branch)
+- commit comments should be in imperative form
+- dont forget to upload code of conduct
+- code styles!!
+
+[16:45] Closure
+
+Next meeting:
+Per - chairman
+Andrei - note writer
