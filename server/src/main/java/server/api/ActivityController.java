@@ -1,23 +1,17 @@
 package server.api;
 
-import java.util.List;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import commons.Activity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import server.database.ActivityRepository;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/activities")
 public class ActivityController {
 
     private final ActivityRepository repo;
-
     public ActivityController(ActivityRepository repo) {
         this.repo = repo;
     }
@@ -29,6 +23,11 @@ public class ActivityController {
         return repo.findAll();
     }
 
+    @GetMapping("random/{limit}")
+    public List<Activity> fetchRandom(@PathVariable("limit") int limit) {
+        return repo.fetchRandomActivities(limit);
+    }
+
     @PostMapping("add")
     public ResponseEntity<Activity> add(@RequestBody Activity activity) {
         if(nullOrEmpty(activity.source) || nullOrEmpty(activity.title))
@@ -37,5 +36,4 @@ public class ActivityController {
         Activity saved = repo.save(activity);
         return ResponseEntity.ok(saved);
     }
-
 }
