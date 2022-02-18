@@ -2,17 +2,13 @@ package server.api;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
 import commons.Activity;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import server.database.ActivityRepository;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @DataJpaTest
