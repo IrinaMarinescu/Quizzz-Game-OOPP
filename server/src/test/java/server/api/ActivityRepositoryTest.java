@@ -12,6 +12,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * The @DataJpaTest annotation helps in creating an in-memory environment in which to test database queries.
+ * @see <a href="https://www.bezkoder.com/spring-boot-unit-test-jpa-repo-datajpatest/">Spring Data Repository Unit Test</a>
+ */
 @DataJpaTest
 class ActivityRepositoryTest {
     @Autowired

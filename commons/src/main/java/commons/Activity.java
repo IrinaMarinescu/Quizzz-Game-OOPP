@@ -12,13 +12,25 @@ import javax.validation.constraints.NotNull;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
+/**
+ * Entity class for activities. Spring will automatically create the DB table based on the class fields.
+ */
 @Entity
 public class Activity {
 
+    /**
+     * GenerationType.IDENTITY is used for auto-increment fields. So, the first activity will have ID 1, the second 2 and so on.
+     * TODO: H2 has a cache of size 32 when inserting autoincrement fields. So for example, if we insert 2 activities, they will have ids 1 and 2,
+     * but after restarting Spring, the next ones will start from 32
+     */
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
 
+    /**
+     * TODO: add - implementation 'org.springframework.boot:spring-boot-starter-validation:2.4.0' - in build.gradle if you haven't already.
+     * The @NotNull annotation does not let this values be initialised as null.
+     */
     @NotNull(message = "Activity title should not be null!")
     public String title;
 
