@@ -15,7 +15,7 @@ class ActivityTest {
 
     @Test
     public void checkConstructor() {
-        var test = new Activity("00-a","ss/ss.png", "a", 40000, "b");
+        var test = new Activity("00-a","ss/ss.png", "a", 40005, "b");
         assertEquals(test.title, someActivity.title);
         assertNotEquals(test.consumptionInWh, someActivity.consumptionInWh);
         assertEquals(test.source, someActivity.source);
