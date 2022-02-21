@@ -5,8 +5,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
@@ -17,15 +15,13 @@ import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
  */
 @Entity
 public class Activity {
-
     /**
-     * GenerationType.IDENTITY is used for auto-increment fields. So, the first activity will have ID 1, the second 2 and so on.
-     * TODO: H2 has a cache of size 32 when inserting autoincrement fields. So for example, if we insert 2 activities, they will have ids 1 and 2,
-     * but after restarting Spring, the next ones will start from 32
+     * Primary key as a string. Should comply with the format they give in the activity bank for the ID.
+     * @see <a href="https://gitlab.ewi.tudelft.nl/cse1105/2021-2022/activity-bank">OOPP Activity Bank</a>
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long id;
+    @NotNull(message = "Activity ID should not be nll!")
+    public String id;
 
     /**
      * TODO: add - implementation 'org.springframework.boot:spring-boot-starter-validation:2.4.0' - in build.gradle if you haven't already.
@@ -33,6 +29,9 @@ public class Activity {
      */
     @NotNull(message = "Activity title should not be null!")
     public String title;
+
+    @NotNull(message = "Activity image path should not be null!")
+    public String imagePath;
 
     public int consumptionInWh;
 
@@ -44,7 +43,9 @@ public class Activity {
         // for object mappers.
     }
 
-    public Activity(String title, int consumptionInWh, String source) {
+    public Activity(String id, String imagePath, String title, int consumptionInWh, String source) {
+        this.id = id;
+        this.imagePath = imagePath;
         this.title = title;
         this.consumptionInWh = consumptionInWh;
         this.source = source;

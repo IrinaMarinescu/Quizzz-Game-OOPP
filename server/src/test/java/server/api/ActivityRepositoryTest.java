@@ -26,7 +26,7 @@ class ActivityRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        entityManager.persist(new Activity("a", 5, "b"));
+        entityManager.persist(new Activity("00-a", "ss/ss.png", "a", 5, "b"));
     }
 
     @Test
@@ -37,30 +37,30 @@ class ActivityRepositoryTest {
 
     @Test
     public void testGetActivities() {
-        entityManager.persist(new Activity("b", 6, "c"));
+        entityManager.persist(new Activity("00-b", "ss/ss.png", "b", 6, "c"));
 
-        List<Activity> act = (List<Activity>) repo.findAll();
-        assertTrue(act.size() == 2);
+        List<Activity> act = repo.findAll();
+        assertEquals(act.size(), 2);
     }
 
     @Test
     public void testUpdateActivity() {
-        Activity activity = repo.findByTitle("a");
+        Activity activity = repo.findById("00-a");
         activity.consumptionInWh = 100;
 
         repo.save(activity);
 
-        Activity newActivity = repo.findByTitle("a");
+        Activity newActivity = repo.findById("00-a");
         assertEquals(activity.consumptionInWh, 100);
     }
 
     @Test
     public void testDeleteActivity() {
-        Activity activity = repo.findByTitle("a");
+        Activity activity = repo.findById("00-a");
 
         repo.deleteById(activity.id);
 
-        Activity notFound = repo.findByTitle("a");
+        Activity notFound = repo.findById("00-a");
         assertNull(notFound);
     }
 }

@@ -40,14 +40,15 @@ public class ActivityController {
     /**
      * This function will get a json-encoded Activity and will save it in the DB.
      * We can test this endpoint with Postman until we have a working UI.
-     * @param activity
+     * @param activity the activity to be inserted in the DB
      * @return a response containing the data of the inserted entry.
      */
     @PostMapping("add")
     public ResponseEntity<Activity> add(@RequestBody Activity activity) {
-        if(nullOrEmpty(activity.source) || nullOrEmpty(activity.title))
+        if(nullOrEmpty(activity.source) || nullOrEmpty(activity.title) || nullOrEmpty(activity.id) || nullOrEmpty(activity.imagePath))
             return ResponseEntity.badRequest().build();
 
+        //return ResponseEntity.ok(activity);
         Activity saved = repo.save(activity);
         return ResponseEntity.ok(saved);
     }

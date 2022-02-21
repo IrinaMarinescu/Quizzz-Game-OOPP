@@ -10,12 +10,12 @@ class ActivityTest {
 
     @BeforeEach
     void setUp() {
-        someActivity = new Activity("a", 40000, "b");
+        someActivity = new Activity("00-a","ss/ss.png", "a", 40000, "b");
     }
 
     @Test
     public void checkConstructor() {
-        var test = new Activity("a", 1000, "b");
+        var test = new Activity("00-a","ss/ss.png", "a", 40000, "b");
         assertEquals(test.title, someActivity.title);
         assertNotEquals(test.consumptionInWh, someActivity.consumptionInWh);
         assertEquals(test.source, someActivity.source);
@@ -23,14 +23,14 @@ class ActivityTest {
 
     @Test
     public void equalsHashCode() {
-        var a = new Activity("a", 40000, "b");
+        var a = new Activity("00-a","ss/ss.png", "a", 40000, "b");
         assertEquals(a, someActivity);
         assertEquals(a.hashCode(), someActivity.hashCode());
     }
 
     @Test
     public void notEqualsHashCode() {
-        var a = new Activity("b", 5, "c");
+        var a = new Activity("00-b", "aa/aa.png", "b", 10, "c");
         assertNotEquals(a, someActivity);
         assertNotEquals(a.hashCode(), someActivity.hashCode());
     }

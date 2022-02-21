@@ -24,4 +24,7 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
      */
     @Query(value="SELECT * FROM activity ORDER BY random() LIMIT :limit", nativeQuery = true)
     List<Activity> fetchRandomActivities(int limit);
+
+    Activity findById(String id);
+    void deleteById(String id);
 }

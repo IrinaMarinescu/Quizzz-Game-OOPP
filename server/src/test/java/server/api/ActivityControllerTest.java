@@ -29,14 +29,14 @@ class ActivityControllerTest {
 
     @Test
     public void cannotAddNullTitleOrSource() {
-        var s = controller.add(new Activity(null, 0, null));
+        var s = controller.add(new Activity(null, null,null, 0, null));
         assertEquals(BAD_REQUEST, s.getStatusCode());
     }
 
     @Test
     public void testAdd() {
-        var s = controller.add(new Activity("a", 5, "b"));
-        Activity activity = repo.findByTitle("a");
+        var s = controller.add(new Activity("00-a", "ss/ss.png", "a", 5, "b"));
+        Activity activity = repo.findById("00-a");
 
         assertEquals(activity.consumptionInWh, 5);
     }
