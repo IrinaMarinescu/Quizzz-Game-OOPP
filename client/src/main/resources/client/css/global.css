@@ -1,0 +1,42 @@
+* {
+    -greenish: #02C39A;
+    -buttonColorHover: #02B070;
+    -topBarColor: #B4D1DD;
+    -timerBarColor: #05668D;
+    -darkCyan: #028090;
+    -lightishBlue: #5CB4BF;
+    -lightBlue: #81C0C8;
+
+    -pressedEffect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 0);
+    -fx-text-fill: white;
+}
+
+#topBar {
+    -fx-background-color: -topBarColor;
+    -fx-pref-height: 80;
+}
+
+#timerBar {
+    -fx-fill: -timerBarColor;
+    -fx-height: 80;
+}
+
+Button {
+    -fx-background-color: -greenish;
+    -fx-background-radius: 40;
+    -fx-pref-height: 60;
+    -fx-padding: 0 60 0 60;
+
+    -fx-font-size: 25;
+    -fx-font-weight: bold;
+
+    -fx-focus-color: transparent;
+}
+
+.clickable:hover {
+    -fx-background-color: -buttonColorHover;
+}
+
+.clickable:pressed {
+    -fx-effect: -pressedEffect;
+}
