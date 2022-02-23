@@ -1,9 +1,12 @@
 package client.scenes;
 
-import javafx.animation.TranslateTransition;
+import client.scenes.frameComponents.TimerBarCtrl;
+import com.sun.tools.jconsole.JConsoleContext;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -11,7 +14,6 @@ import javafx.scene.shape.Rectangle;
 
 import javax.inject.Inject;
 import java.net.URL;
-import javafx.util.Duration;
 import java.util.ResourceBundle;
 
 /**
@@ -20,21 +22,29 @@ import java.util.ResourceBundle;
 public class QuestionFrameCtrl implements Initializable {
 
     private final MainCtrl mainCtrl;
+    private final TimerBarCtrl timerBarCtrl;
 
+    @FXML
+    public Rectangle timerBar;
     @FXML
     private VBox sideLeaderboard;
     @FXML
-    private Rectangle timerBar;
-    @FXML
     private Pane centerContent;
+    @FXML
+    private ImageView trophy;
+    @FXML
+    private Button emote;
+
+    private boolean isMultiplayerGame;
 
     /**
      * Injects necessary dependencies
      * @param mainCtrl - The main front-end controller
      */
     @Inject
-    public QuestionFrameCtrl(MainCtrl mainCtrl) {
+    public QuestionFrameCtrl(MainCtrl mainCtrl, TimerBarCtrl timerBarCtrl) {
         this.mainCtrl = mainCtrl;
+        this.timerBarCtrl = timerBarCtrl;
     }
 
     /**
@@ -44,8 +54,26 @@ public class QuestionFrameCtrl implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setMultiplayerFeatures(true);
+        timerBarCtrl.initialize(timerBar);
 
-        setRemainingTime(15);
+        setRemainingTime(10);
+    }
+
+    /**
+     * Changes whether leaderboard
+     * @param isMultiplayerGame - Whether this is a multiplayer game
+     */
+    public void setMultiplayerFeatures(boolean isMultiplayerGame) {
+        this.isMultiplayerGame = isMultiplayerGame;
+
+        trophy.setManaged(isMultiplayerGame);
+        trophy.setVisible(isMultiplayerGame);
+        emote.setVisible(isMultiplayerGame);
+
+        if(!isMultiplayerGame) {
+            sideLeaderboard.setVisible(false);
+        }
     }
 
     /**
@@ -64,18 +92,31 @@ public class QuestionFrameCtrl implements Initializable {
      */
     @FXML
     void toggleLeaderboardVisibility() {
-        sideLeaderboard.setVisible(!sideLeaderboard.isVisible());
+        if(isMultiplayerGame) sideLeaderboard.setVisible(!sideLeaderboard.isVisible());
+    }
+
+    /**
+     * Halves the time remaining as shown by the timer bar
+     */
+    @FXML
+    void halveTime() {
+        if(!timerBarCtrl.animationDone()) timerBarCtrl.halveTime();
+    }
+
+    /**
+     * Temporary function to demonstrate working of timer bar
+     */
+    @FXML
+    void demoTimer() {
+        setRemainingTime(60);
     }
 
     /**
      * Makes timerBar slide from full to empty in a provided number of seconds
      * @param seconds - How long the bar should slide
      */
-    private void setRemainingTime(double seconds) {
-        Duration duration = new Duration(seconds * 1000.0);
-        TranslateTransition slide = new TranslateTransition(duration, timerBar);
-        slide.setByX(-1600);
-        slide.play();
+    void setRemainingTime(double seconds) {
+        timerBarCtrl.setRemainingTime(seconds);
     }
 
     /**

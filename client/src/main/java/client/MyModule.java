@@ -16,6 +16,7 @@
 package client;
 
 import client.scenes.InjectedCenterExampleCtrl;
+import client.scenes.frameComponents.TimerBarCtrl;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
@@ -30,5 +31,6 @@ public class MyModule implements Module {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(QuestionFrameCtrl.class).in(Scopes.SINGLETON);
         binder.bind(InjectedCenterExampleCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(TimerBarCtrl.class).in(Scopes.SINGLETON);
     }
 }

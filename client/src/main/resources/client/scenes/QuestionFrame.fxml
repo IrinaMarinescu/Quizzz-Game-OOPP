@@ -107,7 +107,7 @@
                         <Insets bottom="10.0" left="600.0" right="600.0" />
                      </BorderPane.margin>
                      <center>
-                        <Button id="doublePoints" mnemonicParsing="false" BorderPane.alignment="CENTER">
+                        <Button id="doublePoints" mnemonicParsing="false" onAction="#demoTimer" BorderPane.alignment="CENTER">
                            <styleClass>
                               <String fx:value="circle" />
                               <String fx:value="clickable" />
@@ -118,7 +118,7 @@
                         </Button>
                      </center>
                      <left>
-                        <Button fx:id="halveTime" mnemonicParsing="false" BorderPane.alignment="CENTER">
+                        <Button fx:id="halveTime" mnemonicParsing="false" onAction="#halveTime" BorderPane.alignment="CENTER">
                            <styleClass>
                               <String fx:value="circle" />
                               <String fx:value="clickable" />
