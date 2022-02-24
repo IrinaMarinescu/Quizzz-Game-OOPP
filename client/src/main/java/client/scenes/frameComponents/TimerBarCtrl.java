@@ -5,7 +5,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 
-import java.awt.*;
 import java.time.Clock;
 
 /**

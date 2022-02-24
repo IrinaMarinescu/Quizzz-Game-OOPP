@@ -1,4 +1,5 @@
 @import 'global.css';
+@import 'smallLeaderboard.css';
 
 #trophy:hover {
     -fx-opacity: 0.8;
@@ -63,25 +64,6 @@
 
 #surprised {
     -fx-background-image: url('../emoticons/face-flushed-solid.png');
-}
-
-#leaderboardTitle {
-    -fx-background-radius: 15 15 0 0;
-    -fx-background-color: -darkCyan;
-    -fx-pref-height: 40;
-    -fx-font-size: 20;
-    -fx-padding: 0 0 0 0;
-}
-
-.table-view {
-    -fx-background-color: -lightBlue;
-    -fx-background-radius: 0 0 15 15;
-}
-
-.table-view .column-header-background {
-    -fx-max-height: 0;
-    -fx-pref-height: 0;
-    -fx-min-height: 0;
 }
 
 .emojiContainer {

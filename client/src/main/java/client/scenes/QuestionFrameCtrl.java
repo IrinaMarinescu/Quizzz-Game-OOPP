@@ -2,10 +2,16 @@ package client.scenes;
 
 import client.scenes.frameComponents.EmoteCtrl;
 import client.scenes.frameComponents.TimerBarCtrl;
+import commons.LeaderboardEntry;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -15,12 +21,16 @@ import javafx.scene.shape.Rectangle;
 
 import javax.inject.Inject;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 /**
  * Controller for questionFrame scene
  */
 public class QuestionFrameCtrl implements Initializable {
+
+    private static final int LEADERBOARD_SIZE_MAX = 5;
 
     private final MainCtrl mainCtrl;
     private final TimerBarCtrl timerBarCtrl;
@@ -40,6 +50,13 @@ public class QuestionFrameCtrl implements Initializable {
     private VBox reactionContainer;
     @FXML
     private HBox emoticonSelectionField;
+
+    @FXML
+    private TableView<LeaderboardEntry> leaderboard;
+    @FXML
+    private TableColumn<LeaderboardEntry, String> playerColumn;
+    @FXML
+    private TableColumn<LeaderboardEntry, String> scoreColumn;
 
     private boolean isMultiplayerGame;
 
@@ -66,7 +83,16 @@ public class QuestionFrameCtrl implements Initializable {
         timerBarCtrl.initialize(timerBar);
         emoteCtrl.initialize(reactionContainer);
 
-        setRemainingTime(10);
+        playerColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getName()));
+        scoreColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getScoreString()));
+
+        List<LeaderboardEntry> leaderboardDemo = List.of(
+                new LeaderboardEntry("Per", 100),
+                new LeaderboardEntry("Irina", 300),
+                new LeaderboardEntry("Yannick", 145));
+        setLeaderboardContents(leaderboardDemo);
+
+        setRemainingTime(100);
     }
 
     /**
@@ -82,6 +108,7 @@ public class QuestionFrameCtrl implements Initializable {
 
         if(!isMultiplayerGame) {
             sideLeaderboard.setVisible(false);
+            setEmoticonField(false);
         }
     }
 
@@ -102,6 +129,19 @@ public class QuestionFrameCtrl implements Initializable {
     @FXML
     private void toggleLeaderboardVisibility() {
         if(isMultiplayerGame) sideLeaderboard.setVisible(!sideLeaderboard.isVisible());
+    }
+
+    /**
+     * Sets contents of the pop-up leaderboard
+     * @param entries - A list of LeaderboardEntry objects representing leaderboard fields
+     */
+    public void setLeaderboardContents(List<LeaderboardEntry> entries) {
+        while(entries.size() >= LEADERBOARD_SIZE_MAX) entries.remove(LEADERBOARD_SIZE_MAX);
+
+        entries = entries.stream().sorted().collect(Collectors.toList());
+
+        ObservableList<LeaderboardEntry> data = FXCollections.observableList(entries);
+        leaderboard.setItems(data);
     }
 
     /**
