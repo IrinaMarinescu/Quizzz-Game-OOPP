@@ -16,6 +16,6 @@ public class InjectedCenterExampleCtrl {
 
     @FXML
     private void toggleFromInside() {
-        questionFrameCtrl.toggleLeaderboardVisibility();
+        // questionFrameCtrl.toggleLeaderboardVisibility();
     }
 }

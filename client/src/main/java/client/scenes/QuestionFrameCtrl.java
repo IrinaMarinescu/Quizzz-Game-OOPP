@@ -1,13 +1,14 @@
 package client.scenes;
 
+import client.scenes.frameComponents.EmoteCtrl;
 import client.scenes.frameComponents.TimerBarCtrl;
-import com.sun.tools.jconsole.JConsoleContext;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
@@ -23,6 +24,7 @@ public class QuestionFrameCtrl implements Initializable {
 
     private final MainCtrl mainCtrl;
     private final TimerBarCtrl timerBarCtrl;
+    private final EmoteCtrl emoteCtrl;
 
     @FXML
     public Rectangle timerBar;
@@ -34,6 +36,10 @@ public class QuestionFrameCtrl implements Initializable {
     private ImageView trophy;
     @FXML
     private Button emote;
+    @FXML
+    private VBox reactionContainer;
+    @FXML
+    private HBox emoticonSelectionField;
 
     private boolean isMultiplayerGame;
 
@@ -42,9 +48,10 @@ public class QuestionFrameCtrl implements Initializable {
      * @param mainCtrl - The main front-end controller
      */
     @Inject
-    public QuestionFrameCtrl(MainCtrl mainCtrl, TimerBarCtrl timerBarCtrl) {
+    public QuestionFrameCtrl(MainCtrl mainCtrl, TimerBarCtrl timerBarCtrl, EmoteCtrl emoteCtrl) {
         this.mainCtrl = mainCtrl;
         this.timerBarCtrl = timerBarCtrl;
+        this.emoteCtrl = emoteCtrl;
     }
 
     /**
@@ -55,7 +62,9 @@ public class QuestionFrameCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setMultiplayerFeatures(true);
+
         timerBarCtrl.initialize(timerBar);
+        emoteCtrl.initialize(reactionContainer);
 
         setRemainingTime(10);
     }
@@ -91,8 +100,61 @@ public class QuestionFrameCtrl implements Initializable {
      * Toggles visibility of the side leaderboard
      */
     @FXML
-    void toggleLeaderboardVisibility() {
+    private void toggleLeaderboardVisibility() {
         if(isMultiplayerGame) sideLeaderboard.setVisible(!sideLeaderboard.isVisible());
+    }
+
+    /**
+     * Toggles emoticon field visibility
+     */
+    @FXML
+    private void toggleEmoticonField() {
+        setEmoticonField(!emoticonSelectionField.isVisible());
+    }
+
+    /**
+     * Turns off emoticon field
+     */
+    @FXML
+    private void toggleEmoticonFieldExit() {
+        if(emoticonSelectionField.isVisible()) setEmoticonField(false);
+    }
+
+    /**
+     * Turns emoticon field on or off
+     * @param visible - Whether the emoticon field must become visible
+     */
+    private void setEmoticonField(boolean visible) {
+        if(!isMultiplayerGame) return;
+
+        if(!visible) {
+            emoticonSelectionField.setVisible(false);
+            emote.getStyleClass().remove("jagged");
+        }
+        else {
+            emoticonSelectionField.setVisible(true);
+            emote.getStyleClass().add("jagged");
+        }
+    }
+
+    /**
+     * Methods to be run when a user chooses to send an emoticon
+     */
+    @FXML
+    private void addHappyReaction() {
+        emoteCtrl.addReaction("Chris", "happy");
+    }
+    @FXML
+    private void addSadReaction() {
+        emoteCtrl.addReaction("Per", "sad");
+    }
+    @FXML
+    private void addAngryReaction() {
+        emoteCtrl.addReaction("Mirella", "angry");
+    }
+    @FXML
+    private void addSurprisedReaction() {
+        emoteCtrl.addReaction("Andrei", "surprised");
     }
 
     /**
@@ -100,15 +162,7 @@ public class QuestionFrameCtrl implements Initializable {
      */
     @FXML
     void halveTime() {
-        if(!timerBarCtrl.animationDone()) timerBarCtrl.halveTime();
-    }
-
-    /**
-     * Temporary function to demonstrate working of timer bar
-     */
-    @FXML
-    void demoTimer() {
-        setRemainingTime(60);
+        timerBarCtrl.halveRemainingTime();
     }
 
     /**
@@ -125,6 +179,18 @@ public class QuestionFrameCtrl implements Initializable {
      */
     public void keyPressed(KeyEvent e) {
         switch(e.getCode()) {
+            case H:
+                addHappyReaction();
+                break;
+            case A:
+                addAngryReaction();
+                break;
+            case S:
+                addSadReaction();
+                break;
+            case F: // F stands for flustered, obviously
+                addSurprisedReaction();
+                break;
             case L:
                 toggleLeaderboardVisibility();
                 break;

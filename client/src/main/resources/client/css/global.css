@@ -11,6 +11,11 @@
     -fx-text-fill: white;
 }
 
+:focused {
+    -fx-background-insets: 0 0 -1 0;
+    /*....*/
+}
+
 #topBar {
     -fx-background-color: -topBarColor;
     -fx-pref-height: 80;
@@ -31,6 +36,10 @@ Button {
     -fx-font-weight: bold;
 
     -fx-focus-color: transparent;
+}
+
+.clickable {
+    -fx-cursor: hand;
 }
 
 .clickable:hover {

@@ -5,6 +5,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.time.Clock;
 
 /**
@@ -16,8 +17,8 @@ public class TimerBarCtrl {
     private TranslateTransition animation;
 
     private double totalProgress;
-    private double animationStartTime;
-    private double animationLength;
+    private double currentAnimationStartTime;
+    private double currentAnimationLength;
 
     /**
      * Gets controller and instantiates animation, applies basic settings
@@ -29,22 +30,23 @@ public class TimerBarCtrl {
         animation = new TranslateTransition(Duration.ZERO, timerBar);
         animation.setByX(-1600);
 
-        animationStartTime = Double.MAX_VALUE;
-        animationLength = 0.0;
+        currentAnimationStartTime = Double.MAX_VALUE;
+        currentAnimationLength = 0.0;
     }
 
     /**
      * Sets remaining time visible on the timer bar
-     * @param seconds -
+     * @param seconds - The length of the full animation in seconds
      */
     public void setRemainingTime(double seconds) {
+
         if(animationDone()) {
             Translate reset = new Translate(1600, 0);
             timerBar.getTransforms().add(reset);
         }
 
         totalProgress = 0.0;
-        animationLength = seconds * 1000;
+        currentAnimationLength = seconds * 1000;
         playAnimation(0.0);
     }
 
@@ -53,12 +55,12 @@ public class TimerBarCtrl {
      * @param progress - A real number in range [0, 1] indicating how much of the animation to skip
      */
     private void playAnimation(double progress) {
-        animationStartTime = now();
+        currentAnimationStartTime = now();
         animation.jumpTo(Duration.ZERO);
         animation.stop();
 
-        animation.setDuration(new Duration(animationLength));
-        animation.jumpTo(new Duration(animationLength * progress));
+        animation.setDuration(new Duration(currentAnimationLength));
+        animation.jumpTo(new Duration(currentAnimationLength * progress));
         animation.play();
     }
 
@@ -67,9 +69,11 @@ public class TimerBarCtrl {
      *
      * This is seen by the user as a doubling of the speed of the animation (subject to change)
      */
-    public void halveTime() {
-        totalProgress += (now() - animationStartTime) / animationLength;
-        animationLength /= 2.0;
+    public void halveRemainingTime() {
+        if(animationDone()) return;
+
+        totalProgress += (now() - currentAnimationStartTime) / currentAnimationLength;
+        currentAnimationLength /= 2.0;
         playAnimation(totalProgress);
     }
 
@@ -78,7 +82,7 @@ public class TimerBarCtrl {
      * @return Whether the animation is done
      */
     public boolean animationDone() {
-        return now() - animationStartTime >= animationLength;
+        return now() - currentAnimationStartTime >= currentAnimationLength;
     }
 
     /**

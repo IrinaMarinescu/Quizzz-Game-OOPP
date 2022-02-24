@@ -36,7 +36,7 @@
                                     <Image url="@../icons/trophy-solid.png" />
                                  </image>
                                  <cursor>
-                                    <Cursor fx:constant="HAND" />
+                                    <Cursor fx:constant="DEFAULT" />
                                  </cursor>
                               </ImageView>
                               <Button alignment="CENTER" mnemonicParsing="false" text="100">
@@ -74,46 +74,19 @@
          </top>
          <bottom>
             <BorderPane prefHeight="90.0" prefWidth="1600.0" BorderPane.alignment="CENTER">
-               <left>
-                  <Button fx:id="help" mnemonicParsing="false" BorderPane.alignment="CENTER">
-                     <BorderPane.margin>
-                        <Insets left="20.0" />
-                     </BorderPane.margin>
-                     <styleClass>
-                        <String fx:value="circle" />
-                        <String fx:value="clickable" />
-                     </styleClass>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor></Button>
-               </left>
-               <right>
-                  <Button fx:id="emote" mnemonicParsing="false" BorderPane.alignment="CENTER">
-                     <styleClass>
-                        <String fx:value="circle" />
-                        <String fx:value="clickable" />
-                     </styleClass>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <BorderPane.margin>
-                        <Insets right="20.0" />
-                     </BorderPane.margin>
-                  </Button>
-               </right>
                <center>
-                  <BorderPane id="jokerField" prefHeight="90.0" prefWidth="331.0" BorderPane.alignment="CENTER">
+                  <BorderPane id="jokerField" prefHeight="70.0" prefWidth="293.0" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
-                        <Insets bottom="10.0" left="600.0" right="600.0" />
+                        <Insets bottom="10.0" top="10.0" />
                      </BorderPane.margin>
                      <center>
-                        <Button id="doublePoints" mnemonicParsing="false" onAction="#demoTimer" BorderPane.alignment="CENTER">
+                        <Button id="doublePoints" mnemonicParsing="false" BorderPane.alignment="CENTER">
                            <styleClass>
                               <String fx:value="circle" />
                               <String fx:value="clickable" />
                            </styleClass>
                            <cursor>
-                              <Cursor fx:constant="HAND" />
+                              <Cursor fx:constant="DEFAULT" />
                            </cursor>
                         </Button>
                      </center>
@@ -127,10 +100,10 @@
                               <Insets />
                            </opaqueInsets>
                            <BorderPane.margin>
-                              <Insets left="15.0" />
+                              <Insets left="20.0" />
                            </BorderPane.margin>
                            <cursor>
-                              <Cursor fx:constant="HAND" />
+                              <Cursor fx:constant="DEFAULT" />
                            </cursor>
                         </Button>
                      </left>
@@ -141,15 +114,106 @@
                               <String fx:value="clickable" />
                            </styleClass>
                            <BorderPane.margin>
-                              <Insets right="15.0" />
+                              <Insets right="20.0" />
                            </BorderPane.margin>
                            <cursor>
-                              <Cursor fx:constant="HAND" />
+                              <Cursor fx:constant="DEFAULT" />
                            </cursor>
                         </Button>
                      </right>
                   </BorderPane>
                </center>
+               <right>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="90.0" prefWidth="675.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <HBox fx:id="emoticonSelectionField" alignment="CENTER_RIGHT" onMouseEntered="#toggleEmoticonField" onMouseExited="#toggleEmoticonFieldExit" prefHeight="60.0" prefWidth="260.0" visible="false">
+                           <children>
+                              <Button fx:id="surprised" mnemonicParsing="false" onAction="#addSurprisedReaction">
+                                 <styleClass>
+                                    <String fx:value="circle" />
+                                    <String fx:value="smallCircle" />
+                                    <String fx:value="clickable" />
+                                 </styleClass>
+                                 <cursor>
+                                    <Cursor fx:constant="DEFAULT" />
+                                 </cursor>
+                                 <HBox.margin>
+                                    <Insets bottom="1.0" right="5.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="angry" mnemonicParsing="false" onAction="#addAngryReaction">
+                                 <styleClass>
+                                    <String fx:value="circle" />
+                                    <String fx:value="smallCircle" />
+                                    <String fx:value="clickable" />
+                                 </styleClass>
+                                 <cursor>
+                                    <Cursor fx:constant="DEFAULT" />
+                                 </cursor>
+                                 <HBox.margin>
+                                    <Insets bottom="1.0" right="5.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="sad" mnemonicParsing="false" onAction="#addSadReaction">
+                                 <styleClass>
+                                    <String fx:value="circle" />
+                                    <String fx:value="smallCircle" />
+                                    <String fx:value="clickable" />
+                                 </styleClass>
+                                 <cursor>
+                                    <Cursor fx:constant="DEFAULT" />
+                                 </cursor>
+                                 <HBox.margin>
+                                    <Insets bottom="1.0" right="5.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="happy" mnemonicParsing="false" onAction="#addHappyReaction">
+                                 <styleClass>
+                                    <String fx:value="circle" />
+                                    <String fx:value="smallCircle" />
+                                    <String fx:value="clickable" />
+                                 </styleClass>
+                                 <cursor>
+                                    <Cursor fx:constant="DEFAULT" />
+                                 </cursor>
+                                 <HBox.margin>
+                                    <Insets bottom="1.0" right="5.0" />
+                                 </HBox.margin>
+                              </Button>
+                           </children>
+                           <HBox.margin>
+                              <Insets bottom="14.0" top="15.0" />
+                           </HBox.margin>
+                        </HBox>
+                        <Button fx:id="emote" mnemonicParsing="false" onMouseEntered="#toggleEmoticonField" onMouseExited="#toggleEmoticonFieldExit" styleClass="circle">
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor>
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </right>
+               <left>
+                  <HBox alignment="CENTER_LEFT" prefHeight="90.0" prefWidth="675.0" BorderPane.alignment="CENTER_LEFT">
+                     <children>
+                        <Button fx:id="help" mnemonicParsing="false">
+                           <styleClass>
+                              <String fx:value="circle" />
+                              <String fx:value="clickable" />
+                           </styleClass>
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor>
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="20.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </left>
             </BorderPane>
          </bottom>
          <left>
@@ -173,51 +237,7 @@
             </VBox>
          </left>
          <right>
-            <VBox alignment="TOP_CENTER" prefHeight="730.0" prefWidth="220.0" BorderPane.alignment="CENTER">
-               <children>
-                  <BorderPane prefHeight="70.0" prefWidth="220.0" styleClass="emojiContainer">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                     <left>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                           <image>
-                              <Image url="@../emoticons/face-smile-solid.png" />
-                           </image>
-                           <BorderPane.margin>
-                              <Insets left="20.0" />
-                           </BorderPane.margin>
-                        </ImageView>
-                     </left>
-                     <center>
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Per" BorderPane.alignment="CENTER">
-                           <font>
-                              <Font size="31.0" />
-                           </font>
-                        </Text>
-                     </center>
-                  </BorderPane>
-                  <BorderPane prefHeight="70.0" prefWidth="220.0" styleClass="emojiContainer">
-                     <left>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-                           <image>
-                              <Image url="@../emoticons/face-smile-solid.png" />
-                           </image>
-                           <BorderPane.margin>
-                              <Insets left="20.0" />
-                           </BorderPane.margin>
-                        </ImageView>
-                     </left>
-                     <center>
-                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Yannick" BorderPane.alignment="CENTER">
-                           <font>
-                              <Font size="31.0" />
-                           </font>
-                        </Text>
-                     </center>
-                  </BorderPane>
-               </children>
-            </VBox>
+            <VBox fx:id="reactionContainer" alignment="TOP_CENTER" prefHeight="730.0" prefWidth="220.0" BorderPane.alignment="CENTER" />
          </right>
          <center>
             <Pane fx:id="centerContent">
