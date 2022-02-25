@@ -6,23 +6,25 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
-<BorderPane prefHeight="70.0" prefWidth="220.0" styleClass="emojiContainer" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.frameComponents.EmoteContainerCtrl">
-   <left>
-      <ImageView fx:id="emoticon" fitHeight="34.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-         <image>
-            <Image url="@../emoticons/face-smile-solid.png" />
-         </image>
-         <BorderPane.margin>
-            <Insets left="20.0" />
-         </BorderPane.margin>
-      </ImageView>
-   </left>
-   <center>
-      <Text fx:id="person" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Per" BorderPane.alignment="CENTER">
-         <font>
-            <Font name="System Bold" size="25.0" />
-         </font>
-      </Text>
-   </center>
+<BorderPane prefHeight="70.0" prefWidth="220.0" styleClass="emojiContainer" xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.components.EmoteContainerCtrl">
+    <left>
+        <ImageView fx:id="emoticon" fitHeight="34.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true"
+                   BorderPane.alignment="CENTER">
+            <image>
+                <Image url="@../emoticons/face-smile-solid.png"/>
+            </image>
+            <BorderPane.margin>
+                <Insets left="20.0"/>
+            </BorderPane.margin>
+        </ImageView>
+    </left>
+    <center>
+        <Text fx:id="person" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Per"
+              BorderPane.alignment="CENTER">
+            <font>
+                <Font name="System Bold" size="25.0"/>
+            </font>
+        </Text>
+    </center>
 </BorderPane>

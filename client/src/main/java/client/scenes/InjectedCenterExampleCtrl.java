@@ -5,17 +5,17 @@ import javax.inject.Inject;
 
 public class InjectedCenterExampleCtrl {
 
-    private MainCtrl mainCtrl;
-    private QuestionFrameCtrl questionFrameCtrl;
+  private MainCtrl mainCtrl;
+  private QuestionFrameCtrl questionFrameCtrl;
 
-    @Inject
-    public InjectedCenterExampleCtrl(MainCtrl mainCtrl, QuestionFrameCtrl questionFrameCtrl) {
-        this.mainCtrl = mainCtrl;
-        this.questionFrameCtrl = questionFrameCtrl;
-    }
+  @Inject
+  public InjectedCenterExampleCtrl(MainCtrl mainCtrl, QuestionFrameCtrl questionFrameCtrl) {
+    this.mainCtrl = mainCtrl;
+    this.questionFrameCtrl = questionFrameCtrl;
+  }
 
-    @FXML
-    private void toggleFromInside() {
-        // questionFrameCtrl.toggleLeaderboardVisibility();
-    }
+  @FXML
+  private void toggleFromInside() {
+    // questionFrameCtrl.toggleLeaderboardVisibility();
+  }
 }
