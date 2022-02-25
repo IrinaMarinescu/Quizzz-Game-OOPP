@@ -38,6 +38,7 @@ public class TimerBarCtrl {
      * @param seconds - The length of the full animation in seconds
      */
     public void setRemainingTime(double seconds) {
+        timerBar.getStyleClass().remove("fast");
 
         if(animationDone()) {
             Translate reset = new Translate(1600, 0);
@@ -54,6 +55,7 @@ public class TimerBarCtrl {
      * @param progress - A real number in range [0, 1] indicating how much of the animation to skip
      */
     private void playAnimation(double progress) {
+
         currentAnimationStartTime = now();
         animation.jumpTo(Duration.ZERO);
         animation.stop();
@@ -71,6 +73,7 @@ public class TimerBarCtrl {
     public void halveRemainingTime() {
         if(animationDone()) return;
 
+        if(totalProgress == 0.0) timerBar.getStyleClass().add("fast");
         totalProgress += (now() - currentAnimationStartTime) / currentAnimationLength;
         currentAnimationLength /= 2.0;
         playAnimation(totalProgress);
@@ -80,7 +83,7 @@ public class TimerBarCtrl {
      * Tests whether the animation is done
      * @return Whether the animation is done
      */
-    public boolean animationDone() {
+    private boolean animationDone() {
         return now() - currentAnimationStartTime >= currentAnimationLength;
     }
 

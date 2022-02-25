@@ -23,10 +23,10 @@
          <top>
             <Pane fx:id="topBar" prefHeight="80.0" prefWidth="1600.0" BorderPane.alignment="CENTER">
                <children>
-                  <Rectangle fx:id="timerBar" arcHeight="5.0" arcWidth="5.0" fill="#05668c" height="80.0" stroke="BLACK" strokeWidth="0.0" width="1600.0" />
+                  <Rectangle fx:id="timerBar" arcHeight="5.0" arcWidth="5.0" height="80.0" stroke="BLACK" strokeWidth="0.0" width="1600.0" />
                   <BorderPane prefHeight="80.0" prefWidth="1600.0">
                      <left>
-                        <HBox prefHeight="80.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+                        <HBox prefHeight="80.0" prefWidth="470.0" BorderPane.alignment="CENTER">
                            <children>
                               <ImageView fx:id="trophy" fitHeight="60.0" onMouseClicked="#toggleLeaderboardVisibility" pickOnBounds="true" preserveRatio="true" styleClass="clickable">
                                  <HBox.margin>
@@ -39,11 +39,23 @@
                                     <Cursor fx:constant="DEFAULT" />
                                  </cursor>
                               </ImageView>
-                              <Button alignment="CENTER" mnemonicParsing="false" text="100">
+                              <Button fx:id="scoreField" alignment="CENTER" mnemonicParsing="false" text="0">
                                  <HBox.margin>
                                     <Insets left="20.0" top="10.0" />
                                  </HBox.margin>
                               </Button>
+                              <Pane prefHeight="80.0" prefWidth="80.0">
+                                 <children>
+                                    <Text fx:id="newPoints" fill="WHITE" layoutX="6.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+100" visible="false" wrappingWidth="67.13671875">
+                                       <font>
+                                          <Font name="System Bold" size="25.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Pane>
                            </children>
                         </HBox>
                      </left>
@@ -55,9 +67,9 @@
                         </Text>
                      </center>
                      <right>
-                        <HBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="80.0" prefWidth="280.0" BorderPane.alignment="CENTER">
+                        <HBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="80.0" prefWidth="429.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="14/20">
+                              <Button fx:id="turnIndicator" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="14/20">
                                  <HBox.margin>
                                     <Insets right="60.0" top="10.0" />
                                  </HBox.margin>
@@ -80,7 +92,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </BorderPane.margin>
                      <center>
-                        <Button id="doublePoints" mnemonicParsing="false" BorderPane.alignment="CENTER">
+                        <Button fx:id="doublePoints" mnemonicParsing="false" onAction="#doublePoints" BorderPane.alignment="CENTER">
                            <styleClass>
                               <String fx:value="circle" />
                               <String fx:value="clickable" />
@@ -108,7 +120,7 @@
                         </Button>
                      </left>
                      <right>
-                        <Button fx:id="eliminateWrongAnswer" mnemonicParsing="false" BorderPane.alignment="CENTER">
+                        <Button fx:id="eliminateWrongAnswer" mnemonicParsing="false" onAction="#eliminateWrongAnswer" BorderPane.alignment="CENTER">
                            <styleClass>
                               <String fx:value="circle" />
                               <String fx:value="clickable" />

@@ -32,6 +32,10 @@
     -fx-background-image: url('../icons/angles-up-solid.png');
 }
 
+#doublePoints.usedJoker {
+    -fx-background-image: url('../icons/disabledJokers/angles-up-solid-grey.png');
+}
+
 #jokerField {
     -fx-background-color: -greenish;
     -fx-background-radius: 40;
@@ -46,8 +50,16 @@
     -fx-background-image: url('../icons/lightbulb-regular.png');
 }
 
+#eliminateWrongAnswer.usedJoker {
+    -fx-background-image: url('../icons/disabledJokers/lightbulb-regular-grey.png');
+}
+
 #halveTime {
     -fx-background-image: url('../icons/hourglass-empty-solid.png');
+}
+
+#halveTime.usedJoker {
+    -fx-background-image: url('../icons/disabledJokers/hourglass-empty-solid-grey.png');
 }
 
 #happy {

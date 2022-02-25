@@ -78,7 +78,7 @@ public class EmoteCtrl {
                 fade.play();
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                System.out.println("An error with the fade-out animation transition has occured");
+                System.err.println("InterruptError at emote fadeAway animation");
             }
         }).start();
     }

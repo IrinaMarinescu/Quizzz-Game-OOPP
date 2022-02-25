@@ -25,6 +25,10 @@
     -fx-height: 80;
 }
 
+#timerBar.fast{
+    -fx-fill: crimson;
+}
+
 Button {
     -fx-background-color: -greenish;
     -fx-background-radius: 40;

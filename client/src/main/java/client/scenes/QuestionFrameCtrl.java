@@ -18,11 +18,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 import javax.inject.Inject;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -50,6 +52,20 @@ public class QuestionFrameCtrl implements Initializable {
     private VBox reactionContainer;
     @FXML
     private HBox emoticonSelectionField;
+    @FXML
+    private Button scoreField;
+    @FXML
+    private Text newPoints;
+    @FXML
+    private Button help;
+    @FXML
+    private Button halveTime;
+    @FXML
+    private Button eliminateWrongAnswer;
+    @FXML
+    private Button doublePoints;
+    @FXML
+    private Button turnIndicator;
 
     @FXML
     private TableView<LeaderboardEntry> leaderboard;
@@ -58,7 +74,11 @@ public class QuestionFrameCtrl implements Initializable {
     @FXML
     private TableColumn<LeaderboardEntry, String> scoreColumn;
 
+    private List<Button> jokers;
+
     private boolean isMultiplayerGame;
+    private int gameScore;
+    private int questionNumber;
 
     /**
      * Injects necessary dependencies
@@ -78,7 +98,9 @@ public class QuestionFrameCtrl implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setMultiplayerFeatures(true);
+        jokers = List.of(halveTime, eliminateWrongAnswer, doublePoints);
+
+        addPoints(32);
 
         timerBarCtrl.initialize(timerBar);
         emoteCtrl.initialize(reactionContainer);
@@ -86,30 +108,91 @@ public class QuestionFrameCtrl implements Initializable {
         playerColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getName()));
         scoreColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getScoreString()));
 
-        List<LeaderboardEntry> leaderboardDemo = List.of(
-                new LeaderboardEntry("Per", 100),
-                new LeaderboardEntry("Irina", 300),
-                new LeaderboardEntry("Yannick", 145));
-        setLeaderboardContents(leaderboardDemo);
+        setRemainingTime(10);
 
-        setRemainingTime(100);
+        startMultiplayerGame(List.of("Per", "Andrei"));
     }
 
     /**
-     * Changes whether leaderboard
-     * @param isMultiplayerGame - Whether this is a multiplayer game
+     * Initializes settings for a new single-player game
      */
-    public void setMultiplayerFeatures(boolean isMultiplayerGame) {
+    public void startSingleplayerGame() {
+        startNewGame(false, null);
+    }
+
+    /**
+     * Initializes settings for a new multiplayer game
+     * @param names - The names of players involved
+     */
+    public void startMultiplayerGame(List<String> names) {
+        startNewGame(true, names);
+    }
+
+    /**
+     * Initializes settings for a new game
+     * @param isMultiplayerGame - Whether this is a multiplayer game
+     * @param playerNames - The names of the players involved
+     */
+    private void startNewGame(boolean isMultiplayerGame, List<String> playerNames) {
         this.isMultiplayerGame = isMultiplayerGame;
+        this.gameScore = 0;
+        this.questionNumber = 0;
+        incrementQuestionNumber();
 
         trophy.setManaged(isMultiplayerGame);
         trophy.setVisible(isMultiplayerGame);
         emote.setVisible(isMultiplayerGame);
 
-        if(!isMultiplayerGame) {
+        for(Button joker : jokers) {
+            if(joker.getStyleClass().contains("usedJoker")) {
+                joker.getStyleClass().add("clickable");
+                joker.getStyleClass().remove("usedJoker");
+            }
+        }
+
+        if(isMultiplayerGame) {
+            List<LeaderboardEntry> players = playerNames
+                    .stream()
+                    .map(p -> new LeaderboardEntry(p, 0))
+                    .collect(Collectors.toList());
+            setLeaderboardContents(players);
+        }
+        else {
             sideLeaderboard.setVisible(false);
             setEmoticonField(false);
+            halveTime.getStyleClass().add("usedJoker");
+            halveTime.getStyleClass().remove("clickable");
         }
+    }
+
+    /**
+     * Add points to a player's score, as seen in top left
+     * @param points - The number of points to be added
+     */
+    public void addPoints(int points) {
+        newPoints.setText("+" + points);
+        newPoints.setVisible(true);
+
+        gameScore += points;
+        scoreField.setText(((Integer) gameScore).toString());
+
+        new Thread(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(3);
+                newPoints.setVisible(false);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                System.err.println("InterruptError at addPoints delay");
+            }
+        }).start();
+    }
+
+    /**
+     * Increments the question number displayed in the top right
+     */
+    public void incrementQuestionNumber() {
+        questionNumber++;
+        turnIndicator.setText(questionNumber + "/20");
     }
 
     /**
@@ -136,9 +219,8 @@ public class QuestionFrameCtrl implements Initializable {
      * @param entries - A list of LeaderboardEntry objects representing leaderboard fields
      */
     public void setLeaderboardContents(List<LeaderboardEntry> entries) {
-        while(entries.size() >= LEADERBOARD_SIZE_MAX) entries.remove(LEADERBOARD_SIZE_MAX);
-
         entries = entries.stream().sorted().collect(Collectors.toList());
+        while(entries.size() > LEADERBOARD_SIZE_MAX) entries.remove(entries.size() - 1);
 
         ObservableList<LeaderboardEntry> data = FXCollections.observableList(entries);
         leaderboard.setItems(data);
@@ -179,6 +261,8 @@ public class QuestionFrameCtrl implements Initializable {
 
     /**
      * Methods to be run when a user chooses to send an emoticon
+     *
+     * Normally, these would send a request to the server
      */
     @FXML
     private void addHappyReaction() {
@@ -198,11 +282,49 @@ public class QuestionFrameCtrl implements Initializable {
     }
 
     /**
-     * Halves the time remaining as shown by the timer bar
+     * Applies settings that disable the use of a joker
+     * @param joker - The joker to be disabled
+     * @return Whether the joker was already disabled
+     */
+    private boolean disableJoker(Button joker) {
+        if(joker.getStyleClass().contains("usedJoker")) return true;
+
+        joker.getStyleClass().add("usedJoker");
+        joker.getStyleClass().remove("clickable");
+        return false;
+    }
+
+    /**
+     * Sends a request to the server that a player used the halveTime joker
      */
     @FXML
-    void halveTime() {
+    private void halveTime() {
+        if(disableJoker(halveTime)) return;
+
+        // ADD USEFUL STUFF HERE
         timerBarCtrl.halveRemainingTime();
+    }
+
+    /**
+     * Sends a request to the server that a player used the doublePoints joker
+     */
+    @FXML
+    private void doublePoints() {
+        if(disableJoker(doublePoints)) return;
+
+        // ADD USEFUL STUFF HERE
+        timerBarCtrl.setRemainingTime(20);
+    }
+
+    /**
+     * Sends a request to the server that a player used the eliminateWrongAnswer joker
+     */
+    @FXML
+    private void eliminateWrongAnswer() {
+        if(disableJoker(eliminateWrongAnswer)) return;
+
+        // ADD USEFUL STUFF HERE
+        incrementQuestionNumber();
     }
 
     /**
@@ -219,17 +341,14 @@ public class QuestionFrameCtrl implements Initializable {
      */
     public void keyPressed(KeyEvent e) {
         switch(e.getCode()) {
-            case H:
-                addHappyReaction();
+            case T:
+                halveTime();
                 break;
-            case A:
-                addAngryReaction();
+            case E:
+                eliminateWrongAnswer();
                 break;
-            case S:
-                addSadReaction();
-                break;
-            case F: // F stands for flustered, obviously
-                addSurprisedReaction();
+            case D:
+                doublePoints();
                 break;
             case L:
                 toggleLeaderboardVisibility();
