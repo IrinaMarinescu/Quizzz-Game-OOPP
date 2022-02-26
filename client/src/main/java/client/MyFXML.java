@@ -27,56 +27,59 @@ import javafx.util.BuilderFactory;
 import javafx.util.Callback;
 import javafx.util.Pair;
 
+/**
+ * A wrapper for FXMLLoader with custom settings
+ */
 public class MyFXML {
 
-  private Injector injector;
+    private Injector injector;
 
-  public MyFXML(Injector injector) {
-    this.injector = injector;
-  }
-
-  /**
-   * Loads and configures a new node with its controller file
-   *
-   * @param c          - The controller class representation of the node of which an instance is to be loaded
-   * @param pathToFXML - The relative path to the FXML file of this node
-   * @param pathToCSS  - The relative path to the CSS file of this node (passing null as an argument will apply no CSS)
-   * @param <T>        The controller of the node that is returned
-   * @return A pair containing the controller and the node corresponding to the provided FXML file
-   */
-  public <T> Pair<T, Parent> load(Class<T> c, String pathToFXML, String pathToCSS) {
-    try {
-      URL FXMLLocation = MyFXML.class.getClassLoader().getResource(pathToFXML);
-      var loader = new FXMLLoader(FXMLLocation, null, null, new MyFactory(), StandardCharsets.UTF_8);
-      Parent parent = loader.load();
-
-      if (pathToCSS != null) {
-        parent.getStylesheets().add(pathToCSS);
-      }
-
-      T ctrl = loader.getController();
-      return new Pair<>(ctrl, parent);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+    public MyFXML(Injector injector) {
+        this.injector = injector;
     }
-  }
 
-  private class MyFactory implements BuilderFactory, Callback<Class<?>, Object> {
+    /**
+     * Loads and configures a new node with its controller file
+     *
+     * @param c          The controller class representation of the node of which an instance is to be loaded
+     * @param pathToFXML The relative path to the FXML file of this node
+     * @param pathToCSS  The relative path to the CSS file of this node (passing null as an argument will apply no CSS)
+     * @param <T>        The controller of the node that is returned
+     * @return A pair containing the controller and the node corresponding to the provided FXML file
+     */
+    public <T> Pair<T, Parent> load(Class<T> c, String pathToFXML, String pathToCSS) {
+        try {
+            URL FXMLLocation = MyFXML.class.getClassLoader().getResource(pathToFXML);
+            var loader = new FXMLLoader(FXMLLocation, null, null, new MyFactory(), StandardCharsets.UTF_8);
+            Parent parent = loader.load();
 
-    @Override
-    @SuppressWarnings("rawtypes")
-    public Builder<?> getBuilder(Class<?> type) {
-      return new Builder() {
-        @Override
-        public Object build() {
-          return injector.getInstance(type);
+            if (pathToCSS != null) {
+                parent.getStylesheets().add(pathToCSS);
+            }
+
+            T ctrl = loader.getController();
+            return new Pair<>(ctrl, parent);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-      };
     }
 
-    @Override
-    public Object call(Class<?> type) {
-      return injector.getInstance(type);
+    private class MyFactory implements BuilderFactory, Callback<Class<?>, Object> {
+
+        @Override
+        @SuppressWarnings("rawtypes")
+        public Builder<?> getBuilder(Class<?> type) {
+            return new Builder() {
+                @Override
+                public Object build() {
+                    return injector.getInstance(type);
+                }
+            };
+        }
+
+        @Override
+        public Object call(Class<?> type) {
+            return injector.getInstance(type);
+        }
     }
-  }
 }

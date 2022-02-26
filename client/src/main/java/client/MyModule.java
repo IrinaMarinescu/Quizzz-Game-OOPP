@@ -19,22 +19,25 @@ package client;
 import client.scenes.InjectedCenterExampleCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.QuestionFrameCtrl;
-import client.scenes.components.EmoteContainerCtrl;
-import client.scenes.components.EmoteCtrl;
-import client.scenes.components.TimerBarCtrl;
+import client.scenes.framecomponents.EmoteContainerCtrl;
+import client.scenes.framecomponents.EmoteCtrl;
+import client.scenes.framecomponents.TimerBarCtrl;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
 
+/**
+ * The module used for dependency injection
+ */
 public class MyModule implements Module {
 
-  @Override
-  public void configure(Binder binder) {
-    binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
-    binder.bind(QuestionFrameCtrl.class).in(Scopes.SINGLETON);
-    binder.bind(InjectedCenterExampleCtrl.class).in(Scopes.SINGLETON);
-    binder.bind(TimerBarCtrl.class).in(Scopes.SINGLETON);
-    binder.bind(EmoteCtrl.class).in(Scopes.SINGLETON);
-    binder.bind(EmoteContainerCtrl.class).in(Scopes.SINGLETON);
-  }
+    @Override
+    public void configure(Binder binder) {
+        binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(QuestionFrameCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(InjectedCenterExampleCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(TimerBarCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(EmoteCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(EmoteContainerCtrl.class).in(Scopes.SINGLETON);
+    }
 }

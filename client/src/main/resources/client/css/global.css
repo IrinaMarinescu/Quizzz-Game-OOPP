@@ -7,8 +7,14 @@
     -lightishBlue: #5CB4BF;
     -lightBlue: #81C0C8;
 
-    -pressedEffect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 0);
+    -dropshadow: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0);
     -fx-text-fill: white;
+}
+
+#tooltip {
+    -fx-background-color: -lightBlue;
+    -fx-font-size: 15;
+    -fx-effect: -dropshadow;
 }
 
 :focused {
@@ -23,10 +29,6 @@
 #timerBar {
     -fx-fill: -timerBarColor;
     -fx-height: 80;
-}
-
-#timerBar.fast{
-    -fx-fill: crimson;
 }
 
 Button {
@@ -50,5 +52,5 @@ Button {
 }
 
 .clickable:pressed {
-    -fx-effect: -pressedEffect;
+    -fx-effect: -dropshadow;
 }

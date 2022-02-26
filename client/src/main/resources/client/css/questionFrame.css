@@ -1,6 +1,33 @@
 @import 'global.css';
 @import 'smallLeaderboard.css';
 
+#helpMenu {
+    -fx-background-color: -lightBlue;
+    -fx-background-radius: 0 0 15 15;
+}
+
+Button.inHelpMenu {
+    -fx-pref-height: 30;
+    -fx-padding: 0;
+    -fx-font-size: 12;
+}
+
+#timerBar.fast {
+    -fx-fill: crimson;
+}
+
+#trophy {
+    -fx-pref-height: 80;
+    -fx-pref-width: 80;
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+
+    -fx-background-size: 75%;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+    -fx-background-image: url('../icons/trophy-solid.png');
+}
+
 #trophy:hover {
     -fx-opacity: 0.8;
 }

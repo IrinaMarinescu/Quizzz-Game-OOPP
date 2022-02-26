@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <BorderPane prefHeight="70.0" prefWidth="220.0" styleClass="emojiContainer" xmlns="http://javafx.com/javafx/17"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.components.EmoteContainerCtrl">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.framecomponents.EmoteContainerCtrl">
     <left>
         <ImageView fx:id="emoticon" fitHeight="34.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true"
                    BorderPane.alignment="CENTER">

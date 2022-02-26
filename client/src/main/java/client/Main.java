@@ -30,36 +30,36 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-  private static final Injector INJECTOR = createInjector(new MyModule());
-  private static final MyFXML FXML = new MyFXML(INJECTOR);
+    private static final Injector INJECTOR = createInjector(new MyModule());
+    private static final MyFXML FXML = new MyFXML(INJECTOR);
 
-  public static MyFXML getLoader() {
-    return FXML;
-  }
+    public static MyFXML getLoader() {
+        return FXML;
+    }
 
-  /**
-   * Hands control over to JavaFX
-   *
-   * @param args - Arguments for starting the program
-   */
-  public static void main(String[] args) {
-    launch();
-  }
+    /**
+     * Hands control over to JavaFX
+     *
+     * @param args Arguments for starting the program
+     */
+    public static void main(String[] args) {
+        launch();
+    }
 
-  /**
-   * Loads all scenes/nodes, initializes main controller and configures primary (and only) stage
-   *
-   * @param primaryStage - The stage containing all scenes
-   */
-  @Override
-  public void start(Stage primaryStage) {
+    /**
+     * Loads all scenes/nodes, initializes main controller and configures primary (and only) stage
+     *
+     * @param primaryStage The stage containing all scenes
+     */
+    @Override
+    public void start(Stage primaryStage) {
 
-    var questionFrame =
-      FXML.load(QuestionFrameCtrl.class, "client/scenes/questionFrame.fxml", "client/css/questionFrame.css");
-    var injectedCenterExample =
-      FXML.load(InjectedCenterExampleCtrl.class, "client/scenes/injectedCenterExample.fxml", null);
+        var questionFrame =
+            FXML.load(QuestionFrameCtrl.class, "client/scenes/questionFrame.fxml", "client/css/questionFrame.css");
+        var injectedCenterExample =
+            FXML.load(InjectedCenterExampleCtrl.class, "client/scenes/injectedCenterExample.fxml", null);
 
-    var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-    mainCtrl.initialize(primaryStage, questionFrame, injectedCenterExample);
-  }
+        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+        mainCtrl.initialize(primaryStage, questionFrame, injectedCenterExample);
+    }
 }

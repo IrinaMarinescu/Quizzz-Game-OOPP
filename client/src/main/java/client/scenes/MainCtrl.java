@@ -27,43 +27,52 @@ import javafx.util.Pair;
  */
 public class MainCtrl {
 
-  private Stage primaryStage;
+    private Stage primaryStage;
 
-  private QuestionFrameCtrl questionFrameCtrl;
-  private Scene questionFrame;
+    private QuestionFrameCtrl questionFrameCtrl;
+    private Scene questionFrame;
 
-  private InjectedCenterExampleCtrl injectedCenterExampleCtrl;
-  private Node injectedCenterNode;
+    private InjectedCenterExampleCtrl injectedCenterExampleCtrl;
+    private Node injectedCenterNode;
 
-  /**
-   * Initialize this controller using components provided by Main
-   *
-   * @param primaryStage          - The (only) stage containing all scenes
-   * @param questionFrame         - Controller file and parent node of questionFrame node
-   * @param injectedCenterExample - Controller file and parent node of (demonstrational) injectedCenterExample node
-   */
-  public void initialize(Stage primaryStage, Pair<QuestionFrameCtrl, Parent> questionFrame,
-                         Pair<InjectedCenterExampleCtrl, Parent> injectedCenterExample) {
-    this.primaryStage = primaryStage;
+    /**
+     * Disconnects the player from an online game
+     */
+    public void disconnect() {
 
-    this.questionFrameCtrl = questionFrame.getKey();
-    this.questionFrame = new Scene(questionFrame.getValue());
+        // DO USEFUL STUFF HERE
+        primaryStage.close();
+    }
 
-    this.injectedCenterExampleCtrl = injectedCenterExample.getKey();
-    this.injectedCenterNode = injectedCenterExample.getValue();
+    /**
+     * Initialize this controller using components provided by Main
+     *
+     * @param primaryStage          The (only) stage containing all scenes
+     * @param questionFrame         Controller file and parent node of questionFrame node
+     * @param injectedCenterExample Controller file and parent node of (demonstrational) injectedCenterExample node
+     */
+    public void initialize(Stage primaryStage, Pair<QuestionFrameCtrl, Parent> questionFrame,
+                           Pair<InjectedCenterExampleCtrl, Parent> injectedCenterExample) {
+        this.primaryStage = primaryStage;
 
-    primaryStage.setTitle("Quizzzzz!");
+        this.questionFrameCtrl = questionFrame.getKey();
+        this.questionFrame = new Scene(questionFrame.getValue());
 
-    questionFrameCtrl.setCenterContent(injectedCenterNode);
-    showQuestionFrame();
-    primaryStage.show();
-  }
+        this.injectedCenterExampleCtrl = injectedCenterExample.getKey();
+        this.injectedCenterNode = injectedCenterExample.getValue();
 
-  /**
-   * Sets the questionFrame as the visible scene on the stage
-   */
-  public void showQuestionFrame() {
-    primaryStage.setScene(questionFrame);
-    questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e));
-  }
+        primaryStage.setTitle("Quizzzzz!");
+
+        questionFrameCtrl.setCenterContent(injectedCenterNode);
+        showQuestionFrame();
+        primaryStage.show();
+    }
+
+    /**
+     * Sets the questionFrame as the visible scene on the stage
+     */
+    public void showQuestionFrame() {
+        primaryStage.setScene(questionFrame);
+        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e));
+    }
 }
