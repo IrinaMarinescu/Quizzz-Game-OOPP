@@ -17,11 +17,9 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
-import client.scenes.InjectedCenterExampleCtrl;
+import client.scenes.*;
 import com.google.inject.Injector;
 
-import client.scenes.MainCtrl;
-import client.scenes.QuestionFrameCtrl;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -50,6 +48,9 @@ public class Main extends Application {
 
         var questionFrame = FXML.load(QuestionFrameCtrl.class, "client/scenes/questionFrame.fxml", "client/css/questionFrame.css");
         var injectedCenterExample = FXML.load(InjectedCenterExampleCtrl.class, "client/scenes/injectedCenterExample.fxml", null);
+        var openQuestion = FXML.load(OpenQuestion.class, "client/scenes/OpenQuestion.fxml", null);
+        var questionOneImage = FXML.load(QuestionOneImage.class, "client/scenes/QuestionOneImage.fxml", null);
+
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, questionFrame, injectedCenterExample);
