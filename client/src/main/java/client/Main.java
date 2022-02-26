@@ -33,6 +33,13 @@ public class Main extends Application {
     private static final Injector INJECTOR = createInjector(new MyModule());
     private static final MyFXML FXML = new MyFXML(INJECTOR);
 
+    /**
+     * Getter for MyFXML field
+     *
+     * @return MyFXML
+     * <p>
+     * This is needed because the question frame loads emojis sent by other players as new nodes
+     */
     public static MyFXML getLoader() {
         return FXML;
     }

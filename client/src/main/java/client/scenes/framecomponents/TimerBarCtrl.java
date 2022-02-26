@@ -57,7 +57,6 @@ public class TimerBarCtrl {
      * @param progress A real number in range [0, 1] indicating how much of the animation to skip
      */
     private void playAnimation(double progress) {
-
         currentAnimationStartTime = now();
         animation.jumpTo(Duration.ZERO);
         animation.stop();

@@ -56,11 +56,11 @@ Button.inHelpMenu {
 }
 
 #doublePoints {
-    -fx-background-image: url('../icons/angles-up-solid.png');
+    -fx-background-image: url('../icons/double-points.png');
 }
 
 #doublePoints.usedJoker {
-    -fx-background-image: url('../icons/disabledJokers/angles-up-solid-grey.png');
+    -fx-background-image: url('../icons/disabledJokers/double-points-grey.png');
 }
 
 #jokerField {

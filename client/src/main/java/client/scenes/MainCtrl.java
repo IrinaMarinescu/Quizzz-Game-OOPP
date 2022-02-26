@@ -16,6 +16,7 @@
 
 package client.scenes;
 
+import client.scenes.controllerrequirements.MainCtrlRequirements;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,7 +26,7 @@ import javafx.util.Pair;
 /**
  * Coordinates actions between different screens
  */
-public class MainCtrl {
+public class MainCtrl implements MainCtrlRequirements {
 
     private Stage primaryStage;
 

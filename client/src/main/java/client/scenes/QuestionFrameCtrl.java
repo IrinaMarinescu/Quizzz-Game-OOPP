@@ -1,5 +1,6 @@
 package client.scenes;
 
+import client.scenes.controllerrequirements.QuestionFrameFunctions;
 import client.scenes.framecomponents.EmoteCtrl;
 import client.scenes.framecomponents.TimerBarCtrl;
 import commons.LeaderboardEntry;
@@ -30,7 +31,7 @@ import javax.inject.Inject;
 /**
  * Controller for questionFrame scene
  */
-public class QuestionFrameCtrl implements Initializable {
+public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions {
 
     private static final int LEADERBOARD_SIZE_MAX = 5;
 
@@ -117,27 +118,29 @@ public class QuestionFrameCtrl implements Initializable {
 
         this.lastEscapeKeyPressTime = 0;
 
+        // LINES BELOW ARE FOR DEMONSTRATION PURPOSES
+
         setRemainingTime(10);
 
-        startMultiplayerGame(List.of("Per", "Andrei"));
+        initializeMultiplayerGame(List.of("Per", "Andrei"));
         // startSingleplayerGame();
         addPoints(100);
     }
 
     /**
-     * Initializes settings for a new single-player game
+     * Resets the question frame and initializes settings for a new single-player game
      */
     @SuppressWarnings("unused")
-    public void startSingleplayerGame() {
+    public void initializeSingleplayerGame() {
         startNewGame(false, null);
     }
 
     /**
-     * Initializes settings for a new multiplayer game
+     * Resets the question frame and initializes settings for a new multiplayer game
      *
-     * @param names The names of players involved
+     * @param names The names of all players involved
      */
-    public void startMultiplayerGame(List<String> names) {
+    public void initializeMultiplayerGame(List<String> names) {
         startNewGame(true, names);
     }
 
@@ -179,6 +182,16 @@ public class QuestionFrameCtrl implements Initializable {
     }
 
     /**
+     * Sets node containing question at the center of the frame
+     *
+     * @param questionNode The node to be inserted in the center of the frame
+     */
+    public void setCenterContent(Node questionNode) {
+        centerContent.getChildren().clear();
+        centerContent.getChildren().add(questionNode);
+    }
+
+    /**
      * Add points to a player's score, as seen in top left
      *
      * @param points The number of points to be added
@@ -214,15 +227,18 @@ public class QuestionFrameCtrl implements Initializable {
     }
 
     /**
-     * Sets node (ordinarily) containing question screen at the center of the frame
+     * Sets contents of the pop-up leaderboard
      *
-     * @param questionNode The node to be inserted in the center of the frame
-     *                     <p>
-     *                     This should only be called by MainCtrl!
+     * @param entries A list of LeaderboardEntry objects representing leaderboard fields
      */
-    public void setCenterContent(Node questionNode) {
-        centerContent.getChildren().clear();
-        centerContent.getChildren().add(questionNode);
+    public void setLeaderboardContents(List<LeaderboardEntry> entries) {
+        entries = entries.stream().sorted().collect(Collectors.toList());
+        while (entries.size() > LEADERBOARD_SIZE_MAX) {
+            entries.remove(entries.size() - 1);
+        }
+
+        ObservableList<LeaderboardEntry> data = FXCollections.observableList(entries);
+        leaderboard.setItems(data);
     }
 
     /**
@@ -241,21 +257,6 @@ public class QuestionFrameCtrl implements Initializable {
     @FXML
     private void toggleHelpMenuVisibility() {
         helpMenuContainer.setVisible(!helpMenuContainer.isVisible());
-    }
-
-    /**
-     * Sets contents of the pop-up leaderboard
-     *
-     * @param entries A list of LeaderboardEntry objects representing leaderboard fields
-     */
-    public void setLeaderboardContents(List<LeaderboardEntry> entries) {
-        entries = entries.stream().sorted().collect(Collectors.toList());
-        while (entries.size() > LEADERBOARD_SIZE_MAX) {
-            entries.remove(entries.size() - 1);
-        }
-
-        ObservableList<LeaderboardEntry> data = FXCollections.observableList(entries);
-        leaderboard.setItems(data);
     }
 
     /**
@@ -302,22 +303,32 @@ public class QuestionFrameCtrl implements Initializable {
      */
     @FXML
     private void addHappyReaction() {
-        emoteCtrl.addReaction("Chris", "happy");
+        displayNewEmoji("Chris", "happy");
     }
 
     @FXML
     private void addSadReaction() {
-        emoteCtrl.addReaction("Per", "sad");
+        displayNewEmoji("Per", "sad");
     }
 
     @FXML
     private void addAngryReaction() {
-        emoteCtrl.addReaction("Mirella", "angry");
+        displayNewEmoji("Mirella", "angry");
     }
 
     @FXML
     private void addSurprisedReaction() {
-        emoteCtrl.addReaction("Andrei", "surprised");
+        displayNewEmoji("Andrei", "surprised");
+    }
+
+    /**
+     * Adds a new reaction sent by another player to the right
+     *
+     * @param name     The name of the person sending the emote
+     * @param reaction A string representing the emoticon (Accepted values: "happy", "sad", "angry", "surprised")
+     */
+    public void displayNewEmoji(String name, String reaction) {
+        emoteCtrl.addReaction(name, reaction);
     }
 
     /**
@@ -337,6 +348,22 @@ public class QuestionFrameCtrl implements Initializable {
     }
 
     /**
+     * Makes timerBar slide from full to empty in a provided number of seconds
+     *
+     * @param seconds How long the bar should slide
+     */
+    public void setRemainingTime(double seconds) {
+        timerBarCtrl.setRemainingTime(seconds);
+    }
+
+    /**
+     * Halves the remaining time as seen on the timer bar
+     */
+    public void halveRemainingTime() {
+        timerBarCtrl.halveRemainingTime();
+    }
+
+    /**
      * Sends a request to the server that a player used the halveTime joker
      */
     @FXML
@@ -346,7 +373,7 @@ public class QuestionFrameCtrl implements Initializable {
         }
 
         // ADD USEFUL STUFF HERE
-        timerBarCtrl.halveRemainingTime();
+        halveRemainingTime();
     }
 
     /**
@@ -359,7 +386,7 @@ public class QuestionFrameCtrl implements Initializable {
         }
 
         // ADD USEFUL STUFF HERE
-        timerBarCtrl.setRemainingTime(20);
+        timerBarCtrl.setRemainingTime(10);
     }
 
     /**
@@ -377,18 +404,11 @@ public class QuestionFrameCtrl implements Initializable {
     }
 
     /**
-     * Makes timerBar slide from full to empty in a provided number of seconds
-     *
-     * @param seconds How long the bar should slide
-     */
-    public void setRemainingTime(double seconds) {
-        timerBarCtrl.setRemainingTime(seconds);
-    }
-
-    /**
      * Provides functionality for keybindings to accelerate certain actions
      *
      * @param e Information about a keypress performed by the user
+     *          <p>
+     *          This should only be called by the MainCtrl showQuestionFrame method
      */
     public void keyPressed(KeyEvent e) {
         switch (e.getCode()) {

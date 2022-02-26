@@ -2,9 +2,11 @@ package client.scenes.framecomponents;
 
 import client.Main;
 import client.MyFXML;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javafx.animation.FadeTransition;
-import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -14,6 +16,7 @@ import javafx.util.Duration;
 public class EmoteCtrl {
 
     private static final int MAX_EMOTES = 5;
+    private Map<String, String> reactionImage;
 
     private VBox reactionContainer;
     private final MyFXML loader = Main.getLoader();
@@ -28,6 +31,13 @@ public class EmoteCtrl {
     public void initialize(VBox reactionContainer) {
         this.reactionContainer = reactionContainer;
         this.visibleEmotes = 0;
+
+        reactionImage = Stream.of(new String[][] {
+            {"happy", "face-grin-squint-solid.png"},
+            {"sad", "face-sad-cry-solid.png"},
+            {"angry", "face-angry-solid.png"},
+            {"surprised", "face-flushed-solid.png"}
+        }).collect(Collectors.toMap(d -> d[0], d -> d[1]));
     }
 
     /**
@@ -37,24 +47,7 @@ public class EmoteCtrl {
      * @param reaction String representation of their chosen emoticon
      */
     public void addReaction(String name, String reaction) {
-        String pathToImage = "client/emoticons/";
-        switch (reaction) {
-            case "happy":
-                pathToImage += "face-grin-squint-solid.png";
-                break;
-            case "sad":
-                pathToImage += "face-sad-cry-solid.png";
-                break;
-            case "angry":
-                pathToImage += "face-angry-solid.png";
-                break;
-            case "surprised":
-                pathToImage += "face-flushed-solid.png";
-                break;
-            default:
-                pathToImage += "face-smile-solid.png";
-                break;
-        }
+        String pathToImage = "client/emoticons/" + reactionImage.get(reaction);
 
         var emoteContainer = loader.load(EmoteContainerCtrl.class, "client/scenes/EmoteContainer.fxml", null);
         emoteContainer.getKey().initialize(name, pathToImage);
@@ -66,21 +59,10 @@ public class EmoteCtrl {
             visibleEmotes++;
         }
 
-        animate(emoteContainer.getValue(), 5, 3);
-    }
-
-    /**
-     * Creates a fade-out animation after a provided delay
-     *
-     * @param container The container to be animated
-     * @param delay     The initial delay before the fade-out starts
-     * @param fadeTime  The time it takes for the container to fade out
-     */
-    private void animate(Parent container, int delay, int fadeTime) {
         new Thread(() -> {
             try {
-                TimeUnit.SECONDS.sleep(delay);
-                FadeTransition fade = new FadeTransition(new Duration(fadeTime * 1000), container);
+                TimeUnit.SECONDS.sleep(5);
+                FadeTransition fade = new FadeTransition(new Duration(3000), emoteContainer.getValue());
                 fade.setFromValue(1.0);
                 fade.setToValue(0.0);
                 fade.play();
