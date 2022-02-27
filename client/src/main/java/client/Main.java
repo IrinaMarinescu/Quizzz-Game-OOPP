@@ -18,27 +18,64 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
+import client.scenes.InjectedCenterExampleCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.MainFrameCtrl;
+import client.scenes.OpenQuestion;
+import client.scenes.QuestionFrameCtrl;
+import client.scenes.QuestionOneImage;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+/**
+ * The Main class
+ */
 public class Main extends Application {
 
     private static final Injector INJECTOR = createInjector(new MyModule());
     private static final MyFXML FXML = new MyFXML(INJECTOR);
 
+    /**
+     * Getter for MyFXML field
+     *
+     * @return MyFXML
+     * <p>
+     * This is needed because the question frame loads emojis sent by other players as new nodes
+     */
+    public static MyFXML getLoader() {
+        return FXML;
+    }
+
+    /**
+     * Hands control over to JavaFX
+     *
+     * @param args Arguments for starting the program
+     */
+
     public static void main(String[] args) {
         launch();
     }
 
+    /**
+     * Loads all scenes/nodes, initializes main controller and configures primary (and only) stage
+     *
+     * @param primaryStage The stage containing all scenes
+     */
     @Override
     public void start(Stage primaryStage) {
+
+        var questionFrame =
+            FXML.load(QuestionFrameCtrl.class, "client/scenes/questionFrame.fxml", "client/css/questionFrame.css");
+        var injectedCenterExample =
+            FXML.load(InjectedCenterExampleCtrl.class, "client/scenes/injectedCenterExample.fxml", null);
+        var openQuestion = FXML.load(OpenQuestion.class, "client/scenes/OpenQuestion.fxml", null);
+        var questionOneImage = FXML.load(QuestionOneImage.class, "client/scenes/QuestionOneImage.fxml", null);
 
         var mainFrame =
             FXML.load(MainFrameCtrl.class, "client/scenes/mainFrame.fxml", "client/css/mainFrame.css");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, mainFrame);
+        //mainCtrl.initialize(primaryStage, questionFrame, injectedCenterExample);
     }
 }

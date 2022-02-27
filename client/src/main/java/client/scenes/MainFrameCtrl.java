@@ -37,23 +37,22 @@ public class MainFrameCtrl implements Initializable {
     private final MainCtrl mainCtrl;
 
     private ObservableList<Quote> data;
-    //
     private long lastEscapeKeyPressTime;
 
-    //    @FXML
-//    private Button trophy;
+    //@FXML
+    //private Button trophy;
     @FXML
     private TextField username;
     @FXML
     private TextField serverIP;
     @FXML
     private VBox helpMenuContainer;
-//    @FXML
-//    private Text helpPointsGained;
-//    @FXML
-//    private Button helpMenuScore;
-//    @FXML
-//    private Button helpMenuQuestionNumber;
+    //@FXML
+    //private Text helpPointsGained;
+    //@FXML
+    //private Button helpMenuScore;
+    //@FXML
+    //private Button helpMenuQuestionNumber;
 
     @Inject
     public MainFrameCtrl(ServerUtils server, MainCtrl mainCtrl) {
@@ -63,9 +62,9 @@ public class MainFrameCtrl implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        colFirstName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.firstName));
-//        colLastName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.lastName));
-//        colQuote.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().quote));
+        //colFirstName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.firstName));
+        //colLastName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.lastName));
+        //colQuote.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().quote));
 
         this.lastEscapeKeyPressTime = 0;
     }

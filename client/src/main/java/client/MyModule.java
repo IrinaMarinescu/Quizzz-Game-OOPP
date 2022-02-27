@@ -16,17 +16,28 @@
 
 package client;
 
+import client.scenes.InjectedCenterExampleCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.MainFrameCtrl;
+import client.scenes.QuestionFrameCtrl;
+import client.scenes.framecomponents.EmoteCtrl;
+import client.scenes.framecomponents.TimerBarCtrl;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
 
+/**
+ * The module used for dependency injection
+ */
 public class MyModule implements Module {
 
     @Override
     public void configure(Binder binder) {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(MainFrameCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(QuestionFrameCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(InjectedCenterExampleCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(TimerBarCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(EmoteCtrl.class).in(Scopes.SINGLETON);
     }
 }

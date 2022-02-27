@@ -16,17 +16,28 @@
 
 package client.scenes;
 
+import client.scenes.controllerrequirements.MainCtrlRequirements;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-public class MainCtrl {
+/**
+ * Coordinates actions between different screens
+ */
+public class MainCtrl implements MainCtrlRequirements {
 
     private Stage primaryStage;
 
     private MainFrameCtrl mainFrameCtrl;
     private Scene mainFrame;
+
+    private QuestionFrameCtrl questionFrameCtrl;
+    private Scene questionFrame;
+
+    private InjectedCenterExampleCtrl injectedCenterExampleCtrl;
+    private Node injectedCenterNode;
 
     public void initialize(Stage primaryStage, Pair<MainFrameCtrl, Parent> mainFrame) {
         this.primaryStage = primaryStage;
@@ -34,20 +45,57 @@ public class MainCtrl {
         this.mainFrameCtrl = mainFrame.getKey();
         this.mainFrame = new Scene(mainFrame.getValue());
 
-
         primaryStage.setTitle("Quizzzzz!");
 
         showOverview();
         primaryStage.show();
+
     }
+
+    /**
+     * Initialize this controller using components provided by Main
+     *
+     * @param primaryStage          The (only) stage containing all scenes
+     * @param questionFrame         Controller file and parent node of questionFrame node
+     * @param injectedCenterExample Controller file and parent node of (demonstrational) injectedCenterExample node
+     */
+    public void initialize(Stage primaryStage, Pair<QuestionFrameCtrl, Parent> questionFrame,
+                           Pair<InjectedCenterExampleCtrl, Parent> injectedCenterExample) {
+        this.primaryStage = primaryStage;
+
+        this.questionFrameCtrl = questionFrame.getKey();
+        this.questionFrame = new Scene(questionFrame.getValue());
+
+        this.injectedCenterExampleCtrl = injectedCenterExample.getKey();
+        this.injectedCenterNode = injectedCenterExample.getValue();
+
+        primaryStage.setTitle("Quizzzzz!");
+
+        questionFrameCtrl.setCenterContent(injectedCenterNode);
+        showQuestionFrame();
+        primaryStage.show();
+    }
+
 
     public void showOverview() {
         primaryStage.setScene(mainFrame);
         mainFrame.setOnKeyPressed(e -> mainFrameCtrl.keyPressed(e));
     }
 
+    /**
+     * Disconnects the player from an online game
+     */
     public void disconnect() {
+
+        // DO USEFUL STUFF HERE
         primaryStage.close();
     }
 
+    /**
+     * Sets the questionFrame as the visible scene on the stage
+     */
+    public void showQuestionFrame() {
+        primaryStage.setScene(questionFrame);
+        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e));
+    }
 }

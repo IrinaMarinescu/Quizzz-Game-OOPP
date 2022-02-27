@@ -13,6 +13,7 @@
 
     -fx-text-fill: white;
     -fx-font-family: 'Roboto Regular', sans-serif;
+
 }
 
 #tooltip {
@@ -41,7 +42,11 @@ TextField {
 
     -fx-font-size: 28;
     -fx-focus-color: transparent;
+}
 
+#timerBar {
+    -fx-fill: -timerBarColor;
+    -fx-height: 80;
 }
 
 Button {
@@ -49,7 +54,6 @@ Button {
     -fx-background-radius: 40;
     -fx-pref-height: 60;
     -fx-padding: 0 60 0 60;
-
     -fx-font-size: 28;
 
     -fx-focus-color: transparent;

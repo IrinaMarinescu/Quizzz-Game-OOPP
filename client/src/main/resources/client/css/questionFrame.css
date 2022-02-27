@@ -1,0 +1,118 @@
+@import 'global.css';
+@import 'smallLeaderboard.css';
+
+#helpMenu {
+    -fx-background-color: -lightBlue;
+    -fx-background-radius: 0 0 15 15;
+}
+
+Button.inHelpMenu {
+    -fx-pref-height: 30;
+    -fx-padding: 0;
+    -fx-font-size: 12;
+}
+
+#timerBar.fast {
+    -fx-fill: crimson;
+}
+
+#trophy {
+    -fx-pref-height: 80;
+    -fx-pref-width: 80;
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+
+    -fx-background-size: 75%;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+    -fx-background-image: url('../icons/trophy-solid.png');
+}
+
+#trophy:hover {
+    -fx-opacity: 0.8;
+}
+
+.circle {
+    -fx-padding: 0 0 0 0;
+    -fx-pref-width: 60;
+    -fx-pref-height: 60;
+
+    -fx-background-size: 75%;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+}
+
+.smallCircle {
+    -fx-pref-width: 60;
+    -fx-pref-height: 60;
+}
+
+#help {
+    -fx-background-image: url('../icons/circle-question-solid.png');
+}
+
+#emote {
+    -fx-background-image: url('../emoticons/face-smile-solid.png');
+}
+
+#doublePoints {
+    -fx-background-image: url('../icons/double-points.png');
+}
+
+#doublePoints.usedJoker {
+    -fx-background-image: url('../icons/disabledJokers/double-points-grey.png');
+}
+
+#jokerField {
+    -fx-background-color: -greenish;
+    -fx-background-radius: 40;
+}
+
+#emoticonSelectionField {
+    -fx-background-color: -greenish;
+    -fx-background-radius: 40 0 0 40;
+}
+
+#eliminateWrongAnswer {
+    -fx-background-image: url('../icons/lightbulb-regular.png');
+}
+
+#eliminateWrongAnswer.usedJoker {
+    -fx-background-image: url('../icons/disabledJokers/lightbulb-regular-grey.png');
+}
+
+#halveTime {
+    -fx-background-image: url('../icons/hourglass-empty-solid.png');
+}
+
+#halveTime.usedJoker {
+    -fx-background-image: url('../icons/disabledJokers/hourglass-empty-solid-grey.png');
+}
+
+#happy {
+    -fx-background-image: url('../emoticons/face-grin-squint-solid.png');
+}
+
+#sad {
+    -fx-background-image: url('../emoticons/face-sad-cry-solid.png');
+}
+
+#angry {
+    -fx-background-image: url('../emoticons/face-angry-solid.png');
+}
+
+#surprised {
+    -fx-background-image: url('../emoticons/face-flushed-solid.png');
+}
+
+.emojiContainer {
+    -fx-background-color: -darkCyan;
+    -fx-background-insets: 20 20 0 10;
+    -fx-border-insets: 20 20 0 10;
+    -fx-padding: 20 20 0 10;
+    -fx-background-radius: 15;
+}
+
+.jagged {
+    -fx-background-radius: 0 40 40 0;
+}

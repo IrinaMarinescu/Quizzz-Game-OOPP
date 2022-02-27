@@ -27,6 +27,9 @@ import javafx.util.BuilderFactory;
 import javafx.util.Callback;
 import javafx.util.Pair;
 
+/**
+ * A wrapper for FXMLLoader with custom settings
+ */
 public class MyFXML {
 
     private Injector injector;
@@ -35,6 +38,15 @@ public class MyFXML {
         this.injector = injector;
     }
 
+    /**
+     * Loads and configures a new node with its controller file
+     *
+     * @param c          The controller class representation of the node of which an instance is to be loaded
+     * @param pathToFXML The relative path to the FXML file of this node
+     * @param pathToCSS  The relative path to the CSS file of this node (passing null as an argument will apply no CSS)
+     * @param <T>        The controller of the node that is returned
+     * @return A pair containing the controller and the node corresponding to the provided FXML file
+     */
     public <T> Pair<T, Parent> load(Class<T> c, String pathToFXML, String pathToCSS) {
         try {
             URL FXMLLocation = MyFXML.class.getClassLoader().getResource(pathToFXML);
@@ -50,7 +62,6 @@ public class MyFXML {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     private class MyFactory implements BuilderFactory, Callback<Class<?>, Object> {

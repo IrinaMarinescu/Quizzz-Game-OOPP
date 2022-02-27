@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+<AnchorPane prefHeight="730.0" prefWidth="1160.0" style="-fx-border-color: red;" xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.InjectedCenterExampleCtrl">
+    <children>
+        <Text layoutX="19.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="the stuff in the red square is written in InjectedCenterExample.fxml"
+              wrappingWidth="319.810546875"/>
+        <Button layoutX="400.0" layoutY="528.0" mnemonicParsing="false" onAction="#toggleFromInside"
+                styleClass="clickable" text="Toggle Leaderborad visibility - intentionally broken"/>
+    </children>
+</AnchorPane>
