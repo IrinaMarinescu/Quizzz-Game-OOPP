@@ -14,20 +14,26 @@
  * limitations under the License.
  */
 
-package server;
+package client.scenes;
 
-import java.util.Random;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
- * Config
+ * Tests for MainCtrl class
  */
-@Configuration
-public class Config {
+public class MainCtrlTest {
 
-    @Bean
-    public Random getRandom() {
-        return new Random();
+    private MainCtrl sut;
+
+    @BeforeEach
+    public void setup() {
+        sut = new MainCtrl();
+    }
+
+    @Test
+    public void writeSomeTests() {
+        // TODO create replacement objects and write some tests
+        // sut.initialize(null, null, null);
     }
 }

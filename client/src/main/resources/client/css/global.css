@@ -7,8 +7,18 @@
     -lightishBlue: #5CB4BF;
     -lightBlue: #81C0C8;
 
-    -pressedEffect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 0);
+    -dropshadow: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0);
     -fx-text-fill: white;
+}
+
+#tooltip {
+    -fx-background-color: -lightBlue;
+    -fx-font-size: 15;
+    -fx-effect: -dropshadow;
+}
+
+:focused {
+    -fx-background-insets: 0 0 -1 0;
 }
 
 #topBar {
@@ -33,10 +43,14 @@ Button {
     -fx-focus-color: transparent;
 }
 
+.clickable {
+    -fx-cursor: hand;
+}
+
 .clickable:hover {
     -fx-background-color: -buttonColorHover;
 }
 
 .clickable:pressed {
-    -fx-effect: -pressedEffect;
+    -fx-effect: -dropshadow;
 }

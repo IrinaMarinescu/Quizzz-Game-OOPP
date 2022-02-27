@@ -16,6 +16,7 @@
 
 package client.scenes;
 
+import client.scenes.controllerrequirements.MainCtrlRequirements;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,7 +26,7 @@ import javafx.util.Pair;
 /**
  * Coordinates actions between different screens
  */
-public class MainCtrl {
+public class MainCtrl implements MainCtrlRequirements {
 
     private Stage primaryStage;
 
@@ -36,11 +37,20 @@ public class MainCtrl {
     private Node injectedCenterNode;
 
     /**
+     * Disconnects the player from an online game
+     */
+    public void disconnect() {
+
+        // DO USEFUL STUFF HERE
+        primaryStage.close();
+    }
+
+    /**
      * Initialize this controller using components provided by Main
      *
-     * @param primaryStage          - The (only) stage containing all scenes
-     * @param questionFrame         - Controller file and parent node of questionFrame node
-     * @param injectedCenterExample - Controller file and parent node of (demonstrational) injectedCenterExample node
+     * @param primaryStage          The (only) stage containing all scenes
+     * @param questionFrame         Controller file and parent node of questionFrame node
+     * @param injectedCenterExample Controller file and parent node of (demonstrational) injectedCenterExample node
      */
     public void initialize(Stage primaryStage, Pair<QuestionFrameCtrl, Parent> questionFrame,
                            Pair<InjectedCenterExampleCtrl, Parent> injectedCenterExample) {
@@ -64,11 +74,6 @@ public class MainCtrl {
      */
     public void showQuestionFrame() {
         primaryStage.setScene(questionFrame);
-        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
-    }
-
-    public void disconnect() {
-
-        // TODO: what happens when someone disconnects
+        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e));
     }
 }
