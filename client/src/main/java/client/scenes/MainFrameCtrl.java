@@ -25,6 +25,7 @@ import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 //import javafx.scene.control.TableColumn;
@@ -37,12 +38,14 @@ public class MainFrameCtrl implements Initializable {
 
     private ObservableList<Quote> data;
     //
-//    private String usernames;
-//    private String serversIP;
     private long lastEscapeKeyPressTime;
 
     //    @FXML
 //    private Button trophy;
+    @FXML
+    private TextField username;
+    @FXML
+    private TextField serverIP;
     @FXML
     private VBox helpMenuContainer;
 //    @FXML
@@ -75,17 +78,14 @@ public class MainFrameCtrl implements Initializable {
         helpMenuContainer.setVisible(!helpMenuContainer.isVisible());
     }
 
-
-    public void usernameTextField() {
-    }
-
-    public void serverIPTextField() {
-    }
-
     public void singleplayer() {
+        username.getText();
+        serverIP.getText();
     }
 
     public void mulitplayer() {
+        username.getText();
+        serverIP.getText();
     }
 
     public void keyPressed(KeyEvent e) {

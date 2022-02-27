@@ -39,12 +39,10 @@
                 </VBox>
                 <VBox alignment="CENTER" prefWidth="370" prefHeight="350">
                     <TextField fx:id="username" prefColumnCount="1" promptText="Username"
-                               onAction="#usernameTextField"
                                alignment="CENTER_LEFT"/>
                     <Region VBox.vgrow="ALWAYS"/>
                     <TextField fx:id="serverIP" prefColumnCount="1"
                                promptText="Server's IP"
-                               onAction="#serverIPTextField"
                                alignment="CENTER_LEFT"/>
                     <Region VBox.vgrow="ALWAYS"/>
                     <Button fx:id="singleplayer" mnemonicParsing="false" onAction="#singleplayer"
