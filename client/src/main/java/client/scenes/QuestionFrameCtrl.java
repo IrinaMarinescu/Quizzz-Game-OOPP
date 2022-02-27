@@ -416,7 +416,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
                 toggleHelpMenuVisibility();
                 break;
             case T:
-                halveTime();
+                halveRemainingTime();
                 break;
             case E:
                 eliminateWrongAnswer();
@@ -428,10 +428,11 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
                 toggleLeaderboardVisibility();
                 break;
             case ESCAPE:
-                if (Clock.systemDefaultZone().millis() - lastEscapeKeyPressTime < 200) {
+                long now = Clock.systemDefaultZone().millis();
+                if (now - lastEscapeKeyPressTime < 200) {
                     mainCtrl.disconnect();
                 }
-                lastEscapeKeyPressTime = Clock.systemDefaultZone().millis();
+                lastEscapeKeyPressTime = now;
                 break;
             default:
                 break;
