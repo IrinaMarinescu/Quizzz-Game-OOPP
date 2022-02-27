@@ -31,7 +31,7 @@ public class MainCtrl {
     private QuestionFrameCtrl questionFrameCtrl;
     private Scene questionFrame;
 
-    private InjectedCenterExampleCtrl InjectedCenterExampleCtrl;
+    private InjectedCenterExampleCtrl injectedCenterExampleCtrl;
     private Node injectedCenterNode;
 
     /**
@@ -46,7 +46,7 @@ public class MainCtrl {
         this.questionFrameCtrl = questionFrame.getKey();
         this.questionFrame = new Scene(questionFrame.getValue());
 
-        this.InjectedCenterExampleCtrl = injectedCenterExample.getKey();
+        this.injectedCenterExampleCtrl = injectedCenterExample.getKey();
         this.injectedCenterNode = injectedCenterExample.getValue();
 
         primaryStage.setTitle("Quizzzzz!");

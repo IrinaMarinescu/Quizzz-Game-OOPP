@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Text?>
 
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="738.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="738.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.OpenQuestion">
    <children>
       <ImageView fitHeight="478.0" fitWidth="468.0" layoutX="55.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -32,7 +32,7 @@
             <Font size="40.0" />
          </font>
       </TextField>
-      <Button layoutX="669.0" layoutY="567.0" mnemonicParsing="false" prefHeight="84.0" prefWidth="324.0" style="-fx-background-radius: 40; -fx-background-color: #02C39A#02C39A;" text="Submit" textFill="WHITE">
+      <Button fx:id="submitButton" layoutX="669.0" layoutY="567.0" mnemonicParsing="false" onAction="#submit" prefHeight="84.0" prefWidth="324.0" style="-fx-background-radius: 40; -fx-background-color: #02C39A#02C39A;" text="Submit" textFill="WHITE">
          <font>
             <Font size="40.0" />
          </font>
