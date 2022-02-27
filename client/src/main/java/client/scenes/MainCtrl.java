@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package client.scenes;
 
 import javafx.scene.Node;
@@ -36,11 +37,13 @@ public class MainCtrl {
 
     /**
      * Initialize this controller using components provided by Main
-     * @param primaryStage - The (only) stage containing all scenes
-     * @param questionFrame - Controller file and parent node of questionFrame node
+     *
+     * @param primaryStage          - The (only) stage containing all scenes
+     * @param questionFrame         - Controller file and parent node of questionFrame node
      * @param injectedCenterExample - Controller file and parent node of (demonstrational) injectedCenterExample node
      */
-    public void initialize(Stage primaryStage, Pair<QuestionFrameCtrl, Parent> questionFrame, Pair<InjectedCenterExampleCtrl, Parent> injectedCenterExample) {
+    public void initialize(Stage primaryStage, Pair<QuestionFrameCtrl, Parent> questionFrame,
+                           Pair<InjectedCenterExampleCtrl, Parent> injectedCenterExample) {
         this.primaryStage = primaryStage;
 
         this.questionFrameCtrl = questionFrame.getKey();
@@ -61,6 +64,11 @@ public class MainCtrl {
      */
     public void showQuestionFrame() {
         primaryStage.setScene(questionFrame);
-        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e));
+        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
+    }
+
+    public void disconnect() {
+
+        // TODO: what happens when someone disconnects
     }
 }

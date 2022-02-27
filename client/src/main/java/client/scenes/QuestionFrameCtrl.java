@@ -1,18 +1,17 @@
 package client.scenes;
 
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
-
-import javax.inject.Inject;
-import java.net.URL;
 import javafx.util.Duration;
-import java.util.ResourceBundle;
+import javax.inject.Inject;
 
 /**
  * Controller for questionFrame scene
@@ -22,14 +21,17 @@ public class QuestionFrameCtrl implements Initializable {
     private final MainCtrl mainCtrl;
 
     @FXML
-    private VBox sideLeaderboard;
+    public VBox sideLeaderboard;
     @FXML
-    private Rectangle timerBar;
+    public Rectangle timerBar;
     @FXML
-    private Pane centerContent;
+    public Pane centerContent;
+
+    public TranslateTransition slide;
 
     /**
      * Injects necessary dependencies
+     *
      * @param mainCtrl - The main front-end controller
      */
     @Inject
@@ -39,20 +41,22 @@ public class QuestionFrameCtrl implements Initializable {
 
     /**
      * Initializes this controller
-     * @param location - Location of this controller
+     *
+     * @param location  - Location of this controller
      * @param resources - (Potentially) useful resources
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        setRemainingTime(15);
+        setRemainingTime(15, true);
     }
 
     /**
      * Sets node (ordinarily) containing question screen at the center of the frame
-     * @param questionNode - The node to be inserted in the center of the frame
      *
-     * This should only be called by MainCtrl!
+     * @param questionNode - The node to be inserted in the center of the frame
+     *                     <p>
+     *                     This should only be called by MainCtrl!
      */
     public void setCenterContent(Node questionNode) {
         centerContent.getChildren().clear();
@@ -69,26 +73,34 @@ public class QuestionFrameCtrl implements Initializable {
 
     /**
      * Makes timerBar slide from full to empty in a provided number of seconds
+     *
      * @param seconds - How long the bar should slide
      */
-    private void setRemainingTime(double seconds) {
+    public void setRemainingTime(double seconds, boolean play) {
         Duration duration = new Duration(seconds * 1000.0);
-        TranslateTransition slide = new TranslateTransition(duration, timerBar);
+        slide = new TranslateTransition(duration, timerBar);
         slide.setByX(-1600);
-        slide.play();
+        if (play) {
+            slide.play();
+        }
     }
 
     /**
      * Provides functionality for keybindings to accelerate certain actions
+     *
      * @param e - Information about a keypress performed by the user
      */
-    public void keyPressed(KeyEvent e) {
-        switch(e.getCode()) {
+    public void keyPressed(KeyCode e) {
+        switch (e) {
             case L:
                 toggleLeaderboardVisibility();
                 break;
             default:
                 break;
         }
+    }
+
+    public void disconnect() {
+        mainCtrl.disconnect();
     }
 }
