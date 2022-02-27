@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@../css/questionTrueFalse.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionTrueFalseCtrl">
+   <children>
+      <Pane layoutX="100.0" layoutY="70.0" prefHeight="242.0" prefWidth="368.0" AnchorPane.bottomAnchor="150.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="150.0">
+         <children>
+            <SplitPane dividerPositions="0.4" orientation="VERTICAL" prefHeight="582.0" prefWidth="1169.0">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" stylesheets="@../css/questionTrueFalse.css">
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#03818f" height="142.0" layoutX="281.0" layoutY="73.0" stroke="TRANSPARENT" strokeType="INSIDE" width="606.0" AnchorPane.leftAnchor="281.0" AnchorPane.topAnchor="73.0" />
+                        <TextFlow layoutX="373.0" layoutY="122.0" prefHeight="44.0" prefWidth="421.0" styleClass="question" stylesheets="@../css/questionTrueFalse.css" textAlignment="CENTER">
+                           <children>
+                              <Text fx:id="questionText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Temporary Question" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="SansSerif Bold" size="35.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </TextFlow>
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" stylesheets="@../css/questionTrueFalse.css">
+                     <children>
+                        <ImageView fx:id="image" fitHeight="289.0" fitWidth="265.0" layoutX="284.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" styleClass="image" AnchorPane.leftAnchor="284.0">
+                           <image>
+                              <Image url="@../temporary/temporaryPicture.png" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="trueAnswer" layoutX="569.0" layoutY="58.0" mnemonicParsing="false" prefHeight="125.0" prefWidth="315.0" stylesheets="@../css/questionTrueFalse.css" text="True" textFill="WHITE">
+                           <font>
+                              <Font name="SansSerif Bold" size="50.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="falseAnswer" layoutX="569.0" layoutY="184.0" mnemonicParsing="false" prefHeight="119.0" prefWidth="315.0" stylesheets="@../css/questionTrueFalse.css" text="False" textFill="WHITE">
+                           <font>
+                              <Font name="SansSerif Bold" size="50.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+         </children></Pane>
+   </children>
+</AnchorPane>

@@ -1,0 +1,33 @@
+@import 'global.css';
+
+Button {
+    -fx-background-color: -lightishBlue;
+    -fx-background-radius: 20;
+    -fx-pref-height: 300;
+    -fx-pref-width: 300;
+    -fx-padding: 0 60 0 60;
+
+    -fx-focus-color: transparent;
+}
+
+.Button:hover {
+    -fx-opacity: 0.7;
+}
+
+#image1 {
+    -fx-background-image: url('../temporary/temporaryPicture.png');
+}
+
+#image2 {
+    -fx-background-image: url('../temporary/temporaryPicture.png');
+}
+
+#image3 {
+    -fx-background-image: url('../temporary/temporaryPicture.png');
+}
+
+#questionText {
+    -fx-pref-height: 40;
+    -fx-font-size: 20;
+    -fx-padding: 0 0 0 0;
+}
