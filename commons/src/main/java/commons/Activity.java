@@ -24,7 +24,8 @@ public class Activity {
     public String id;
 
     /**
-     * TODO: add - implementation 'org.springframework.boot:spring-boot-starter-validation:2.4.0' - in build.gradle if you haven't already.
+     * TODO: add - implementation 'org.springframework.boot:spring-boot-starter-validation:2.4.0'
+     *   - in build.gradle if you haven't already.
      * The @NotNull annotation does not let this values be initialised as null.
      */
     @NotNull(message = "Activity title should not be null!")
