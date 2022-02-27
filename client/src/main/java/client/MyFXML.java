@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package client;
 
+import com.google.inject.Injector;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-
-import com.google.inject.Injector;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.util.Builder;
@@ -28,6 +27,9 @@ import javafx.util.BuilderFactory;
 import javafx.util.Callback;
 import javafx.util.Pair;
 
+/**
+ * A wrapper for FXMLLoader with custom settings
+ */
 public class MyFXML {
 
     private Injector injector;
@@ -38,10 +40,11 @@ public class MyFXML {
 
     /**
      * Loads and configures a new node with its controller file
-     * @param c - The controller class representation of the node of which an instance is to be loaded
-     * @param pathToFXML - The relative path to the FXML file of this node
-     * @param pathToCSS - The relative path to the CSS file of this node (OPTIONAL: passing null as an argument will apply no CSS)
-     * @param <T> The controller of the node that is returned
+     *
+     * @param c          The controller class representation of the node of which an instance is to be loaded
+     * @param pathToFXML The relative path to the FXML file of this node
+     * @param pathToCSS  The relative path to the CSS file of this node (passing null as an argument will apply no CSS)
+     * @param <T>        The controller of the node that is returned
      * @return A pair containing the controller and the node corresponding to the provided FXML file
      */
     public <T> Pair<T, Parent> load(Class<T> c, String pathToFXML, String pathToCSS) {
@@ -50,7 +53,7 @@ public class MyFXML {
             var loader = new FXMLLoader(FXMLLocation, null, null, new MyFactory(), StandardCharsets.UTF_8);
             Parent parent = loader.load();
 
-            if(pathToCSS != null) {
+            if (pathToCSS != null) {
                 parent.getStylesheets().add(pathToCSS);
             }
 

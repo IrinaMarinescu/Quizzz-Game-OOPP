@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package client;
 
 import static com.google.inject.Guice.createInjector;
@@ -32,8 +33,20 @@ public class Main extends Application {
     private static final MyFXML FXML = new MyFXML(INJECTOR);
 
     /**
+     * Getter for MyFXML field
+     *
+     * @return MyFXML
+     * <p>
+     * This is needed because the question frame loads emojis sent by other players as new nodes
+     */
+    public static MyFXML getLoader() {
+        return FXML;
+    }
+
+    /**
      * Hands control over to JavaFX
-     * @param args - Arguments for starting the program
+     *
+     * @param args Arguments for starting the program
      */
     public static void main(String[] args) {
         launch();
@@ -41,7 +54,8 @@ public class Main extends Application {
 
     /**
      * Loads all scenes/nodes, initializes main controller and configures primary (and only) stage
-     * @param primaryStage - The stage containing all scenes
+     *
+     * @param primaryStage The stage containing all scenes
      */
     @Override
     public void start(Stage primaryStage) {

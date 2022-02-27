@@ -3,6 +3,9 @@ package client.scenes;
 import javafx.fxml.FXML;
 import javax.inject.Inject;
 
+/**
+ * Just an example
+ */
 public class InjectedCenterExampleCtrl {
 
     private MainCtrl mainCtrl;
@@ -16,6 +19,6 @@ public class InjectedCenterExampleCtrl {
 
     @FXML
     private void toggleFromInside() {
-        questionFrameCtrl.toggleLeaderboardVisibility();
+        // questionFrameCtrl.toggleLeaderboardVisibility();
     }
 }

@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package server.api;
 
+import commons.Quote;
 import java.util.List;
 import java.util.Random;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,10 +26,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import commons.Quote;
 import server.database.QuoteRepository;
 
+/**
+ * Quote controller
+ */
 @RestController
 @RequestMapping("/api/quotes")
 public class QuoteController {
@@ -41,11 +43,22 @@ public class QuoteController {
         this.repo = repo;
     }
 
-    @GetMapping(path = { "", "/" })
+    /**
+     * Get all quotes
+     *
+     * @return quotes
+     */
+    @GetMapping(path = {"", "/"})
     public List<Quote> getAll() {
         return repo.findAll();
     }
 
+    /**
+     * Return quotes
+     *
+     * @param id - smth
+     * @return whatever
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Quote> getById(@PathVariable("id") long id) {
         if (id < 0 || !repo.existsById(id)) {
@@ -54,11 +67,17 @@ public class QuoteController {
         return ResponseEntity.ok(repo.getById(id));
     }
 
-    @PostMapping(path = { "", "/" })
+    /**
+     * fds
+     *
+     * @param quote s
+     * @return dd
+     */
+    @PostMapping(path = {"", "/"})
     public ResponseEntity<Quote> add(@RequestBody Quote quote) {
 
         if (quote.person == null || isNullOrEmpty(quote.person.firstName) || isNullOrEmpty(quote.person.lastName)
-                || isNullOrEmpty(quote.quote)) {
+            || isNullOrEmpty(quote.quote)) {
             return ResponseEntity.badRequest().build();
         }
 

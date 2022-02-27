@@ -1,0 +1,57 @@
+#leaderboardTitle {
+    -fx-background-radius: 15 15 0 0;
+    -fx-background-color: -darkCyan;
+    -fx-pref-height: 40;
+    -fx-font-size: 20;
+    -fx-padding: 0 0 0 0;
+}
+
+#leaderboardBottom {
+    -fx-background-radius: 0 0 15 15;
+    -fx-background-color: -darkCyan;
+    -fx-pref-height: 20;
+    -fx-font-size: 20;
+}
+
+.table-view:focused {
+    outline: transparent;
+}
+
+.table-view .table-column {
+    -fx-alignment: CENTER;
+}
+
+.table-view .column-header-background {
+    -fx-max-height: 0;
+    -fx-pref-height: 0;
+    -fx-min-height: 0;
+}
+
+.table-view:focused {
+    -fx-padding: 1;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: -lightBlue;
+}
+
+.table-view .table-row-cell:even {
+    -fx-background-color: -lightishBlue;
+}
+
+.table-view .scroll-bar * {
+    -fx-min-height: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+}
+
+.table-view .table-row-cell {
+    -fx-cell-size: 40;
+    -fx-font-size: 20;
+
+    -fx-font-weight: bold;
+}
+
+#scoreColumn {
+    -fx-border-width: 0;
+}
