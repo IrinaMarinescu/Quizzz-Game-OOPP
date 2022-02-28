@@ -18,7 +18,6 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
-import client.scenes.InjectedCenterExampleCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.MainFrameCtrl;
 import client.scenes.OpenQuestion;
@@ -67,15 +66,13 @@ public class Main extends Application {
 
         var questionFrame =
             FXML.load(QuestionFrameCtrl.class, "client/scenes/questionFrame.fxml", "client/css/questionFrame.css");
-        var injectedCenterExample =
-            FXML.load(InjectedCenterExampleCtrl.class, "client/scenes/injectedCenterExample.fxml", null);
         var openQuestion = FXML.load(OpenQuestion.class, "client/scenes/OpenQuestion.fxml", null);
         var questionOneImage = FXML.load(QuestionOneImage.class, "client/scenes/QuestionOneImage.fxml", null);
 
         var mainFrame =
             FXML.load(MainFrameCtrl.class, "client/scenes/mainFrame.fxml", "client/css/mainFrame.css");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, mainFrame);
+        // mainCtrl.initialize(primaryStage, mainFrame);
         //mainCtrl.initialize(primaryStage, questionFrame, injectedCenterExample);
     }
 }
