@@ -1,6 +1,10 @@
 package server.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import commons.Activity;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +12,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import server.database.ActivityRepository;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * The @DataJpaTest annotation helps in creating an in-memory environment in which to test database queries.
+ *
  * @see <a href="https://www.bezkoder.com/spring-boot-unit-test-jpa-repo-datajpatest/">Spring Data Repository Unit Test</a>
  */
 @DataJpaTest

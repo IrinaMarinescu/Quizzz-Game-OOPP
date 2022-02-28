@@ -2,7 +2,6 @@ package client.scenes;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-
 import javax.inject.Inject;
 
 public class QuestionOneImage {
@@ -21,7 +20,8 @@ public class QuestionOneImage {
 
     /**
      * Injects necessary dependencies
-     * @param mainCtrl - the main front-end controller
+     *
+     * @param mainCtrl          - the main front-end controller
      * @param questionFrameCtrl - the scene into which it has to be injected
      */
     @Inject
@@ -31,11 +31,23 @@ public class QuestionOneImage {
     }
 
     @FXML
-    public void setAnswerA(){answerA.setText("Clicked!");};
+    public void setAnswerA() {
+        answerA.setText("Clicked!");
+    }
+
+    ;
 
     @FXML
-    public void setAnswerB(){answerB.setText("Clicked!");};
+    public void setAnswerB() {
+        answerB.setText("Clicked!");
+    }
+
+    ;
 
     @FXML
-    public void setAnswerC(){answerC.setText("Clicked!");};
+    public void setAnswerC() {
+        answerC.setText("Clicked!");
+    }
+
+    ;
 }

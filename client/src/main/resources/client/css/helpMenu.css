@@ -1,0 +1,47 @@
+#helpMenuContainer {
+    -fx-padding: 0 0 0 20;
+    /*-fx-border-insets: 0 0 0 20;*/
+    /*-fx-background-insets: 0 0 0 20;*/
+}
+
+#helpMenu {
+    -fx-background-color: -lightBlue;
+    -fx-background-radius: 0 0 15 15;
+}
+
+#helpMenuTitle {
+    -fx-background-color: -darkCyan;
+    -fx-background-radius: 15 15 0 0;
+    -fx-pref-height: 60;
+    -fx-padding: 0 60 0 60;
+}
+
+#helpMenuTitle Text {
+    -fx-fill: white;
+    -fx-font-size: 28;
+    -fx-font-family: 'Roboto Bold', sans-serif;
+}
+
+RowConstraints {
+    -fx-min-height: 10;
+    -fx-pref-height: 30;
+}
+
+#helpMenu Text {
+    -fx-text-alignment: 'CENTER';
+    -fx-fill: white;
+    -fx-font-size: 11;
+    -fx-font-family: 'Roboto Bold', sans-serif;
+}
+
+#helpMenu #EscX2 {
+    -fx-font-size: 14;
+}
+
+#helpMenu Button {
+    -fx-pref-height: 30;
+    -fx-pref-width: 80;
+    -fx-max-width: 80;
+    -fx-padding: 0;
+    -fx-font-size: 12;
+}

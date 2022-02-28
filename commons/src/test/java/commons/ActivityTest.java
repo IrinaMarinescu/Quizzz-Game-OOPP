@@ -1,8 +1,10 @@
 package commons;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class ActivityTest {
 
@@ -10,12 +12,12 @@ class ActivityTest {
 
     @BeforeEach
     void setUp() {
-        someActivity = new Activity("00-a","ss/ss.png", "a", 40000, "b");
+        someActivity = new Activity("00-a", "ss/ss.png", "a", 40000, "b");
     }
 
     @Test
     public void checkConstructor() {
-        var test = new Activity("00-a","ss/ss.png", "a", 40005, "b");
+        var test = new Activity("00-a", "ss/ss.png", "a", 40005, "b");
         assertEquals(test.title, someActivity.title);
         assertNotEquals(test.consumptionInWh, someActivity.consumptionInWh);
         assertEquals(test.source, someActivity.source);
@@ -23,7 +25,7 @@ class ActivityTest {
 
     @Test
     public void equalsHashCode() {
-        var a = new Activity("00-a","ss/ss.png", "a", 40000, "b");
+        var a = new Activity("00-a", "ss/ss.png", "a", 40000, "b");
         assertEquals(a, someActivity);
         assertEquals(a.hashCode(), someActivity.hashCode());
     }

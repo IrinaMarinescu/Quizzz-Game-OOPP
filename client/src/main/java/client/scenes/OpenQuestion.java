@@ -2,7 +2,6 @@ package client.scenes;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-
 import javax.inject.Inject;
 
 public class OpenQuestion {
@@ -15,7 +14,8 @@ public class OpenQuestion {
 
     /**
      * Injects necessary dependencies
-     * @param mainCtrl - the main front-ent controller
+     *
+     * @param mainCtrl          - the main front-ent controller
      * @param questionFrameCtrl - the scene into which it has to be injected
      */
     @Inject
@@ -29,5 +29,9 @@ public class OpenQuestion {
      * Changes the text on the "Submit" button to "Submitted!" if it is clicked
      */
     @FXML
-    public void submit(){submitButton.setText("Submitted!");};
+    public void submit() {
+        submitButton.setText("Submitted!");
+    }
+
+    ;
 }

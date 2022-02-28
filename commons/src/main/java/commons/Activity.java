@@ -1,14 +1,13 @@
 package commons;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-
-import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * Entity class for activities. Spring will automatically create the DB table based on the class fields.
@@ -17,6 +16,7 @@ import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 public class Activity {
     /**
      * Primary key as a string. Should comply with the format they give in the activity bank for the ID.
+     *
      * @see <a href="https://gitlab.ewi.tudelft.nl/cse1105/2021-2022/activity-bank">OOPP Activity Bank</a>
      */
     @Id
@@ -24,7 +24,8 @@ public class Activity {
     public String id;
 
     /**
-     * TODO: add - implementation 'org.springframework.boot:spring-boot-starter-validation:2.4.0' - in build.gradle if you haven't already.
+     * TODO: add - implementation 'org.springframework.boot:spring-boot-starter-validation:2.4.0'
+     *   - in build.gradle if you haven't already.
      * The @NotNull annotation does not let this values be initialised as null.
      */
     @NotNull(message = "Activity title should not be null!")

@@ -30,19 +30,26 @@ public class MainCtrl implements MainCtrlRequirements {
 
     private Stage primaryStage;
 
+    private MainFrameCtrl mainFrameCtrl;
+    private Scene mainFrame;
+
     private QuestionFrameCtrl questionFrameCtrl;
     private Scene questionFrame;
 
     private InjectedCenterExampleCtrl injectedCenterExampleCtrl;
     private Node injectedCenterNode;
 
-    /**
-     * Disconnects the player from an online game
-     */
-    public void disconnect() {
+    public void initialize(Stage primaryStage, Pair<MainFrameCtrl, Parent> mainFrame) {
+        this.primaryStage = primaryStage;
 
-        // DO USEFUL STUFF HERE
-        primaryStage.close();
+        this.mainFrameCtrl = mainFrame.getKey();
+        this.mainFrame = new Scene(mainFrame.getValue());
+
+        primaryStage.setTitle("Quizzzzz!");
+
+        showOverview();
+        primaryStage.show();
+
     }
 
     /**
@@ -67,6 +74,21 @@ public class MainCtrl implements MainCtrlRequirements {
         questionFrameCtrl.setCenterContent(injectedCenterNode);
         showQuestionFrame();
         primaryStage.show();
+    }
+
+
+    public void showOverview() {
+        primaryStage.setScene(mainFrame);
+        mainFrame.setOnKeyPressed(e -> mainFrameCtrl.keyPressed(e));
+    }
+
+    /**
+     * Disconnects the player from an online game
+     */
+    public void disconnect() {
+
+        // DO USEFUL STUFF HERE
+        primaryStage.close();
     }
 
     /**

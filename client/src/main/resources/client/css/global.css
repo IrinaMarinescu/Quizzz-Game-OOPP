@@ -1,14 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap");
+
 * {
     -greenish: #02C39A;
     -buttonColorHover: #02B070;
-    -topBarColor: #B4D1DD;
-    -timerBarColor: #05668D;
+    -topBarColor: #05668D;
+    -timerBarColor: #B4D1DD;
     -darkCyan: #028090;
     -lightishBlue: #5CB4BF;
     -lightBlue: #81C0C8;
 
     -dropshadow: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0);
+
     -fx-text-fill: white;
+    -fx-font-family: 'Roboto Regular', sans-serif;
+
 }
 
 #tooltip {
@@ -17,13 +22,26 @@
     -fx-effect: -dropshadow;
 }
 
-:focused {
-    -fx-background-insets: 0 0 -1 0;
-}
+/*:focused {*/
+/*    -fx-background-insets: 0 0 -1 0;*/
+/*}*/
 
 #topBar {
     -fx-background-color: -topBarColor;
     -fx-pref-height: 80;
+}
+
+TextField {
+    -fx-pref-height: 60;
+
+    -fx-background-radius: 40;
+    -fx-padding: 0 30 0 30;
+    -fx-background-color: -greenish;
+
+    -fx-prompt-text-fill: #DEECE9;
+
+    -fx-font-size: 28;
+    -fx-focus-color: transparent;
 }
 
 #timerBar {
@@ -36,9 +54,7 @@ Button {
     -fx-background-radius: 40;
     -fx-pref-height: 60;
     -fx-padding: 0 60 0 60;
-
-    -fx-font-size: 25;
-    -fx-font-weight: bold;
+    -fx-font-size: 28;
 
     -fx-focus-color: transparent;
 }
@@ -51,6 +67,6 @@ Button {
     -fx-background-color: -buttonColorHover;
 }
 
-.clickable:pressed {
-    -fx-effect: -dropshadow;
-}
+/*.clickable:pressed {*/
+/*    -fx-effect: -dropshadow;*/
+/*}*/
