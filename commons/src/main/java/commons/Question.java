@@ -13,4 +13,28 @@ public abstract class Question {
         this.question = question;
         this.correctAnswer = correctAnswer;
     }
+
+    public List<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(List<Activity> activities) {
+        this.activities = activities;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public int getCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    public void setCorrectAnswer(int correctAnswer) {
+        this.correctAnswer = correctAnswer;
+    }
 }
