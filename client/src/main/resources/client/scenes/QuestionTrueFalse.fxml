@@ -1,73 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.text.TextFlow?>
-<AnchorPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@../css/questionTrueFalse.css"
-            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="client.scenes.QuestionTrueFalseCtrl">
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="1156.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Pane layoutX="100.0" layoutY="70.0" prefHeight="242.0" prefWidth="368.0" AnchorPane.bottomAnchor="150.0"
-              AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="150.0">
-            <children>
-                <SplitPane dividerPositions="0.4" orientation="VERTICAL" prefHeight="582.0" prefWidth="1169.0">
-                    <items>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0"
-                                    stylesheets="@../css/questionTrueFalse.css">
-                            <children>
-                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#03818f" height="142.0" layoutX="281.0"
-                                           layoutY="73.0" stroke="TRANSPARENT" strokeType="INSIDE" width="606.0"
-                                           AnchorPane.leftAnchor="281.0" AnchorPane.topAnchor="73.0"/>
-                                <TextFlow layoutX="373.0" layoutY="122.0" prefHeight="44.0" prefWidth="421.0"
-                                          styleClass="question" stylesheets="@../css/questionTrueFalse.css"
-                                          textAlignment="CENTER">
-                                    <children>
-                                        <Text fx:id="questionText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0"
-                                              text="Temporary Question" textAlignment="CENTER">
-                                            <font>
-                                                <Font name="SansSerif Bold" size="35.0"/>
-                                            </font>
-                                        </Text>
-                                    </children>
-                                </TextFlow>
-                            </children>
-                        </AnchorPane>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0"
-                                    stylesheets="@../css/questionTrueFalse.css">
-                            <children>
-                                <ImageView fx:id="image" fitHeight="289.0" fitWidth="265.0" layoutX="284.0"
-                                           layoutY="40.0" pickOnBounds="true" preserveRatio="true" styleClass="image"
-                                           AnchorPane.leftAnchor="284.0">
-                                    <image>
-                                        <Image url="@../temporary/temporaryPicture.png"/>
-                                    </image>
-                                </ImageView>
-                                <Button fx:id="trueAnswer" layoutX="569.0" layoutY="58.0" mnemonicParsing="false"
-                                        prefHeight="125.0" prefWidth="315.0" stylesheets="@../css/questionTrueFalse.css"
-                                        text="True" textFill="WHITE">
-                                    <font>
-                                        <Font name="SansSerif Bold" size="50.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="falseAnswer" layoutX="569.0" layoutY="184.0" mnemonicParsing="false"
-                                        prefHeight="119.0" prefWidth="315.0" stylesheets="@../css/questionTrueFalse.css"
-                                        text="False" textFill="WHITE">
-                                    <font>
-                                        <Font name="SansSerif Bold" size="50.0"/>
-                                    </font>
-                                </Button>
-                            </children>
-                        </AnchorPane>
-                    </items>
-                </SplitPane>
-            </children>
-        </Pane>
+        <TextField id="Question" alignment="CENTER" layoutX="77.0" layoutY="24.0" style="-fx-text-fill: white;" stylesheets="@../css/questionTrueFalse.css" text="True or False?">
+            <font>
+                <Font name="System Bold" size="30.0" />
+            </font>
+        </TextField>
+        <Button id="True" fx:id="trueButton" layoutX="606.0" layoutY="270.0" mnemonicParsing="false" onAction="#trueSelected" stylesheets="@../css/questionTrueFalse.css" text="True">
+            <font>
+                <Font size="25.0" />
+            </font>
+        </Button>
+        <Button id="False" fx:id="falseButton" layoutX="606.0" layoutY="441.0" mnemonicParsing="false" onAction="#falseSelected" stylesheets="@../css/questionTrueFalse.css" text="False">
+            <font>
+                <Font size="25.0" />
+            </font>
+        </Button>
+        <ImageView id="Image" fitHeight="362.0" fitWidth="399.0" layoutX="158.0" layoutY="218.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../temporary/temporaryPicture.png" />
+            </image>
+        </ImageView>
+      <ImageView fx:id="correctTrue" fitHeight="78.0" fitWidth="89.0" layoutX="1060.0" layoutY="293.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/correct.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="correctFalse" fitHeight="78.0" fitWidth="89.0" layoutX="1060.0" layoutY="471.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/correct.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="wrongTrue" fitHeight="81.0" fitWidth="89.0" layoutX="1060.0" layoutY="294.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/wrong.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="wrongFalse" fitHeight="91.0" fitWidth="102.0" layoutX="1054.0" layoutY="460.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/wrong.png" />
+         </image>
+      </ImageView>
     </children>
-</AnchorPane>
+</Pane>

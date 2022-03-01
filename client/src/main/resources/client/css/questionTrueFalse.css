@@ -3,7 +3,8 @@
 Button {
     -fx-background-color: -lightishBlue;
     -fx-background-radius: 20;
-    -fx-pref-height: 100;
+    -fx-pref-height: 129;
+    -fx-pref-width: 441;
     -fx-padding: 0 60 0 60;
 
     -fx-focus-color: transparent;
@@ -13,12 +14,15 @@ Button {
     -fx-opacity: 0.7;
 }
 
-#image {
-    -fx-background-image: url('../temporary/temporaryPicture.png');
+TextField {
+    -fx-background-color: -darkCyan;
+    -fx-background-radius: 10;
+    -fx-pref-height: 123;
+    -fx-pref-width: 1002;
+    -fx-padding: 0 60 0 60;
+    -fx-text-fill: white;
 }
 
-#questionText {
-    -fx-pref-height: 40;
-    -fx-font-size: 20;
-    -fx-padding: 0 0 0 0;
+TextArea {
+    -fx-background-color: -lightishBlue;
 }
