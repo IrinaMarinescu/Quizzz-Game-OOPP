@@ -74,6 +74,6 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     public void showQuestionFrame() {
         primaryStage.setScene(questionFrame);
-        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e));
+        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
     }
 }
