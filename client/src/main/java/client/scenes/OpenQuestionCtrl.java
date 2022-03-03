@@ -33,6 +33,9 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     @FXML
     TextField entryField;
 
+    @FXML
+    Text errorMessage;
+
     /**
      * Injects necessary dependencies
      *
@@ -56,9 +59,13 @@ public class OpenQuestionCtrl implements QuestionRequirements {
         Scanner scanner = new Scanner(ans);
         this.answer = scanner.nextInt();
         if (answer == 0) {
-            //ERROR!
+            errorMessage.setVisible(true);
         }
-        submitButton.setText("Submitted!");
+        else {
+            errorMessage.setVisible(false);
+            submitButton.setText("Submitted!");
+            submitButton.setOnAction(null);
+        }
     }
 
     /**

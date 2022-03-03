@@ -42,5 +42,10 @@
             <Font size="35.0" />
          </font>
       </Text>
+      <Text fx:id="errorMessage" fill="#f56c6c" layoutX="553.0" layoutY="497.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ERROR: You did not enter a number!" textAlignment="CENTER" visible="false" wrappingWidth="555.884913044079">
+         <font>
+            <Font size="35.0" />
+         </font>
+      </Text>
     </children>
 </Pane>

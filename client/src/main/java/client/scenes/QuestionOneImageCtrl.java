@@ -72,6 +72,7 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
     @FXML
     public void setAnswerA() {
         this.selectedAnswer = 'A';
+        answerA.setStyle("-fx-border-color: #028090");
         answerB.setOnAction(null);
         answerB.setOpacity(0.5);
         answerC.setOnAction(null);
@@ -85,6 +86,7 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
     @FXML
     public void setAnswerB() {
         this.selectedAnswer = 'B';
+        answerB.setStyle("-fx-border-color: #028090");
         answerA.setOnAction(null);
         answerA.setOpacity(0.5);
         answerC.setOnAction(null);
@@ -98,6 +100,7 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
     @FXML
     public void setAnswerC() {
         this.selectedAnswer = 'C';
+        answerC.setStyle("-fx-border-color: #028090");
         answerA.setOnAction(null);
         answerA.setOpacity(0.5);
         answerB.setOnAction(null);
