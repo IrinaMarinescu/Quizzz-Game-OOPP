@@ -34,7 +34,7 @@ public class EmoteContainerCtrlTest {
 
     @Test
     public void initialize() {
-        sut.initialize("James", null);
+        sut.initialize("James", "none");
 
         assertEquals("James", sut.person.getText());
     }

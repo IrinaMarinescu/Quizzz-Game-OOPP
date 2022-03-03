@@ -23,7 +23,7 @@ public class EmoteContainerCtrl {
      */
     public void initialize(String name, String pathToImage) {
         person.setText(name);
-        if (pathToImage != null) {
+        if (!pathToImage.equals("none")) {
             emoticon.setImage(new Image(pathToImage));
         }
     }
