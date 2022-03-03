@@ -31,31 +31,21 @@ public class MainCtrl implements MainCtrlRequirements {
 
     private Stage primaryStage;
 
+    private MainFrameCtrl mainFrameCtrl;
+    private Scene mainFrame;
+
     private QuestionFrameCtrl questionFrameCtrl;
     private Scene questionFrame;
 
-    private InjectedCenterExampleCtrl injectedCenterExampleCtrl;
-    private Node injectedCenterNode;
     private boolean widthChanged = false;
-
-    /**
-     * Disconnects the player from an online game
-     */
-    public void disconnect() {
-
-        // DO USEFUL STUFF HERE
-        primaryStage.close();
-    }
 
     /**
      * Initialize this controller using components provided by Main
      *
      * @param primaryStage          The (only) stage containing all scenes
      * @param questionFrame         Controller file and parent node of questionFrame node
-     * @param injectedCenterExample Controller file and parent node of (demonstrational) injectedCenterExample node
      */
-    public void initialize(Stage primaryStage, Pair<QuestionFrameCtrl, Parent> questionFrame,
-                           Pair<InjectedCenterExampleCtrl, Parent> injectedCenterExample) {
+    public void initialize(Stage primaryStage, Pair<QuestionFrameCtrl, Parent> questionFrame) {
         this.primaryStage = primaryStage;
 
         primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
@@ -69,15 +59,66 @@ public class MainCtrl implements MainCtrlRequirements {
         this.questionFrame = new Scene(questionFrame.getValue());
         this.questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
 
-        this.injectedCenterExampleCtrl = injectedCenterExample.getKey();
-        this.injectedCenterNode = injectedCenterExample.getValue();
-
         primaryStage.setTitle("Quizzzzz!");
         primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 
-        questionFrameCtrl.setCenterContent(injectedCenterNode);
         showQuestionFrame();
         primaryStage.show();
+    }
+
+
+    public void showOverview() {
+        primaryStage.setScene(mainFrame);
+        mainFrame.setOnKeyPressed(e -> mainFrameCtrl.keyPressed(e));
+    }
+
+    /**
+     * Disconnects the player from an online game
+     */
+    public void disconnect() {
+
+        // DO USEFUL STUFF HERE
+        primaryStage.close();
+    }
+
+    @Override
+    public void connectToServer(String ip) {
+
+    }
+
+    @Override
+    public void startSingleplayerGame() {
+
+    }
+
+    @Override
+    public void startMultiplayerGame() {
+
+    }
+
+    @Override
+    public void redirectToLobby(String name) {
+
+    }
+
+    @Override
+    public void redirectToSoloLeaderboard() {
+
+    }
+
+    @Override
+    public void addPoints(int baseScore) {
+
+    }
+
+    @Override
+    public void redirectToMainScreen() {
+
+    }
+
+    @Override
+    public void playerLeavesLobby() {
+
     }
 
     /**

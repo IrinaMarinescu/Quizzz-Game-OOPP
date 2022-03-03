@@ -16,8 +16,8 @@
 
 package client;
 
-import client.scenes.InjectedCenterExampleCtrl;
 import client.scenes.MainCtrl;
+import client.scenes.MainFrameCtrl;
 import client.scenes.QuestionFrameCtrl;
 import client.scenes.framecomponents.EmoteCtrl;
 import client.scenes.framecomponents.TimerBarCtrl;
@@ -33,8 +33,8 @@ public class MyModule implements Module {
     @Override
     public void configure(Binder binder) {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(MainFrameCtrl.class).in(Scopes.SINGLETON);
         binder.bind(QuestionFrameCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(InjectedCenterExampleCtrl.class).in(Scopes.SINGLETON);
         binder.bind(TimerBarCtrl.class).in(Scopes.SINGLETON);
         binder.bind(EmoteCtrl.class).in(Scopes.SINGLETON);
     }
