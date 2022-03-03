@@ -17,10 +17,8 @@
 package client.scenes;
 
 import client.scenes.controllerrequirements.MainCtrlRequirements;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -42,8 +40,8 @@ public class MainCtrl implements MainCtrlRequirements {
     /**
      * Initialize this controller using components provided by Main
      *
-     * @param primaryStage          The (only) stage containing all scenes
-     * @param questionFrame         Controller file and parent node of questionFrame node
+     * @param primaryStage  The (only) stage containing all scenes
+     * @param questionFrame Controller file and parent node of questionFrame node
      */
     public void initialize(Stage primaryStage, Pair<QuestionFrameCtrl, Parent> questionFrame) {
         this.primaryStage = primaryStage;
@@ -60,7 +58,6 @@ public class MainCtrl implements MainCtrlRequirements {
         this.questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
 
         primaryStage.setTitle("Quizzzzz!");
-        primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 
         showQuestionFrame();
         primaryStage.show();

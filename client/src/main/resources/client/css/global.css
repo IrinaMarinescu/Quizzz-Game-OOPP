@@ -27,7 +27,7 @@
 /*}*/
 
 #topBar {
-    -fx-background-color: -topBarColor;
+    -fx-background-color: -timerBarColor;
     -fx-pref-height: 80;
 }
 
@@ -45,7 +45,7 @@ TextField {
 }
 
 #timerBar {
-    -fx-fill: -timerBarColor;
+    -fx-fill: -topBarColor;
     -fx-height: 80;
 }
 

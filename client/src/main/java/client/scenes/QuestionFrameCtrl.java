@@ -128,7 +128,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
 
         // LINES BELOW ARE FOR DEMONSTRATION PURPOSES
 
-        setRemainingTime(5);
+        setRemainingTime(20);
 
         initializeMultiplayerGame(List.of("Per", "Andrei"));
         //initializeSingleplayerGame();
@@ -344,7 +344,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
      *
      * @param e Information about the joker used
      *          <p>
-     *          TODO: send a request to the server
+     *                   TODO: send a request to the server
      */
     @FXML
     private void useJoker(ActionEvent e) {
