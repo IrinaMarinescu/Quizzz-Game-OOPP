@@ -29,33 +29,71 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      *     <li>the final leaderboard for multiplayer games - <code>type = TYPE_FINAL</code></li>
      * </ul>
      */
-    private final int TYPE_SOLO = 1,
+    public final int TYPE_SOLO = 1,
                       TYPE_INTERMED = 2,
                       TYPE_FINAL = 3;
 
     private int type,
                 maxSize;
 
+    /**
+     * {@inheritDoc}
+     * @param entries a List of instances of LeaderboardEntry.
+     * @param maxSize the maximum size of the leaderboard - how many records to show. if <code>entries</code> has more elements than that, the function trims automatically.
+     * @param type the type of the leaderboard. can either be "solo", "intermediate", "final".
+     */
     @Override
     public void initialize(List<LeaderboardEntry> entries, int maxSize, String type) {
-        this.maxSize = maxSize;
+        setMaxSize(maxSize);
         setLeaderboardType(type);
 
         playerColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getName()));
         scoreColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getScoreString()));
 
-        entries = entries.stream().sorted().limit(this.maxSize).collect(Collectors.toList());
         fillLeaderboard(entries);
     }
 
+    /**
+     * Helper method. Used to sort and limit the entries given to the controller.
+     * @param entries the list of entries to be shown in the leaderboard
+     * @return a list, containing the entries sorted by score.
+     */
+    protected List<LeaderboardEntry> sortEntries(List<LeaderboardEntry> entries) {
+        return entries.stream().sorted().limit(this.maxSize).collect(Collectors.toList());
+    }
+
+    /**
+     * Helper method. Fills the FXML with the entries.
+     * @param entries the entries to be put in the leaderboard, in any order. The method will sort the entries by score.
+     */
     private void fillLeaderboard(List<LeaderboardEntry> entries) {
-        ObservableList<LeaderboardEntry> data = FXCollections.observableList(entries);
+        ObservableList<LeaderboardEntry> data = FXCollections.observableList(sortEntries(entries));
         leaderboard.setItems(data);
     }
 
-    private void setLeaderboardType(String type) {
+    /**
+     * Sets the type of the leaderboard.
+     * @param type can either be "solo", "intermediate" or "final". If something else is put, the method automatically sets the type to solo as placeholder.
+     */
+    protected void setLeaderboardType(String type) {
         if(type.equals("intermediate")) this.type = TYPE_INTERMED;
         else if(type.equals("final")) this.type = TYPE_FINAL;
         else this.type = TYPE_SOLO;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public int getMaxSize() {
+        return maxSize;
+    }
+
+    protected void setType(int type) {
+        this.type = type;
+    }
+
+    protected void setMaxSize(int maxSize) {
+        this.maxSize = maxSize;
     }
 }

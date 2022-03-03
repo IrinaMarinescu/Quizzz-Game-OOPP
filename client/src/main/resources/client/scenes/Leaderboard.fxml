@@ -27,7 +27,7 @@
                                                 <Insets left="20.0" top="10.0" />
                                             </HBox.margin>
                                             <image>
-                                                <Image url="@../icons/trophy-solid.png" />
+                                                <Image url="@../icons/angle-left-solid.png" />
                                             </image>
                                             <cursor>
                                                 <Cursor fx:constant="HAND" />

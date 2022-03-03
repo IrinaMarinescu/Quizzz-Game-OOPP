@@ -56,4 +56,14 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     public int compareTo(LeaderboardEntry other) {
         return Integer.compare(other.getScore(), score);
     }
+
+
+    @Override
+    public boolean equals(Object other) {
+        if(other instanceof LeaderboardEntry) {
+            var entry = (LeaderboardEntry) other;
+            return entry.getName().equals(this.name) && entry.getScore() == this.score;
+        }
+        return false;
+    }
 }
