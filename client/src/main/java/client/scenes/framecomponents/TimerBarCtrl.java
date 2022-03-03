@@ -21,6 +21,9 @@ public class TimerBarCtrl {
     public double currentAnimationStartTime;
     public double currentAnimationLength;
     public boolean animationPlaying;
+    private int displayWidth;
+
+    public int relativePos = -2000;
 
     /**
      * Gives the time of now
@@ -39,17 +42,21 @@ public class TimerBarCtrl {
     public void initialize(Rectangle timerBar, TimeUtils timeUtils) {
         this.timerBar = timerBar;
         this.timeUtils = timeUtils;
+        timerBar.getTransforms().add(new Translate(relativePos, 0));
 
         animation = new TranslateTransition(Duration.ZERO, timerBar);
-        animation.setByX(-1600);
         animation.setOnFinished(event -> {
-            timerBar.getTransforms().add(new Translate(1600, 0));
+            timerBar.getTransforms().clear();
+            relativePos += displayWidth;
+            timerBar.getTransforms().add(new Translate(displayWidth, 0));
             animationPlaying = false;
         });
 
         currentAnimationStartTime = Double.MAX_VALUE;
         currentAnimationLength = 0.0;
         totalProgress = 0.0;
+        displayWidth = 1600;
+        animation.setByX(-displayWidth);
         animationPlaying = false;
     }
 
@@ -64,21 +71,19 @@ public class TimerBarCtrl {
 
         totalProgress = 0.0;
         currentAnimationLength = seconds * 1000;
-        playAnimation(0.0);
+        playAnimation();
     }
 
     /**
      * Plays the animation (progress * 100%) way through
-     *
-     * @param progress A real number in range [0, 1] indicating how much of the animation to skip
      */
-    public void playAnimation(double progress) {
+    public void playAnimation() {
         currentAnimationStartTime = now();
         animation.jumpTo(Duration.ZERO);
         animation.stop();
 
         animation.setDuration(new Duration(currentAnimationLength));
-        animation.jumpTo(new Duration(currentAnimationLength * progress));
+        animation.jumpTo(new Duration(currentAnimationLength * totalProgress));
         if (!test) {
             animation.play();
         }
@@ -100,6 +105,24 @@ public class TimerBarCtrl {
 
         totalProgress += (now() - currentAnimationStartTime) / currentAnimationLength;
         currentAnimationLength /= 2.0;
-        playAnimation(totalProgress);
+        playAnimation();
+    }
+
+    /**
+     * Changes width of timerBar in response to a change in window's size
+     *
+     * @param newSize New width of window in px
+     * @param change  Change of width of window in px
+     */
+    public void resize(int newSize, int change) {
+        displayWidth = newSize;
+        totalProgress += (now() - currentAnimationStartTime) / currentAnimationLength;
+        animation.setByX(-newSize);
+        relativePos -= change;
+        timerBar.getTransforms().clear();
+        timerBar.getTransforms().add(new Translate(relativePos, 0));
+        if (animationPlaying) {
+            playAnimation();
+        }
     }
 }

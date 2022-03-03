@@ -20,6 +20,7 @@ import client.scenes.controllerrequirements.MainCtrlRequirements;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -35,6 +36,7 @@ public class MainCtrl implements MainCtrlRequirements {
 
     private InjectedCenterExampleCtrl injectedCenterExampleCtrl;
     private Node injectedCenterNode;
+    private boolean widthChanged = false;
 
     /**
      * Disconnects the player from an online game
@@ -56,13 +58,22 @@ public class MainCtrl implements MainCtrlRequirements {
                            Pair<InjectedCenterExampleCtrl, Parent> injectedCenterExample) {
         this.primaryStage = primaryStage;
 
+        primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
+            if (widthChanged) {
+                questionFrameCtrl.resizeTimerBar(newVal.intValue(), oldVal.intValue() - newVal.intValue());
+            }
+            widthChanged = true;
+        });
+
         this.questionFrameCtrl = questionFrame.getKey();
         this.questionFrame = new Scene(questionFrame.getValue());
+        this.questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
 
         this.injectedCenterExampleCtrl = injectedCenterExample.getKey();
         this.injectedCenterNode = injectedCenterExample.getValue();
 
         primaryStage.setTitle("Quizzzzz!");
+        primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 
         questionFrameCtrl.setCenterContent(injectedCenterNode);
         showQuestionFrame();
@@ -74,6 +85,5 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     public void showQuestionFrame() {
         primaryStage.setScene(questionFrame);
-        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
     }
 }

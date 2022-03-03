@@ -86,19 +86,19 @@ public class TimerBarCtrlTest {
 
     @Test
     public void setRemainingTimeAnimationDone() {
-        assertTrue(sut.timerBar.getTransforms().isEmpty());
+        assertSame(1, sut.timerBar.getTransforms().size());
         sut.currentAnimationStartTime = 0;
 
         sut.setRemainingTime(7);
-        assertSame(0, sut.timerBar.getTransforms().size());
+        assertSame(1, sut.timerBar.getTransforms().size());
     }
 
     @Test
     public void setRemainingTimeAnimationNotDone() {
-        assertTrue(sut.timerBar.getTransforms().isEmpty());
+        assertSame(1, sut.timerBar.getTransforms().size());
 
         sut.setRemainingTime(7);
-        assertTrue(sut.timerBar.getTransforms().isEmpty());
+        assertSame(1, sut.timerBar.getTransforms().size());
     }
 
     @Test
@@ -111,7 +111,7 @@ public class TimerBarCtrlTest {
 
     @Test
     public void playAnimationFields() {
-        sut.playAnimation(0.0);
+        sut.playAnimation();
 
         assertEquals(1100, sut.currentAnimationStartTime);
     }
@@ -119,7 +119,7 @@ public class TimerBarCtrlTest {
     @Test
     public void playAnimationAnimation() {
         sut.currentAnimationLength = 2000;
-        sut.playAnimation(0.0);
+        sut.playAnimation();
 
         assertEquals(Duration.millis(2000), sut.animation.getDuration());
     }
@@ -175,5 +175,14 @@ public class TimerBarCtrlTest {
         // Each call to halveRemainingTime uses now() twice
         assertSame(6, timeUtilsDOC.countLogs("now"));
         assertEquals(50.0, sut.currentAnimationLength);
+    }
+
+    @Test
+    public void resize() {
+        sut.resize(1000, 10);
+
+        assertSame(1, sut.timerBar.getTransforms().size());
+        assertEquals(-1000, sut.animation.getByX());
+        assertEquals(-2010, sut.relativePos);
     }
 }

@@ -3,6 +3,7 @@ package client.scenes;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -14,8 +15,8 @@ import commons.LeaderboardEntry;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -60,10 +61,10 @@ class QuestionFrameCtrlTest {
 
         sut.test = true;
         sut.sideLeaderboard = new VBox();
-        sut.centerContent = new Pane();
         sut.emoticonSelectionField = new HBox();
         sut.isMultiplayerGame = true;
         sut.helpMenuContainer = new VBox();
+        sut.borderPane = new BorderPane();
     }
 
     @Test
@@ -74,18 +75,18 @@ class QuestionFrameCtrlTest {
 
     @Test
     public void setCenterContentOne() {
-        assertTrue(sut.centerContent.getChildren().isEmpty());
+        assertNull(sut.borderPane.getCenter());
         sut.setCenterContent(new Circle());
-        assertSame(1, sut.centerContent.getChildren().size());
+        assertEquals(Circle.class, sut.borderPane.getCenter().getClass());
     }
 
     @Test
     public void setCenterContentMultiple() {
+        assertNull(sut.borderPane.getCenter());
+        sut.setCenterContent(new Circle());
+        sut.setCenterContent(new Circle());
         sut.setCenterContent(new Rectangle());
-        Circle k = new Circle();
-        sut.setCenterContent(k);
-        assertSame(1, sut.centerContent.getChildren().size());
-        assertSame(k, sut.centerContent.getChildren().get(0));
+        assertEquals(Rectangle.class, sut.borderPane.getCenter().getClass());
     }
 
     @Test
@@ -167,13 +168,6 @@ class QuestionFrameCtrlTest {
     }
 
     @Test
-    public void toggleEmoticonFieldExit() {
-        assertTrue(sut.emoticonSelectionField.isVisible());
-        sut.toggleEmoticonFieldExit();
-        assertFalse(sut.emoticonSelectionField.isVisible());
-    }
-
-    @Test
     public void setEmoticonField() {
         sut.setEmoticonField(true);
         assertTrue(sut.emoticonSelectionField.isVisible());
@@ -221,16 +215,6 @@ class QuestionFrameCtrlTest {
         assertFalse(sut.sideLeaderboard.isVisible());
         sut.keyPressed(KeyCode.L);
         assertTrue(sut.sideLeaderboard.isVisible());
-    }
-
-    @Test
-    public void keyH() {
-        assertTrue(sut.helpMenuContainer.isVisible());
-        sut.keyPressed(KeyCode.H);
-        assertFalse(sut.helpMenuContainer.isVisible());
-        sut.keyPressed(KeyCode.H);
-        sut.keyPressed(KeyCode.H);
-        assertFalse(sut.helpMenuContainer.isVisible());
     }
 
     @Test
