@@ -1,6 +1,5 @@
 package client.scenes.framecomponents;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -30,13 +29,6 @@ public class EmoteContainerCtrlTest {
     @Test
     public void constructor() {
         assertNotNull(sut);
-    }
-
-    @Test
-    public void initialize() {
-        sut.initialize("James", "none");
-
-        assertEquals("James", sut.person.getText());
     }
 
     @Test
