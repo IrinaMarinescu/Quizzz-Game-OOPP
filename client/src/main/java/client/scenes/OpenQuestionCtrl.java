@@ -2,14 +2,12 @@ package client.scenes;
 
 import client.scenes.controllerrequirements.QuestionRequirements;
 import commons.Question;
+import java.util.Scanner;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-
-
 import javax.inject.Inject;
-import java.util.Scanner;
 
 public class OpenQuestionCtrl implements QuestionRequirements {
 
@@ -60,8 +58,7 @@ public class OpenQuestionCtrl implements QuestionRequirements {
         this.answer = scanner.nextInt();
         if (answer == 0) {
             errorMessage.setVisible(true);
-        }
-        else {
+        } else {
             errorMessage.setVisible(false);
             submitButton.setText("Submitted!");
             submitButton.setOnAction(null);
@@ -70,6 +67,7 @@ public class OpenQuestionCtrl implements QuestionRequirements {
 
     /**
      * Initializes the question and sets the corresponding text as the question on screen
+     *
      * @param question - the activity that this question is about
      */
     @Override
@@ -87,8 +85,8 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     public void revealCorrectAnswer() {
         int correctAnswer = this.question.getActivities().get(0).getConsumptionInWh();
         answerText.setText("It takes " + correctAnswer + "Wh!");
-        int percentageOff = ((Math.abs(correctAnswer-this.answer))/correctAnswer)*100;
-        int baseScore = 100-percentageOff/2;
+        int percentageOff = ((Math.abs(correctAnswer - this.answer)) / correctAnswer) * 100;
+        int baseScore = 100 - percentageOff / 2;
         mainCtrl.addPoints(baseScore);
         pointsText.setText(""); //Should the addPoints method in MainCtrl return something that can be printed here?
     }

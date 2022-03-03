@@ -8,7 +8,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-
 import javax.inject.Inject;
 
 public class InsteadOfQuestionCtrl implements QuestionRequirements {
@@ -151,7 +150,8 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
 
         if (selectedAnswer == correctAnswerButton) {
             mainCtrl.addPoints(100);
-            pointsField.setText(""); //Should the addPoints method in MainCtrl return something that can be displayed here?
+            //Should the addPoints method in MainCtrl return something that can be displayed here?
+            pointsField.setText("");
         } else {
             mainCtrl.addPoints(0);
             pointsField.setText("+0 Points");
