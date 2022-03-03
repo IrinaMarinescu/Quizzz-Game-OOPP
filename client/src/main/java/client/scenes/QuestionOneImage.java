@@ -70,7 +70,7 @@ public class QuestionOneImage implements QuestionRequirements {
     }
 
     @Override
-    public void revealCorrectAnswer(Question question) {
+    public void revealCorrectAnswer() {
 
     }
 
