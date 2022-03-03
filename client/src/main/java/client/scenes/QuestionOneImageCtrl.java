@@ -7,15 +7,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 
 import javax.inject.Inject;
 
-public class QuestionOneImage implements QuestionRequirements {
+public class QuestionOneImageCtrl implements QuestionRequirements {
 
     private MainCtrl mainCtrl;
     private QuestionFrameCtrl questionFrameCtrl;
     private Question question;
     private char correctAnswerButton;
+    private char selectedAnswer;
 
     @FXML
     Button answerA;
@@ -32,47 +34,74 @@ public class QuestionOneImage implements QuestionRequirements {
     @FXML
     ImageView imageField;
 
+    @FXML
+    ImageView correctA;
+
+    @FXML
+    ImageView correctB;
+
+    @FXML
+    ImageView correctC;
+
+    @FXML
+    ImageView wrongA;
+
+    @FXML
+    ImageView wrongB;
+
+    @FXML
+    ImageView wrongC;
+
+    @FXML
+    Text pointsField;
+
     /**
      * Injects necessary dependencies
      * @param mainCtrl          - the main front-end controller
      * @param questionFrameCtrl - the scene into which it has to be injected
      */
     @Inject
-    public QuestionOneImage(MainCtrl mainCtrl, QuestionFrameCtrl questionFrameCtrl) {
+    public QuestionOneImageCtrl(MainCtrl mainCtrl, QuestionFrameCtrl questionFrameCtrl) {
         this.mainCtrl = mainCtrl;
         this.questionFrameCtrl = questionFrameCtrl;
     }
 
     /**
-     * Sets the text on Button A to 'Clicked!' and disables buttons B and C
+     * Sets the selected answer as 'a' and pales and disables the other two buttons
      */
     @FXML
     public void setAnswerA() {
-        answerA.setText("Clicked!");
+        this.selectedAnswer = 'A';
         answerB.setOnAction(null);
+        answerB.setOpacity(0.5);
         answerC.setOnAction(null);
+        answerC.setOpacity(0.5);
     }
 
     ;
     /**
-     * Sets the text on Button B to 'Clicked!' and disables buttons A and C
+     * Sets the selected answer as 'b' and pales and disables the other two buttons
      */
     @FXML
     public void setAnswerB() {
-        answerB.setText("Clicked!");
+        this.selectedAnswer = 'B';
         answerA.setOnAction(null);
+        answerA.setOpacity(0.5);
         answerC.setOnAction(null);
+        answerC.setOpacity(0.5);
     }
 
     ;
     /**
-     * Sets the text on Button C to 'Clicked!' and disables buttons A and B
+     * Sets the selected answer as 'c' and pales and disables the other two buttons
      */
     @FXML
     public void setAnswerC() {
-        answerC.setText("Clicked!");
+        this.selectedAnswer = 'C';
         answerA.setOnAction(null);
+        answerA.setOpacity(0.5);
         answerB.setOnAction(null);
+        answerB.setOpacity(0.5);
     }
 
     /**
@@ -94,17 +123,17 @@ public class QuestionOneImage implements QuestionRequirements {
         while (answerA.getText().equals(answerB.getText()) || answerC.getText().equals(answerB.getText()) ||
                 answerC.equals(answerA.getText())) {
             if (positionCorrectAnswer == 0) {
-                this.correctAnswerButton = 'a';
+                this.correctAnswerButton = 'A';
                 answerA.setText(String.valueOf(actualConsumption));
                 answerB.setText(randomConsumption());
                 answerC.setText(randomConsumption());
             } else if (positionCorrectAnswer == 1) {
-                this.correctAnswerButton = 'b';
+                this.correctAnswerButton = 'B';
                 answerB.setText(String.valueOf(actualConsumption));
                 answerA.setText(randomConsumption());
                 answerC.setText(randomConsumption());
             } else {
-                this.correctAnswerButton = 'c';
+                this.correctAnswerButton = 'C';
                 answerC.setText(String.valueOf(actualConsumption));
                 answerB.setText(randomConsumption());
                 answerA.setText(randomConsumption());
@@ -125,9 +154,35 @@ public class QuestionOneImage implements QuestionRequirements {
         return String.valueOf(randomConsumption);
     }
 
+    /**
+     * Reveals ticks and crosses to indicate correct and wrong answers and displays points gained
+     */
     @Override
     public void revealCorrectAnswer() {
+        if (correctAnswerButton == 'A') {
+            correctA.setVisible(true);
+            wrongB.setVisible(true);
+            wrongC.setVisible(true);
+        }
+        else if (correctAnswerButton == 'B') {
+            correctB.setVisible(true);
+            wrongC.setVisible(true);
+            wrongA.setVisible(true);
+        }
+        else {
+            correctC.setVisible(true);
+            wrongA.setVisible(true);
+            wrongB.setVisible(true);
+        }
 
+        if (selectedAnswer == correctAnswerButton) {
+            mainCtrl.addPoints(100);
+            pointsField.setText(""); //Should the addPoints method in MainCtrl return something that can be displayed here?
+        }
+        else {
+            mainCtrl.addPoints(0);
+            pointsField.setText("+0 Points");
+        }
     }
 
     ;

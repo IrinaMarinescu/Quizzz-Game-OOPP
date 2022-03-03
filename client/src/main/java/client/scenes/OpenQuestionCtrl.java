@@ -11,7 +11,7 @@ import javafx.scene.text.Text;
 import javax.inject.Inject;
 import java.util.Scanner;
 
-public class OpenQuestion implements QuestionRequirements {
+public class OpenQuestionCtrl implements QuestionRequirements {
 
     private MainCtrl mainCtrl;
     private QuestionFrameCtrl questionFrameCtrl;
@@ -40,7 +40,7 @@ public class OpenQuestion implements QuestionRequirements {
      * @param questionFrameCtrl - the scene into which it has to be injected
      */
     @Inject
-    public OpenQuestion(MainCtrl mainCtrl, QuestionFrameCtrl questionFrameCtrl) {
+    public OpenQuestionCtrl(MainCtrl mainCtrl, QuestionFrameCtrl questionFrameCtrl) {
         this.mainCtrl = mainCtrl;
         this.questionFrameCtrl = questionFrameCtrl;
     }
