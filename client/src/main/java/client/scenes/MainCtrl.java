@@ -17,7 +17,6 @@
 package client.scenes;
 
 import client.scenes.controllerrequirements.MainCtrlRequirements;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -27,6 +26,8 @@ import javafx.util.Pair;
  * Coordinates actions between different screens
  */
 public class MainCtrl implements MainCtrlRequirements {
+
+    private String username;
 
     private Stage primaryStage;
 
@@ -39,25 +40,23 @@ public class MainCtrl implements MainCtrlRequirements {
     /**
      * Initialize this controller using components provided by Main
      *
-     * @param primaryStage          The (only) stage containing all scenes
-     * @param questionFrame         Controller file and parent node of questionFrame node
+     * @param primaryStage The (only) stage containing all scenes
+     * @param mainFrame    Controller file and parent node of mainFrame node
      */
-    public void initialize(Stage primaryStage, Pair<QuestionFrameCtrl, Parent> questionFrame) {
+    public void initialize(Stage primaryStage, Pair<MainFrameCtrl, Parent> mainFrame,
+                           Pair<QuestionFrameCtrl, Parent> questionFrame) {
         this.primaryStage = primaryStage;
+
+        this.mainFrameCtrl = mainFrame.getKey();
+        this.mainFrame = new Scene(mainFrame.getValue());
 
         this.questionFrameCtrl = questionFrame.getKey();
         this.questionFrame = new Scene(questionFrame.getValue());
 
         primaryStage.setTitle("Quizzzzz!");
 
-        showQuestionFrame();
+        showMainFrame();
         primaryStage.show();
-    }
-
-
-    public void showOverview() {
-        primaryStage.setScene(mainFrame);
-        mainFrame.setOnKeyPressed(e -> mainFrameCtrl.keyPressed(e));
     }
 
     /**
@@ -109,11 +108,30 @@ public class MainCtrl implements MainCtrlRequirements {
 
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void showMainFrame() {
+        primaryStage.setScene(mainFrame);
+        mainFrame.setOnKeyPressed(e -> mainFrameCtrl.keyPressed(e));
+    }
+
     /**
      * Sets the questionFrame as the visible scene on the stage
      */
     public void showQuestionFrame() {
         primaryStage.setScene(questionFrame);
         questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e));
+    }
+
+    public void showLobbyFrame() {
+    }
+
+    public void showGlobalLeaderboardFrame() {
     }
 }
