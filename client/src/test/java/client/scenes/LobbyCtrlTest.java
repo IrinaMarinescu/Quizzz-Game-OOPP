@@ -44,11 +44,11 @@ public class LobbyCtrlTest {
         list.remove(r);
     }
 
-    public void addPlayer(String name) {
+    private void addPlayer(String name) {
         list.add(name);
     }
 
-    public void clearPlayers() {
+    private void clearPlayers() {
         list.clear();
     }
 
