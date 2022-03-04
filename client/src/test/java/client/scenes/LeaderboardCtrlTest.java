@@ -1,17 +1,18 @@
 package client.scenes;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import client.dependedoncomponents.LeaderboardCtrlDOC;
 import commons.LeaderboardEntry;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * This unit test class tests the proper setting of the leaderboard, asserts its max size, its type and its proper sorting of the entries.
+ * This unit test class tests the proper setting of the leaderboard,
+ * asserts its max size, its type and its proper sorting of the entries.
  */
 class LeaderboardCtrlTest {
     LeaderboardCtrlDOC leaderboardCtrl;

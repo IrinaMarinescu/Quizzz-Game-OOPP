@@ -2,7 +2,6 @@ package client.dependedoncomponents;
 
 import client.scenes.LeaderboardCtrl;
 import commons.LeaderboardEntry;
-
 import java.util.List;
 
 /**
