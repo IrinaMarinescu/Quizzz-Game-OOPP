@@ -57,14 +57,7 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
 
     @Override
     public void removePlayer(String name) {
-        int r = 0;
-
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).equals(name)) {
-                r = i;
-            }
-        }
-        list.remove(r);
+        list.remove(name);
     }
 
     @Override
