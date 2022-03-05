@@ -23,6 +23,7 @@ import client.scenes.MainFrameCtrl;
 import client.scenes.OpenQuestion;
 import client.scenes.QuestionFrameCtrl;
 import client.scenes.QuestionOneImage;
+import client.utils.LongPollingUtils;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -72,7 +73,11 @@ public class Main extends Application {
         var mainFrame =
             FXML.load(MainFrameCtrl.class, "client/scenes/mainFrame.fxml", "client/css/mainFrame.css");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        // mainCtrl.initialize(primaryStage, mainFrame);
-        //mainCtrl.initialize(primaryStage, questionFrame, injectedCenterExample);
+        LongPollingUtils longPollingUtils = INJECTOR.getInstance(client.utils.LongPollingUtils.class);
+
+        // Set true to enable long polling; program will crash if server not running
+        longPollingUtils.setPollingActive(true);
+
+        mainCtrl.initialize(primaryStage, questionFrame);
     }
 }

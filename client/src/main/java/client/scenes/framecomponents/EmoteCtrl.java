@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -51,13 +52,14 @@ public class EmoteCtrl {
 
         var emoteContainer = loader.load(EmoteContainerCtrl.class, "client/scenes/EmoteContainer.fxml", null);
         emoteContainer.getKey().initialize(name, pathToImage);
-        reactionContainer.getChildren().add(0, emoteContainer.getValue());
-
-        if (visibleEmotes == MAX_EMOTES) {
-            reactionContainer.getChildren().remove(MAX_EMOTES);
-        } else {
-            visibleEmotes++;
-        }
+        Platform.runLater(() -> {
+            reactionContainer.getChildren().add(0, emoteContainer.getValue());
+            if (visibleEmotes == MAX_EMOTES) {
+                reactionContainer.getChildren().remove(MAX_EMOTES);
+            } else {
+                visibleEmotes++;
+            }
+        });
 
         new Thread(() -> {
             try {
