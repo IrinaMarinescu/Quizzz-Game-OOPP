@@ -10,11 +10,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.LobbyCtrl">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.LobbyCtrl">
    <children>
-      <Button layoutX="460.0" layoutY="641.0" mnemonicParsing="false" onAction="#initializeMultiplayerGame" prefHeight="63.0" prefWidth="161.0" style="-fx-background-color: #02C39A; -fx-background-radius: 45px;" text="Start" textAlignment="CENTER" textFill="WHITE">
+      <Button layoutX="719.0" layoutY="806.0" mnemonicParsing="false" onAction="#initializeMultiplayerGame" prefHeight="78.75" prefWidth="200.0" style="-fx-background-color: #02C39A; -fx-background-radius: 45px;" text="Start" textAlignment="CENTER" textFill="WHITE">
          <font>
-            <Font name="System Bold" size="30.0" />
+            <Font name="System Bold" size="36.0" />
          </font>
          <opaqueInsets>
             <Insets />
@@ -23,16 +23,16 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#05668d" height="75.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1080.0" />
-      <Text fill="WHITE" layoutX="482.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lobby">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#05668d" height="94.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1600.0" />
+      <Text fill="WHITE" layoutX="755.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lobby">
          <font>
-            <Font name="System Bold" size="40.0" />
+            <Font name="System Bold" size="44.0" />
          </font>
       </Text>
-      <Button fx:id="trophy" layoutX="36.0" layoutY="13.0" mnemonicParsing="false" onAction="#goBack" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/lobby.css" text="Back" />
-      <TableView fx:id="table" layoutX="320.0" layoutY="100.0" prefHeight="520.0" prefWidth="440.0" style="-fx-background-color: #81C0C8; -fx-background-radius: 15px;" stylesheets="@../css/lobby.css">
+      <Button fx:id="arrow" layoutX="31.0" layoutY="7.0" mnemonicParsing="false" onAction="#goBack" prefHeight="87.0" prefWidth="128.0" stylesheets="@../css/lobby.css" />
+      <TableView fx:id="table" layoutX="493.0" layoutY="125.0" prefHeight="650.0" prefWidth="652.0" style="-fx-background-color: #81C0C8; -fx-background-radius: 15px;" stylesheets="@../css/lobby.css">
         <columns>
-          <TableColumn fx:id="name" prefWidth="439.0" text="Players" />
+          <TableColumn fx:id="name" prefWidth="652.0" text="Players" />
         </columns>
       </TableView>
    </children>

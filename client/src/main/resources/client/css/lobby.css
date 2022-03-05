@@ -46,7 +46,7 @@
     -fx-background-insets: 0, 0 0 1 0;
 }
 
-#trophy {
+#arrow {
     -fx-pref-height: 80;
     -fx-pref-width: 80;
     -fx-padding: 0;
@@ -55,10 +55,10 @@
     -fx-background-size: 75%;
     -fx-background-repeat: no-repeat;
     -fx-background-position: 50%;
-    -fx-background-image: url('../icons/trophy-solid.png');
+    -fx-background-image: url('../icons/arrow-left.png');
 }
 
-#trophy:hover {
+#arrow:hover {
     -fx-opacity: 0.8;
 }
 
