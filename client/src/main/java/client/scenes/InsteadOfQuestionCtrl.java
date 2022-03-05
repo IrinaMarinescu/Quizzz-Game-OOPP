@@ -135,6 +135,13 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
         this.wrong = new ArrayList<>();
         Collections.addAll(wrong, wrongA, wrongB, wrongC);
 
+        for (int i = 0; i < 3; i++) {
+            correct.get(i).setVisible(false);
+            wrong.get(i).setVisible(false);
+            buttons.get(i).setOpacity(1);
+            buttons.get(i).setStyle("-fx-border-color:  #5CB4BF");
+        }
+
         answerA.setText(question.getActivities().get(1).title);
         answerB.setText(question.getActivities().get(2).title);
         answerC.setText(question.getActivities().get(3).title);

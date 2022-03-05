@@ -137,6 +137,13 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
         this.wrong = new ArrayList<>();
         Collections.addAll(wrong, wrongA, wrongB, wrongC);
 
+        for (int i = 0; i < 3; i++) {
+            correct.get(i).setVisible(false);
+            wrong.get(i).setVisible(false);
+            buttons.get(i).setOpacity(1);
+            buttons.get(i).setStyle("-fx-border-color:  #5CB4BF");
+        }
+
         //while loop to prevent multiple answer options from being the same number
         while (answerA.getText().equals(answerB.getText())
                 || answerC.getText().equals(answerB.getText())
