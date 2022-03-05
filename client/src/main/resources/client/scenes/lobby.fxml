@@ -29,8 +29,8 @@
             <Font name="System Bold" size="40.0" />
          </font>
       </Text>
-      <Button fx:id="arrow" layoutX="36.0" layoutY="13.0" mnemonicParsing="false" onAction="#goBack" prefHeight="50.0" prefWidth="50.0" stylesheets="@table.css" text="Back" />
-      <TableView fx:id="table" layoutX="320.0" layoutY="100.0" prefHeight="520.0" prefWidth="440.0" style="-fx-background-color: #81C0C8; -fx-background-radius: 15px;" stylesheets="@table.css">
+      <Button fx:id="trophy" layoutX="36.0" layoutY="13.0" mnemonicParsing="false" onAction="#goBack" prefHeight="50.0" prefWidth="50.0" stylesheets="@../css/lobby.css" text="Back" />
+      <TableView fx:id="table" layoutX="320.0" layoutY="100.0" prefHeight="520.0" prefWidth="440.0" style="-fx-background-color: #81C0C8; -fx-background-radius: 15px;" stylesheets="@../css/lobby.css">
         <columns>
           <TableColumn fx:id="name" prefWidth="439.0" text="Players" />
         </columns>

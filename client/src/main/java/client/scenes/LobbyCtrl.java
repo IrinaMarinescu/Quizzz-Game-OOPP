@@ -2,8 +2,7 @@ package client.scenes;
 
 
 import client.scenes.controllerrequirements.LobbyCtrlRequirements;
-import java.net.URL;
-import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,7 +10,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 
 public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
@@ -23,13 +24,17 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
     private TableView<String> table;
 
     @FXML
-    void initializeMultiplayerGame(ActionEvent event) {
-
+    public void initializeMultiplayerGame() {
+        MainCtrl x = new MainCtrl();
+        x.startMultiplayerGame();
     }
 
     @FXML
-    public void goBack(ActionEvent actionEvent) {
+    public void goBack() {
+        MainCtrl x = new MainCtrl();
+        x.playerLeavesLobby();
 
+        // I'm not sure if that's the right method, but I assume it is.
     }
 
     ObservableList<String> list = FXCollections.observableArrayList(
@@ -53,15 +58,18 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
     @Override
     public void addPlayer(String name) {
         list.add(name);
+        table.setItems(list);
     }
 
     @Override
     public void removePlayer(String name) {
         list.remove(name);
+        table.setItems(list);
     }
 
     @Override
     public void clearPlayers() {
         list.clear();
+        table.setItems(list);
     }
 }

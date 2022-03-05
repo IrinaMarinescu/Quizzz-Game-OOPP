@@ -1,5 +1,7 @@
+@import 'global.css';
+
 .table-view .column-header-background {
-    -fx-background-color: #05668d;
+    -fx-background-color: -topBarColor;
     -fx-background-radius: 15px 15px 0 0;
     -fx-pref-height: 40px;
 }
@@ -18,14 +20,46 @@
     -fx-pref-height: 40px;
 }
 
+.table-view .table-row-cell {
+    -fx-cell-size: 40;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+
+.table-view .scroll-bar * {
+    -fx-min-height: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+}
+
+.table-view .table-column {
+    -fx-alignment: CENTER;
+}
+
 .table-row-cell:odd {
-    -fx-background-color: #81C0C8;
+    -fx-background-color: -lightBlue;
     -fx-background-insets: 0, 0 0 1 0;
 }
 
 .table-row-cell:even {
-    -fx-background-color: #5CB4BF;
+    -fx-background-color: -lightishBlue;
     -fx-background-insets: 0, 0 0 1 0;
+}
+
+#trophy {
+    -fx-pref-height: 80;
+    -fx-pref-width: 80;
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+
+    -fx-background-size: 75%;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+    -fx-background-image: url('../icons/trophy-solid.png');
+}
+
+#trophy:hover {
+    -fx-opacity: 0.8;
 }
 
 /*.arrow {
