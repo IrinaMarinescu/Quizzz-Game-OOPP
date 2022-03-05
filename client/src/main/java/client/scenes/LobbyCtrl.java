@@ -1,18 +1,15 @@
 package client.scenes;
 
-
 import client.scenes.controllerrequirements.LobbyCtrlRequirements;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 
 public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
