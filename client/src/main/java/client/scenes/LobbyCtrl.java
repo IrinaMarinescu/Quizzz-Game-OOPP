@@ -45,7 +45,7 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        name.setCellValueFactory(s -> new SimpleStringProperty(s.getValue()));
 
         table.setItems(list);
     }
