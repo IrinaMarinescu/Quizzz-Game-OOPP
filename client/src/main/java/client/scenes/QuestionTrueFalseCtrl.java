@@ -1,10 +1,10 @@
 package client.scenes;
 
 import client.scenes.controllerrequirements.QuestionRequirements;
-import commons.Activity;
 import commons.Question;
 import java.util.List;
-import javafx.event.ActionEvent;
+import java.util.Objects;
+import java.util.stream.IntStream;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -13,10 +13,16 @@ import javafx.scene.image.ImageView;
 import javax.inject.Inject;
 
 
-public class QuestionTrueFalseCtrl extends Question implements QuestionRequirements {
+public class QuestionTrueFalseCtrl implements QuestionRequirements {
 
     private MainCtrl mainCtrl;
     private QuestionFrameCtrl questionFrameCtrl;
+    private Question question;
+    private List<Button> answers;
+    private List<ImageView> wrong;
+    private List<ImageView> correct;
+    private int positionCorrectAnswer;
+    private int selectedAnswerButton;
 
     @FXML
     Button trueAnswer;
@@ -42,103 +48,125 @@ public class QuestionTrueFalseCtrl extends Question implements QuestionRequireme
     @FXML
     ImageView wrongFalse;
 
-    /**
-     * injects the necessary dependencies
-     *
-     * @param activities    there should only be one activity
-     * @param question      a generated question based on the activity
-     * @param correctAnswer saved as 0 or 1; 0 being false, and 1 being true
-     */
-
     @Inject
-    public QuestionTrueFalseCtrl(MainCtrl mainCtrl, QuestionFrameCtrl questionFrameCtrl, List<Activity> activities,
-                                 String question, int correctAnswer) {
-        super(activities, question, correctAnswer);
+    public QuestionTrueFalseCtrl(MainCtrl mainCtrl, QuestionFrameCtrl questionFrameCtrl) {
         this.mainCtrl = mainCtrl;
         this.questionFrameCtrl = questionFrameCtrl;
     }
 
-    /**
-     * sets the text of the question
-     * sets the image using the imagePath
-     * sets the text of the buttons
-     * hides the correct solution
-     *
-     * @param question - contains all the data of the question extracted from the database
-     */
     @Override
     public void initialize(Question question) {
-        questionOutput.setText(this.getQuestion());
-        String imagePath = getActivities().get(0).imagePath;
-        Image image = new Image(imagePath, 399, 362, true, false);
-        imageOutput.setImage(image);
-        setTrueAnswer();
-        setFalseAnswer();
-        correctTrue.setVisible(false);
-        correctFalse.setVisible(false);
-        wrongTrue.setVisible(false);
-        wrongFalse.setVisible(false);
-    }
+        this.question = question;
+        this.answers = List.of(trueAnswer, falseAnswer);
+        this.correct = List.of(correctTrue, correctFalse);
+        this.wrong = List.of(wrongTrue, wrongFalse);
 
-    /**
-     * sets the text true on the true button
-     */
-    @FXML
-    public void setTrueAnswer() {
+        this.positionCorrectAnswer = question.getCorrectAnswer();
+        this.questionOutput.setText(question.getQuestion());
+        this.imageOutput.setImage(new Image(question.getActivities().get(0).imagePath, 200, 186, true, false));
         trueAnswer.setText("True");
-    }
-
-    /**
-     * sets the text false on the false button
-     */
-    @FXML
-    public void setFalseAnswer() {
         falseAnswer.setText("False");
+        IntStream.range(0, correct.size()).forEach(i -> {
+            correct.get(i).setVisible(false);
+            wrong.get(i).setVisible(false);
+            answers.get(i).setOpacity(1);
+            answers.get(i).setStyle("-fx-border-color:  #5CB4BF");
+        });
     }
 
-    /**
-     * if the true button is selected, the false one gets reduced opacity
-     * if the answer is correct there are added points
-     * in the end the correct answer is revealed using revealCorrectAnswer
-     *
-     * @param event - clicking the true button
-     */
     @FXML
-    void trueSelected(ActionEvent event) {
-        falseAnswer.setOpacity(0.7);
-        if (getCorrectAnswer() == 0) {
-            mainCtrl.addPoints(100);
-        }
-        revealCorrectAnswer();
+    void trueSelected() {
+        this.selectedAnswerButton = 0;
+        setChosenAnswer();
     }
 
-    /**
-     * if the false button is selected, the true one gets reduced opacity
-     * if the answer is correct there are added points
-     * in the end the correct answe is revealed using revealCorrectAnswer
-     *
-     * @param event - clicking the false button
-     */
     @FXML
-    void falseSelected(ActionEvent event) {
-        trueAnswer.setOpacity(0.7);
-        if (getCorrectAnswer() == 1) {
-            mainCtrl.addPoints(100);
-        }
-        revealCorrectAnswer();
+    void falseSelected() {
+        this.selectedAnswerButton = 1;
+        setChosenAnswer();
     }
 
-    /**
-     * reveals the ticks and crosses according to the registered correct answer
-     */
+    private void setChosenAnswer() {
+        answers.get(selectedAnswerButton).setStyle("-fx-border-color: #028090");
+        for (int i = 0; i < 3; i++) {
+            answers.get(i).setOnAction(null);
+            if (i != selectedAnswerButton) {
+                answers.get(i).setOpacity(0.5);
+            }
+        }
+    }
+
     @Override
     public void revealCorrectAnswer() {
-        if (this.getCorrectAnswer() == 0) {
-            correctTrue.setVisible(true);
-            wrongFalse.setVisible(true);
+        correct.get(positionCorrectAnswer).setVisible(true);
+        for (int i = 0; i < 3; i++) {
+            if (i != positionCorrectAnswer) {
+                wrong.get(i).setVisible(true);
+            }
+        }
+
+        if (selectedAnswerButton == positionCorrectAnswer) {
+            mainCtrl.addPoints(100);
         } else {
-            correctTrue.setVisible(true);
-            wrongFalse.setVisible(true);
+            mainCtrl.addPoints(0);
         }
     }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public List<Button> getAnswers() {
+        return answers;
+    }
+
+    public int getPositionCorrectAnswer() {
+        return positionCorrectAnswer;
+    }
+
+    public int getSelectedAnswerButton() {
+        return selectedAnswerButton;
+    }
+
+    public Button getTrueAnswer() {
+        return trueAnswer;
+    }
+
+    public Button getFalseAnswer() {
+        return falseAnswer;
+    }
+
+    public TextField getQuestionOutput() {
+        return questionOutput;
+    }
+
+    public ImageView getImageOutput() {
+        return imageOutput;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof QuestionTrueFalseCtrl)) {
+            return false;
+        }
+        QuestionTrueFalseCtrl that = (QuestionTrueFalseCtrl) o;
+        return positionCorrectAnswer == that.positionCorrectAnswer
+            && selectedAnswerButton == that.selectedAnswerButton
+            && Objects.equals(mainCtrl, that.mainCtrl)
+            && Objects.equals(questionFrameCtrl, that.questionFrameCtrl)
+            && Objects.equals(question, that.question) && Objects.equals(answers, that.answers)
+            && Objects.equals(wrong, that.wrong) && Objects.equals(correct, that.correct)
+            && Objects.equals(trueAnswer, that.trueAnswer)
+            && Objects.equals(falseAnswer, that.falseAnswer)
+            && Objects.equals(questionOutput, that.questionOutput)
+            && Objects.equals(imageOutput, that.imageOutput)
+            && Objects.equals(correctTrue, that.correctTrue)
+            && Objects.equals(wrongTrue, that.wrongTrue)
+            && Objects.equals(correctFalse, that.correctFalse)
+            && Objects.equals(wrongFalse, that.wrongFalse);
+    }
+
 }

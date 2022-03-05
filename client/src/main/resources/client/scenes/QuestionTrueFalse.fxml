@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="1156.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="1156.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionTrueFalseCtrl">
     <children>
-        <TextField id="Question" alignment="CENTER" layoutX="77.0" layoutY="24.0" style="-fx-text-fill: white;" stylesheets="@../css/questionTrueFalse.css" text="True or False?">
+        <TextField id="Question" fx:id="questionOutput" alignment="CENTER" layoutX="77.0" layoutY="24.0" style="-fx-text-fill: white;" stylesheets="@../css/questionTrueFalse.css" text="True or False?">
             <font>
                 <Font name="System Bold" size="30.0" />
             </font>
@@ -24,7 +24,7 @@
                 <Font size="25.0" />
             </font>
         </Button>
-        <ImageView id="Image" fitHeight="362.0" fitWidth="399.0" layoutX="158.0" layoutY="218.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView id="Image" fx:id="imageOutput" fitHeight="362.0" fitWidth="399.0" layoutX="158.0" layoutY="218.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../temporary/temporaryPicture.png" />
             </image>
