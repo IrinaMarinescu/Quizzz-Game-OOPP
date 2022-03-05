@@ -7,15 +7,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.text.Text;
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class InsteadOfQuestionCtrl implements QuestionRequirements {
     private MainCtrl mainCtrl;
     private QuestionFrameCtrl questionFrameCtrl;
     private Question question;
-    private char correctAnswerButton;
-    private char selectedAnswer;
+    private List<Button> buttons;
+    private List<ImageView> correct;
+    private List<ImageView> wrong;
+    private int positionCorrectAnswer;
+    private int selectedAnswerButton;
 
     @FXML
     Button answerA;
@@ -50,9 +55,6 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
     @FXML
     ImageView wrongC;
 
-    @FXML
-    Text pointsField;
-
     /**
      * Injects necessary dependencies
      *
@@ -66,46 +68,46 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
     }
 
     /**
-     * Sets the selected answer as 'a' and pales and disables the other two buttons
+     * Sets the selected answer as '0'
      */
     @FXML
     public void setAnswerA() {
-        this.selectedAnswer = 'A';
-        answerA.setStyle("-fx-border-color: #028090");
-        answerB.setOnAction(null);
-        answerB.setOpacity(0.5);
-        answerC.setOnAction(null);
-        answerC.setOpacity(0.5);
+        this.selectedAnswerButton = 0;
+        setChosenAnswer();
     }
 
     ;
-
     /**
-     * Sets the selected answer as 'b' and pales and disables the other two buttons
+     * Sets the selected answer as '1'
      */
     @FXML
     public void setAnswerB() {
-        this.selectedAnswer = 'B';
-        answerB.setStyle("-fx-border-color: #028090");
-        answerA.setOnAction(null);
-        answerA.setOpacity(0.5);
-        answerC.setOnAction(null);
-        answerC.setOpacity(0.5);
+        this.selectedAnswerButton = 1;
+        setChosenAnswer();
     }
 
     ;
-
     /**
-     * Sets the selected answer as 'c' and pales and disables the other two buttons
+     * Sets the selected answer as '2'
      */
     @FXML
     public void setAnswerC() {
-        this.selectedAnswer = 'C';
-        answerC.setStyle("-fx-border-color: #028090");
-        answerA.setOnAction(null);
-        answerA.setOpacity(0.5);
-        answerB.setOnAction(null);
-        answerB.setOpacity(0.5);
+        this.selectedAnswerButton = 2;
+        setChosenAnswer();
+    }
+
+    /**
+     * Disables all buttons now that an answer has been chosen, makes the button of the chosen answer white and pales
+     * the other answers
+     */
+    private void setChosenAnswer() {
+        buttons.get(selectedAnswerButton).setStyle("-fx-border-color: #028090");
+        for (int i = 0; i < 3; i++) {
+            buttons.get(i).setOnAction(null);
+            if (i != selectedAnswerButton) {
+                buttons.get(i).setOpacity(0.5);
+            }
+        }
     }
 
     /**
@@ -116,17 +118,26 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
     @Override
     public void initialize(Question question) {
         this.question = question;
-        this.questionText.setText("Instead of " + question.getActivities().get(0).getTitle() + ", what could you do?");
-        int positionCorrectAnswer = question.getCorrectAnswer();
-        String correctAnswer = question.getActivities().get(positionCorrectAnswer).getTitle();
+        this.questionText.setText("Instead of " + question.getActivities().get(0).title + ", what could you do?");
+        this.positionCorrectAnswer = question.getCorrectAnswer();
+        String correctAnswer = question.getActivities().get(positionCorrectAnswer).title;
 
         String imagePath = question.getActivities().get(0).imagePath;
         Image image = new Image(imagePath, 480, 500, false, true);
         imageField.setImage(image);
 
-        answerA.setText(question.getActivities().get(1).getTitle());
-        answerB.setText(question.getActivities().get(1).getTitle());
-        answerC.setText(question.getActivities().get(1).getTitle());
+        this.buttons = new ArrayList<>();
+        Collections.addAll(buttons, answerA, answerB, answerC);
+
+        this.correct = new ArrayList<>();
+        Collections.addAll(correct, correctA, correctB, correctC);
+
+        this.wrong = new ArrayList<>();
+        Collections.addAll(wrong, wrongA, wrongB, wrongC);
+
+        answerA.setText(question.getActivities().get(1).title);
+        answerB.setText(question.getActivities().get(2).title);
+        answerC.setText(question.getActivities().get(3).title);
     }
 
     /**
@@ -134,27 +145,17 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
      */
     @Override
     public void revealCorrectAnswer() {
-        if (correctAnswerButton == 'A') {
-            correctA.setVisible(true);
-            wrongB.setVisible(true);
-            wrongC.setVisible(true);
-        } else if (correctAnswerButton == 'B') {
-            correctB.setVisible(true);
-            wrongC.setVisible(true);
-            wrongA.setVisible(true);
-        } else {
-            correctC.setVisible(true);
-            wrongA.setVisible(true);
-            wrongB.setVisible(true);
+        correct.get(positionCorrectAnswer).setVisible(true);
+        for (int i = 0; i < 3; i++) {
+            if (i != positionCorrectAnswer) {
+                wrong.get(i).setVisible(true);
+            }
         }
 
-        if (selectedAnswer == correctAnswerButton) {
+        if (selectedAnswerButton == positionCorrectAnswer) {
             mainCtrl.addPoints(100);
-            //Should the addPoints method in MainCtrl return something that can be displayed here?
-            pointsField.setText("");
         } else {
             mainCtrl.addPoints(0);
-            pointsField.setText("+0 Points");
         }
     }
 }

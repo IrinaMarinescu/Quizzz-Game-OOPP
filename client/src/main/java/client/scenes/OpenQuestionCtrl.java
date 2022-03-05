@@ -26,9 +26,6 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     Text answerText;
 
     @FXML
-    Text pointsText;
-
-    @FXML
     TextField entryField;
 
     @FXML
@@ -55,13 +52,14 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     public void submit() {
         String ans = entryField.getText();
         Scanner scanner = new Scanner(ans);
-        this.answer = scanner.nextInt();
-        if (answer == 0) {
-            errorMessage.setVisible(true);
-        } else {
+        if (scanner.hasNextInt()) {
+            this.answer = scanner.nextInt();
             errorMessage.setVisible(false);
             submitButton.setText("Submitted!");
             submitButton.setOnAction(null);
+        }
+        else {
+            errorMessage.setVisible(true);
         }
     }
 
@@ -73,7 +71,7 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     @Override
     public void initialize(Question question) {
         this.question = question;
-        questionField.setText("How many Wh does " + question.getActivities().get(0).getTitle() + " take?");
+        questionField.setText("How many Wh does " + question.getActivities().get(0).title + " take?");
     }
 
     /**
@@ -83,12 +81,11 @@ public class OpenQuestionCtrl implements QuestionRequirements {
      */
     @Override
     public void revealCorrectAnswer() {
-        int correctAnswer = this.question.getActivities().get(0).getConsumptionInWh();
+        int correctAnswer = this.question.getActivities().get(0).consumptionInWh;
         answerText.setText("It takes " + correctAnswer + "Wh!");
         int percentageOff = ((Math.abs(correctAnswer - this.answer)) / correctAnswer) * 100;
         int baseScore = 100 - percentageOff / 2;
         mainCtrl.addPoints(baseScore);
-        pointsText.setText(""); //Should the addPoints method in MainCtrl return something that can be printed here?
     }
 
     ;

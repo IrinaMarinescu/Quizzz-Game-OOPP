@@ -15,22 +15,22 @@
                 <Image url="@../temporary/scooter.png" />
             </image>
         </ImageView>
-        <Button fx:id="answerA" layoutX="661.0" layoutY="179.0" mnemonicParsing="false" onAction="#setAnswerA" prefHeight="129.0" prefWidth="441.0" style="-fx-background-color: #5CB4BF#5CB4BF; -fx-background-radius: 10; -fx-border-color: #5CB4BF#5CB4BF #5CB4BF#5CB4BF; -fx-border-width: 10; -fx-border-radius: 10;" text="Answer A" textFill="WHITE">
+        <Button fx:id="answerA" layoutX="661.0" layoutY="179.0" mnemonicParsing="false" onAction="#setAnswerA" prefHeight="129.0" prefWidth="441.0" style="-fx-background-color: #5CB4BF; -fx-background-radius: 10; -fx-border-color: #5CB4BF; -fx-border-width: 10; -fx-border-radius: 10;" text="Answer A" textFill="WHITE">
             <font>
                 <Font size="25.0" />
             </font>
         </Button>
-        <TextField fx:id="questionText" alignment="CENTER" editable="false" layoutX="99.0" layoutY="24.0" prefHeight="123.0" prefWidth="1002.0" style="-fx-background-color: #028090#028090; -fx-background-radius: 10; -fx-text-fill: white;" text="How much energy does this take?">
+        <TextField fx:id="questionText" alignment="CENTER" editable="false" layoutX="99.0" layoutY="24.0" prefHeight="123.0" prefWidth="1002.0" style="-fx-background-color: #028090; -fx-background-radius: 10; -fx-text-fill: white;" text="How much energy does this take?">
             <font>
                 <Font name="System Bold" size="30.0" />
             </font>
         </TextField>
-        <Button fx:id="answerB" layoutX="664.0" layoutY="333.0" mnemonicParsing="false" onAction="#setAnswerB" prefHeight="129.0" prefWidth="441.0" style="-fx-background-color: #5CB4BF#5CB4BF; -fx-background-radius: 10; -fx-border-color: #5CB4BF#5CB4BF #5CB4BF#5CB4BF; -fx-border-width: 10; -fx-border-radius: 10;" text="Answer B" textFill="WHITE">
+        <Button fx:id="answerB" layoutX="664.0" layoutY="333.0" mnemonicParsing="false" onAction="#setAnswerB" prefHeight="129.0" prefWidth="441.0" style="-fx-background-color: #5CB4BF; -fx-background-radius: 10; -fx-border-color: #5CB4BF; -fx-border-width: 10; -fx-border-radius: 10;" text="Answer B" textFill="WHITE">
             <font>
                 <Font size="25.0" />
             </font>
         </Button>
-        <Button fx:id="answerC" layoutX="666.0" layoutY="488.0" mnemonicParsing="false" onAction="#setAnswerC" prefHeight="129.0" prefWidth="441.0" style="-fx-background-color: #5CB4BF#5CB4BF; -fx-background-radius: 10; -fx-border-color: #5CB4BF#5CB4BF #5CB4BF#5CB4BF; -fx-border-width: 10; -fx-border-radius: 10;" text="Answer C" textFill="WHITE">
+        <Button fx:id="answerC" layoutX="666.0" layoutY="488.0" mnemonicParsing="false" onAction="#setAnswerC" prefHeight="129.0" prefWidth="441.0" style="-fx-background-color: #5CB4BF; -fx-background-radius: 10; -fx-border-color: #5CB4BF; -fx-border-width: 10; -fx-border-radius: 10;" text="Answer C" textFill="WHITE">
             <font>
                 <Font size="25.0" />
             </font>
