@@ -57,8 +57,7 @@ public class OpenQuestionCtrl implements QuestionRequirements {
             errorMessage.setVisible(false);
             submitButton.setText("Submitted!");
             submitButton.setOnAction(null);
-        }
-        else {
+        } else {
             errorMessage.setVisible(true);
         }
     }
