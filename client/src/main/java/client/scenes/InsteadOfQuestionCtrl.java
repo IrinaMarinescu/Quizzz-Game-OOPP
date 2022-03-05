@@ -2,14 +2,14 @@ package client.scenes;
 
 import client.scenes.controllerrequirements.QuestionRequirements;
 import commons.Question;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import javax.inject.Inject;
 
 public class InsteadOfQuestionCtrl implements QuestionRequirements {
