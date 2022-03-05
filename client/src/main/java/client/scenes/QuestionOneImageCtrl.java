@@ -126,7 +126,7 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
         //while loop to prevent multiple answer options from being the same number
         while (answerA.getText().equals(answerB.getText())
                 || answerC.getText().equals(answerB.getText())
-                || answerC.equals(answerA.getText())) {
+                || answerC.getText().equals(answerA.getText())) {
             if (positionCorrectAnswer == 0) {
                 this.correctAnswerButton = 'A';
                 answerA.setText(String.valueOf(actualConsumption));
