@@ -60,7 +60,7 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
 
     @Override
     public boolean equals(Object other) {
-        if(other instanceof LeaderboardEntry) {
+        if (other instanceof LeaderboardEntry) {
             var entry = (LeaderboardEntry) other;
             return entry.getName().equals(this.name) && entry.getScore() == this.score;
         }
