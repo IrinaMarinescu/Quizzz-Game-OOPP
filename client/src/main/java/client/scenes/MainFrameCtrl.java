@@ -16,6 +16,7 @@
 
 package client.scenes;
 
+import client.scenes.controllerrequirements.MainFrameCtrlRequirements;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Quote;
@@ -28,10 +29,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 //import javafx.scene.control.TableColumn;
 //import javafx.scene.control.TableView;
 
-public class MainFrameCtrl implements Initializable {
+public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
 
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
@@ -47,6 +49,11 @@ public class MainFrameCtrl implements Initializable {
     private TextField serverIP;
     @FXML
     private VBox helpMenuContainer;
+    @FXML
+    private Text usernameError;
+    @FXML
+    private Text serverIPError;
+
     //@FXML
     //private Text helpPointsGained;
     //@FXML
@@ -62,14 +69,18 @@ public class MainFrameCtrl implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //colFirstName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.firstName));
-        //colLastName.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().person.lastName));
-        //colQuote.setCellValueFactory(q -> new SimpleStringProperty(q.getValue().quote));
-
+        displayUsernameError(false);
+        displayServerIPError(false);
         this.lastEscapeKeyPressTime = 0;
     }
 
-    public void toggleLeaderboardVisibility() {
+    public void openLeaderboard() {
+        if (validateServerIP(serverIP.getText())) {
+            server.setServerIP(serverIP.getText());
+            mainCtrl.showGlobalLeaderboardFrame();
+        } else {
+            displayServerIPError(true);
+        }
     }
 
     @FXML
@@ -77,14 +88,57 @@ public class MainFrameCtrl implements Initializable {
         helpMenuContainer.setVisible(!helpMenuContainer.isVisible());
     }
 
-    public void singleplayer() {
-        username.getText();
-        serverIP.getText();
+    public void startSingleplayerGame() {
+        if (validateServerIP(serverIP.getText())) {
+            mainCtrl.setUsername(username.getText());
+            server.setServerIP(serverIP.getText());
+            mainCtrl.showQuestionFrame();
+        } else {
+            displayServerIPError(true);
+        }
     }
 
-    public void mulitplayer() {
-        username.getText();
-        serverIP.getText();
+    public void startMultiplayerGame() {
+        if (validateServerIP(serverIP.getText()) && validateUsername(username.getText())) {
+            mainCtrl.setUsername(username.getText());
+            server.setServerIP(serverIP.getText());
+            mainCtrl.showLobbyFrame();
+        } else if (!validateServerIP(serverIP.getText())) {
+            displayServerIPError(true);
+        } else {
+            displayUsernameError(true);
+        }
+    }
+
+    @Override
+    public void displayUsernameError(boolean show) {
+        usernameError.setVisible(show);
+    }
+
+    @Override
+    public void displayServerIPError(boolean show) {
+        serverIPError.setVisible(show);
+    }
+
+    /**
+     * Check if another user in lobby already uses this name
+     *
+     * @param username username provided by player in the TextField
+     * @return true if the username is not used yet, false otherwise
+     */
+    private boolean validateUsername(String username) {
+        // TODO get usernames from server and check if the one provided by the client is in them
+        return true;
+    }
+
+    /**
+     * Check if serverIP is correct
+     *
+     * @param serverIP server IP provided by player in the TextField
+     * @return true if the serverIP is correct, false otherwise
+     */
+    private boolean validateServerIP(String serverIP) {
+        return server.validateIP(serverIP);
     }
 
     public void keyPressed(KeyEvent e) {
@@ -93,7 +147,7 @@ public class MainFrameCtrl implements Initializable {
                 toggleHelpMenuVisibility();
                 break;
             case L:
-                toggleLeaderboardVisibility();
+                openLeaderboard();
                 break;
             case ESCAPE:
                 if (Clock.systemDefaultZone().millis() - lastEscapeKeyPressTime < 200) {
