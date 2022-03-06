@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<AnchorPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@../css/leaderboardPage.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.LeaderboardCtrl">
+    <children>
+        <BorderPane layoutX="-1.0" layoutY="-1.0" prefHeight="900.0" prefWidth="1600.0">
+            <top>
+                <Pane fx:id="topBar" prefHeight="80.0" prefWidth="1600.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#05668D" height="80.0" stroke="BLACK" strokeWidth="0.0" width="1600.0" />
+                        <BorderPane prefHeight="80.0" prefWidth="1600.0">
+                            <left>
+                                <HBox prefHeight="80.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+                                    <children>
+                                        <ImageView fx:id="trophy" fitHeight="60.0" pickOnBounds="true" preserveRatio="true" styleClass="clickable">
+                                            <HBox.margin>
+                                                <Insets left="20.0" top="10.0" />
+                                            </HBox.margin>
+                                            <image>
+                                                <Image url="@../icons/angle-left-solid.png" />
+                                            </image>
+                                            <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                            </cursor>
+                                        </ImageView>
+                                    </children>
+                                </HBox>
+                            </left>
+                            <center>
+                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Global Leaderboard" wrappingWidth="451.2265167236328" BorderPane.alignment="CENTER">
+                                    <font>
+                                        <Font name="System Bold" size="48.0" />
+                                    </font>
+                                </Text>
+                            </center>
+                            <right>
+                                <HBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="80.0" prefWidth="280.0" BorderPane.alignment="CENTER">
+                                    <BorderPane.margin>
+                                        <Insets right="20.0" />
+                                    </BorderPane.margin>
+                                </HBox>
+                            </right>
+                        </BorderPane>
+                    </children>
+                </Pane>
+            </top>
+            <center>
+                <VBox fx:id="bigLeaderboard" alignment="TOP_CENTER" layoutX="231.0" layoutY="3.0" prefHeight="751.0" prefWidth="1015.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <Button id="leaderboardTitle" mnemonicParsing="false" prefHeight="41.0" prefWidth="1117.0" text="All-time top players in singleplayer">
+                            <VBox.margin>
+                                <Insets left="20.0" top="20.0" />
+                            </VBox.margin>
+                        </Button>
+                        <TableView fx:id="leaderboard" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720" prefWidth="1117.0">
+                            <columns>
+                                <TableColumn fx:id="scoreColumn" editable="false" prefWidth="300.0" sortable="false" text="Score" />
+                                <TableColumn fx:id="playerColumn" editable="false" prefWidth="850.0" sortable="false" text="Player" />
+                            </columns>
+                            <VBox.margin>
+                                <Insets left="20.0" />
+                            </VBox.margin>
+                        </TableView>
+                    </children>
+                </VBox>
+
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>
