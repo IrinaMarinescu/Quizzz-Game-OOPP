@@ -19,11 +19,9 @@ package client.scenes;
 import client.scenes.controllerrequirements.MainFrameCtrlRequirements;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Quote;
 import java.net.URL;
 import java.time.Clock;
 import java.util.ResourceBundle;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
@@ -38,7 +36,6 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 
-    private ObservableList<Quote> data;
     private long lastEscapeKeyPressTime;
 
     //@FXML

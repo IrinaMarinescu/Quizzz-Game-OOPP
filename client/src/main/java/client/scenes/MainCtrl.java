@@ -37,21 +37,28 @@ public class MainCtrl implements MainCtrlRequirements {
     private QuestionFrameCtrl questionFrameCtrl;
     private Scene questionFrame;
 
+    private boolean widthChanged = false;
+
     /**
      * Initialize this controller using components provided by Main
      *
-     * @param primaryStage The (only) stage containing all scenes
-     * @param mainFrame    Controller file and parent node of mainFrame node
+     * @param primaryStage  The (only) stage containing all scenes
+     * @param questionFrame Controller file and parent node of questionFrame node
      */
     public void initialize(Stage primaryStage, Pair<MainFrameCtrl, Parent> mainFrame,
                            Pair<QuestionFrameCtrl, Parent> questionFrame) {
         this.primaryStage = primaryStage;
 
-        this.mainFrameCtrl = mainFrame.getKey();
-        this.mainFrame = new Scene(mainFrame.getValue());
+        primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
+            if (widthChanged) {
+                questionFrameCtrl.resizeTimerBar(newVal.intValue(), oldVal.intValue() - newVal.intValue());
+            }
+            widthChanged = true;
+        });
 
         this.questionFrameCtrl = questionFrame.getKey();
         this.questionFrame = new Scene(questionFrame.getValue());
+        this.questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
 
         primaryStage.setTitle("Quizzzzz!");
 
@@ -126,7 +133,6 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     public void showQuestionFrame() {
         primaryStage.setScene(questionFrame);
-        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e));
     }
 
     public void showLobbyFrame() {
