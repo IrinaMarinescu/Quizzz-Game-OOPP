@@ -72,7 +72,7 @@ public class Main extends Application {
         var mainFrame =
             FXML.load(MainFrameCtrl.class, "client/scenes/mainFrame.fxml", "client/css/mainFrame.css");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        // mainCtrl.initialize(primaryStage, mainFrame);
+        mainCtrl.initialize(primaryStage, mainFrame, questionFrame);
         //mainCtrl.initialize(primaryStage, questionFrame, injectedCenterExample);
     }
 }
