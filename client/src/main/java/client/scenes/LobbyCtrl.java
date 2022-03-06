@@ -10,28 +10,30 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-
+import javax.inject.Inject;
 
 public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
 
     @FXML
     private TableColumn<String, String> name;
-
     @FXML
     private TableView<String> table;
 
+    private final MainCtrl mainCtrl;
+
+    @Inject
+    public LobbyCtrl(MainCtrl mainCtrl) {
+        this.mainCtrl = mainCtrl;
+    }
+
     @FXML
     public void initializeMultiplayerGame() {
-        MainCtrl x = new MainCtrl();
-        x.startMultiplayerGame();
+        mainCtrl.startMultiplayerGame();
     }
 
     @FXML
     public void goBack() {
-        MainCtrl x = new MainCtrl();
-        x.playerLeavesLobby();
-
-        // I'm not sure if that's the right method, but I assume it is.
+        mainCtrl.playerLeavesLobby();
     }
 
     ObservableList<String> list = FXCollections.observableArrayList(
