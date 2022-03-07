@@ -11,13 +11,6 @@ public interface MainCtrlRequirements {
     void disconnect();
 
     /**
-     * Connects to a server
-     *
-     * @param ip IP address of the server to connect to
-     */
-    void connectToServer(String ip);
-
-    /**
      *
      */
     void startSingleplayerGame();
@@ -51,5 +44,7 @@ public interface MainCtrlRequirements {
     /**
      * Called by the lobby when a player leaves the game
      */
-    void playerLeavesLobby();
+    void playerLeavesLobby(String name);
+
+    void halveRemainingTime();
 }

@@ -17,7 +17,6 @@
 package client.scenes;
 
 import client.scenes.controllerrequirements.MainCtrlRequirements;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -39,8 +38,8 @@ public class MainCtrl implements MainCtrlRequirements {
     /**
      * Initialize this controller using components provided by Main
      *
-     * @param primaryStage          The (only) stage containing all scenes
-     * @param questionFrame         Controller file and parent node of questionFrame node
+     * @param primaryStage  The (only) stage containing all scenes
+     * @param questionFrame Controller file and parent node of questionFrame node
      */
     public void initialize(Stage primaryStage, Pair<QuestionFrameCtrl, Parent> questionFrame) {
         this.primaryStage = primaryStage;
@@ -67,11 +66,6 @@ public class MainCtrl implements MainCtrlRequirements {
 
         // DO USEFUL STUFF HERE
         primaryStage.close();
-    }
-
-    @Override
-    public void connectToServer(String ip) {
-
     }
 
     @Override
@@ -105,7 +99,12 @@ public class MainCtrl implements MainCtrlRequirements {
     }
 
     @Override
-    public void playerLeavesLobby() {
+    public void playerLeavesLobby(String name) {
+
+    }
+
+    @Override
+    public void halveRemainingTime() {
 
     }
 

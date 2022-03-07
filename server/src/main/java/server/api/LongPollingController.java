@@ -39,7 +39,6 @@ public class LongPollingController {
      * This must be called by server-side methods to send data to the client.
      * This generates a JSON String and sends it to all connected players.
      * <p>
-     * TODO: Think of all necessary request types
      *
      * @param type          The type of the request (Possible values: "JOKER", "EMOJI", ???)
      * @param keyValuePairs The key value pairs in generated JSON String

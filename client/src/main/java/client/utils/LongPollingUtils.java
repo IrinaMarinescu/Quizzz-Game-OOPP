@@ -2,6 +2,7 @@ package client.utils;
 
 import static client.utils.ServerUtils.APPLICATION_JSON;
 
+import client.scenes.MainCtrl;
 import client.scenes.QuestionFrameCtrl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -17,6 +18,7 @@ import org.glassfish.jersey.client.ClientConfig;
 public class LongPollingUtils {
 
     private final ServerUtils serverUtils;
+    private final MainCtrl mainCtrl;
     private final QuestionFrameCtrl questionFrameCtrl;
     private final ObjectMapper mapper = new ObjectMapper();
     private boolean active;
@@ -28,9 +30,11 @@ public class LongPollingUtils {
      * @param questionFrameCtrl QuestionFrameCtrl object
      */
     @Inject
-    public LongPollingUtils(ServerUtils serverUtils, QuestionFrameCtrl questionFrameCtrl) {
+    public LongPollingUtils(ServerUtils serverUtils, MainCtrl mainCtrl, QuestionFrameCtrl questionFrameCtrl) {
         this.serverUtils = serverUtils;
+        this.mainCtrl = mainCtrl;
         this.questionFrameCtrl = questionFrameCtrl;
+
         this.active = false;
     }
 
@@ -41,7 +45,11 @@ public class LongPollingUtils {
      */
     public void setPollingActive(boolean pollingActive) {
         if (!active && pollingActive) {
-            new Thread(this::sendPoll).start();
+            new Thread(() -> {
+                while (active) {
+                    sendPoll();
+                }
+            }).start();
         }
         active = pollingActive;
     }
@@ -54,14 +62,12 @@ public class LongPollingUtils {
             .target(serverUtils.getServerIP()).path("poll")
             .request(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
-            .get(new GenericType<String>() {
+            .get(new GenericType<>() {
             });
 
         try {
             if (active) {
-                JsonNode response = mapper.readTree(json);
-                performAction(response);
-                sendPoll();
+                performAction(mapper.readTree(json));
             }
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -81,12 +87,12 @@ public class LongPollingUtils {
                 String reaction = response.get("reaction").asText();
                 questionFrameCtrl.displayNewEmoji(name, reaction);
                 break;
-            case "JOKER":
-                String sort = response.get("sort").asText();
-                if (sort.equals("halveTime")) {
-                    // This should target mainCtrl at first
-                    questionFrameCtrl.halveRemainingTime();
-                }
+            case "HALVE_TIME":
+                mainCtrl.halveRemainingTime();
+                break;
+            case "DISCONNECT":
+                String player = response.get("name").asText();
+                mainCtrl.playerLeavesLobby(player);
                 break;
             default:
                 System.err.println("Unknown long polling response type");

@@ -45,15 +45,7 @@ public class ActivityController {
     public void sendHelloEmojiToAll() {
         longPollingController.dispatch("EMOJI", Pair.of("name", "Per"), Pair.of("reaction", "happy"));
     }
-
-    /**
-     * FOR DEMONSTRATION OF HOW LONG POLLING WORKS
-     */
-    @GetMapping(path = {"test2", "test2/"})
-    public void halveTime() {
-        longPollingController.dispatch("JOKER", Pair.of("sort", "halveTime"));
-    }
-
+    
     /**
      * Uses the function defined {@link ActivityRepository} to fetch a number of random entries from the activity table.
      *
