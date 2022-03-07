@@ -21,7 +21,17 @@ package client.utils;
  */
 public class ServerUtils {
 
+    public static final String applicationJson = "application/json";
     private String serverIP = "http://localhost:8080/";
+
+    /**
+     * Get the IP of the server
+     *
+     * @return the IP of the server
+     */
+    public String getServerIP() {
+        return serverIP;
+    }
 
     /**
      * Set server IP
@@ -46,11 +56,5 @@ public class ServerUtils {
     public boolean validateIP(String serverIP) {
         // TODO checks if the provided IP is correct
         return true;
-    }
-
-    public final static String APPLICATION_JSON = "application/json";
-
-    public String getServerIP() {
-        return serverIP;
     }
 }

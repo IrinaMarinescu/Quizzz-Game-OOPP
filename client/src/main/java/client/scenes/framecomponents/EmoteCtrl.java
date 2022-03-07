@@ -57,8 +57,16 @@ public class EmoteCtrl {
     public void addReaction(String name, String reaction) {
         String pathToImage = "client/emoticons/" + reactionImage.get(reaction);
 
+        if (test) {
+            if (reactionContainer.getChildren().size() < MAX_EMOTES) {
+                reactionContainer.getChildren().add(0, new Circle());
+            }
+            return;
+        }
+
         var emoteContainer = loader.load(EmoteContainerCtrl.class, "client/scenes/EmoteContainer.fxml", null);
         emoteContainer.getKey().initialize(name, pathToImage);
+
         Platform.runLater(() -> {
             reactionContainer.getChildren().add(0, emoteContainer.getValue());
             if (visibleEmotes == MAX_EMOTES) {
@@ -66,18 +74,8 @@ public class EmoteCtrl {
             } else {
                 visibleEmotes++;
             }
+            timeUtils.runAfterDelay(() -> animate(emoteContainer.getValue()), 5.0);
         });
-
-        if (test) {
-            reactionContainer.getChildren().add(0, new Circle());
-            return;
-        }
-
-        var emoteContainer = loader.load(EmoteContainerCtrl.class, "client/scenes/EmoteContainer.fxml", null);
-        emoteContainer.getKey().initialize(name, pathToImage);
-        reactionContainer.getChildren().add(0, emoteContainer.getValue());
-
-        timeUtils.runAfterDelay(() -> animate(emoteContainer.getValue()), 5.0);
     }
 
     /**

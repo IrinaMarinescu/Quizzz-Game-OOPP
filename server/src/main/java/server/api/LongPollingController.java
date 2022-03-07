@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LongPollingController {
 
     private final ObjectMapper mapper = new ObjectMapper();
-    private String json;
+    public String json;
 
     /**
      * This is where front-end sends a request which gets stored
@@ -25,7 +25,7 @@ public class LongPollingController {
      * @return A JSON string corresponding to the result
      */
     @GetMapping(path = {"", "/"})
-    synchronized public ResponseEntity<String> receivePoll() {
+    synchronized ResponseEntity<String> receivePoll() {
         try {
             wait();
         } catch (InterruptedException e) {
@@ -57,8 +57,9 @@ public class LongPollingController {
      *                      <p>
      *                      <p>
      */
+
     @SafeVarargs
-    final synchronized public void dispatch(String type, Pair<String, String>... keyValuePairs) {
+    final synchronized void dispatch(String type, Pair<String, String>... keyValuePairs) {
         ObjectNode res = mapper.createObjectNode();
         res.put("type", type);
         for (Pair<String, String> pair : keyValuePairs) {

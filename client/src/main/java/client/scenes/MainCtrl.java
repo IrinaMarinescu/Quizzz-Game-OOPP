@@ -45,8 +45,7 @@ public class MainCtrl implements MainCtrlRequirements {
      * @param primaryStage  The (only) stage containing all scenes
      * @param questionFrame Controller file and parent node of questionFrame node
      */
-    public void initialize(Stage primaryStage, Pair<MainFrameCtrl, Parent> mainFrame,
-                           Pair<QuestionFrameCtrl, Parent> questionFrame) {
+    public void initialize(Stage primaryStage, Pair<QuestionFrameCtrl, Parent> questionFrame) {
         this.primaryStage = primaryStage;
 
         primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
@@ -62,7 +61,7 @@ public class MainCtrl implements MainCtrlRequirements {
 
         primaryStage.setTitle("Quizzzzz!");
 
-        showMainFrame();
+        showQuestionFrame();
         primaryStage.show();
     }
 

@@ -1,6 +1,6 @@
 package client.utils;
 
-import static client.utils.ServerUtils.APPLICATION_JSON;
+import static client.utils.ServerUtils.applicationJson;
 
 import client.scenes.MainCtrl;
 import client.scenes.QuestionFrameCtrl;
@@ -17,11 +17,13 @@ import org.glassfish.jersey.client.ClientConfig;
  */
 public class LongPollingUtils {
 
+    public boolean test = false;
+
     private final ServerUtils serverUtils;
     private final MainCtrl mainCtrl;
-    private final QuestionFrameCtrl questionFrameCtrl;
+    public final QuestionFrameCtrl questionFrameCtrl;
     private final ObjectMapper mapper = new ObjectMapper();
-    private boolean active;
+    public boolean active;
 
     /**
      * Constructor
@@ -44,7 +46,7 @@ public class LongPollingUtils {
      * @param pollingActive Whether polling must be active on front-end
      */
     public void setPollingActive(boolean pollingActive) {
-        if (!active && pollingActive) {
+        if (!active && pollingActive && !test) {
             new Thread(() -> {
                 while (active) {
                     sendPoll();
@@ -60,8 +62,8 @@ public class LongPollingUtils {
     private void sendPoll() {
         String json = ClientBuilder.newClient(new ClientConfig())
             .target(serverUtils.getServerIP()).path("poll")
-            .request(APPLICATION_JSON)
-            .accept(APPLICATION_JSON)
+            .request(applicationJson)
+            .accept(applicationJson)
             .get(new GenericType<>() {
             });
 
@@ -80,7 +82,7 @@ public class LongPollingUtils {
      *
      * @param response An object generated from the parsed JSON string that allows for value retrieval
      */
-    private void performAction(JsonNode response) {
+    public void performAction(JsonNode response) {
         switch (response.get("type").asText()) {
             case "EMOJI":
                 String name = response.get("name").asText();
