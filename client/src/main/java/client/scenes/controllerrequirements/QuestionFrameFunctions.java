@@ -3,7 +3,7 @@ package client.scenes.controllerrequirements;
 import commons.LeaderboardEntry;
 import java.util.List;
 import javafx.scene.Node;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 
 /**
  * This interface lists all functions in QuestionFrameCtrl that should ever be needed by MainCtrl
@@ -50,11 +50,12 @@ public interface QuestionFrameFunctions {
     void incrementQuestionNumber();
 
     /**
-     * Sets contents of the pop-up leaderboard
+     * Makes leaderboard entries visible in side leaderboard
      *
-     * @param entries A list of LeaderboardEntry objects representing leaderboard fields
+     * @param entries The entries to display in the leaderboard
+     * @return List of entries after sorting and slicing (Only relevant for testing)
      */
-    void setLeaderboardContents(List<LeaderboardEntry> entries);
+    List<LeaderboardEntry> setLeaderboardContents(List<LeaderboardEntry> entries);
 
     /**
      * Provides functionality for keybindings to accelerate certain actions
@@ -63,5 +64,5 @@ public interface QuestionFrameFunctions {
      *          <p>
      *          This should only be called by the MainCtrl showQuestionFrame method
      */
-    void keyPressed(KeyEvent e);
+    void keyPressed(KeyCode e);
 }

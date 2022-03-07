@@ -21,7 +21,7 @@
         <BorderPane fx:id="topBar" prefHeight="75" prefWidth="1600" BorderPane.alignment="CENTER">
             <left>
                 <HBox fx:id="trophyBox" BorderPane.alignment="CENTER">
-                    <Button fx:id="trophy" mnemonicParsing="false" onAction="#toggleLeaderboardVisibility"
+                    <Button fx:id="trophy" mnemonicParsing="false" onAction="#openLeaderboard"
                             styleClass="clickable">
                         <tooltip>
                             <Tooltip id="tooltip" text="Toggle leaderboard visibility"/>
@@ -39,19 +39,21 @@
             <VBox alignment="CENTER" prefWidth="370" prefHeight="350">
                 <TextField fx:id="username" prefColumnCount="1" promptText="Username"
                            alignment="CENTER_LEFT"/>
+                <Text fx:id="usernameError" text="The username is already taken. Try again."
+                      BorderPane.alignment="CENTER" styleClass="error" visible="false"/>
                 <Region VBox.vgrow="ALWAYS"/>
                 <TextField fx:id="serverIP" prefColumnCount="1"
-                           promptText="Server's IP"
-                           alignment="CENTER_LEFT"/>
+                           promptText="Server's IP" alignment="CENTER_LEFT"/>
+                <Text fx:id="serverIPError" text="The provided server IP is incorrect. Try again."
+                      BorderPane.alignment="CENTER" styleClass="error" visible="false"/>
                 <Region VBox.vgrow="ALWAYS"/>
-                <Button fx:id="singleplayer" mnemonicParsing="false" onAction="#singleplayer"
-                        text="Play Solo"
-                        styleClass="clickable"/>
+                <Button fx:id="singleplayer" mnemonicParsing="false" onAction="#startSingleplayerGame"
+                        text="Play Solo" styleClass="clickable"/>
+                <Text text="" BorderPane.alignment="CENTER" styleClass="error" visible="false"/>
                 <Region VBox.vgrow="ALWAYS"/>
-
-                <Button fx:id="multiplayer" mnemonicParsing="false" onAction="#mulitplayer"
-                        text="Play with friends"
-                        styleClass="clickable"/>
+                <Button fx:id="multiplayer" mnemonicParsing="false" onAction="#startMultiplayerGame"
+                        text="Play with friends" styleClass="clickable"/>
+                <Text text="" BorderPane.alignment="CENTER" styleClass="error" visible="false"/>
                 <Region VBox.vgrow="ALWAYS"/>
             </VBox>
         </VBox>

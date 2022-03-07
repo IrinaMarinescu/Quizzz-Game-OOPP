@@ -11,15 +11,15 @@ import javafx.scene.text.Text;
 public class EmoteContainerCtrl {
 
     @FXML
-    private ImageView emoticon;
+    public ImageView emoticon;
     @FXML
-    private Text person;
+    public Text person;
 
     /**
      * Sets fields of this class
      *
      * @param name        Name of person
-     * @param pathToImage Path to image
+     * @param pathToImage The path to the image
      */
     public void initialize(String name, String pathToImage) {
         person.setText(name);

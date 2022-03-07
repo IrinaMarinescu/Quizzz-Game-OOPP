@@ -2,13 +2,15 @@ package client.scenes.framecomponents;
 
 import client.Main;
 import client.MyFXML;
+import client.utils.TimeUtils;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 /**
@@ -16,22 +18,27 @@ import javafx.util.Duration;
  */
 public class EmoteCtrl {
 
-    private static final int MAX_EMOTES = 5;
-    private Map<String, String> reactionImage;
+    public boolean test = false;
 
-    private VBox reactionContainer;
-    private final MyFXML loader = Main.getLoader();
+    public static final int MAX_EMOTES = 5;
+    public Map<String, String> reactionImage;
 
-    private int visibleEmotes;
+    public VBox reactionContainer;
+    public final MyFXML loader = Main.getLoader();
+    private TimeUtils timeUtils;
+
+    public FadeTransition currentAnimation;
+    public int visibleEmotes;
 
     /**
      * Initializes this class
      *
      * @param reactionContainer The container containing users' emotes
      */
-    public void initialize(VBox reactionContainer) {
+    public void initialize(VBox reactionContainer, TimeUtils timeUtils) {
         this.reactionContainer = reactionContainer;
         this.visibleEmotes = 0;
+        this.timeUtils = timeUtils;
 
         reactionImage = Stream.of(new String[][] {
             {"happy", "face-grin-squint-solid.png"},
@@ -61,17 +68,31 @@ public class EmoteCtrl {
             }
         });
 
-        new Thread(() -> {
-            try {
-                TimeUnit.SECONDS.sleep(5);
-                FadeTransition fade = new FadeTransition(new Duration(3000), emoteContainer.getValue());
-                fade.setFromValue(1.0);
-                fade.setToValue(0.0);
-                fade.play();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                System.err.println("InterruptError at emote fadeAway animation");
-            }
-        }).start();
+        if (test) {
+            reactionContainer.getChildren().add(0, new Circle());
+            return;
+        }
+
+        var emoteContainer = loader.load(EmoteContainerCtrl.class, "client/scenes/EmoteContainer.fxml", null);
+        emoteContainer.getKey().initialize(name, pathToImage);
+        reactionContainer.getChildren().add(0, emoteContainer.getValue());
+
+        timeUtils.runAfterDelay(() -> animate(emoteContainer.getValue()), 5.0);
+    }
+
+    /**
+     * Animates a provided node with a fade after an initial delay
+     *
+     * @param emoteField The node to be animated
+     */
+    void animate(Node emoteField) {
+        FadeTransition fade = new FadeTransition(new Duration(3000), emoteField);
+        currentAnimation = fade;
+
+        fade.setFromValue(1.0);
+        fade.setToValue(0.0);
+        if (!test) {
+            fade.play();
+        }
     }
 }

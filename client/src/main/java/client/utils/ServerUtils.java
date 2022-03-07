@@ -22,6 +22,32 @@ package client.utils;
 public class ServerUtils {
 
     private String serverIP = "http://localhost:8080/";
+
+    /**
+     * Set server IP
+     *
+     * @param serverIP IP to set
+     * @return true if serverIP is correct, false otherwise
+     */
+    public boolean setServerIP(String serverIP) {
+        if (validateIP(serverIP)) {
+            this.serverIP = serverIP;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if the provided server IP is correct
+     *
+     * @param serverIP IP to validate
+     * @return true if serverIP is correct, false otherwise
+     */
+    public boolean validateIP(String serverIP) {
+        // TODO checks if the provided IP is correct
+        return true;
+    }
+
     public final static String APPLICATION_JSON = "application/json";
 
     public String getServerIP() {

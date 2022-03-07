@@ -3,26 +3,25 @@ package client.scenes;
 import client.scenes.controllerrequirements.QuestionFrameFunctions;
 import client.scenes.framecomponents.EmoteCtrl;
 import client.scenes.framecomponents.TimerBarCtrl;
+import client.utils.TimeUtils;
 import commons.LeaderboardEntry;
 import java.net.URL;
-import java.time.Clock;
 import java.util.List;
-import java.util.Random;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -33,26 +32,31 @@ import javax.inject.Inject;
  */
 public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions {
 
-    private static final int LEADERBOARD_SIZE_MAX = 5;
+    public boolean test = false;
 
-    private final MainCtrl mainCtrl;
+    public static final int LEADERBOARD_SIZE_MAX = 5;
+
+    final MainCtrl mainCtrl;
     private final TimerBarCtrl timerBarCtrl;
     private final EmoteCtrl emoteCtrl;
+    TimeUtils timeUtils;
 
     @FXML
     public Rectangle timerBar;
     @FXML
-    private VBox sideLeaderboard;
+    VBox sideLeaderboard;
     @FXML
-    private Pane centerContent;
+    BorderPane borderPane;
     @FXML
     private Button trophy;
+    @FXML
+    private Button back;
     @FXML
     private Button emote;
     @FXML
     private VBox reactionContainer;
     @FXML
-    private HBox emoticonSelectionField;
+    HBox emoticonSelectionField;
     @FXML
     private Button scoreField;
     @FXML
@@ -66,7 +70,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
     @FXML
     private Button turnIndicator;
     @FXML
-    private VBox helpMenuContainer;
+    public VBox helpMenuContainer;
     @FXML
     private Text helpPointsGained;
     @FXML
@@ -83,10 +87,11 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
 
     private List<Button> jokers;
 
-    private boolean isMultiplayerGame;
+    boolean isMultiplayerGame;
     private int gameScore;
     private int questionNumber;
-    private long lastEscapeKeyPressTime;
+    long lastEscapeKeyPressTime;
+
 
     /**
      * Injects necessary dependencies
@@ -94,10 +99,11 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
      * @param mainCtrl The main front-end controller
      */
     @Inject
-    public QuestionFrameCtrl(MainCtrl mainCtrl, TimerBarCtrl timerBarCtrl, EmoteCtrl emoteCtrl) {
+    public QuestionFrameCtrl(MainCtrl mainCtrl, TimerBarCtrl timerBarCtrl, EmoteCtrl emoteCtrl, TimeUtils timeUtils) {
         this.mainCtrl = mainCtrl;
         this.timerBarCtrl = timerBarCtrl;
         this.emoteCtrl = emoteCtrl;
+        this.timeUtils = timeUtils;
     }
 
     /**
@@ -110,27 +116,28 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
     public void initialize(URL location, ResourceBundle resources) {
         jokers = List.of(halveTime, eliminateWrongAnswer, doublePoints);
 
-        timerBarCtrl.initialize(timerBar);
-        emoteCtrl.initialize(reactionContainer);
+        timerBar.setManaged(false);
+
+        timerBarCtrl.initialize(timerBar, timeUtils);
+        emoteCtrl.initialize(reactionContainer, timeUtils);
 
         playerColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getName()));
         scoreColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getScoreString()));
 
-        this.lastEscapeKeyPressTime = 0;
+        lastEscapeKeyPressTime = 0;
 
         // LINES BELOW ARE FOR DEMONSTRATION PURPOSES
 
-        setRemainingTime(10);
+        setRemainingTime(20);
 
         initializeMultiplayerGame(List.of("Per", "Andrei"));
-        // startSingleplayerGame();
+        //initializeSingleplayerGame();
         addPoints(100);
     }
 
     /**
      * Resets the question frame and initializes settings for a new single-player game
      */
-    @SuppressWarnings("unused")
     public void initializeSingleplayerGame() {
         startNewGame(false, null);
     }
@@ -153,12 +160,16 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
     private void startNewGame(boolean isMultiplayerGame, List<String> playerNames) {
         this.isMultiplayerGame = isMultiplayerGame;
         this.gameScore = 0;
-        this.questionNumber = 0;
+        this.questionNumber = -1;
+        this.lastEscapeKeyPressTime = 0;
+
         incrementQuestionNumber();
 
         trophy.setManaged(isMultiplayerGame);
         trophy.setVisible(isMultiplayerGame);
         emote.setVisible(isMultiplayerGame);
+        back.setManaged(!isMultiplayerGame);
+        back.setVisible(!isMultiplayerGame);
 
         for (Button joker : jokers) {
             if (joker.getStyleClass().contains("usedJoker")) {
@@ -168,8 +179,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
         }
 
         if (isMultiplayerGame) {
-            List<LeaderboardEntry> players = playerNames
-                .stream()
+            List<LeaderboardEntry> players = playerNames.stream()
                 .map(p -> new LeaderboardEntry(p, 0))
                 .collect(Collectors.toList());
             setLeaderboardContents(players);
@@ -187,8 +197,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
      * @param questionNode The node to be inserted in the center of the frame
      */
     public void setCenterContent(Node questionNode) {
-        centerContent.getChildren().clear();
-        centerContent.getChildren().add(questionNode);
+        borderPane.setCenter(questionNode);
     }
 
     /**
@@ -203,18 +212,10 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
         gameScore += points;
         scoreField.setText(((Integer) gameScore).toString());
 
-        new Thread(() -> {
-            try {
-                TimeUnit.SECONDS.sleep(3);
-                newPoints.setVisible(false);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                System.err.println("InterruptError at addPoints delay");
-            }
-        }).start();
-
         helpPointsGained.setText("+" + points);
         helpMenuScore.setText(((Integer) gameScore).toString());
+
+        timeUtils.runAfterDelay(() -> newPoints.setVisible(false), 3);
     }
 
     /**
@@ -231,21 +232,25 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
      *
      * @param entries A list of LeaderboardEntry objects representing leaderboard fields
      */
-    public void setLeaderboardContents(List<LeaderboardEntry> entries) {
-        entries = entries.stream().sorted().collect(Collectors.toList());
-        while (entries.size() > LEADERBOARD_SIZE_MAX) {
-            entries.remove(entries.size() - 1);
+    public List<LeaderboardEntry> setLeaderboardContents(List<LeaderboardEntry> entries) {
+        entries = entries.stream()
+            .sorted()
+            .limit(LEADERBOARD_SIZE_MAX)
+            .collect(Collectors.toList());
+
+        if (!test) {
+            ObservableList<LeaderboardEntry> data = FXCollections.observableList(entries);
+            leaderboard.setItems(data);
         }
 
-        ObservableList<LeaderboardEntry> data = FXCollections.observableList(entries);
-        leaderboard.setItems(data);
+        return entries;
     }
 
     /**
      * Toggles visibility of the side leaderboard
      */
     @FXML
-    private void toggleLeaderboardVisibility() {
+    void toggleLeaderboardVisibility() {
         if (isMultiplayerGame) {
             sideLeaderboard.setVisible(!sideLeaderboard.isVisible());
         }
@@ -255,7 +260,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
      * Toggles help menu visibility
      */
     @FXML
-    private void toggleHelpMenuVisibility() {
+    public void toggleHelpMenuVisibility() {
         helpMenuContainer.setVisible(!helpMenuContainer.isVisible());
     }
 
@@ -263,18 +268,8 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
      * Toggles emoticon field visibility
      */
     @FXML
-    private void toggleEmoticonField() {
+    void toggleEmoticonField() {
         setEmoticonField(!emoticonSelectionField.isVisible());
-    }
-
-    /**
-     * Turns off emoticon field
-     */
-    @FXML
-    private void toggleEmoticonFieldExit() {
-        if (emoticonSelectionField.isVisible()) {
-            setEmoticonField(false);
-        }
     }
 
     /**
@@ -282,43 +277,30 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
      *
      * @param visible Whether the emoticon field must become visible
      */
-    private void setEmoticonField(boolean visible) {
+    void setEmoticonField(boolean visible) {
         if (!isMultiplayerGame) {
             return;
         }
 
-        if (!visible) {
-            emoticonSelectionField.setVisible(false);
-            emote.getStyleClass().remove("jagged");
-        } else {
-            emoticonSelectionField.setVisible(true);
-            emote.getStyleClass().add("jagged");
+        emoticonSelectionField.setVisible(visible);
+        if (!test) {
+            if (visible) {
+                emote.getStyleClass().add("jagged");
+            } else {
+                emote.getStyleClass().remove("jagged");
+            }
         }
     }
 
     /**
-     * Methods to be run when a user chooses to send an emoticon
+     * Method to be run when a user chooses to send an emoticon
      * <p>
-     * Normally, these would send a request to the server
+     * TODO: make theis send a request to the server, delete placeholders
      */
     @FXML
-    private void addHappyReaction() {
-        displayNewEmoji("Chris", "happy");
-    }
-
-    @FXML
-    private void addSadReaction() {
-        displayNewEmoji("Per", "sad");
-    }
-
-    @FXML
-    private void addAngryReaction() {
-        displayNewEmoji("Mirella", "angry");
-    }
-
-    @FXML
-    private void addSurprisedReaction() {
-        displayNewEmoji("Andrei", "surprised");
+    private void addReaction(ActionEvent e) {
+        //Useful stuff below
+        displayNewEmoji("Per", ((Node) e.getSource()).getId());
     }
 
     /**
@@ -329,22 +311,6 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
      */
     public void displayNewEmoji(String name, String reaction) {
         emoteCtrl.addReaction(name, reaction);
-    }
-
-    /**
-     * Applies settings that disable the use of a joker
-     *
-     * @param joker The joker to be disabled
-     * @return Whether the joker was already disabled
-     */
-    private boolean disableJoker(Button joker) {
-        if (joker.getStyleClass().contains("usedJoker")) {
-            return true;
-        }
-
-        joker.getStyleClass().add("usedJoker");
-        joker.getStyleClass().remove("clickable");
-        return false;
     }
 
     /**
@@ -364,43 +330,46 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
     }
 
     /**
-     * Sends a request to the server that a player used the halveTime joker
+     * Changes width of timerBar in response to a change in window's size
+     *
+     * @param newVal New width of window in px
+     * @param change Change of width of window in px
      */
-    @FXML
-    private void halveTime() {
-        if (disableJoker(halveTime)) {
-            return;
-        }
-
-        // ADD USEFUL STUFF HERE
-        halveRemainingTime();
+    public void resizeTimerBar(int newVal, int change) {
+        timerBarCtrl.resize(newVal, change);
     }
 
     /**
-     * Sends a request to the server that a player used the doublePoints joker
+     * Method to run when a user uses a joker
+     *
+     * @param e Information about the joker used
+     *          <p>
+     *                   TODO: send a request to the server
      */
     @FXML
-    private void doublePoints() {
-        if (disableJoker(doublePoints)) {
+    private void useJoker(ActionEvent e) {
+        Button joker = (Button) e.getSource();
+        if (joker.getStyleClass().contains("usedJoker")) {
             return;
         }
 
-        // ADD USEFUL STUFF HERE
-        timerBarCtrl.setRemainingTime(10);
+        joker.getStyleClass().add("usedJoker");
+        joker.getStyleClass().remove("clickable");
+
+        // useful stuff below
+        System.out.println(joker.getId());
     }
 
     /**
-     * Sends a request to the server that a player used the eliminateWrongAnswer joker
+     * Disconnects from the game
      */
     @FXML
-    private void eliminateWrongAnswer() {
-        if (disableJoker(eliminateWrongAnswer)) {
-            return;
+    private void disconnect() {
+        long now = timeUtils.now();
+        if (now - lastEscapeKeyPressTime < 200) {
+            mainCtrl.disconnect();
         }
-
-        // ADD USEFUL STUFF HERE
-        incrementQuestionNumber();
-        addPoints((new Random()).nextInt(100));
+        lastEscapeKeyPressTime = now;
     }
 
     /**
@@ -410,29 +379,22 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
      *          <p>
      *          This should only be called by the MainCtrl showQuestionFrame method
      */
-    public void keyPressed(KeyEvent e) {
-        switch (e.getCode()) {
+    public void keyPressed(KeyCode e) {
+        switch (e) {
             case H:
-                toggleHelpMenuVisibility();
-                break;
-            case T:
-                halveRemainingTime();
+                useJoker(new ActionEvent(halveTime, null));
                 break;
             case E:
-                eliminateWrongAnswer();
+                useJoker(new ActionEvent(eliminateWrongAnswer, null));
                 break;
             case D:
-                doublePoints();
+                useJoker(new ActionEvent(doublePoints, null));
                 break;
             case L:
                 toggleLeaderboardVisibility();
                 break;
             case ESCAPE:
-                long now = Clock.systemDefaultZone().millis();
-                if (now - lastEscapeKeyPressTime < 200) {
-                    mainCtrl.disconnect();
-                }
-                lastEscapeKeyPressTime = now;
+                disconnect();
                 break;
             default:
                 break;
