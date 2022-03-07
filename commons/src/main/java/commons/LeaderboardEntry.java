@@ -1,14 +1,25 @@
 package commons;
 
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 
 /**
  * Wrapper for an entry in a (any) leaderboard
  */
+@Entity
 public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
 
-    private final String name;
-    private final Integer score;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    private String name;
+    private Integer score;
+
 
     /**
      * Constructor
@@ -19,6 +30,11 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     public LeaderboardEntry(String name, int score) {
         this.name = name;
         this.score = score;
+    }
+
+    @SuppressWarnings("unused")
+    private LeaderboardEntry() {
+        // for object mappers.
     }
 
     /**
