@@ -3,7 +3,6 @@ package client.scenes;
 import client.scenes.controllerrequirements.QuestionRequirements;
 import commons.Question;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.IntStream;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -193,28 +192,4 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
         return imageC;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof QuestionThreePicturesCtrl)) {
-            return false;
-        }
-        QuestionThreePicturesCtrl that = (QuestionThreePicturesCtrl) o;
-        return positionCorrectAnswer == that.positionCorrectAnswer
-            && selectedAnswerButton == that.selectedAnswerButton
-            && Objects.equals(mainCtrl, that.mainCtrl)
-            && Objects.equals(questionFrameCtrl, that.questionFrameCtrl)
-            && Objects.equals(question, that.question) && Objects.equals(answers, that.answers)
-            && Objects.equals(images, that.images) && Objects.equals(wrong, that.wrong)
-            && Objects.equals(correct, that.correct) && Objects.equals(answerA, that.answerA)
-            && Objects.equals(answerB, that.answerB) && Objects.equals(answerC, that.answerC)
-            && Objects.equals(questionOutput, that.questionOutput)
-            && Objects.equals(imageA, that.imageA) && Objects.equals(imageB, that.imageB)
-            && Objects.equals(imageC, that.imageC) && Objects.equals(correctA, that.correctA)
-            && Objects.equals(wrongA, that.wrongA) && Objects.equals(correctB, that.correctB)
-            && Objects.equals(wrongB, that.wrongB) && Objects.equals(correctC, that.correctC)
-            && Objects.equals(wrongC, that.wrongC);
-    }
 }

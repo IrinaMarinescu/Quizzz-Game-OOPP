@@ -3,7 +3,6 @@ package client.scenes;
 import client.scenes.controllerrequirements.QuestionRequirements;
 import commons.Question;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.IntStream;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -142,31 +141,6 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
 
     public ImageView getImageOutput() {
         return imageOutput;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof QuestionTrueFalseCtrl)) {
-            return false;
-        }
-        QuestionTrueFalseCtrl that = (QuestionTrueFalseCtrl) o;
-        return positionCorrectAnswer == that.positionCorrectAnswer
-            && selectedAnswerButton == that.selectedAnswerButton
-            && Objects.equals(mainCtrl, that.mainCtrl)
-            && Objects.equals(questionFrameCtrl, that.questionFrameCtrl)
-            && Objects.equals(question, that.question) && Objects.equals(answers, that.answers)
-            && Objects.equals(wrong, that.wrong) && Objects.equals(correct, that.correct)
-            && Objects.equals(trueAnswer, that.trueAnswer)
-            && Objects.equals(falseAnswer, that.falseAnswer)
-            && Objects.equals(questionOutput, that.questionOutput)
-            && Objects.equals(imageOutput, that.imageOutput)
-            && Objects.equals(correctTrue, that.correctTrue)
-            && Objects.equals(wrongTrue, that.wrongTrue)
-            && Objects.equals(correctFalse, that.correctFalse)
-            && Objects.equals(wrongFalse, that.wrongFalse);
     }
 
 }
