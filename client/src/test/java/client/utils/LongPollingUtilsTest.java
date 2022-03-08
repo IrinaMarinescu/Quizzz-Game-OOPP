@@ -1,4 +1,4 @@
-package client.scenes;
+package client.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import client.dependedoncomponents.MainCtrlDOC;
 import client.dependedoncomponents.QuestionFrameCtrlDOC;
-import client.utils.LongPollingUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +31,6 @@ public class LongPollingUtilsTest {
         mapper = new ObjectMapper();
 
         sut = new LongPollingUtils(null, mainCtrlDOC, questionFrameCtrlDOC);
-        sut.test = true;
     }
 
     @Test
@@ -45,10 +43,19 @@ public class LongPollingUtilsTest {
     @Test
     void setPollingActive() {
         assertFalse(sut.active);
-        sut.setPollingActive(true);
+        sut.setActive(true);
         assertTrue(sut.active);
-        sut.setPollingActive(false);
+        sut.setActive(false);
         assertFalse(sut.active);
+    }
+
+    @Test
+    void performActionStart() throws JsonProcessingException {
+        JsonNode action = mapper.readTree("{\"type\":\"START_MP_GAME\"}");
+
+        sut.performAction(action);
+        assertSame(1, mainCtrlDOC.countLogs());
+        assertSame(1, mainCtrlDOC.countLogs("game"));
     }
 
     @Test

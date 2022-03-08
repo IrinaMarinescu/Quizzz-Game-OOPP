@@ -25,4 +25,9 @@ public class MainCtrlDOC extends MainCtrl implements SupportsLogging {
     public void disconnect() {
         log("disc");
     }
+
+    @Override
+    public void startMultiplayerGame() {
+        log("game");
+    }
 }

@@ -39,6 +39,8 @@ public class MainCtrl implements MainCtrlRequirements {
 
     private boolean widthChanged = false;
 
+    private int gameId = 0;
+
     /**
      * Initialize this controller using components provided by Main
      *
@@ -138,5 +140,9 @@ public class MainCtrl implements MainCtrlRequirements {
     }
 
     public void showGlobalLeaderboardFrame() {
+    }
+
+    public int getGameId() {
+        return gameId;
     }
 }

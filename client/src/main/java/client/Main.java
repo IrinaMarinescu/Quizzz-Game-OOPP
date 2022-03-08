@@ -76,7 +76,7 @@ public class Main extends Application {
         LongPollingUtils longPollingUtils = INJECTOR.getInstance(client.utils.LongPollingUtils.class);
 
         // Set true to enable long polling; program will crash if server not running
-        longPollingUtils.setPollingActive(true);
+        longPollingUtils.setActive(true);
 
         mainCtrl.initialize(primaryStage, questionFrame);
     }

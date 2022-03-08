@@ -17,12 +17,11 @@ import org.glassfish.jersey.client.ClientConfig;
  */
 public class LongPollingUtils {
 
-    public boolean test = false;
-
     private final ServerUtils serverUtils;
     private final MainCtrl mainCtrl;
     public final QuestionFrameCtrl questionFrameCtrl;
     private final ObjectMapper mapper = new ObjectMapper();
+
     public boolean active;
 
     /**
@@ -41,12 +40,12 @@ public class LongPollingUtils {
     }
 
     /**
-     * Changes whether polling is active on front-end
+     * Changes whether long polling is active on front-end
      *
      * @param pollingActive Whether polling must be active on front-end
      */
-    public void setPollingActive(boolean pollingActive) {
-        if (!active && pollingActive && !test) {
+    public void setActive(boolean pollingActive) {
+        if (!active && pollingActive) {
             new Thread(() -> {
                 while (active) {
                     sendPoll();
@@ -61,7 +60,8 @@ public class LongPollingUtils {
      */
     private void sendPoll() {
         String json = ClientBuilder.newClient(new ClientConfig())
-            .target(serverUtils.getServerIP()).path("poll")
+            .target(serverUtils.getServerIP())
+            .path("poll/" + mainCtrl.getGameId())
             .request(applicationJson)
             .accept(applicationJson)
             .get(new GenericType<>() {
@@ -84,6 +84,9 @@ public class LongPollingUtils {
      */
     public void performAction(JsonNode response) {
         switch (response.get("type").asText()) {
+            case "START_MP_GAME":
+                mainCtrl.startMultiplayerGame();
+                break;
             case "EMOJI":
                 String name = response.get("name").asText();
                 String reaction = response.get("reaction").asText();
