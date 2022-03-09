@@ -16,6 +16,8 @@
 
 package client.utils;
 
+import commons.Game;
+
 /**
  * Not relevant for now
  */
@@ -48,4 +50,13 @@ public class ServerUtils {
         return true;
     }
 
+
+    public Game getGame() {
+        // TODO make request to server to get game object
+        return null;
+    }
+
+    public void sendPointsGained(int gameId, String username, int pointsGained) {
+        // TODO send to server the number of points that have been gained
+    }
 }

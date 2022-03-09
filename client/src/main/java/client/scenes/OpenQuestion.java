@@ -1,10 +1,12 @@
 package client.scenes;
 
+import client.scenes.controllerrequirements.QuestionRequirements;
+import commons.Question;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javax.inject.Inject;
 
-public class OpenQuestion {
+public class OpenQuestion implements QuestionRequirements {
 
     private MainCtrl mainCtrl;
     private QuestionFrameCtrl questionFrameCtrl;
@@ -31,6 +33,21 @@ public class OpenQuestion {
     @FXML
     public void submit() {
         submitButton.setText("Submitted!");
+    }
+
+    @Override
+    public void initialize(Question question) {
+
+    }
+
+    @Override
+    public void revealCorrectAnswer() {
+
+    }
+
+    @Override
+    public void removeIncorrectAnswer() {
+
     }
 
     ;

@@ -13,15 +13,23 @@ public class Game {
         this.id = id;
         this.questions = questions;
         this.players = players;
-        this.round = 1;
+        this.round = 0;
     }
 
     public List<Question> getQuestions() {
         return questions;
     }
 
+    public Question getNextQuestion() {
+        return questions.get(round - 1);
+    }
+
     public List<LeaderboardEntry> getPlayers() {
         return players;
+    }
+
+    public void setPlayers(List<LeaderboardEntry> players) {
+        this.players = players;
     }
 
     public int getId() {
@@ -30,6 +38,10 @@ public class Game {
 
     public int getRound() {
         return round;
+    }
+
+    public void incrementRound() {
+        round++;
     }
 
 
