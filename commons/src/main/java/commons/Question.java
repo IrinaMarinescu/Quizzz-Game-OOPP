@@ -9,10 +9,11 @@ public class Question {
     private int correctAnswer;
     private String questionType;
 
-    public Question(List<Activity> activities, String question, int correctAnswer) {
+    public Question(List<Activity> activities, String question, int correctAnswer, String questionType) {
         this.activities = activities;
         this.question = question;
         this.correctAnswer = correctAnswer;
+        this.questionType = questionType;
     }
 
     public List<Activity> getActivities() {
