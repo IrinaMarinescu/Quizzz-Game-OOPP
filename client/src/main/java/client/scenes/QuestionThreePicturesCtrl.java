@@ -3,6 +3,7 @@ package client.scenes;
 import client.scenes.controllerrequirements.QuestionRequirements;
 import commons.Question;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.IntStream;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -142,6 +143,30 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
         } else {
             mainCtrl.addPoints(0);
         }
+    }
+
+    @Override
+    public void removeIncorrectAnswer() {
+        int upperBound = 3;
+        Random rand = new Random();
+        int removedAnswer = rand.nextInt(upperBound);
+        if (positionCorrectAnswer == removedAnswer) {
+            switch (removedAnswer) {
+                case 0:
+                    removedAnswer = 1;
+                    break;
+                case 1:
+                    removedAnswer = 2;
+                    break;
+                case 2:
+                    removedAnswer = 0;
+                    break;
+                default:
+                    break;
+            }
+        }
+        answers.get(removedAnswer).setOpacity(0.5);
+        images.get(removedAnswer).setOpacity(0.5);
     }
 
     public Question getQuestion() {

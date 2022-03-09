@@ -111,6 +111,10 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
         }
     }
 
+    @Override
+    public void removeIncorrectAnswer() {
+    }
+
     public Question getQuestion() {
         return question;
     }
