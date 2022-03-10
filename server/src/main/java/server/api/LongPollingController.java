@@ -19,7 +19,7 @@ public class LongPollingController {
 
     private final ObjectMapper mapper = new ObjectMapper();
     public String json;
-    public int receivingGameId = 0;
+    public Integer receivingGameId = 0;
 
     /**
      * This is where front-end sends a request which gets stored
@@ -46,17 +46,18 @@ public class LongPollingController {
      * <p>
      *
      * @param receivingGameId The ID of the game to which the data must be sent to
-     * @param type            The type of the request (Possible values: "JOKER", "EMOJI", ???)
+     * @param type            The type of the request
+     *                        (Possible values: "START_MP_GAME", "EMOJI", "HALVE_TIME", "DISCONNECT", "JOIN")
      * @param keyValuePairs   The key value pairs in generated JSON String
      *                        <p>
      *                        <p>
      *                        EXAMPLE:
      *                        <p>
      *                        <p>
-     *                        dispatch("JOKER", Pair.of("name", "Per"), Pair.of("reaction", "happy"))
+     *                        dispatch(4, "EMOJI", Pair.of("name", "Per"), Pair.of("reaction", "happy"))
      *                        <p>
      *                        <p>
-     *                        WILL RESULT IN FOLLOWING JSON STRING:
+     *                        WILL RESULT IN FOLLOWING JSON STRING SENT TO ALL PLAYERS IN LOBBY WITH ID 4:
      *                        <p>
      *                        <p>
      *                        {"type":"EMOJI","name":"Per","reaction":"happy"}

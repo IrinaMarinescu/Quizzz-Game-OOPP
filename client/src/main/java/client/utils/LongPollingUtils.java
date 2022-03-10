@@ -1,6 +1,6 @@
 package client.utils;
 
-import static client.utils.ServerUtils.applicationJson;
+import static client.utils.ServerUtils.APPLICATION_JSON;
 
 import client.scenes.MainCtrl;
 import client.scenes.QuestionFrameCtrl;
@@ -62,8 +62,8 @@ public class LongPollingUtils {
         String json = ClientBuilder.newClient(new ClientConfig())
             .target(serverUtils.getServerIP())
             .path("poll/" + mainCtrl.getGameId())
-            .request(applicationJson)
-            .accept(applicationJson)
+            .request(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
             .get(new GenericType<>() {
             });
 
@@ -96,8 +96,12 @@ public class LongPollingUtils {
                 mainCtrl.halveRemainingTime();
                 break;
             case "DISCONNECT":
-                String player = response.get("name").asText();
-                mainCtrl.playerLeavesLobby(player);
+                String nameDisconnect = response.get("name").asText();
+                // lobbyCtrl.remove(nameDisconnect);
+                break;
+            case "JOIN":
+                String nameJoin = response.get("name").asText();
+                // lobbyCtrl.add(nameJoin);
                 break;
             default:
                 System.err.println("Unknown long polling response type");
