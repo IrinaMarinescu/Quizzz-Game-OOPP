@@ -62,7 +62,8 @@ public class MainCtrl implements MainCtrlRequirements {
 
         primaryStage.setTitle("Quizzzzz!");
 
-        showMainFrame();
+        //showMainFrame();
+        showQuestionFrame();
         primaryStage.show();
     }
 

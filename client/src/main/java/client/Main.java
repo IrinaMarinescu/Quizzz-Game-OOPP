@@ -23,6 +23,8 @@ import client.scenes.MainFrameCtrl;
 import client.scenes.OpenQuestionCtrl;
 import client.scenes.QuestionFrameCtrl;
 import client.scenes.QuestionOneImageCtrl;
+import client.scenes.QuestionThreePicturesCtrl;
+import client.scenes.QuestionTrueFalseCtrl;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -68,6 +70,11 @@ public class Main extends Application {
             FXML.load(QuestionFrameCtrl.class, "client/scenes/questionFrame.fxml", "client/css/questionFrame.css");
         var openQuestion = FXML.load(OpenQuestionCtrl.class, "client/scenes/OpenQuestion.fxml", null);
         var questionOneImage = FXML.load(QuestionOneImageCtrl.class, "client/scenes/QuestionOneImage.fxml", null);
+        var questionTrueFalse = FXML.load(QuestionTrueFalseCtrl.class, "client/scenes/QuestionThreePictures.fxml",
+            "client/css/questionTrueFalse.css");
+        var questionThreePictures =
+            FXML.load(QuestionThreePicturesCtrl.class, "client/scenes/QuestionThreePictures.fxml",
+                "client/css/questionsThreePictures.css");
 
         var mainFrame =
             FXML.load(MainFrameCtrl.class, "client/scenes/mainFrame.fxml", "client/css/mainFrame.css");
