@@ -34,8 +34,8 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     /**
      * Injects necessary dependencies
      *
-     * @param mainCtrl          - the main front-ent controller
-     * @param questionFrameCtrl - the scene into which it has to be injected
+     * @param mainCtrl          the main front-ent controller
+     * @param questionFrameCtrl the scene into which it has to be injected
      */
     @Inject
     public OpenQuestionCtrl(MainCtrl mainCtrl, QuestionFrameCtrl questionFrameCtrl) {
@@ -56,7 +56,7 @@ public class OpenQuestionCtrl implements QuestionRequirements {
             this.answer = scanner.nextInt();
             errorMessage.setVisible(false);
             submitButton.setText("Submitted!");
-            submitButton.setOnAction(null);
+            submitButton.setDisable(true);
         } else {
             errorMessage.setVisible(true);
         }
@@ -65,13 +65,15 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     /**
      * Initializes the question and sets the corresponding text as the question on screen
      *
-     * @param question - the activity that this question is about
+     * @param question the activity that this question is about
      */
     @Override
     public void initialize(Question question) {
         this.question = question;
         questionField.setText("How many Wh does " + question.getActivities().get(0).title + " take?");
         answerText.setText("");
+        submitButton.setText("Submit");
+        submitButton.setDisable(false);
     }
 
     /**

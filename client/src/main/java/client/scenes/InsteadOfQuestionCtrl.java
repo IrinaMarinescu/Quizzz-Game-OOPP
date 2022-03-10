@@ -58,8 +58,8 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
     /**
      * Injects necessary dependencies
      *
-     * @param mainCtrl          - the main front-end controller
-     * @param questionFrameCtrl - the scene into which it has to be injected
+     * @param mainCtrl          the main front-end controller
+     * @param questionFrameCtrl the scene into which it has to be injected
      */
     @Inject
     public InsteadOfQuestionCtrl(MainCtrl mainCtrl, QuestionFrameCtrl questionFrameCtrl) {
@@ -103,7 +103,7 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
     private void setChosenAnswer() {
         buttons.get(selectedAnswerButton).setStyle("-fx-border-color: #028090");
         for (int i = 0; i < 3; i++) {
-            buttons.get(i).setOnAction(null);
+            buttons.get(i).setDisable(true);
             if (i != selectedAnswerButton) {
                 buttons.get(i).setOpacity(0.5);
             }
@@ -113,7 +113,7 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
     /**
      * Initializes the given question by setting the question text, the image and the answer buttons
      *
-     * @param question - the given question with the activity that this is about
+     * @param question the given question with the activity that this is about
      */
     @Override
     public void initialize(Question question) {
@@ -140,6 +140,7 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
             wrong.get(i).setVisible(false);
             buttons.get(i).setOpacity(1);
             buttons.get(i).setStyle("-fx-border-color:  #5CB4BF");
+            buttons.get(i).setDisable(false);
         }
 
         answerA.setText(question.getActivities().get(1).title);
