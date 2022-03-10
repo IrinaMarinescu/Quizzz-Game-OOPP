@@ -229,7 +229,6 @@ public class ActivityController {
      * @param questions the list of all the questions
      */
     public void generateInsteadOfQuestion(int typeOfQuestion, List<Question> questions) {
-        String id = associateQuestion(typeOfQuestion);
         List<Activity> activities = fetchRandom(4);
         int correctAnswer = 0;
         //Find the smallest consumption value
@@ -250,7 +249,7 @@ public class ActivityController {
                 i = j;
             }
         }
-
+        String id = associateQuestion(typeOfQuestion);
         String question = "Instead of " + activities.get(i).title + "  you can do...";
         Question questionInsteadOf = new Question(activities, question, correctAnswer, id);
         questions.add(questionInsteadOf);
