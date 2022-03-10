@@ -22,7 +22,7 @@ import client.scenes.MainCtrl;
 import client.scenes.MainFrameCtrl;
 import client.scenes.OpenQuestionCtrl;
 import client.scenes.QuestionFrameCtrl;
-import client.scenes.QuestionOneImage;
+import client.scenes.QuestionOneImageCtrl;
 import client.scenes.QuestionThreePicturesCtrl;
 import client.scenes.QuestionTrueFalseCtrl;
 import com.google.inject.Injector;
@@ -68,8 +68,8 @@ public class Main extends Application {
 
         var questionFrame =
             FXML.load(QuestionFrameCtrl.class, "client/scenes/questionFrame.fxml", "client/css/questionFrame.css");
-        var openQuestion = FXML.load(OpenQuestion.class, "client/scenes/OpenQuestion.fxml", null);
-        var questionOneImage = FXML.load(QuestionOneImage.class, "client/scenes/QuestionOneImage.fxml", null);
+        var openQuestion = FXML.load(OpenQuestionCtrl.class, "client/scenes/OpenQuestion.fxml", null);
+        var questionOneImage = FXML.load(QuestionOneImageCtrl.class, "client/scenes/QuestionOneImage.fxml", null);
         var questionTrueFalse = FXML.load(QuestionTrueFalseCtrl.class, "client/scenes/QuestionThreePictures.fxml",
             "client/css/questionTrueFalse.css");
         var questionThreePictures =
