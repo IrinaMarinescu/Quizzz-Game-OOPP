@@ -90,5 +90,13 @@ public class OpenQuestionCtrl implements QuestionRequirements {
         mainCtrl.addPoints(baseScore);
     }
 
+    /**
+     * Disables the removeIncorrectAnswer joker
+     */
+    @Override
+    public void removeIncorrectAnswer() {
+        //Disable joker for this question
+    }
+
     ;
 }

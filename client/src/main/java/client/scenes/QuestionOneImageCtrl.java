@@ -174,6 +174,12 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
         return String.valueOf(randomConsumption);
     }
 
+    /**
+     * Counts the number of zeros at the end of the consumption to correctly round the options on the other two buttons
+     *
+     * @param actualConsumption The consumption of the activity for which the number of zeroes has to be counted
+     * @return The number of zeroes in the consumption
+     */
     public static int countZeros(int actualConsumption) {
         String number = String.valueOf(actualConsumption);
         int counter = 0;
@@ -202,6 +208,32 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
         } else {
             mainCtrl.addPoints(0);
         }
+    }
+
+    /**
+     * Removes one incorrect answer when that joker is chosen
+     */
+    @Override
+    public void removeIncorrectAnswer() {
+        int removedAnswer = new Random().nextInt(3);
+        if (positionCorrectAnswer == removedAnswer) {
+            switch (removedAnswer) {
+                case 0:
+                    removedAnswer = 1;
+                    break;
+                case 1:
+                    removedAnswer = 2;
+                    break;
+                case 2:
+                    removedAnswer = 0;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        buttons.get(removedAnswer).setOpacity(0.5);
+        buttons.get(removedAnswer).setDisable(true);
     }
 
     ;

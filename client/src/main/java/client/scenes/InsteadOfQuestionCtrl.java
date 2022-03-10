@@ -5,6 +5,8 @@ import commons.Question;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -165,5 +167,31 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
         } else {
             mainCtrl.addPoints(0);
         }
+    }
+
+    /**
+     * Removes one incorrect answer when that joker is chosen
+     */
+    @Override
+    public void removeIncorrectAnswer() {
+        int removedAnswer = new Random().nextInt(3);
+        if (positionCorrectAnswer == removedAnswer) {
+            switch (removedAnswer) {
+                case 0:
+                    removedAnswer = 1;
+                    break;
+                case 1:
+                    removedAnswer = 2;
+                    break;
+                case 2:
+                    removedAnswer = 0;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        buttons.get(removedAnswer).setOpacity(0.5);
+        buttons.get(removedAnswer).setDisable(true);
     }
 }
