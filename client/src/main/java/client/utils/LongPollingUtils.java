@@ -1,6 +1,6 @@
 package client.utils;
 
-import static client.utils.ServerUtils.APPLICATION_JSON;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import client.scenes.MainCtrl;
 import client.scenes.QuestionFrameCtrl;

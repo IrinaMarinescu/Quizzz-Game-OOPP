@@ -19,7 +19,7 @@ public class LongPollingController {
 
     private final ObjectMapper mapper = new ObjectMapper();
     public String json;
-    public Integer receivingGameId = 0;
+    public int receivingGameId = 0;
 
     /**
      * This is where front-end sends a request which gets stored

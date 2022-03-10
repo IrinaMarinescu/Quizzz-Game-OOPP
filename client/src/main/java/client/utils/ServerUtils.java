@@ -21,7 +21,6 @@ package client.utils;
  */
 public class ServerUtils {
 
-    public static final String APPLICATION_JSON = "application/json";
     private String serverIP = "http://localhost:8080/";
 
     /**
