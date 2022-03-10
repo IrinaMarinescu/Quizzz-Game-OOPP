@@ -57,7 +57,7 @@ public class ServerUtils {
         return true;
     }
 
-    public List<LeaderboardEntry> getTopPlayers(int limit) {
+    public List<LeaderboardEntry> getSoloLeaderboard(int limit) {
         return ClientBuilder.newClient(new ClientConfig()) //
             .target(serverIP).path("api/leaderboard/" + limit) //
             .request(APPLICATION_JSON)
