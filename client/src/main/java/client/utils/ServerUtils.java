@@ -16,6 +16,15 @@
 
 package client.utils;
 
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
+
+import commons.LeaderboardEntry;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.GenericType;
+import java.util.List;
+import org.glassfish.jersey.client.ClientConfig;
+
 /**
  * Not relevant for now
  */
@@ -48,4 +57,19 @@ public class ServerUtils {
         return true;
     }
 
+    public List<LeaderboardEntry> getTopPlayers(int limit) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(serverIP).path("api/leaderboard/" + limit) //
+            .request(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+            .get(new GenericType<>() { });
+    }
+
+    public LeaderboardEntry addLeaderboardEntry(LeaderboardEntry entry) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(serverIP).path("api/leaderboard/add") //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .post(Entity.entity(entry, APPLICATION_JSON), LeaderboardEntry.class);
+    }
 }
