@@ -21,6 +21,7 @@ import client.scenes.controllerrequirements.QuestionRequirements;
 import client.utils.ServerUtils;
 import client.utils.TimeUtils;
 import commons.Game;
+import commons.LeaderboardEntry;
 import commons.Question;
 import java.util.List;
 import javafx.application.Platform;
@@ -41,12 +42,15 @@ public class MainCtrl implements MainCtrlRequirements {
     public static final int TOTAL_ROUNDS = 4; // should be 20
 
     private String username;
-    private boolean isMultiplayerGame;
     private Game game;
+    private boolean isMultiplayerGame;
     private boolean intermediateLeaderboardShown;
     private int pointsGained;
     private long questionStartTime;
     private boolean doublePoints;
+    private double questionEndTime;
+    private int timeoutRoundCheck;
+    private String currentQuestionType;
 
     private TimeUtils timeUtils;
     private ServerUtils serverUtils;
@@ -64,9 +68,10 @@ public class MainCtrl implements MainCtrlRequirements {
     private OpenQuestion openQuestionCtrl;
     private Node openQuestion;
 
-    QuestionRequirements currentQuestionCtrl = null;
+    private QuestionOneImage questionOneImageCtrl;
+    private Node questionOneImage;
 
-    private boolean widthChanged = false;
+    QuestionRequirements currentQuestionCtrl = null;
 
     /**
      * Initializes this class
@@ -92,14 +97,15 @@ public class MainCtrl implements MainCtrlRequirements {
         this.primaryStage = primaryStage;
 
         primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
-            if (widthChanged) {
-                questionFrameCtrl.resizeTimerBar(newVal.intValue(), oldVal.intValue() - newVal.intValue());
-            }
-            widthChanged = true;
+            questionFrameCtrl.resizeTimerBar(newVal.intValue(), oldVal.intValue() - newVal.intValue());
         });
+        primaryStage.setOnCloseRequest(e -> disconnect());
 
         this.openQuestionCtrl = openQuestion.getKey();
         this.openQuestion = openQuestion.getValue();
+
+        this.questionOneImageCtrl = questionOneImage.getKey();
+        this.questionOneImage = questionOneImage.getValue();
 
         this.mainFrameCtrl = mainFrame.getKey();
         this.mainFrame = new Scene(mainFrame.getValue());
@@ -117,10 +123,16 @@ public class MainCtrl implements MainCtrlRequirements {
         primaryStage.show();
     }
 
+    /**
+     * Starts a singleplayer game
+     * <p>
+     * To be run when a person chooses solo play in the welcome screen (main frame)
+     */
     @Override
     public void startSingleplayerGame() {
         intermediateLeaderboardShown = false;
         isMultiplayerGame = false;
+        timeoutRoundCheck = 1;
         game = serverUtils.getGame();
         questionFrameCtrl.initializeSingleplayerGame();
         showQuestionFrame();
@@ -132,12 +144,16 @@ public class MainCtrl implements MainCtrlRequirements {
 
     }
 
+    /**
+     * Executes the next event (question, leaderboard, game over)
+     */
     private void nextEvent() {
+        game.setPlayers(serverUtils.getUpdatedScores(game.getId()));
+
         // The current event is the intermediate leaderboard
         if (game.getRound() == TOTAL_ROUNDS / 2 && !intermediateLeaderboardShown) {
             intermediateLeaderboardShown = true;
-            leaderboardCtrl.initialize(game.getPlayers(), 10, "intermediate");
-            primaryStage.setScene(leaderboard);
+            showLeaderboard(game.getPlayers(), 10, "intermediate");
 
             timeUtils.runAfterDelay(() -> {
                 showQuestionFrame();
@@ -148,29 +164,40 @@ public class MainCtrl implements MainCtrlRequirements {
 
         // The current event is the final leaderboard; the game is over
         if (game.getRound() == TOTAL_ROUNDS) {
-            leaderboardCtrl.initialize(game.getPlayers(), 10, "final");
-            primaryStage.setScene(leaderboard);
+            showLeaderboard(game.getPlayers(), 10, "final");
             return;
         }
 
         // The current event is a question
         game.incrementRound();
         questionFrameCtrl.incrementQuestionNumber();
+        questionFrameCtrl.setLeaderboardContents(game.getPlayers());
         Platform.runLater(() -> questionFrameCtrl.setRemainingTime(ROUND_TIME));
         questionStartTime = timeUtils.now();
+        questionEndTime = questionStartTime + ROUND_TIME * 1000.0;
         pointsGained = 0;
         doublePoints = false;
         Question currentQuestion = game.getNextQuestion();
+        currentQuestionType = currentQuestion.getQuestionType();
 
-        // TODO: change questions types so that they match
-        // TODO: implement remaining cases
-        switch (currentQuestion.getQuestionType()) {
-            case "OPEN_QUESTION":
+        switch (currentQuestionType) {
+            case "trueFalseQuestion":
+                // TODO
+                questionFrameCtrl.setWrongAnswerJoker(false);
+                break;
+            case "openQuestion":
                 currentQuestionCtrl = openQuestionCtrl;
                 questionFrameCtrl.setCenterContent(openQuestion);
                 break;
-            case "TRUE_FALSE":
-                questionFrameCtrl.setWrongAnswerJoker(false);
+            case "threePicturesQuestion":
+                // TODO
+                break;
+            case "oneImageQuestion":
+                currentQuestionCtrl = questionOneImageCtrl;
+                questionFrameCtrl.setCenterContent(questionOneImage);
+                break;
+            case "insteadOfQuestion":
+                // TODO
                 break;
             default:
                 System.err.println("Unrecognized question type in MainCtrl");
@@ -178,29 +205,43 @@ public class MainCtrl implements MainCtrlRequirements {
         }
         currentQuestionCtrl.initialize(currentQuestion);
 
+        setQuestionTimeouts(ROUND_TIME);
+    }
+
+    /**
+     * Initializes timeouts until events that will happen after question and overview
+     *
+     * @param delay The time until the end of the question
+     */
+    private void setQuestionTimeouts(double delay) {
         timeUtils.runAfterDelay(() -> {
+            if (game.getRound() != timeoutRoundCheck) {
+                return;
+            }
+
+            timeoutRoundCheck++;
             currentQuestionCtrl.revealCorrectAnswer();
             questionFrameCtrl.addPoints(pointsGained);
+            questionFrameCtrl.tempDisableJokers(OVERVIEW_TIME);
             serverUtils.sendPointsGained(game.getId(), username, pointsGained);
-            if (currentQuestion.getQuestionType().equals("TRUE_FALSE")) {
+            if (currentQuestionType.equals("trueFalseQuestion")) {
                 questionFrameCtrl.setWrongAnswerJoker(true);
             }
 
             Platform.runLater(() -> questionFrameCtrl.setRemainingTime(OVERVIEW_TIME));
-            questionFrameCtrl.tempDisableJokers(OVERVIEW_TIME);
             timeUtils.runAfterDelay(this::nextEvent, OVERVIEW_TIME);
-        }, ROUND_TIME);
+        }, delay);
     }
 
     /**
      * To be run when points are gained by the player
      *
-     * @param baseScore the score (0 - 100)
+     * @param baseScore the score in range [0; 100]
      */
     @Override
     public void addPoints(int baseScore) {
         if (baseScore != 0) {
-            double progress = ((double) (timeUtils.now() - questionStartTime)) / (ROUND_TIME * 1000.0);
+            double progress = ((double) (timeUtils.now() - questionStartTime)) / (questionEndTime - questionStartTime);
             pointsGained = (int) (50.0 + 0.5 * (1.0 - progress) * (double) baseScore);
             if (doublePoints) {
                 pointsGained *= 2;
@@ -217,56 +258,83 @@ public class MainCtrl implements MainCtrlRequirements {
         doublePoints = true;
     }
 
+    /**
+     * Halves remaining time
+     */
+    @Override
+    public void halveTime() {
+        double timeUntilRoundEnd = (questionEndTime - timeUtils.now()) / 2.0;
+        questionEndTime -= timeUntilRoundEnd;
+        questionFrameCtrl.halveRemainingTime();
+        setQuestionTimeouts(timeUntilRoundEnd / 1000.0);
+    }
+
+    /**
+     * Eliminates incorrect answer
+     */
     @Override
     public void eliminateWrongAnswer() {
         // currentQuestionCtrl.eliminateWrongAnswer();
     }
 
-    @Override
-    public void redirectToSoloLeaderboard() {
-
-    }
-
-    @Override
-    public void redirectToMainScreen() {
-
-    }
-
-    @Override
-    public void playerLeavesLobby() {
-
-    }
-
     /**
-     * Disconnects the player from an online game
+     * Disconnects the player from a game
      */
     public void disconnect() {
-
-        // DO USEFUL STUFF HERE
-        primaryStage.close();
+        // TODO stop long polling
+        serverUtils.disconnect(game.getId(), username);
+        showMainFrame();
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
+    @Override
     public void showGlobalLeaderboardFrame() {
-        leaderboardCtrl.initialize(List.of(), 10, "solo");
-        primaryStage.setScene(leaderboard);
+        showLeaderboard(serverUtils.getSoloLeaderboard(), 10, "solo");
     }
 
     public void showLobbyFrame() {
     }
 
+    /**
+     * Shows leaderboard
+     *
+     * @param players The players in the leaderboard
+     * @param maxSize The maximum number of players to be displayed
+     * @param type    The type of the leaderboard
+     */
+    private void showLeaderboard(List<LeaderboardEntry> players, int maxSize, String type) {
+        leaderboardCtrl.initialize(players, maxSize, type);
+        primaryStage.setScene(leaderboard);
+    }
+
+    /**
+     * Shows main frame (welcome/splash screen)
+     */
     public void showMainFrame() {
         primaryStage.setScene(mainFrame);
     }
 
+    /**
+     * Shows question frame
+     */
     public void showQuestionFrame() {
         primaryStage.setScene(questionFrame);
+    }
+
+    /**
+     * Getter for username field
+     *
+     * @return The player's username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * Setter for username field
+     *
+     * @param username The player's username
+     */
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

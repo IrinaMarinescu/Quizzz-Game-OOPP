@@ -1,6 +1,6 @@
 package client.scenes;
 
-import client.scenes.controllerrequirements.QuestionFrameFunctions;
+import client.scenes.controllerrequirements.QuestionFrameRequirements;
 import client.scenes.framecomponents.EmoteCtrl;
 import client.scenes.framecomponents.TimerBarCtrl;
 import client.utils.TimeUtils;
@@ -31,7 +31,7 @@ import javax.inject.Inject;
 /**
  * Controller for questionFrame scene
  */
-public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions {
+public class QuestionFrameCtrl implements Initializable, QuestionFrameRequirements {
 
     public boolean test = false;
 

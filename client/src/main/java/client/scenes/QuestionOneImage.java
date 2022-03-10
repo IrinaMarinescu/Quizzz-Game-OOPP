@@ -1,10 +1,12 @@
 package client.scenes;
 
+import client.scenes.controllerrequirements.QuestionRequirements;
+import commons.Question;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javax.inject.Inject;
 
-public class QuestionOneImage {
+public class QuestionOneImage implements QuestionRequirements {
 
     private MainCtrl mainCtrl;
     private QuestionFrameCtrl questionFrameCtrl;
@@ -47,6 +49,21 @@ public class QuestionOneImage {
     @FXML
     public void setAnswerC() {
         answerC.setText("Clicked!");
+    }
+
+    @Override
+    public void initialize(Question question) {
+
+    }
+
+    @Override
+    public void revealCorrectAnswer() {
+
+    }
+
+    @Override
+    public void removeIncorrectAnswer() {
+
     }
 
     ;
