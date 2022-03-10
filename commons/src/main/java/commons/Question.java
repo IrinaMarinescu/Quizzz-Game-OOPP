@@ -2,11 +2,12 @@ package commons;
 
 import java.util.List;
 
-public abstract class Question {
+public class Question {
 
     private List<Activity> activities;
     private String question;
     private int correctAnswer;
+    private String questionType;
 
     public Question(List<Activity> activities, String question, int correctAnswer) {
         this.activities = activities;

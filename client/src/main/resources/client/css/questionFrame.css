@@ -6,7 +6,7 @@
     -fx-background-radius: 0 0 15 15;
 }
 
-Button.inHelpMenu {
+#helpMenu Button {
     -fx-pref-height: 30;
     -fx-padding: 0;
     -fx-font-size: 12;
@@ -16,7 +16,7 @@ Button.inHelpMenu {
     -fx-fill: crimson;
 }
 
-#trophy {
+#trophy, #back {
     -fx-pref-height: 80;
     -fx-pref-width: 80;
     -fx-padding: 0;
@@ -28,7 +28,11 @@ Button.inHelpMenu {
     -fx-background-image: url('../icons/trophy-solid.png');
 }
 
-#trophy:hover {
+#back {
+    -fx-background-image: url('../icons/angle-left-solid.png');
+}
+
+#trophy:hover, #back:hover {
     -fx-opacity: 0.8;
 }
 
