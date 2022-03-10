@@ -19,15 +19,23 @@ public class Question {
         return activities;
     }
 
+    public void setActivities(List<Activity> activities) {
+        this.activities = activities;
+    }
+
     public String getQuestion() {
         return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
     public int getCorrectAnswer() {
         return correctAnswer;
     }
 
-    public String getQuestionType() {
-        return questionType;
+    public void setCorrectAnswer(int correctAnswer) {
+        this.correctAnswer = correctAnswer;
     }
 }
