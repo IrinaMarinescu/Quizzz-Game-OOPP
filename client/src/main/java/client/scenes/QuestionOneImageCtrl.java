@@ -2,9 +2,10 @@ package client.scenes;
 
 import client.scenes.controllerrequirements.QuestionRequirements;
 import commons.Question;
-
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -170,7 +171,7 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
         int min = (int) Math.floor(actualConsumption - fifteenPercent);
         int randomConsumption = (int) Math.floor(Math.random() * (max - min + 1) + min);
         //rounding the number to the appropriate number of zeroes at the end to make it harder to guess
-        randomConsumption = (int) (randomConsumption/(Math.pow(10,zeros)*Math.pow(10,zeros)));
+        randomConsumption = (int) (randomConsumption / (Math.pow(10, zeros) * Math.pow(10, zeros)));
         return String.valueOf(randomConsumption);
     }
 
@@ -184,9 +185,9 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
         String number = String.valueOf(actualConsumption);
         int counter = 0;
         for (int i = 0; i < number.length(); i++) {
-            if (i+1 == number.length() || number.charAt(i+1) == '0') {
-                if (number.charAt(i) == '0') counter++;
-            } else if (i+1 != number.length() && number.charAt(i+1) != '0') counter = 0;
+            if (i + 1 == number.length() || number.charAt(i + 1) == '0') {
+                if (number.charAt(i) == '0') {counter++;}
+            } else if (i + 1 != number.length() && number.charAt(i + 1) != '0') {counter = 0;}
         }
         return counter;
     }
