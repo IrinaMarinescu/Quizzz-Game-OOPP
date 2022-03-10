@@ -186,8 +186,12 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
         int counter = 0;
         for (int i = 0; i < number.length(); i++) {
             if (i + 1 == number.length() || number.charAt(i + 1) == '0') {
-                if (number.charAt(i) == '0') {counter++;}
-            } else if (i + 1 != number.length() && number.charAt(i + 1) != '0') {counter = 0;}
+                if (number.charAt(i) == '0') {
+                    counter++;
+                }
+            } else if (i + 1 != number.length() && number.charAt(i + 1) != '0') {
+                counter = 0;
+            }
         }
         return counter;
     }
