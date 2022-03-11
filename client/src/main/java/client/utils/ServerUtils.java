@@ -16,6 +16,11 @@
 
 package client.utils;
 
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
+
+import jakarta.ws.rs.client.ClientBuilder;
+import org.glassfish.jersey.client.ClientConfig;
+
 /**
  * Not relevant for now
  */
@@ -44,8 +49,10 @@ public class ServerUtils {
      * @return true if serverIP is correct, false otherwise
      */
     public boolean validateIP(String serverIP) {
-        // TODO checks if the provided IP is correct
-        return true;
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(serverIP).path("api/start/validate") //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .get(String.class).equals("Connected");
     }
-
 }

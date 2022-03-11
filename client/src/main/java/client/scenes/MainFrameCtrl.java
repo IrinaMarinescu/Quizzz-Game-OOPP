@@ -72,7 +72,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     }
 
     public void openLeaderboard() {
-        if (validateServerIP(serverIP.getText())) {
+        if (server.setServerIP(serverIP.getText())) {
             server.setServerIP(serverIP.getText());
             mainCtrl.showGlobalLeaderboardFrame();
         } else {
@@ -86,7 +86,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     }
 
     public void startSingleplayerGame() {
-        if (validateServerIP(serverIP.getText())) {
+        if (server.setServerIP(serverIP.getText())) {
             mainCtrl.setUsername(username.getText());
             server.setServerIP(serverIP.getText());
             mainCtrl.showQuestionFrame();
@@ -96,11 +96,11 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     }
 
     public void startMultiplayerGame() {
-        if (validateServerIP(serverIP.getText()) && validateUsername(username.getText())) {
+        if (server.setServerIP(serverIP.getText()) && validateUsername(username.getText())) {
             mainCtrl.setUsername(username.getText());
             server.setServerIP(serverIP.getText());
             mainCtrl.showLobbyFrame();
-        } else if (!validateServerIP(serverIP.getText())) {
+        } else if (server.setServerIP(serverIP.getText())) {
             displayServerIPError(true);
         } else {
             displayUsernameError(true);
@@ -126,16 +126,6 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     private boolean validateUsername(String username) {
         // TODO get usernames from server and check if the one provided by the client is in them
         return true;
-    }
-
-    /**
-     * Check if serverIP is correct
-     *
-     * @param serverIP server IP provided by player in the TextField
-     * @return true if the serverIP is correct, false otherwise
-     */
-    private boolean validateServerIP(String serverIP) {
-        return server.validateIP(serverIP);
     }
 
     public void keyPressed(KeyEvent e) {

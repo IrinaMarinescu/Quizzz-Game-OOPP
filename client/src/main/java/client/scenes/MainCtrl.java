@@ -56,14 +56,16 @@ public class MainCtrl implements MainCtrlRequirements {
             widthChanged = true;
         });
 
+        this.mainFrameCtrl = mainFrame.getKey();
+        this.mainFrame = new Scene(mainFrame.getValue());
+
         this.questionFrameCtrl = questionFrame.getKey();
         this.questionFrame = new Scene(questionFrame.getValue());
-        this.questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
 
         primaryStage.setTitle("Quizzzzz!");
 
-        //showMainFrame();
-        showQuestionFrame();
+        showMainFrame();
+
         primaryStage.show();
     }
 
@@ -134,6 +136,8 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     public void showQuestionFrame() {
         primaryStage.setScene(questionFrame);
+        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
+
     }
 
     public void showLobbyFrame() {
