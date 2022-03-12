@@ -86,7 +86,6 @@ public class MainCtrl implements MainCtrlRequirements {
 
     public void setGame(Game game) {
         this.game = game;
-        System.out.println("aaaaaaaaaaaaaaaaaa");
     }
 
     /**

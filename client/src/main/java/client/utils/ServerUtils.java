@@ -90,7 +90,6 @@ public class ServerUtils {
     }
 
     public Game startSingleplayer() {
-        System.out.println("bbbbbbbbbbbbbbbbbbbbbbb");
         return ClientBuilder.newClient(new ClientConfig()) //
             .target(serverIP).path("api/game/singleplayer/start") //
             .request(APPLICATION_JSON) //

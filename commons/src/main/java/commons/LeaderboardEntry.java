@@ -7,8 +7,11 @@ import java.util.Objects;
  */
 public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
 
-    private final String name;
-    private final Integer score;
+    private String name;
+    private Integer score;
+
+    public LeaderboardEntry() {
+    }
 
     /**
      * Constructor

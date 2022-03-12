@@ -10,6 +10,9 @@ public class Game {
     private List<LeaderboardEntry> players;
     private int round;
 
+    public Game() {
+    }
+
     public Game(UUID id, List<Question> questions, List<LeaderboardEntry> players) {
         this.id = id;
         this.questions = questions;

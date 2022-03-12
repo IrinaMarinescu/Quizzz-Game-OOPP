@@ -9,6 +9,9 @@ public class Question {
     private int correctAnswer;
     private String questionType;
 
+    public Question() {
+    }
+
     public Question(List<Activity> activities, String question, int correctAnswer, String questionType) {
         this.activities = activities;
         this.question = question;
@@ -38,5 +41,13 @@ public class Question {
 
     public void setCorrectAnswer(int correctAnswer) {
         this.correctAnswer = correctAnswer;
+    }
+
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType;
+    }
+
+    public String getQuestionType() {
+        return questionType;
     }
 }
