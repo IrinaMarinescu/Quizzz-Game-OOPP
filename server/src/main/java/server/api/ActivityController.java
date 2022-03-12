@@ -45,7 +45,10 @@ public class ActivityController {
      */
     @GetMapping("random/{limit}")
     public List<Activity> fetchRandom(@PathVariable("limit") int limit) {
-        return repo.fetchRandomActivities(limit);
+        List<Activity> res = repo.fetchRandomActivities(limit);
+        System.out.println(limit);
+        System.out.println(res + "\n");
+        return res;
     }
 
     /**
@@ -79,6 +82,7 @@ public class ActivityController {
      *
      * @return a list of all the questions for one game
      */
+    @GetMapping("generate")
     public List<Question> generateQuestions() {
         List<Question> questions = new ArrayList<>();
         Random rand = new Random();

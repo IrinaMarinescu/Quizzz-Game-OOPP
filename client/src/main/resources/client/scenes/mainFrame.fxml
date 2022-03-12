@@ -51,7 +51,7 @@
                         text="Play Solo" styleClass="clickable"/>
                 <Text text="" BorderPane.alignment="CENTER" styleClass="error" visible="false"/>
                 <Region VBox.vgrow="ALWAYS"/>
-                <Button fx:id="multiplayer" mnemonicParsing="false" onAction="#startMultiplayerGame"
+                <Button fx:id="multiplayer" mnemonicParsing="false" onAction="#joinLobby"
                         text="Play with friends" styleClass="clickable"/>
                 <Text text="" BorderPane.alignment="CENTER" styleClass="error" visible="false"/>
                 <Region VBox.vgrow="ALWAYS"/>

@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 //import javafx.scene.control.TableColumn;
@@ -72,8 +72,9 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     }
 
     public void openLeaderboard() {
-        if (server.setServerIP(serverIP.getText())) {
+        if (server.validateIP(serverIP.getText())) {
             server.setServerIP(serverIP.getText());
+
             mainCtrl.showGlobalLeaderboardFrame();
         } else {
             displayServerIPError(true);
@@ -86,21 +87,25 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     }
 
     public void startSingleplayerGame() {
-        if (server.setServerIP(serverIP.getText())) {
-            mainCtrl.setUsername(username.getText());
+        if (server.validateIP(serverIP.getText())) {
             server.setServerIP(serverIP.getText());
+            mainCtrl.setPlayer(username.getText(), 0);
+            mainCtrl.setGame(server.startSingleplayer());
+
             mainCtrl.showQuestionFrame();
         } else {
             displayServerIPError(true);
         }
     }
 
-    public void startMultiplayerGame() {
-        if (server.setServerIP(serverIP.getText()) && validateUsername(username.getText())) {
-            mainCtrl.setUsername(username.getText());
+    public void joinLobby() {
+        if (server.validateIP(serverIP.getText()) && server.validateUsername(username.getText())) {
             server.setServerIP(serverIP.getText());
+            mainCtrl.setPlayer(username.getText(), 0);
+            server.joinLobby(mainCtrl.getPlayer());
+
             mainCtrl.showLobbyFrame();
-        } else if (server.setServerIP(serverIP.getText())) {
+        } else if (!server.validateIP(serverIP.getText())) {
             displayServerIPError(true);
         } else {
             displayUsernameError(true);
@@ -117,19 +122,16 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
         serverIPError.setVisible(show);
     }
 
-    /**
-     * Check if another user in lobby already uses this name
-     *
-     * @param username username provided by player in the TextField
-     * @return true if the username is not used yet, false otherwise
-     */
-    private boolean validateUsername(String username) {
-        // TODO get usernames from server and check if the one provided by the client is in them
-        return true;
-    }
 
-    public void keyPressed(KeyEvent e) {
-        switch (e.getCode()) {
+    /**
+     * Provides functionality for keybindings to accelerate certain actions
+     *
+     * @param e Information about a keypress performed by the user
+     *          <p>
+     *          This should only be called by the MainCtrl showMainFrame method
+     */
+    public void keyPressed(KeyCode e) {
+        switch (e) {
             case H:
                 toggleHelpMenuVisibility();
                 break;

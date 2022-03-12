@@ -1,6 +1,6 @@
 package client.scenes.controllerrequirements;
 
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 
 public interface MainFrameCtrlRequirements {
 
@@ -15,5 +15,5 @@ public interface MainFrameCtrlRequirements {
      *          <p>
      *          This should only be called by the MainCtrl showQuestionFrame method
      */
-    void keyPressed(KeyEvent e);
+    void keyPressed(KeyCode e);
 }

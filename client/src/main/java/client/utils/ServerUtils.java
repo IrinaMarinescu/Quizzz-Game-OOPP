@@ -18,7 +18,12 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import commons.Game;
+import commons.LeaderboardEntry;
 import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.GenericType;
+import java.util.List;
 import org.glassfish.jersey.client.ClientConfig;
 
 /**
@@ -32,14 +37,11 @@ public class ServerUtils {
      * Set server IP
      *
      * @param serverIP IP to set
-     * @return true if serverIP is correct, false otherwise
      */
-    public boolean setServerIP(String serverIP) {
+    public void setServerIP(String serverIP) {
         if (validateIP(serverIP)) {
             this.serverIP = serverIP;
-            return true;
         }
-        return false;
     }
 
     /**
@@ -50,9 +52,49 @@ public class ServerUtils {
      */
     public boolean validateIP(String serverIP) {
         return ClientBuilder.newClient(new ClientConfig()) //
-            .target(serverIP).path("api/start/validate") //
+            .target(serverIP).path("api/game/validate") //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //
             .get(String.class).equals("Connected");
+    }
+
+    /**
+     * Check if another user in lobby already uses this name
+     *
+     * @param username username provided by player in the TextField
+     * @return true if the username is not used yet, false otherwise
+     */
+    public boolean validateUsername(String username) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(serverIP).path("api/lobby") //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .get(new GenericType<List<LeaderboardEntry>>() {
+            }).contains(username);
+    }
+
+    public void joinLobby(LeaderboardEntry player) {
+        ClientBuilder.newClient(new ClientConfig()) //
+            .target(serverIP).path("api/lobby/add") //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .post(Entity.entity(player, APPLICATION_JSON), LeaderboardEntry.class);
+    }
+
+    public Game startMultiplayerGame() {
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(serverIP).path("api/game/mulitplayer/start") //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .get(Game.class);
+    }
+
+    public Game startSingleplayer() {
+        System.out.println("bbbbbbbbbbbbbbbbbbbbbbb");
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(serverIP).path("api/game/singleplayer/start") //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .get(Game.class);
     }
 }
