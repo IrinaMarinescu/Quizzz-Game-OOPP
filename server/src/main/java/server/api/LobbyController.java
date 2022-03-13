@@ -36,4 +36,9 @@ public class LobbyController {
         lobby.add(player);
         return true;
     }
+
+    @PostMapping("/lobby/remove")
+    public boolean removePlayerFromLobby(LeaderboardEntry player) {
+        return lobby.remove(player);
+    }
 }
