@@ -10,6 +10,10 @@ public class Game {
     private List<LeaderboardEntry> players;
     private int round;
 
+
+    /**
+     * Empty constructor need to create an instance from JSON file
+     */
     public Game() {
     }
 

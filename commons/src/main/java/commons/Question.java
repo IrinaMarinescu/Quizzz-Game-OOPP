@@ -9,6 +9,9 @@ public class Question {
     private int correctAnswer;
     private String questionType;
 
+    /**
+     * Empty constructor need to create an instance from JSON file
+     */
     public Question() {
     }
 

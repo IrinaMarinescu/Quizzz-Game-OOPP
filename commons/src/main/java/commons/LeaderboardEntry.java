@@ -10,6 +10,10 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     private String name;
     private Integer score;
 
+
+    /**
+     * Empty constructor need to create an instance from JSON file
+     */
     public LeaderboardEntry() {
     }
 
