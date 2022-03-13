@@ -83,7 +83,7 @@ public class ServerUtils {
 
     public Game startMultiplayerGame() {
         return ClientBuilder.newClient(new ClientConfig()) //
-            .target(serverIP).path("api/game/mulitplayer/start") //
+            .target(serverIP).path("api/game/multiplayer/start") //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //
             .get(Game.class);
