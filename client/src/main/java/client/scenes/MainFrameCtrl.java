@@ -102,7 +102,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
         if (server.validateIP(serverIP.getText()) && server.validateUsername(username.getText())) {
             server.setServerIP(serverIP.getText());
             mainCtrl.setPlayer(username.getText(), 0);
-            server.joinLobby(mainCtrl.getPlayer());
+            mainCtrl.setLobby(server.joinLobby(mainCtrl.getPlayer()));
 
             mainCtrl.showLobbyFrame();
         } else if (!server.validateIP(serverIP.getText())) {

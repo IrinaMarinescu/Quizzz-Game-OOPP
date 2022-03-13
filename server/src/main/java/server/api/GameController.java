@@ -1,6 +1,7 @@
 package server.api;
 
 import commons.Game;
+import commons.Lobby;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,10 +27,6 @@ public class GameController {
         this.lobbyController = lobbyController;
     }
 
-    private static boolean nullOrEmpty(String s) {
-        return s == null || s.isEmpty();
-    }
-
     @GetMapping("/validate")
     public String validateConnection() {
         return "Connected";
@@ -37,10 +34,10 @@ public class GameController {
 
     @GetMapping("/multiplayer/start")
     public Game startMultiplayerGame() {
-        UUID gameId = UUID.randomUUID();
-        Game newGame = new Game(gameId, activityController.generateQuestions(), lobbyController.getLobby());
+        Lobby lobby = lobbyController.getLobby();
+        Game newGame = new Game(lobby.getId(), activityController.generateQuestions(), lobby.getPlayers());
         lobbyController.resetLobby();
-        games.put(gameId, newGame);
+        games.put(lobby.getId(), newGame);
         return newGame;
     }
 

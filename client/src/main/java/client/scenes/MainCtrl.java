@@ -19,6 +19,7 @@ package client.scenes;
 import client.scenes.controllerrequirements.MainCtrlRequirements;
 import commons.Game;
 import commons.LeaderboardEntry;
+import commons.Lobby;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -31,6 +32,7 @@ public class MainCtrl implements MainCtrlRequirements {
 
     private LeaderboardEntry player;
     private Game game;
+    private Lobby lobby;
 
     private Stage primaryStage;
 
@@ -86,6 +88,14 @@ public class MainCtrl implements MainCtrlRequirements {
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    public Lobby getLobby() {
+        return lobby;
+    }
+
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
     }
 
     /**

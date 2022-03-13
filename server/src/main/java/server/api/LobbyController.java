@@ -1,8 +1,8 @@
 package server.api;
 
 import commons.LeaderboardEntry;
-import java.util.ArrayList;
-import java.util.List;
+import commons.Lobby;
+import java.util.UUID;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,33 +12,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/lobby")
 public class LobbyController {
 
-    private List<LeaderboardEntry> lobby;
+    private Lobby lobby;
 
     public LobbyController() {
-        lobby = new ArrayList<>();
+        UUID lobbyId = UUID.randomUUID();
+        lobby = new Lobby(lobbyId);
     }
 
     @GetMapping("/lobby")
-    public List<LeaderboardEntry> getLobby() {
+    public Lobby getLobby() {
         return lobby;
     }
 
     @GetMapping("/lobby/reset")
     public void resetLobby() {
-        lobby = new ArrayList<>();
+        UUID lobbyId = UUID.randomUUID();
+        lobby = new Lobby(lobbyId);
     }
 
     @PostMapping("/lobby/add")
-    public boolean addPlayerToLobby(LeaderboardEntry player) {
-        if (lobby.contains(player)) {
-            return false;
-        }
-        lobby.add(player);
-        return true;
+    public Lobby addPlayerToLobby(LeaderboardEntry player) {
+        lobby.addPlayer(player);
+        return lobby;
     }
 
     @PostMapping("/lobby/remove")
     public boolean removePlayerFromLobby(LeaderboardEntry player) {
-        return lobby.remove(player);
+        return lobby.removePlayer(player);
     }
 }

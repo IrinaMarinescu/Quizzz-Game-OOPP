@@ -20,6 +20,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import commons.Game;
 import commons.LeaderboardEntry;
+import commons.Lobby;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -73,12 +74,12 @@ public class ServerUtils {
             }).contains(username);
     }
 
-    public void joinLobby(LeaderboardEntry player) {
-        ClientBuilder.newClient(new ClientConfig()) //
+    public Lobby joinLobby(LeaderboardEntry player) {
+        return ClientBuilder.newClient(new ClientConfig()) //
             .target(serverIP).path("api/lobby/add") //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //
-            .post(Entity.entity(player, APPLICATION_JSON), LeaderboardEntry.class);
+            .post(Entity.entity(player, APPLICATION_JSON), Lobby.class);
     }
 
     public Game startMultiplayerGame() {
