@@ -23,10 +23,6 @@ public class Question {
         return activities;
     }
 
-    public void setActivities(List<Activity> activities) {
-        this.activities = activities;
-    }
-
     public String getQuestion() {
         return question;
     }
@@ -37,17 +33,5 @@ public class Question {
 
     public int getCorrectAnswer() {
         return correctAnswer;
-    }
-
-    public void setCorrectAnswer(int correctAnswer) {
-        this.correctAnswer = correctAnswer;
-    }
-
-    public void setQuestionType(String questionType) {
-        this.questionType = questionType;
-    }
-
-    public String getQuestionType() {
-        return questionType;
     }
 }
