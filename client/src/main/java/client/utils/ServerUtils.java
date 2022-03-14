@@ -62,7 +62,7 @@ public class ServerUtils {
     /**
      * Check if another user in lobby already uses this name
      *
-     * @param username username provided by player in the TextField
+     * @param username provided by player in the TextField
      * @return true if the username is not used yet, false otherwise
      */
     public boolean validateUsername(String username) {
@@ -74,6 +74,12 @@ public class ServerUtils {
             }).contains(username);
     }
 
+    /**
+     * Add player to the lobby
+     *
+     * @param player that has to be added to the lobby
+     * @return The Lobby object that player has been added to
+     */
     public Lobby joinLobby(LeaderboardEntry player) {
         return ClientBuilder.newClient(new ClientConfig()) //
             .target(serverIP).path("api/lobby/add") //
@@ -82,6 +88,11 @@ public class ServerUtils {
             .post(Entity.entity(player, APPLICATION_JSON), Lobby.class);
     }
 
+    /**
+     * Create new Game with the players that are currently in the lobby and list of 20 questions
+     *
+     * @return newly created Game object with unique ID
+     */
     public Game startMultiplayerGame() {
         return ClientBuilder.newClient(new ClientConfig()) //
             .target(serverIP).path("api/game/multiplayer/start") //
@@ -90,6 +101,11 @@ public class ServerUtils {
             .get(Game.class);
     }
 
+    /**
+     * Create new Game with a list of 20 questions
+     *
+     * @return newly created Game object with unique ID
+     */
     public Game startSingleplayer() {
         return ClientBuilder.newClient(new ClientConfig()) //
             .target(serverIP).path("api/game/singleplayer/start") //

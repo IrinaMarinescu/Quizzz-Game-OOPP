@@ -1,7 +1,6 @@
 package server.api;
 
 import commons.Game;
-import commons.Lobby;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,20 +26,33 @@ public class GameController {
         this.lobbyController = lobbyController;
     }
 
+    /**
+     * Return a String, used to check if the client successfully connected with the server
+     *
+     * @return String "Connected"
+     */
     @GetMapping("/validate")
     public String validateConnection() {
         return "Connected";
     }
 
+    /**
+     * Create a new Game with the players that are currently in the lobby and randomly generated list of questions
+     *
+     * @return Game object with unique id, list of 20 questions and list of players
+     */
     @GetMapping("/multiplayer/start")
     public Game startMultiplayerGame() {
-        Lobby lobby = lobbyController.getLobby();
-        Game newGame = new Game(lobby.getId(), activityController.generateQuestions(), lobby.getPlayers());
-        lobbyController.resetLobby();
-        games.put(lobby.getId(), newGame);
+        Game newGame = lobbyController.createGame(activityController.generateQuestions());
+        games.put(newGame.getId(), newGame);
         return newGame;
     }
 
+    /**
+     * Create a new Game with randomly generated list of questions
+     *
+     * @return Game object with unique id, list of 20 questions and empty list of players
+     */
     @GetMapping("/singleplayer/start")
     public Game startSingleplayer() {
         return new Game(UUID.randomUUID(), activityController.generateQuestions(), new ArrayList<>());

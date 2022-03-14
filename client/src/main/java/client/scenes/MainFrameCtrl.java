@@ -71,6 +71,10 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
         this.lastEscapeKeyPressTime = 0;
     }
 
+    /**
+     * If the server IP entered by the user is correct redirect to the frame with the global leaderboard
+     * otherwise show a server IP error
+     */
     public void openLeaderboard() {
         if (server.validateIP(serverIP.getText())) {
             server.setServerIP(serverIP.getText());
@@ -81,11 +85,17 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
         }
     }
 
+    /**
+     * Open or closes the help menu on click on the question mark icon
+     */
     @FXML
     private void toggleHelpMenuVisibility() {
         helpMenuContainer.setVisible(!helpMenuContainer.isVisible());
     }
 
+    /**
+     * If the server IP entered by the user is correct start a new single player Game, otherwise show a server IP error
+     */
     public void startSingleplayerGame() {
         if (server.validateIP(serverIP.getText())) {
             server.setServerIP(serverIP.getText());
@@ -98,6 +108,10 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
         }
     }
 
+    /**
+     * If the server IP entered by the user is correct and the username chosen by the user is not taken in the Lobby
+     * join the Lobby, otherwise show a server IP error
+     */
     public void joinLobby() {
         if (server.validateIP(serverIP.getText()) && server.validateUsername(username.getText())) {
             server.setServerIP(serverIP.getText());
@@ -112,11 +126,21 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
         }
     }
 
+    /**
+     * Display the username error
+     *
+     * @param show if true displays the error otherwise hides it
+     */
     @Override
     public void displayUsernameError(boolean show) {
         usernameError.setVisible(show);
     }
 
+    /**
+     * Display the server IP error
+     *
+     * @param show if true displays the error otherwise hides it
+     */
     @Override
     public void displayServerIPError(boolean show) {
         serverIPError.setVisible(show);
