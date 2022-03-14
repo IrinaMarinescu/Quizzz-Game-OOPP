@@ -27,7 +27,7 @@ public class LobbyController {
      *
      * @return the Lobby object
      */
-    @GetMapping("/lobby")
+    @GetMapping("")
     public Lobby getLobby() {
         return lobby;
     }
@@ -38,7 +38,7 @@ public class LobbyController {
      * @param player that has to be added to the lobby
      * @return true if the player was not in the lobby, false otherwise
      */
-    @PostMapping("/lobby/add-player")
+    @PostMapping("/add-player")
     public Lobby addPlayerToLobby(LeaderboardEntry player) {
         lobby.addPlayer(player);
         return lobby;
@@ -50,7 +50,7 @@ public class LobbyController {
      * @param player that has to be removed from the lobby
      * @return true if the player was in the lobby, false otherwise
      */
-    @PostMapping("/lobby/remove-player")
+    @PostMapping("/remove-player")
     public boolean removePlayerFromLobby(LeaderboardEntry player) {
         return lobby.removePlayer(player);
     }

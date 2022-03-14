@@ -66,12 +66,11 @@ public class ServerUtils {
      * @return true if the username is not used yet, false otherwise
      */
     public boolean validateUsername(String username) {
-        return ClientBuilder.newClient(new ClientConfig()) //
+        return !ClientBuilder.newClient(new ClientConfig()) //
             .target(serverIP).path("api/lobby") //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //
-            .get(new GenericType<List<LeaderboardEntry>>() {
-            }).contains(username);
+            .get(Lobby.class).isUsernameTaken(username);
     }
 
     /**

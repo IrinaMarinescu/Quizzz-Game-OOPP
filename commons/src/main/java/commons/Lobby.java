@@ -44,4 +44,19 @@ public class Lobby {
     public boolean removePlayer(LeaderboardEntry player) {
         return players.remove(player);
     }
+
+    /**
+     * Check if any pllayer in the lobby has given username
+     *
+     * @param username to check if is in the lobby
+     * @return true if any player has given username, false otherwise
+     */
+    public boolean isUsernameTaken(String username) {
+        for (LeaderboardEntry player : players) {
+            if (player.getName().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
