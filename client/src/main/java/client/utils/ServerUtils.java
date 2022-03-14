@@ -113,4 +113,21 @@ public class ServerUtils {
             .accept(APPLICATION_JSON) //
             .get(Game.class);
     }
+
+    public List<LeaderboardEntry> getSoloLeaderboard(int limit) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(serverIP).path("api/leaderboard/" + limit) //
+            .request(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+            .get(new GenericType<>() {
+            });
+    }
+
+    public LeaderboardEntry addLeaderboardEntry(LeaderboardEntry entry) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(serverIP).path("api/leaderboard/add") //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .post(Entity.entity(entry, APPLICATION_JSON), LeaderboardEntry.class);
+    }
 }
