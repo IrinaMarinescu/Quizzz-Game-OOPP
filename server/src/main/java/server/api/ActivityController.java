@@ -171,8 +171,18 @@ public class ActivityController {
         questions.add(trueFalseQuestion);
     }
 
+    /**
+     * Generates an open question by fetching one random activity
+     *
+     * @param typeOfQuestion the randomly generated number
+     * @param questions the list of all the questions
+     */
     public void generateOpenQuestion(int typeOfQuestion, List<Question> questions) {
-
+        String id = associateQuestion(typeOfQuestion);
+        List<Activity> activities = fetchRandom(1);
+        String question = "How much energy in Wh does " + activities.get(0).title + " consume?";
+        Question openQuestion = new Question(activities, question, 0, id);
+        questions.add(openQuestion);
     }
 
     /**
@@ -198,11 +208,50 @@ public class ActivityController {
         questions.add(threePicturesQuestion);
     }
 
+    /**
+     * Generates a question with one image by fetching one random activity
+     *
+     * @param typeOfQuestion the randomly generated number
+     * @param questions the list of all the questions
+     */
     public void generateOneImageQuestion(int typeOfQuestion, List<Question> questions) {
-
+        String id = associateQuestion(typeOfQuestion);
+        List<Activity> activities = fetchRandom(1);
+        String question = "How much energy in Wh does " + activities.get(0).title + " consume?";
+        Question questionOneImage = new Question(activities, question, 0, id);
+        questions.add(questionOneImage);
     }
 
-    public void generateInsteadOfQuestion(int typeOfQuestion, List<Question> question) {
+    /**
+     * Generates an instead of question by fetching four random activities
+     *
+     * @param typeOfQuestion the randomly generated number
+     * @param questions the list of all the questions
+     */
+    public void generateInsteadOfQuestion(int typeOfQuestion, List<Question> questions) {
+        List<Activity> activities = fetchRandom(4);
+        int correctAnswer = 0;
+        //Find the smallest consumption value
+        for (int j = 1; j < 4; j++) {
+            if (activities.get(j).consumptionInWh < activities.get(correctAnswer).consumptionInWh) {
+                correctAnswer = j;
+            }
+        }
 
+        // Find the second-smallest consumption value
+        int i = 0;
+        if (i == correctAnswer) {
+            i = 1;
+        }
+        for (int j = 1; j < 4; j++) {
+            if (j != correctAnswer
+                    && activities.get(j).consumptionInWh < activities.get(i).consumptionInWh) {
+                i = j;
+            }
+        }
+        String id = associateQuestion(typeOfQuestion);
+        String question = "Instead of " + activities.get(i).title + "  you can do...";
+        Question questionInsteadOf = new Question(activities, question, correctAnswer, id);
+        questions.add(questionInsteadOf);
     }
 }
