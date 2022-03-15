@@ -45,7 +45,11 @@ class ActivityControllerTest {
 
     @Test
     public void testImport() {
-        var s = controller.importActivities(Arrays.asList(new Activity("00-a", "ss/ss.png", "a", 5, "b"), new Activity("00-b", "ss/ss.png", "a", 10, "b")));
+        var s = controller.importActivities(
+            Arrays.asList(
+                new Activity("00-a", "ss/ss.png", "a", 5, "b"),
+                new Activity("00-b", "ss/ss.png", "a", 10, "b"))
+        );
         Activity a1 = repo.findById("00-a");
         Activity a2 = repo.findById("00-b");
 
