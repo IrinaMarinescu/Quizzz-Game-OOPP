@@ -23,6 +23,7 @@ public class ActivityController {
 
     private final ActivityRepository repo;
 
+
     public ActivityController(ActivityRepository repo) {
         this.repo = repo;
     }
@@ -63,10 +64,27 @@ public class ActivityController {
             return ResponseEntity.badRequest().build();
         }
 
-        //return ResponseEntity.ok(activity);
         Activity saved = repo.save(activity);
         return ResponseEntity.ok(saved);
     }
+
+    @PostMapping("import")
+    public ResponseEntity<List<Activity>> importActivities(@RequestBody List<Activity> activities) {
+        for (var activity : activities) {
+            if (nullOrEmpty(activity.source) || nullOrEmpty(activity.title) || nullOrEmpty(activity.id)
+                || nullOrEmpty(activity.imagePath)) {
+                return ResponseEntity.badRequest().build();
+            }
+        }
+
+        List<Activity> saved = new ArrayList<>();
+        for (var activity : activities) {
+            saved.add(repo.save(activity));
+        }
+
+        return ResponseEntity.ok(saved);
+    }
+
 
     /**
      * generates 20 questions of random types
