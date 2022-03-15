@@ -113,14 +113,38 @@ public class MainCtrl implements MainCtrlRequirements {
 
         this.questionFrameCtrl = questionFrame.getKey();
         this.questionFrame = new Scene(questionFrame.getValue());
-        this.questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
 
         this.leaderboardCtrl = leaderboard.getKey();
         this.leaderboard = new Scene(leaderboard.getValue());
 
         primaryStage.setTitle("Quizzzzz!");
         showMainFrame();
+
         primaryStage.show();
+    }
+
+    public LeaderboardEntry getPlayer() {
+        return this.player;
+    }
+
+    public void setPlayer(String username, int points) {
+        this.player = new LeaderboardEntry(username, points);
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public Lobby getLobby() {
+        return lobby;
+    }
+
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
     }
 
     /**
@@ -318,6 +342,8 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     public void showQuestionFrame() {
         primaryStage.setScene(questionFrame);
+        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
+
     }
 
     /**

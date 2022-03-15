@@ -9,10 +9,17 @@ public class Question {
     private int correctAnswer;
     private String questionType;
 
-    public Question(List<Activity> activities, String question, int correctAnswer) {
+    /**
+     * Empty constructor need to create an instance from JSON file
+     */
+    public Question() {
+    }
+
+    public Question(List<Activity> activities, String question, int correctAnswer, String questionType) {
         this.activities = activities;
         this.question = question;
         this.correctAnswer = correctAnswer;
+        this.questionType = questionType;
     }
 
     public List<Activity> getActivities() {
@@ -23,11 +30,11 @@ public class Question {
         return question;
     }
 
-    public int getCorrectAnswer() {
-        return correctAnswer;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
-    public String getQuestionType() {
-        return questionType;
+    public int getCorrectAnswer() {
+        return correctAnswer;
     }
 }

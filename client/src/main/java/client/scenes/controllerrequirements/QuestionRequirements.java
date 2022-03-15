@@ -8,4 +8,5 @@ public interface QuestionRequirements {
     void revealCorrectAnswer();
 
     void removeIncorrectAnswer();
+
 }

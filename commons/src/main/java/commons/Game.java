@@ -1,15 +1,23 @@
 package commons;
 
 import java.util.List;
+import java.util.UUID;
 
 public class Game {
 
-    private int id;
+    private UUID id;
     private List<Question> questions;
     private List<LeaderboardEntry> players;
     private int round;
 
-    public Game(int id, List<Question> questions, List<LeaderboardEntry> players) {
+
+    /**
+     * Empty constructor need to create an instance from JSON file
+     */
+    public Game() {
+    }
+
+    public Game(UUID id, List<Question> questions, List<LeaderboardEntry> players) {
         this.id = id;
         this.questions = questions;
         this.players = players;
@@ -28,11 +36,7 @@ public class Game {
         return players;
     }
 
-    public void setPlayers(List<LeaderboardEntry> players) {
-        this.players = players;
-    }
-
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
