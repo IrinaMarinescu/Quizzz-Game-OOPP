@@ -48,5 +48,8 @@ public class Game {
         round++;
     }
 
+    public void setPlayers(List<LeaderboardEntry> players) {
+        this.players = players;
+    }
 
 }

@@ -22,6 +22,7 @@ import client.utils.ServerUtils;
 import client.utils.TimeUtils;
 import commons.Game;
 import commons.LeaderboardEntry;
+import commons.Lobby;
 import commons.Question;
 import java.util.List;
 import javafx.application.Platform;
@@ -41,7 +42,7 @@ public class MainCtrl implements MainCtrlRequirements {
     public static final int LEADERBOARD_TIME = 10;
     public static final int TOTAL_ROUNDS = 4; // should be 20
 
-    private String username;
+    private LeaderboardEntry player;
     private Game game;
     private boolean isMultiplayerGame;
     private boolean intermediateLeaderboardShown;
@@ -54,6 +55,7 @@ public class MainCtrl implements MainCtrlRequirements {
 
     private TimeUtils timeUtils;
     private ServerUtils serverUtils;
+    private Lobby lobby;
     private Stage primaryStage;
 
     private MainFrameCtrl mainFrameCtrl;
@@ -65,10 +67,10 @@ public class MainCtrl implements MainCtrlRequirements {
     private LeaderboardCtrl leaderboardCtrl;
     private Scene leaderboard;
 
-    private OpenQuestion openQuestionCtrl;
+    private OpenQuestionCtrl openQuestionCtrl;
     private Node openQuestion;
 
-    private QuestionOneImage questionOneImageCtrl;
+    private QuestionOneImageCtrl questionOneImageCtrl;
     private Node questionOneImage;
 
     QuestionRequirements currentQuestionCtrl = null;
@@ -89,8 +91,8 @@ public class MainCtrl implements MainCtrlRequirements {
                            Pair<MainFrameCtrl, Parent> mainFrame,
                            Pair<QuestionFrameCtrl, Parent> questionFrame,
                            Pair<LeaderboardCtrl, Parent> leaderboard,
-                           Pair<OpenQuestion, Parent> openQuestion,
-                           Pair<QuestionOneImage, Parent> questionOneImage) {
+                           Pair<OpenQuestionCtrl, Parent> openQuestion,
+                           Pair<QuestionOneImageCtrl, Parent> questionOneImage) {
 
         this.timeUtils = timeUtils;
         this.serverUtils = serverUtils;
@@ -109,7 +111,7 @@ public class MainCtrl implements MainCtrlRequirements {
 
         this.mainFrameCtrl = mainFrame.getKey();
         this.mainFrame = new Scene(mainFrame.getValue());
-        this.mainFrame.setOnKeyPressed(e -> mainFrameCtrl.keyPressed(e));
+        this.mainFrame.setOnKeyPressed(e -> mainFrameCtrl.keyPressed(e.getCode()));
 
         this.questionFrameCtrl = questionFrame.getKey();
         this.questionFrame = new Scene(questionFrame.getValue());
@@ -247,7 +249,7 @@ public class MainCtrl implements MainCtrlRequirements {
             currentQuestionCtrl.revealCorrectAnswer();
             questionFrameCtrl.addPoints(pointsGained);
             questionFrameCtrl.tempDisableJokers(OVERVIEW_TIME);
-            serverUtils.sendPointsGained(game.getId(), username, pointsGained);
+            serverUtils.sendPointsGained(game.getId(), player, pointsGained);
             if (currentQuestionType.equals("trueFalseQuestion")) {
                 questionFrameCtrl.setWrongAnswerJoker(true);
             }
@@ -306,13 +308,14 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     public void disconnect() {
         // TODO stop long polling
-        serverUtils.disconnect(game.getId(), username);
+        serverUtils.disconnect(game.getId(), player);
         showMainFrame();
     }
 
     @Override
     public void showGlobalLeaderboardFrame() {
-        showLeaderboard(serverUtils.getSoloLeaderboard(), 10, "solo");
+        int maxSize = 10;
+        showLeaderboard(serverUtils.getSoloLeaderboard(maxSize), maxSize, "solo");
     }
 
     public void showLobbyFrame() {
@@ -344,23 +347,5 @@ public class MainCtrl implements MainCtrlRequirements {
         primaryStage.setScene(questionFrame);
         questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
 
-    }
-
-    /**
-     * Getter for username field
-     *
-     * @return The player's username
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * Setter for username field
-     *
-     * @param username The player's username
-     */
-    public void setUsername(String username) {
-        this.username = username;
     }
 }

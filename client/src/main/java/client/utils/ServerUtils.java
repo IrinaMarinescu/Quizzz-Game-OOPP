@@ -25,6 +25,7 @@ import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
 import java.util.List;
+import java.util.UUID;
 import org.glassfish.jersey.client.ClientConfig;
 
 /**
@@ -129,27 +130,22 @@ public class ServerUtils {
             .accept(APPLICATION_JSON) //
             .post(Entity.entity(entry, APPLICATION_JSON), LeaderboardEntry.class);
     }
-    
+
     public Game getGame() {
         // TODO make request to server to get game object
         return null;
     }
 
-    public void sendPointsGained(int gameId, String username, int pointsGained) {
+    public void sendPointsGained(UUID gameId, LeaderboardEntry player, int pointsGained) {
         // TODO send to server the number of points that have been gained
     }
 
-    public List<LeaderboardEntry> getUpdatedScores(int gameId) {
+    public List<LeaderboardEntry> getUpdatedScores(UUID gameId) {
         // TODO retrieve updated scores for this game from the server
         return null;
     }
 
-    public void disconnect(int gameId, String username) {
+    public void disconnect(UUID gameId, LeaderboardEntry player) {
         // TODO send data to server that the player disconnected
-    }
-
-    public List<LeaderboardEntry> getSoloLeaderboard() {
-        // TODO retrieve solo leaderboard
-        return null;
     }
 }
