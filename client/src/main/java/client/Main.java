@@ -18,6 +18,7 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
+import client.scenes.LeaderboardCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.MainFrameCtrl;
 import client.scenes.OpenQuestionCtrl;
@@ -25,6 +26,8 @@ import client.scenes.QuestionFrameCtrl;
 import client.scenes.QuestionOneImageCtrl;
 import client.scenes.QuestionThreePicturesCtrl;
 import client.scenes.QuestionTrueFalseCtrl;
+import client.utils.ServerUtils;
+import client.utils.TimeUtils;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -78,8 +81,15 @@ public class Main extends Application {
 
         var mainFrame =
             FXML.load(MainFrameCtrl.class, "client/scenes/mainFrame.fxml", "client/css/mainFrame.css");
+
+        var leaderboard =
+            FXML.load(LeaderboardCtrl.class, "client/scenes/Leaderboard.fxml", "client/css/leaderboardPage.css");
+
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, mainFrame, questionFrame);
-        //mainCtrl.initialize(primaryStage, questionFrame, injectedCenterExample);
+        var serverUtils = INJECTOR.getInstance(ServerUtils.class);
+        var timeUtils = INJECTOR.getInstance(TimeUtils.class);
+
+        mainCtrl.initialize(timeUtils, serverUtils, primaryStage, mainFrame, questionFrame, leaderboard, openQuestion,
+            questionOneImage);
     }
 }

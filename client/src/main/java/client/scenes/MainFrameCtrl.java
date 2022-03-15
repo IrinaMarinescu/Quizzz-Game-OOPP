@@ -99,10 +99,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     public void startSingleplayerGame() {
         if (server.validateIP(serverIP.getText())) {
             server.setServerIP(serverIP.getText());
-            mainCtrl.setPlayer(username.getText(), 0);
-            mainCtrl.setGame(server.startSingleplayer());
-
-            mainCtrl.showQuestionFrame();
+            mainCtrl.startSingleplayerGame();
         } else {
             displayServerIPError(true);
         }
@@ -115,11 +112,8 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     public void joinLobby() {
         if (server.validateIP(serverIP.getText()) && server.validateUsername(username.getText())) {
             server.setServerIP(serverIP.getText());
-            mainCtrl.setPlayer(username.getText(), 0);
-            mainCtrl.setLobby(server.joinLobby(mainCtrl.getPlayer()));
-
-            mainCtrl.showLobbyFrame();
-        } else if (!server.validateIP(serverIP.getText())) {
+            mainCtrl.startMultiplayerGame();
+        } else if (!server.validateUsername(serverIP.getText())) {
             displayServerIPError(true);
         } else {
             displayUsernameError(true);

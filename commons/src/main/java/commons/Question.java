@@ -37,4 +37,8 @@ public class Question {
     public int getCorrectAnswer() {
         return correctAnswer;
     }
+
+    public String getQuestionType() {
+        return this.questionType;
+    }
 }

@@ -8,7 +8,7 @@ import javafx.scene.input.KeyCode;
 /**
  * This interface lists all functions in QuestionFrameCtrl that should ever be needed by MainCtrl
  */
-public interface QuestionFrameFunctions {
+public interface QuestionFrameRequirements {
 
     /**
      * Resets the question frame and initializes settings for a new single-player game

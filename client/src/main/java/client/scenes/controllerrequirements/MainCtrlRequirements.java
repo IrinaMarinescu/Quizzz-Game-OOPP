@@ -11,13 +11,6 @@ public interface MainCtrlRequirements {
     void disconnect();
 
     /**
-     * Connects to a server
-     *
-     * @param ip IP address of the server to connect to
-     */
-    void connectToServer(String ip);
-
-    /**
      *
      */
     void startSingleplayerGame();
@@ -28,28 +21,17 @@ public interface MainCtrlRequirements {
     void startMultiplayerGame();
 
     /**
-     * Called by the lobby class
-     *
-     * @param name The name chosen by the person
-     */
-    void redirectToLobby(String name);
-
-    /**
-     *
-     */
-    void redirectToSoloLeaderboard();
-
-    /**
      * The score that the user would get if they answer INSTANTLY
      *
      * @param baseScore the score (0 - 100)
      */
     void addPoints(int baseScore);
 
-    void redirectToMainScreen();
+    void showGlobalLeaderboardFrame();
 
-    /**
-     * Called by the lobby when a player leaves the game
-     */
-    void playerLeavesLobby();
+    void doublePoints();
+
+    void eliminateWrongAnswer();
+
+    void halveTime();
 }
