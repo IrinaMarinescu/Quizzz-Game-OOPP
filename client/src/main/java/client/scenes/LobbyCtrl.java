@@ -26,7 +26,8 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
 
     /**
      * Injects mainCtrl, so it's possible to call methods from there
-     * @param mainCtrl
+     *
+     * @param mainCtrl injects mainCtrl
      */
     @Inject
     public LobbyCtrl(MainCtrl mainCtrl) {
@@ -61,8 +62,10 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
 
     /**
      * Sets up the table for the lobby screen
-     * @param url
-     * @param resourceBundle
+     *
+     * @param url url
+     *
+     * @param resourceBundle resourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -73,6 +76,7 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
 
     /**
      * Adds a player to the lobby, reloads the table
+     *
      * @param name The name of the player to be added
      */
     @Override
@@ -83,6 +87,7 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
 
     /**
      * Removes a player from the lobby, reloads the table
+     *
      * @param name The name of the player
      */
     @Override
