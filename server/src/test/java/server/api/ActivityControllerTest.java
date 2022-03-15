@@ -55,7 +55,11 @@ class ActivityControllerTest {
 
     @Test
     public void testImportInvalidData() {
-        var s = controller.importActivities(Arrays.asList(new Activity(null, null, null, 0, null), new Activity("00-b", "ss/ss.png", "a", 10, "b")));
+        var s = controller.importActivities(
+            Arrays.asList(
+                new Activity(null, null, null, 0, null),
+                new Activity("00-b", "ss/ss.png", "a", 10, "b"))
+        );
 
         assertEquals(repo.findById("00-b"), null);
     }
