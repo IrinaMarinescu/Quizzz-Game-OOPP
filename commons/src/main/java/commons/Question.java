@@ -9,6 +9,12 @@ public class Question {
     private int correctAnswer;
     private String questionType;
 
+    /**
+     * Empty constructor need to create an instance from JSON file
+     */
+    public Question() {
+    }
+
     public Question(List<Activity> activities, String question, int correctAnswer, String questionType) {
         this.activities = activities;
         this.question = question;
@@ -18,10 +24,6 @@ public class Question {
 
     public List<Activity> getActivities() {
         return activities;
-    }
-
-    public void setActivities(List<Activity> activities) {
-        this.activities = activities;
     }
 
     public String getQuestion() {
@@ -34,9 +36,5 @@ public class Question {
 
     public int getCorrectAnswer() {
         return correctAnswer;
-    }
-
-    public void setCorrectAnswer(int correctAnswer) {
-        this.correctAnswer = correctAnswer;
     }
 }

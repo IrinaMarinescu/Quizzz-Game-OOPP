@@ -17,6 +17,9 @@
 package client.scenes;
 
 import client.scenes.controllerrequirements.MainCtrlRequirements;
+import commons.Game;
+import commons.LeaderboardEntry;
+import commons.Lobby;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -27,7 +30,9 @@ import javafx.util.Pair;
  */
 public class MainCtrl implements MainCtrlRequirements {
 
-    private String username;
+    private LeaderboardEntry player;
+    private Game game;
+    private Lobby lobby;
 
     private Stage primaryStage;
 
@@ -56,15 +61,41 @@ public class MainCtrl implements MainCtrlRequirements {
             widthChanged = true;
         });
 
+        this.mainFrameCtrl = mainFrame.getKey();
+        this.mainFrame = new Scene(mainFrame.getValue());
+
         this.questionFrameCtrl = questionFrame.getKey();
         this.questionFrame = new Scene(questionFrame.getValue());
-        this.questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
 
         primaryStage.setTitle("Quizzzzz!");
 
-        //showMainFrame();
-        showQuestionFrame();
+        showMainFrame();
+
         primaryStage.show();
+    }
+
+    public LeaderboardEntry getPlayer() {
+        return this.player;
+    }
+
+    public void setPlayer(String username, int points) {
+        this.player = new LeaderboardEntry(username, points);
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public Lobby getLobby() {
+        return lobby;
+    }
+
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
     }
 
     /**
@@ -116,17 +147,12 @@ public class MainCtrl implements MainCtrlRequirements {
 
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
+    /**
+     * Sets the mainFrame as the visible scene on the stage
+     */
     public void showMainFrame() {
         primaryStage.setScene(mainFrame);
-        mainFrame.setOnKeyPressed(e -> mainFrameCtrl.keyPressed(e));
+        mainFrame.setOnKeyPressed(e -> mainFrameCtrl.keyPressed(e.getCode()));
     }
 
     /**
@@ -134,6 +160,8 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     public void showQuestionFrame() {
         primaryStage.setScene(questionFrame);
+        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
+
     }
 
     public void showLobbyFrame() {

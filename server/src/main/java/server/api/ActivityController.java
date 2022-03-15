@@ -45,7 +45,8 @@ public class ActivityController {
      */
     @GetMapping("random/{limit}")
     public List<Activity> fetchRandom(@PathVariable("limit") int limit) {
-        return repo.fetchRandomActivities(limit);
+        List<Activity> res = repo.fetchRandomActivities(limit);
+        return res;
     }
 
     /**
@@ -79,6 +80,7 @@ public class ActivityController {
      *
      * @return a list of all the questions for one game
      */
+    @GetMapping("generate")
     public List<Question> generateQuestions() {
         List<Question> questions = new ArrayList<>();
         Random rand = new Random();
@@ -196,6 +198,7 @@ public class ActivityController {
      */
     public void generateThreePicturesQuestion(int typeOfQuestion, List<Question> questions) {
         String id = associateQuestion(typeOfQuestion);
+
         List<Activity> activities = fetchRandom(3);
         String question = "Which consumes more?";
         int correctAnswer = 0;
