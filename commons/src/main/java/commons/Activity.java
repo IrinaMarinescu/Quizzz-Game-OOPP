@@ -2,6 +2,7 @@ package commons;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
+import java.beans.ConstructorProperties;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
@@ -44,6 +45,7 @@ public class Activity {
         // for object mappers.
     }
 
+    @ConstructorProperties({ "id", "image_path", "title", "consumption_in_wh", "source"})
     public Activity(String id, String imagePath, String title, int consumptionInWh, String source) {
         this.id = id;
         this.imagePath = imagePath;
