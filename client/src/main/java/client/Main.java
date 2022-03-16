@@ -18,6 +18,7 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
+import client.scenes.InsteadOfQuestionCtrl;
 import client.scenes.LeaderboardCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.MainFrameCtrl;
@@ -26,9 +27,9 @@ import client.scenes.QuestionFrameCtrl;
 import client.scenes.QuestionOneImageCtrl;
 import client.scenes.QuestionThreePicturesCtrl;
 import client.scenes.QuestionTrueFalseCtrl;
+import client.utils.LongPollingUtils;
 import client.utils.ServerUtils;
 import client.utils.TimeUtils;
-import client.utils.LongPollingUtils;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -79,6 +80,8 @@ public class Main extends Application {
         var questionThreePictures =
             FXML.load(QuestionThreePicturesCtrl.class, "client/scenes/QuestionThreePictures.fxml",
                 "client/css/questionsThreePictures.css");
+        var questionInsteadOf = FXML.load(InsteadOfQuestionCtrl.class, "client/scenes/InsteadOfQuestion.fxml",
+            null);
 
         var mainFrame =
             FXML.load(MainFrameCtrl.class, "client/scenes/mainFrame.fxml", "client/css/mainFrame.css");
@@ -91,12 +94,12 @@ public class Main extends Application {
         var timeUtils = INJECTOR.getInstance(TimeUtils.class);
 
         mainCtrl.initialize(timeUtils, serverUtils, primaryStage, mainFrame, questionFrame, leaderboard, openQuestion,
-            questionOneImage);
+            questionOneImage, questionThreePictures, questionTrueFalse, questionInsteadOf);
         LongPollingUtils longPollingUtils = INJECTOR.getInstance(client.utils.LongPollingUtils.class);
 
         // Set true to enable long polling; program will crash if server not running
         longPollingUtils.setActive(true);
 
-        mainCtrl.initialize(primaryStage, questionFrame);
+        //mainCtrl.initialize(primaryStage, questionFrame);
     }
 }

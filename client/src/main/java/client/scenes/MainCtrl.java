@@ -70,12 +70,21 @@ public class MainCtrl implements MainCtrlRequirements {
     private OpenQuestionCtrl openQuestionCtrl;
     private Node openQuestion;
 
+    private QuestionTrueFalseCtrl trueFalseQuestionCtrl;
+    private Node trueFalseQuestion;
+
+    private QuestionThreePicturesCtrl threePicturesQuestionCtrl;
+    private Node threePicturesQuestion;
+
     private QuestionOneImageCtrl questionOneImageCtrl;
     private Node questionOneImage;
 
+    private InsteadOfQuestionCtrl insteadOfQuestionCtrl;
+    private Node insteadOfQuestion;
+
     QuestionRequirements currentQuestionCtrl = null;
 
-    private int gameId = 0;
+    private final int gameId = 0;
 
     /**
      * Initializes this class
@@ -94,7 +103,10 @@ public class MainCtrl implements MainCtrlRequirements {
                            Pair<QuestionFrameCtrl, Parent> questionFrame,
                            Pair<LeaderboardCtrl, Parent> leaderboard,
                            Pair<OpenQuestionCtrl, Parent> openQuestion,
-                           Pair<QuestionOneImageCtrl, Parent> questionOneImage) {
+                           Pair<QuestionOneImageCtrl, Parent> questionOneImage,
+                           Pair<QuestionThreePicturesCtrl, Parent> threePicturesQuestion,
+                           Pair<QuestionTrueFalseCtrl, Parent> trueFalseQuestion,
+                           Pair<InsteadOfQuestionCtrl, Parent> insteadOfQuestion) {
 
         this.timeUtils = timeUtils;
         this.serverUtils = serverUtils;
@@ -110,6 +122,15 @@ public class MainCtrl implements MainCtrlRequirements {
 
         this.questionOneImageCtrl = questionOneImage.getKey();
         this.questionOneImage = questionOneImage.getValue();
+
+        this.threePicturesQuestionCtrl = threePicturesQuestion.getKey();
+        this.threePicturesQuestion = threePicturesQuestion.getValue();
+
+        this.trueFalseQuestionCtrl = trueFalseQuestion.getKey();
+        this.trueFalseQuestion = trueFalseQuestion.getValue();
+
+        this.insteadOfQuestionCtrl = insteadOfQuestion.getKey();
+        this.insteadOfQuestion = insteadOfQuestion.getValue();
 
         this.mainFrameCtrl = mainFrame.getKey();
         this.mainFrame = new Scene(mainFrame.getValue());
@@ -211,7 +232,8 @@ public class MainCtrl implements MainCtrlRequirements {
 
         switch (currentQuestionType) {
             case "trueFalseQuestion":
-                // TODO
+                currentQuestionCtrl = trueFalseQuestionCtrl;
+                questionFrameCtrl.setCenterContent(trueFalseQuestion);
                 questionFrameCtrl.setWrongAnswerJoker(false);
                 break;
             case "openQuestion":
@@ -219,14 +241,16 @@ public class MainCtrl implements MainCtrlRequirements {
                 questionFrameCtrl.setCenterContent(openQuestion);
                 break;
             case "threePicturesQuestion":
-                // TODO
+                currentQuestionCtrl = threePicturesQuestionCtrl;
+                questionFrameCtrl.setCenterContent(threePicturesQuestion);
                 break;
             case "oneImageQuestion":
                 currentQuestionCtrl = questionOneImageCtrl;
                 questionFrameCtrl.setCenterContent(questionOneImage);
                 break;
             case "insteadOfQuestion":
-                // TODO
+                currentQuestionCtrl = insteadOfQuestionCtrl;
+                questionFrameCtrl.setCenterContent(insteadOfQuestion);
                 break;
             default:
                 System.err.println("Unrecognized question type in MainCtrl");
@@ -305,7 +329,10 @@ public class MainCtrl implements MainCtrlRequirements {
     public void eliminateWrongAnswer() {
         // currentQuestionCtrl.eliminateWrongAnswer();
     }
+
     public void playerLeavesLobby(String name) {
+
+    }
 
     /**
      * Disconnects the player from a game
@@ -320,16 +347,6 @@ public class MainCtrl implements MainCtrlRequirements {
     public void showGlobalLeaderboardFrame() {
         int maxSize = 10;
         showLeaderboard(serverUtils.getSoloLeaderboard(maxSize), maxSize, "solo");
-    @Override
-    public void halveRemainingTime() {
-
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void showLobbyFrame() {
     }
 
     /**
@@ -342,6 +359,18 @@ public class MainCtrl implements MainCtrlRequirements {
     private void showLeaderboard(List<LeaderboardEntry> players, int maxSize, String type) {
         leaderboardCtrl.initialize(players, maxSize, type);
         primaryStage.setScene(leaderboard);
+    }
+
+    public String getUsername() {
+        return player.getName();
+    }
+
+    public void showLobbyFrame() {
+    }
+
+    @Override
+    public void halveRemainingTime() {
+
     }
 
     /**
@@ -358,9 +387,6 @@ public class MainCtrl implements MainCtrlRequirements {
         primaryStage.setScene(questionFrame);
         questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
 
-    }
-
-    public void showGlobalLeaderboardFrame() {
     }
 
     public int getGameId() {

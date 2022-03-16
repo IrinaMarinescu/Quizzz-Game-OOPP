@@ -34,6 +34,7 @@ public interface MainCtrlRequirements {
     void eliminateWrongAnswer();
 
     void halveTime();
+
     /**
      * Called by the lobby when a player leaves the game
      */
