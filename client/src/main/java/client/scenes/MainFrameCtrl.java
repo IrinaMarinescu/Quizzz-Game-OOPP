@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 //import javafx.scene.control.TableColumn;
@@ -71,75 +71,85 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
         this.lastEscapeKeyPressTime = 0;
     }
 
+    /**
+     * If the server IP entered by the user is correct redirect to the frame with the global leaderboard
+     * otherwise show a server IP error
+     */
     public void openLeaderboard() {
-        if (validateServerIP(serverIP.getText())) {
+        if (server.validateIP(serverIP.getText())) {
             server.setServerIP(serverIP.getText());
+
             mainCtrl.showGlobalLeaderboardFrame();
         } else {
             displayServerIPError(true);
         }
     }
 
+    /**
+     * Open or closes the help menu on click on the question mark icon
+     */
     @FXML
     private void toggleHelpMenuVisibility() {
         helpMenuContainer.setVisible(!helpMenuContainer.isVisible());
     }
 
+    /**
+     * If the server IP entered by the user is correct start a new single player Game, otherwise show a server IP error
+     */
     public void startSingleplayerGame() {
-        if (validateServerIP(serverIP.getText())) {
-            mainCtrl.setUsername(username.getText());
+        if (server.validateIP(serverIP.getText())) {
             server.setServerIP(serverIP.getText());
-            mainCtrl.showQuestionFrame();
+            mainCtrl.startSingleplayerGame();
         } else {
             displayServerIPError(true);
         }
     }
 
-    public void startMultiplayerGame() {
-        if (validateServerIP(serverIP.getText()) && validateUsername(username.getText())) {
-            mainCtrl.setUsername(username.getText());
+    /**
+     * If the server IP entered by the user is correct and the username chosen by the user is not taken in the Lobby
+     * join the Lobby, otherwise show a server IP error
+     */
+    public void joinLobby() {
+        if (server.validateIP(serverIP.getText()) && server.validateUsername(username.getText())) {
             server.setServerIP(serverIP.getText());
-            mainCtrl.showLobbyFrame();
-        } else if (!validateServerIP(serverIP.getText())) {
+            mainCtrl.startMultiplayerGame();
+        } else if (!server.validateUsername(serverIP.getText())) {
             displayServerIPError(true);
         } else {
             displayUsernameError(true);
         }
     }
 
+    /**
+     * Display the username error
+     *
+     * @param show if true displays the error otherwise hides it
+     */
     @Override
     public void displayUsernameError(boolean show) {
         usernameError.setVisible(show);
     }
 
+    /**
+     * Display the server IP error
+     *
+     * @param show if true displays the error otherwise hides it
+     */
     @Override
     public void displayServerIPError(boolean show) {
         serverIPError.setVisible(show);
     }
 
-    /**
-     * Check if another user in lobby already uses this name
-     *
-     * @param username username provided by player in the TextField
-     * @return true if the username is not used yet, false otherwise
-     */
-    private boolean validateUsername(String username) {
-        // TODO get usernames from server and check if the one provided by the client is in them
-        return true;
-    }
 
     /**
-     * Check if serverIP is correct
+     * Provides functionality for keybindings to accelerate certain actions
      *
-     * @param serverIP server IP provided by player in the TextField
-     * @return true if the serverIP is correct, false otherwise
+     * @param e Information about a keypress performed by the user
+     *          <p>
+     *          This should only be called by the MainCtrl showMainFrame method
      */
-    private boolean validateServerIP(String serverIP) {
-        return server.validateIP(serverIP);
-    }
-
-    public void keyPressed(KeyEvent e) {
-        switch (e.getCode()) {
+    public void keyPressed(KeyCode e) {
+        switch (e) {
             case H:
                 toggleHelpMenuVisibility();
                 break;

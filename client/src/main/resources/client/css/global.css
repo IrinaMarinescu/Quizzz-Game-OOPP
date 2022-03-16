@@ -4,7 +4,7 @@
     -greenish: #02C39A;
     -buttonColorHover: #02B070;
     -topBarColor: #05668D;
-    -timerBarColor: #B4D1DD;
+    -topBarBackgroundColor: #B4D1DD;
     -darkCyan: #028090;
     -lightishBlue: #5CB4BF;
     -lightBlue: #81C0C8;
@@ -27,7 +27,8 @@
 /*}*/
 
 #topBar {
-    -fx-background-color: -timerBarColor;
+    -fx-background-color: -topBarColor;
+    -fx-fill: -topBarColor;
     -fx-pref-height: 80;
 }
 
@@ -45,7 +46,7 @@ TextField {
 }
 
 #timerBar {
-    -fx-fill: -topBarColor;
+    -fx-background-color: -topBarBackgroundColor;
     -fx-height: 80;
 }
 

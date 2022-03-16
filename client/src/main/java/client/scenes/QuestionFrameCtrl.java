@@ -1,6 +1,6 @@
 package client.scenes;
 
-import client.scenes.controllerrequirements.QuestionFrameFunctions;
+import client.scenes.controllerrequirements.QuestionFrameRequirements;
 import client.scenes.framecomponents.EmoteCtrl;
 import client.scenes.framecomponents.TimerBarCtrl;
 import client.utils.TimeUtils;
@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,7 +31,7 @@ import javax.inject.Inject;
 /**
  * Controller for questionFrame scene
  */
-public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions {
+public class QuestionFrameCtrl implements Initializable, QuestionFrameRequirements {
 
     public boolean test = false;
 
@@ -42,7 +43,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
     TimeUtils timeUtils;
 
     @FXML
-    public Rectangle timerBar;
+    public Rectangle topBar;
     @FXML
     VBox sideLeaderboard;
     @FXML
@@ -116,23 +117,15 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
     public void initialize(URL location, ResourceBundle resources) {
         jokers = List.of(halveTime, eliminateWrongAnswer, doublePoints);
 
-        timerBar.setManaged(false);
+        topBar.setManaged(false);
 
-        timerBarCtrl.initialize(timerBar, timeUtils);
+        timerBarCtrl.initialize(topBar, timeUtils);
         emoteCtrl.initialize(reactionContainer, timeUtils);
 
         playerColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getName()));
         scoreColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getScoreString()));
 
         lastEscapeKeyPressTime = 0;
-
-        // LINES BELOW ARE FOR DEMONSTRATION PURPOSES
-
-        setRemainingTime(20);
-
-        initializeMultiplayerGame(List.of("Per", "Andrei"));
-        //initializeSingleplayerGame();
-        addPoints(100);
     }
 
     /**
@@ -173,8 +166,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
 
         for (Button joker : jokers) {
             if (joker.getStyleClass().contains("usedJoker")) {
-                joker.getStyleClass().add("clickable");
-                joker.getStyleClass().remove("usedJoker");
+                setJokerEnabled(joker, true);
             }
         }
 
@@ -186,8 +178,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
         } else {
             sideLeaderboard.setVisible(false);
             setEmoticonField(false);
-            halveTime.getStyleClass().add("usedJoker");
-            halveTime.getStyleClass().remove("clickable");
+            setJokerEnabled(halveTime, false);
         }
     }
 
@@ -223,8 +214,10 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
      */
     public void incrementQuestionNumber() {
         questionNumber++;
-        turnIndicator.setText(questionNumber + "/20");
-        helpMenuQuestionNumber.setText(questionNumber + "/20");
+        Platform.runLater(() -> {
+            turnIndicator.setText(questionNumber + "/20");
+            helpMenuQuestionNumber.setText(questionNumber + "/20");
+        });
     }
 
     /**
@@ -340,11 +333,25 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
     }
 
     /**
+     * Sets whether a joker is enabled
+     *
+     * @param joker  The Button referring to the joker to be enabled / disabled
+     * @param enable Whether to enable the joker
+     */
+    private void setJokerEnabled(Button joker, boolean enable) {
+        if (enable) {
+            joker.getStyleClass().remove("usedJoker");
+            joker.getStyleClass().add("clickable");
+        } else {
+            joker.getStyleClass().add("usedJoker");
+            joker.getStyleClass().remove("clickable");
+        }
+    }
+
+    /**
      * Method to run when a user uses a joker
      *
      * @param e Information about the joker used
-     *          <p>
-     *                   TODO: send a request to the server
      */
     @FXML
     private void useJoker(ActionEvent e) {
@@ -353,11 +360,46 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameFunctions 
             return;
         }
 
-        joker.getStyleClass().add("usedJoker");
-        joker.getStyleClass().remove("clickable");
+        setJokerEnabled(joker, false);
 
-        // useful stuff below
-        System.out.println(joker.getId());
+        switch (joker.getId()) {
+            case "doublePoints":
+                mainCtrl.doublePoints();
+                break;
+            case "eliminateWrongAnswer":
+                mainCtrl.eliminateWrongAnswer();
+                break;
+            case "halveTime":
+                // TODO: fill in this joker's function
+                break;
+            default:
+                System.err.println("Unrecognized joker id in QuestionFrameCtrl");
+                break;
+        }
+    }
+
+    /**
+     * Temporarily disabled all jokers
+     * Meant to be used during overview phase
+     *
+     * @param duration How long the jokers should remain disabled for
+     */
+    public void tempDisableJokers(double duration) {
+        for (Button joker : jokers) {
+            setJokerEnabled(joker, false);
+            timeUtils.runAfterDelay(() -> {
+                setJokerEnabled(joker, true);
+            }, duration);
+        }
+    }
+
+    /**
+     * Sets whether the wrong answer joker is enabled
+     *
+     * @param enabled Whether the wrong answer joker is enabled
+     */
+    public void setWrongAnswerJoker(boolean enabled) {
+        setJokerEnabled(eliminateWrongAnswer, enabled);
     }
 
     /**

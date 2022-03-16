@@ -115,6 +115,10 @@ public class TimerBarCtrl {
      * @param change  Change of width of window in px
      */
     public void resize(int newSize, int change) {
+        if (-change == newSize) {
+            return;
+        }
+        
         displayWidth = newSize;
         totalProgress += (now() - currentAnimationStartTime) / currentAnimationLength;
         animation.setByX(-newSize);

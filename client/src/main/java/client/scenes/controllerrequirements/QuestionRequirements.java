@@ -6,4 +6,7 @@ public interface QuestionRequirements {
     void initialize(Question question);
 
     void revealCorrectAnswer();
+
+    void removeIncorrectAnswer();
+
 }

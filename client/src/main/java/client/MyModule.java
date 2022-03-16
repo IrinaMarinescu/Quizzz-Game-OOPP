@@ -35,6 +35,7 @@ public class MyModule implements Module {
     public void configure(Binder binder) {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(MainFrameCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
         binder.bind(QuestionFrameCtrl.class).in(Scopes.SINGLETON);
         binder.bind(TimerBarCtrl.class).in(Scopes.SINGLETON);
         binder.bind(EmoteCtrl.class).in(Scopes.SINGLETON);
