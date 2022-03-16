@@ -16,12 +16,20 @@
 
 package client;
 
+import client.scenes.LeaderboardCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.MainFrameCtrl;
 import client.scenes.QuestionFrameCtrl;
 import client.scenes.framecomponents.EmoteCtrl;
 import client.scenes.framecomponents.TimerBarCtrl;
+import client.scenes.questioncontrollers.InsteadOfQuestionCtrl;
+import client.scenes.questioncontrollers.OpenQuestionCtrl;
+import client.scenes.questioncontrollers.QuestionOneImageCtrl;
+import client.scenes.questioncontrollers.QuestionThreePicturesCtrl;
+import client.scenes.questioncontrollers.QuestionTrueFalseCtrl;
+import client.utils.LongPollingUtils;
 import client.utils.ServerUtils;
+import client.utils.TimeUtils;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
@@ -35,9 +43,21 @@ public class MyModule implements Module {
     public void configure(Binder binder) {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(MainFrameCtrl.class).in(Scopes.SINGLETON);
-        binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
+        binder.bind(LeaderboardCtrl.class).in(Scopes.SINGLETON);
+        // TODO: bind lobbyCtrl, admin screen, countdown screen (?)
+
         binder.bind(QuestionFrameCtrl.class).in(Scopes.SINGLETON);
         binder.bind(TimerBarCtrl.class).in(Scopes.SINGLETON);
         binder.bind(EmoteCtrl.class).in(Scopes.SINGLETON);
+
+        binder.bind(OpenQuestionCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(InsteadOfQuestionCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(QuestionOneImageCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(QuestionThreePicturesCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(QuestionTrueFalseCtrl.class).in(Scopes.SINGLETON);
+
+        binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
+        binder.bind(TimeUtils.class).in(Scopes.SINGLETON);
+        binder.bind(LongPollingUtils.class).in(Scopes.SINGLETON);
     }
 }

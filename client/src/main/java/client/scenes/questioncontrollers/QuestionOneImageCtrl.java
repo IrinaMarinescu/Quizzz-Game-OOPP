@@ -1,5 +1,7 @@
-package client.scenes;
+package client.scenes.questioncontrollers;
 
+import client.scenes.MainCtrl;
+import client.scenes.QuestionFrameCtrl;
 import client.scenes.controllerrequirements.QuestionRequirements;
 import commons.Question;
 import java.util.ArrayList;
@@ -79,6 +81,7 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
     }
 
     ;
+
     /**
      * Sets the selected answer as '1'
      */
@@ -89,6 +92,7 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
     }
 
     ;
+
     /**
      * Sets the selected answer as '2'
      */
@@ -147,8 +151,8 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
 
         //while loop to prevent multiple answer options from being the same number
         while (answerA.getText().equals(answerB.getText())
-                || answerC.getText().equals(answerB.getText())
-                || answerC.getText().equals(answerA.getText())) {
+            || answerC.getText().equals(answerB.getText())
+            || answerC.getText().equals(answerA.getText())) {
             buttons.get(positionCorrectAnswer).setText(String.valueOf(actualConsumption));
             for (int i = 0; i < 3; i++) {
                 if (i != positionCorrectAnswer) {

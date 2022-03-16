@@ -12,7 +12,17 @@ public class MainCtrlDOC extends MainCtrl implements SupportsLogging {
     }
 
     @Override
+    public void halveTime() {
+        log("halve");
+    }
+
+    @Override
     public void disconnect() {
         log("disc");
+    }
+
+    @Override
+    public void startMultiplayerGame() {
+        log("game");
     }
 }
