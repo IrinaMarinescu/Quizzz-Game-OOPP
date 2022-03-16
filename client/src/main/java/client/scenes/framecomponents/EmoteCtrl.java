@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
@@ -56,22 +57,25 @@ public class EmoteCtrl {
     public void addReaction(String name, String reaction) {
         String pathToImage = "client/emoticons/" + reactionImage.get(reaction);
 
-        if (visibleEmotes == MAX_EMOTES) {
-            reactionContainer.getChildren().remove(MAX_EMOTES - 1);
-        } else {
-            visibleEmotes++;
-        }
-
         if (test) {
-            reactionContainer.getChildren().add(0, new Circle());
+            if (reactionContainer.getChildren().size() < MAX_EMOTES) {
+                reactionContainer.getChildren().add(0, new Circle());
+            }
             return;
         }
 
         var emoteContainer = loader.load(EmoteContainerCtrl.class, "client/scenes/EmoteContainer.fxml", null);
         emoteContainer.getKey().initialize(name, pathToImage);
-        reactionContainer.getChildren().add(0, emoteContainer.getValue());
 
-        timeUtils.runAfterDelay(() -> animate(emoteContainer.getValue()), 5.0);
+        Platform.runLater(() -> {
+            reactionContainer.getChildren().add(0, emoteContainer.getValue());
+            if (visibleEmotes == MAX_EMOTES) {
+                reactionContainer.getChildren().remove(MAX_EMOTES);
+            } else {
+                visibleEmotes++;
+            }
+            timeUtils.runAfterDelay(() -> animate(emoteContainer.getValue()), 5.0);
+        });
     }
 
     /**

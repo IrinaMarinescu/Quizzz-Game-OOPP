@@ -36,6 +36,15 @@ public class ServerUtils {
     private String serverIP = "http://localhost:8080/";
 
     /**
+     * Get the IP of the server
+     *
+     * @return the IP of the server
+     */
+    public String getServerIP() {
+        return serverIP;
+    }
+
+    /**
      * Set server IP
      *
      * @param serverIP IP to set

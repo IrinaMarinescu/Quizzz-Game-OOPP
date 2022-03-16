@@ -75,6 +75,8 @@ public class MainCtrl implements MainCtrlRequirements {
 
     QuestionRequirements currentQuestionCtrl = null;
 
+    private int gameId = 0;
+
     /**
      * Initializes this class
      *
@@ -122,6 +124,7 @@ public class MainCtrl implements MainCtrlRequirements {
         primaryStage.setTitle("Quizzzzz!");
         showMainFrame();
 
+        showQuestionFrame();
         primaryStage.show();
     }
 
@@ -302,6 +305,7 @@ public class MainCtrl implements MainCtrlRequirements {
     public void eliminateWrongAnswer() {
         // currentQuestionCtrl.eliminateWrongAnswer();
     }
+    public void playerLeavesLobby(String name) {
 
     /**
      * Disconnects the player from a game
@@ -316,6 +320,13 @@ public class MainCtrl implements MainCtrlRequirements {
     public void showGlobalLeaderboardFrame() {
         int maxSize = 10;
         showLeaderboard(serverUtils.getSoloLeaderboard(maxSize), maxSize, "solo");
+    @Override
+    public void halveRemainingTime() {
+
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public void showLobbyFrame() {
@@ -347,5 +358,12 @@ public class MainCtrl implements MainCtrlRequirements {
         primaryStage.setScene(questionFrame);
         questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
 
+    }
+
+    public void showGlobalLeaderboardFrame() {
+    }
+
+    public int getGameId() {
+        return gameId;
     }
 }
