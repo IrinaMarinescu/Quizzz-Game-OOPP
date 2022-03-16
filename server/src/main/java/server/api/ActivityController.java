@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import server.database.ActivityRepository;
 
@@ -47,6 +48,23 @@ public class ActivityController {
     public List<Activity> fetchRandom(@PathVariable("limit") int limit) {
         List<Activity> res = repo.fetchRandomActivities(limit);
         return res;
+    }
+
+    /**
+     * Used to delete an activity from the DB, by ID
+     *
+     * @param id the ID of the activity to delete
+     * @return a bad request error, if an activity does not exist, or the deleted activity otherwise
+     */
+    @PostMapping("del")
+    public ResponseEntity<Activity> deleteActivity(@RequestParam(name = "id") String id) {
+        Activity candidate = repo.findById(id);
+        if (candidate == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        repo.deleteById(id);
+        return ResponseEntity.ok(candidate);
     }
 
     /**
