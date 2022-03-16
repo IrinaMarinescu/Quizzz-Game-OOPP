@@ -1,5 +1,7 @@
-package client.scenes;
+package client.scenes.questioncontrollers;
 
+import client.scenes.MainCtrl;
+import client.scenes.QuestionFrameCtrl;
 import client.scenes.controllerrequirements.QuestionRequirements;
 import commons.Question;
 import java.util.ArrayList;
@@ -78,6 +80,7 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
     }
 
     ;
+
     /**
      * Sets the selected answer as '1'
      */
@@ -88,6 +91,7 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
     }
 
     ;
+
     /**
      * Sets the selected answer as '2'
      */

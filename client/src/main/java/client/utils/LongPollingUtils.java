@@ -61,7 +61,7 @@ public class LongPollingUtils {
     private void sendPoll() {
         String json = ClientBuilder.newClient(new ClientConfig())
             .target(serverUtils.getServerIP())
-            .path("poll/" + mainCtrl.getGameId())
+            .path("poll/" + mainCtrl.getGame().getId())
             .request(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
             .get(new GenericType<>() {
@@ -85,7 +85,7 @@ public class LongPollingUtils {
     public void performAction(JsonNode response) {
         switch (response.get("type").asText()) {
             case "START_MP_GAME":
-                mainCtrl.startMultiplayerGame();
+                // TODO
                 break;
             case "EMOJI":
                 String name = response.get("name").asText();
@@ -93,7 +93,7 @@ public class LongPollingUtils {
                 questionFrameCtrl.displayNewEmoji(name, reaction);
                 break;
             case "HALVE_TIME":
-                mainCtrl.halveRemainingTime();
+                mainCtrl.halveTime();
                 break;
             case "DISCONNECT":
                 String nameDisconnect = response.get("name").asText();

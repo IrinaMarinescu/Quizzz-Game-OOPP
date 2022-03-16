@@ -5,6 +5,8 @@ import commons.Question;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -188,7 +190,7 @@ public class ActivityController {
      * Generates an open question by fetching one random activity
      *
      * @param typeOfQuestion the randomly generated number
-     * @param questions the list of all the questions
+     * @param questions      the list of all the questions
      */
     public void generateOpenQuestion(int typeOfQuestion, List<Question> questions) {
         String id = associateQuestion(typeOfQuestion);
@@ -226,7 +228,7 @@ public class ActivityController {
      * Generates a question with one image by fetching one random activity
      *
      * @param typeOfQuestion the randomly generated number
-     * @param questions the list of all the questions
+     * @param questions      the list of all the questions
      */
     public void generateOneImageQuestion(int typeOfQuestion, List<Question> questions) {
         String id = associateQuestion(typeOfQuestion);
@@ -240,7 +242,7 @@ public class ActivityController {
      * Generates an instead of question by fetching four random activities
      *
      * @param typeOfQuestion the randomly generated number
-     * @param questions the list of all the questions
+     * @param questions      the list of all the questions
      */
     public void generateInsteadOfQuestion(int typeOfQuestion, List<Question> questions) {
         List<Activity> activities = fetchRandom(4);
@@ -259,7 +261,7 @@ public class ActivityController {
         }
         for (int j = 1; j < 4; j++) {
             if (j != correctAnswer
-                    && activities.get(j).consumptionInWh < activities.get(i).consumptionInWh) {
+                && activities.get(j).consumptionInWh < activities.get(i).consumptionInWh) {
                 i = j;
             }
         }

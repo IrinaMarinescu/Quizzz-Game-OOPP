@@ -1,5 +1,7 @@
-package client.scenes;
+package client.scenes.questioncontrollers;
 
+import client.scenes.MainCtrl;
+import client.scenes.QuestionFrameCtrl;
 import client.scenes.controllerrequirements.QuestionRequirements;
 import commons.Question;
 import java.util.Scanner;

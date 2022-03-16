@@ -18,6 +18,9 @@ package client.scenes;
 
 import client.scenes.controllerrequirements.MainCtrlRequirements;
 import client.scenes.controllerrequirements.QuestionRequirements;
+import client.scenes.questioncontrollers.OpenQuestionCtrl;
+import client.scenes.questioncontrollers.QuestionOneImageCtrl;
+import client.utils.LongPollingUtils;
 import client.utils.ServerUtils;
 import client.utils.TimeUtils;
 import commons.Game;
@@ -55,6 +58,7 @@ public class MainCtrl implements MainCtrlRequirements {
 
     private TimeUtils timeUtils;
     private ServerUtils serverUtils;
+    private LongPollingUtils longPollingUtils;
     private Lobby lobby;
     private Stage primaryStage;
 
@@ -80,6 +84,7 @@ public class MainCtrl implements MainCtrlRequirements {
      *
      * @param timeUtils        Only instance of TimeUtils class
      * @param serverUtils      Only instance of ServerUtils class
+     * @param longPollingUtils Only instance of LongPollingUtils class
      * @param primaryStage     Only stage
      * @param mainFrame        Welcome screen FXML and controller
      * @param questionFrame    Question Frame screen FXML and controller
@@ -87,7 +92,8 @@ public class MainCtrl implements MainCtrlRequirements {
      * @param openQuestion     Open question node FXML and controller
      * @param questionOneImage Question with one image FXML and controller
      */
-    public void initialize(TimeUtils timeUtils, ServerUtils serverUtils, Stage primaryStage,
+    public void initialize(TimeUtils timeUtils, ServerUtils serverUtils, LongPollingUtils longPollingUtils,
+                           Stage primaryStage,
                            Pair<MainFrameCtrl, Parent> mainFrame,
                            Pair<QuestionFrameCtrl, Parent> questionFrame,
                            Pair<LeaderboardCtrl, Parent> leaderboard,
@@ -96,6 +102,7 @@ public class MainCtrl implements MainCtrlRequirements {
 
         this.timeUtils = timeUtils;
         this.serverUtils = serverUtils;
+        this.longPollingUtils = longPollingUtils; // note that long polling is not active by default!
         this.primaryStage = primaryStage;
 
         primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
@@ -167,7 +174,7 @@ public class MainCtrl implements MainCtrlRequirements {
 
     @Override
     public void startMultiplayerGame() {
-
+        // TODO: enable long polling
     }
 
     /**

@@ -12,13 +12,8 @@ public class MainCtrlDOC extends MainCtrl implements SupportsLogging {
     }
 
     @Override
-    public void halveRemainingTime() {
+    public void halveTime() {
         log("halve");
-    }
-
-    @Override
-    public void playerLeavesLobby(String name) {
-        log("leave " + name);
     }
 
     @Override
