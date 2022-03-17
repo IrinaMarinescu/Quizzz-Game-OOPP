@@ -22,12 +22,12 @@ class ActivityControllerTest {
     private ActivityRepository repo;
 
     private ActivityController controller;
-    private Activity a;
+    private Activity activity;
 
     @BeforeEach
     public void setUp() {
         controller = new ActivityController(repo);
-        a = new Activity("00-a", "ss/ss.png", "a", 5, "b");
+        activity = new Activity("00-a", "ss/ss.png", "a", 5, "b");
     }
 
     @Test
@@ -38,7 +38,7 @@ class ActivityControllerTest {
 
     @Test
     public void testAdd() {
-        var s = controller.add(a);
+        var s = controller.add(activity);
         Activity activity = repo.findById("00-a");
 
         assertEquals(activity.consumptionInWh, 5);
@@ -52,8 +52,8 @@ class ActivityControllerTest {
 
     @Test
     public void testDelete() {
-        var s = controller.add(a);
+        var s = controller.add(activity);
         controller.deleteActivity("00-a");
-        assertEquals(a, s.getBody());
+        assertEquals(activity, s.getBody());
     }
 }
