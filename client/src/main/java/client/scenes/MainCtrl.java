@@ -272,7 +272,7 @@ public class MainCtrl implements MainCtrlRequirements {
      * @param baseScore the score in range [0; 100]
      */
     @Override
-    public void addPoints(int baseScore) {
+    public void addPoints(long baseScore) {
         if (baseScore != 0) {
             double progress = ((double) (timeUtils.now() - questionStartTime)) / (questionEndTime - questionStartTime);
             pointsGained = (int) (50.0 + 0.5 * (1.0 - progress) * (double) baseScore);

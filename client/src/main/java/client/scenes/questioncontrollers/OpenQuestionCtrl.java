@@ -85,10 +85,10 @@ public class OpenQuestionCtrl implements QuestionRequirements {
      */
     @Override
     public void revealCorrectAnswer() {
-        int correctAnswer = this.question.getActivities().get(0).consumptionInWh;
+        long correctAnswer = this.question.getActivities().get(0).consumptionInWh;
         answerText.setText("It takes " + correctAnswer + "Wh!");
-        int percentageOff = ((Math.abs(correctAnswer - this.answer)) / correctAnswer) * 100;
-        int baseScore = 100 - percentageOff / 2;
+        long percentageOff = ((Math.abs(correctAnswer - this.answer)) / correctAnswer) * 100;
+        long baseScore = 100 - percentageOff / 2;
         mainCtrl.addPoints(baseScore);
     }
 
