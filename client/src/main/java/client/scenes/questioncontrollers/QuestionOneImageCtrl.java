@@ -125,7 +125,7 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
     public void initialize(Question question) {
         this.question = question;
         this.questionText.setText("How much does " + question.getActivities().get(0).title + " consume in Wh?");
-        int actualConsumption = question.getActivities().get(0).consumptionInWh;
+        long actualConsumption = question.getActivities().get(0).consumptionInWh;
         this.positionCorrectAnswer = (new Random()).nextInt(3);
 
         String imagePath = question.getActivities().get(0).imagePath;
@@ -168,7 +168,7 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
      * @return returns a String with the random value, so that it can be displayed in the buttons
      */
     private String randomConsumption() {
-        int actualConsumption = this.question.getActivities().get(0).consumptionInWh;
+        long actualConsumption = this.question.getActivities().get(0).consumptionInWh;
         int zeros = countZeros(actualConsumption);
         double fifteenPercent = actualConsumption / 100.00 * 15.00;
         int max = (int) Math.ceil(actualConsumption + fifteenPercent);
@@ -185,7 +185,7 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
      * @param actualConsumption The consumption of the activity for which the number of zeroes has to be counted
      * @return The number of zeroes in the consumption
      */
-    public static int countZeros(int actualConsumption) {
+    public static int countZeros(long actualConsumption) {
         String number = String.valueOf(actualConsumption);
         int counter = 0;
         for (int i = 0; i < number.length(); i++) {
