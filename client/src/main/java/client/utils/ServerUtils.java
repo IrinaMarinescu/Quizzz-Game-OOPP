@@ -100,6 +100,15 @@ public class ServerUtils {
         return new ArrayList<>();
     }
 
+    public List sendNewEmoji(String username, String reaction) {
+        List<String> details = List.of(username, reaction);
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(serverIP).path("api/sendEmote/{gameId}") //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .post(Entity.entity(details, APPLICATION_JSON), List.class);
+    }
+
     public void disconnect(UUID gameId, LeaderboardEntry player) {
         // TODO send data to server that the player disconnected
     }
