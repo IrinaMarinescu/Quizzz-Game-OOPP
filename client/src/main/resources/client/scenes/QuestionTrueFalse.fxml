@@ -6,48 +6,57 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="1156.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionTrueFalseCtrl">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0"
+      prefWidth="1156.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="client.scenes.questioncontrollers.QuestionTrueFalseCtrl">
     <children>
-        <TextField id="Question" fx:id="questionOutput" alignment="CENTER" layoutX="77.0" layoutY="24.0" style="-fx-text-fill: white;" stylesheets="@../css/questionTrueFalse.css" text="True or False?">
+        <TextField id="Question" fx:id="questionOutput" alignment="CENTER" layoutX="77.0" layoutY="24.0"
+                   style="-fx-text-fill: white;" stylesheets="@../css/questionTrueFalse.css" text="True or False?">
             <font>
-                <Font name="System Bold" size="30.0" />
+                <Font name="System Bold" size="30.0"/>
             </font>
         </TextField>
-        <Button id="True" fx:id="trueButton" layoutX="606.0" layoutY="270.0" mnemonicParsing="false" onAction="#trueSelected" stylesheets="@../css/questionTrueFalse.css" text="True">
+        <Button id="True" fx:id="trueButton" layoutX="606.0" layoutY="270.0" mnemonicParsing="false"
+                onAction="#trueSelected" stylesheets="@../css/questionTrueFalse.css" text="True">
             <font>
-                <Font size="25.0" />
+                <Font size="25.0"/>
             </font>
         </Button>
-        <Button id="False" fx:id="falseButton" layoutX="606.0" layoutY="441.0" mnemonicParsing="false" onAction="#falseSelected" stylesheets="@../css/questionTrueFalse.css" text="False">
+        <Button id="False" fx:id="falseButton" layoutX="606.0" layoutY="441.0" mnemonicParsing="false"
+                onAction="#falseSelected" stylesheets="@../css/questionTrueFalse.css" text="False">
             <font>
-                <Font size="25.0" />
+                <Font size="25.0"/>
             </font>
         </Button>
-        <ImageView id="Image" fx:id="imageOutput" fitHeight="362.0" fitWidth="399.0" layoutX="158.0" layoutY="218.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView id="Image" fx:id="imageOutput" fitHeight="362.0" fitWidth="399.0" layoutX="158.0" layoutY="218.0"
+                   pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@../temporary/temporaryPicture.png" />
+                <Image url="@../temporary/temporaryPicture.png"/>
             </image>
         </ImageView>
-      <ImageView fx:id="correctTrue" fitHeight="78.0" fitWidth="89.0" layoutX="1060.0" layoutY="293.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../icons/correct.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="correctFalse" fitHeight="78.0" fitWidth="89.0" layoutX="1060.0" layoutY="471.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../icons/correct.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="wrongTrue" fitHeight="81.0" fitWidth="89.0" layoutX="1060.0" layoutY="294.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../icons/wrong.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="wrongFalse" fitHeight="91.0" fitWidth="102.0" layoutX="1054.0" layoutY="460.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../icons/wrong.png" />
-         </image>
-      </ImageView>
+        <ImageView fx:id="correctTrue" fitHeight="78.0" fitWidth="89.0" layoutX="1060.0" layoutY="293.0"
+                   pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../icons/correct.png"/>
+            </image>
+        </ImageView>
+        <ImageView fx:id="correctFalse" fitHeight="78.0" fitWidth="89.0" layoutX="1060.0" layoutY="471.0"
+                   pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../icons/correct.png"/>
+            </image>
+        </ImageView>
+        <ImageView fx:id="wrongTrue" fitHeight="81.0" fitWidth="89.0" layoutX="1060.0" layoutY="294.0"
+                   pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../icons/wrong.png"/>
+            </image>
+        </ImageView>
+        <ImageView fx:id="wrongFalse" fitHeight="91.0" fitWidth="102.0" layoutX="1054.0" layoutY="460.0"
+                   pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../icons/wrong.png"/>
+            </image>
+        </ImageView>
     </children>
 </Pane>

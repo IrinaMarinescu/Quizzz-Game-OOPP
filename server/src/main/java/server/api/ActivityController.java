@@ -28,6 +28,7 @@ public class ActivityController {
 
     private final ActivityRepository repo;
 
+
     public ActivityController(ActivityRepository repo) {
         this.repo = repo;
     }
@@ -76,10 +77,27 @@ public class ActivityController {
             return ResponseEntity.badRequest().build();
         }
 
-        //return ResponseEntity.ok(activity);
         Activity saved = repo.save(activity);
         return ResponseEntity.ok(saved);
     }
+
+    @PostMapping("import")
+    public ResponseEntity<List<Activity>> importActivities(@RequestBody List<Activity> activities) {
+        for (var activity : activities) {
+            if (nullOrEmpty(activity.source) || nullOrEmpty(activity.title) || nullOrEmpty(activity.id)
+                || nullOrEmpty(activity.imagePath)) {
+                return ResponseEntity.badRequest().build();
+            }
+        }
+
+        List<Activity> saved = new ArrayList<>();
+        for (var activity : activities) {
+            saved.add(repo.save(activity));
+        }
+
+        return ResponseEntity.ok(saved);
+    }
+
 
     /**
      * generates 20 questions of random types
@@ -167,8 +185,8 @@ public class ActivityController {
         int correctAnswer = 0;
 
         if (numberOfActivities == 1) {
-            int correctNumber = activities.get(0).consumptionInWh;
-            int wrongNumber = correctNumber * 110 / 100;
+            long correctNumber = activities.get(0).consumptionInWh;
+            long wrongNumber = correctNumber * 110 / 100;
             if (wrongNumber % 2 == 0) {
                 question = activities.get(0).title + " consumes " + wrongNumber + "per hour.";
                 correctAnswer = 1;
@@ -190,7 +208,7 @@ public class ActivityController {
      * Generates an open question by fetching one random activity
      *
      * @param typeOfQuestion the randomly generated number
-     * @param questions the list of all the questions
+     * @param questions      the list of all the questions
      */
     public void generateOpenQuestion(int typeOfQuestion, List<Question> questions) {
         String id = associateQuestion(typeOfQuestion);
@@ -228,7 +246,7 @@ public class ActivityController {
      * Generates a question with one image by fetching one random activity
      *
      * @param typeOfQuestion the randomly generated number
-     * @param questions the list of all the questions
+     * @param questions      the list of all the questions
      */
     public void generateOneImageQuestion(int typeOfQuestion, List<Question> questions) {
         String id = associateQuestion(typeOfQuestion);
@@ -242,7 +260,7 @@ public class ActivityController {
      * Generates an instead of question by fetching four random activities
      *
      * @param typeOfQuestion the randomly generated number
-     * @param questions the list of all the questions
+     * @param questions      the list of all the questions
      */
     public void generateInsteadOfQuestion(int typeOfQuestion, List<Question> questions) {
         List<Activity> activities = fetchRandom(4);
@@ -261,7 +279,7 @@ public class ActivityController {
         }
         for (int j = 1; j < 4; j++) {
             if (j != correctAnswer
-                    && activities.get(j).consumptionInWh < activities.get(i).consumptionInWh) {
+                && activities.get(j).consumptionInWh < activities.get(i).consumptionInWh) {
                 i = j;
             }
         }

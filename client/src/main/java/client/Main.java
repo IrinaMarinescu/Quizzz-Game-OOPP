@@ -22,7 +22,6 @@ import client.scenes.InsteadOfQuestionCtrl;
 import client.scenes.LeaderboardCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.MainFrameCtrl;
-import client.scenes.OpenQuestionCtrl;
 import client.scenes.QuestionFrameCtrl;
 import client.scenes.QuestionOneImageCtrl;
 import client.scenes.QuestionThreePicturesCtrl;
@@ -90,16 +89,13 @@ public class Main extends Application {
             FXML.load(LeaderboardCtrl.class, "client/scenes/Leaderboard.fxml", "client/css/leaderboardPage.css");
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+        LongPollingUtils longPollingUtils = INJECTOR.getInstance(client.utils.LongPollingUtils.class);
+
         var serverUtils = INJECTOR.getInstance(ServerUtils.class);
         var timeUtils = INJECTOR.getInstance(TimeUtils.class);
 
-        mainCtrl.initialize(timeUtils, serverUtils, primaryStage, mainFrame, questionFrame, leaderboard, openQuestion,
-            questionOneImage, questionThreePictures, questionTrueFalse, questionInsteadOf);
-        LongPollingUtils longPollingUtils = INJECTOR.getInstance(client.utils.LongPollingUtils.class);
-
-        // Set true to enable long polling; program will crash if server not running
-        longPollingUtils.setActive(true);
-
-        //mainCtrl.initialize(primaryStage, questionFrame);
+        mainCtrl.initialize(timeUtils, serverUtils, longPollingUtils, primaryStage, mainFrame, questionFrame,
+            leaderboard, openQuestion,
+            questionOneImage);
     }
 }

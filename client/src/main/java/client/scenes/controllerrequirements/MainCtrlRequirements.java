@@ -25,7 +25,7 @@ public interface MainCtrlRequirements {
      *
      * @param baseScore the score (0 - 100)
      */
-    void addPoints(int baseScore);
+    void addPoints(long baseScore);
 
     void showGlobalLeaderboardFrame();
 
@@ -34,11 +34,4 @@ public interface MainCtrlRequirements {
     void eliminateWrongAnswer();
 
     void halveTime();
-
-    /**
-     * Called by the lobby when a player leaves the game
-     */
-    void playerLeavesLobby(String name);
-
-    void halveRemainingTime();
 }

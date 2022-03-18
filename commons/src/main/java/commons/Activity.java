@@ -2,8 +2,10 @@ package commons;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
+import java.beans.ConstructorProperties;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -34,9 +36,13 @@ public class Activity {
     @NotNull(message = "Activity image path should not be null!")
     public String imagePath;
 
-    public int consumptionInWh;
+    public long consumptionInWh;
 
+    /**
+     * @Lob Allows String in the Database to be longer than 255 characters
+     */
     @NotNull(message = "Activity source should not be null!")
+    @Lob
     public String source;
 
     @SuppressWarnings("unused")
@@ -44,7 +50,8 @@ public class Activity {
         // for object mappers.
     }
 
-    public Activity(String id, String imagePath, String title, int consumptionInWh, String source) {
+    @ConstructorProperties({"id", "image_path", "title", "consumption_in_wh", "source"})
+    public Activity(String id, String imagePath, String title, long consumptionInWh, String source) {
         this.id = id;
         this.imagePath = imagePath;
         this.title = title;

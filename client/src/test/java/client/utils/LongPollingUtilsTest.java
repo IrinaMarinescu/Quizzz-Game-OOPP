@@ -50,15 +50,6 @@ public class LongPollingUtilsTest {
     }
 
     @Test
-    void performActionStart() throws JsonProcessingException {
-        JsonNode action = mapper.readTree("{\"type\":\"START_MP_GAME\"}");
-
-        sut.performAction(action);
-        assertSame(1, mainCtrlDOC.countLogs());
-        assertSame(1, mainCtrlDOC.countLogs("game"));
-    }
-
-    @Test
     void performActionEmoji() throws JsonProcessingException {
         JsonNode action = mapper.readTree("{\"type\":\"EMOJI\",\"name\":\"James\",\"reaction\":\"sad\"}");
 
