@@ -411,7 +411,6 @@ public class MainCtrl implements MainCtrlRequirements {
     public void showLobbyFrame() {
     }
 
-    @Override
     public void halveRemainingTime() {
 
     }

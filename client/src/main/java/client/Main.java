@@ -18,7 +18,6 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
-import client.scenes.InsteadOfQuestionCtrl;
 import client.scenes.LeaderboardCtrl;
 import client.scenes.LobbyCtrl;
 import client.scenes.MainCtrl;
