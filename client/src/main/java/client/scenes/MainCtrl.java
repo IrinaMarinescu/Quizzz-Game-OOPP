@@ -412,7 +412,7 @@ public class MainCtrl implements MainCtrlRequirements {
     }
 
     public void halveRemainingTime() {
-
+        questionFrameCtrl.halveRemainingTime();
     }
 
     /**

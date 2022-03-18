@@ -59,6 +59,11 @@ public class ActivityController {
         longPollingController.dispatch(gameId, "EMOJI", Pair.of("name", username), Pair.of("reaction", typeReaction));
     }
 
+    @GetMapping(path = "/halveTime/{gameId}")
+    public void halveTimeToAll(@PathVariable UUID gameId) {
+        longPollingController.dispatch(gameId, "HALVE_TIME");
+    }
+
     /**
      * Uses the function defined {@link ActivityRepository} to fetch a number of random entries from the activity table.
      * <p>

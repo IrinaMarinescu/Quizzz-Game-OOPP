@@ -109,6 +109,14 @@ public class ServerUtils {
             .post(Entity.entity(details, APPLICATION_JSON), List.class);
     }
 
+    public boolean halveTime(UUID gameId) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(serverIP).path("api/halveTime/{gameId}") //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .post(Entity.entity(true, APPLICATION_JSON), Boolean.class);
+    }
+
     public void disconnect(UUID gameId, LeaderboardEntry player) {
         // TODO send data to server that the player disconnected
     }
