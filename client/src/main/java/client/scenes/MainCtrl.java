@@ -156,6 +156,9 @@ public class MainCtrl implements MainCtrlRequirements {
         this.lobby = lobby;
     }
 
+    public void playerLeavesLobby() {
+    }
+
     /**
      * Starts a singleplayer game
      * <p>
