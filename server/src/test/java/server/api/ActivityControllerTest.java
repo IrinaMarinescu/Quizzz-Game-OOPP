@@ -3,6 +3,7 @@ package server.api;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import commons.Activity;
@@ -40,6 +41,34 @@ class ActivityControllerTest {
     public void cannotAddNullTitleOrSource() {
         var s = sut.add(new Activity(null, null, null, 0, null));
         assertEquals(BAD_REQUEST, s.getStatusCode());
+    }
+
+    @Test
+    void fetchRandomSimilarity() {
+        sut.importActivities(List.of(
+            new Activity("A", "ss/ss.png", "flying a plane", 10, "b"),
+            new Activity("B", "ss/sds.png", "TITLE", 20, "google.com"),
+            new Activity("C", "ss/sda.png", "using a lamp", 80, "bing.com"),
+            new Activity("D", "ss/sss.png", "doing something", 100, "yandex.com")
+        ));
+
+        List<Activity> res = sut.fetchRandom(2);
+
+        boolean indexZeroSmall = res.get(0).id.equals("A") || res.get(0).id.equals("B");
+        boolean indexOneSmall = res.get(1).id.equals("A") || res.get(1).id.equals("B");
+        assertSame(indexZeroSmall, indexOneSmall);
+    }
+
+    @Test
+    void fetchTooMuch() {
+        sut.importActivities(List.of(
+            new Activity("A", "ss/ss.png", "flying a plane", 10, "b"),
+            new Activity("B", "ss/sds.png", "TITLE", 20, "google.com")
+        ));
+
+        List<Activity> res = sut.fetchRandom(5);
+
+        assertSame(2, res.size());
     }
 
     @Test
@@ -108,8 +137,13 @@ class ActivityControllerTest {
         sut.generateTrueFalseQuestion(0, res);
         Question q = res.get(0);
 
-        assertEquals("flying a plane consumes more than TITLE.", q.getQuestion());
-        assertSame(1, q.getCorrectAnswer());
+        if (q.getQuestion().equals("flying a plane consumes more than TITLE.")) {
+            assertSame(1, q.getCorrectAnswer());
+        } else if (q.getQuestion().equals("TITLE consumes more than flying a plane.")) {
+            assertSame(0, q.getCorrectAnswer());
+        } else {
+            fail();
+        }
     }
 
     @Test
@@ -149,7 +183,7 @@ class ActivityControllerTest {
 
         assertEquals("oneImageQuestion", q.getQuestionType());
         assertEquals("How much energy in Wh does flying a plane consume?", q.getQuestion());
-        assertSame(13, q.getActivities().get(0).consumptionInWh);
+        assertEquals(13, q.getActivities().get(0).consumptionInWh);
     }
 
     @Test
