@@ -67,7 +67,7 @@ public class ActivityController {
     /**
      * Used to delete an activity from the DB, by ID
      *
-     * @param id the ID of the activity to delete
+     * @param activity the activity to delete
      * @return a bad request error, if an activity does not exist, or the deleted activity otherwise
      */
     @PostMapping("del")
