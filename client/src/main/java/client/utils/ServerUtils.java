@@ -107,7 +107,7 @@ public class ServerUtils {
             .target(serverIP).path("api/sendEmote/{gameId}") //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //
-            .post(Entity.entity(details, APPLICATION_JSON), List.class);
+            .post(Entity.entity(details, APPLICATION_JSON));
     }
 
     public void halveTime(UUID gameId) {
@@ -115,7 +115,7 @@ public class ServerUtils {
             .target(serverIP).path("api/halveTime/{gameId}") //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //
-            .post(Entity.entity(true, APPLICATION_JSON), Boolean.class);
+            .post(Entity.entity(true, APPLICATION_JSON));
     }
 
     public void disconnect(UUID gameId, LeaderboardEntry player) {
