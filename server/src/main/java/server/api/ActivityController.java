@@ -5,6 +5,7 @@ import commons.Question;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import server.database.ActivityRepository;
 
@@ -71,14 +71,27 @@ public class ActivityController {
      * @return a bad request error, if an activity does not exist, or the deleted activity otherwise
      */
     @PostMapping("del")
-    public ResponseEntity<Activity> deleteActivity(@RequestParam(name = "id") String id) {
-        Activity candidate = repo.findById(id);
+    @Transactional
+    public ResponseEntity<Activity> deleteActivity(@RequestBody Activity activity) {
+        Activity candidate = repo.findById(activity.id);
         if (candidate == null) {
             return ResponseEntity.badRequest().build();
         }
 
-        repo.deleteById(id);
+        repo.deleteById(activity.id);
         return ResponseEntity.ok(candidate);
+    }
+
+    /**
+     * Gets an activity object and updates in accordingly in the database.
+     *
+     * @param activity the activity object to update in the DB.
+     * @return the same object, if the operation is successful.
+     */
+    @PostMapping("update")
+    public ResponseEntity<Activity> updateActivity(@RequestBody Activity activity) {
+        repo.save(activity);
+        return ResponseEntity.ok(activity);
     }
 
     /**
@@ -99,6 +112,12 @@ public class ActivityController {
         return ResponseEntity.ok(saved);
     }
 
+    /**
+     * This function gets a list of activities to add to the database in bulk.
+     *
+     * @param activities the list of the activities to add
+     * @return the same list, if the operation is successful.
+     */
     @PostMapping("import")
     public ResponseEntity<List<Activity>> importActivities(@RequestBody List<Activity> activities) {
         for (var activity : activities) {

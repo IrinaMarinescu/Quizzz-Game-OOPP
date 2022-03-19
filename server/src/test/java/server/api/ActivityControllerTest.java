@@ -24,16 +24,18 @@ class ActivityControllerTest {
 
     private ActivityController controller;
     private Activity activity;
+    private Activity nullActivity;
 
     @BeforeEach
     public void setUp() {
         controller = new ActivityController(repo);
         activity = new Activity("00-a", "ss/ss.png", "a", 5, "b");
+        nullActivity = new Activity(null, null, null, 0, null);
     }
 
     @Test
     public void cannotAddNullTitleOrSource() {
-        var s = controller.add(new Activity(null, null, null, 0, null));
+        var s = controller.add(nullActivity);
         assertEquals(BAD_REQUEST, s.getStatusCode());
     }
 
@@ -69,15 +71,28 @@ class ActivityControllerTest {
 
         assertEquals(repo.findById("00-b"), null);
     }
+
+    @Test
     public void testDeleteNotFound() {
-        var s = controller.deleteActivity("00-x");
+        var s = controller.deleteActivity(nullActivity);
         assertEquals(BAD_REQUEST, s.getStatusCode());
     }
 
     @Test
     public void testDelete() {
         var s = controller.add(activity);
-        controller.deleteActivity("00-a");
+        controller.deleteActivity(activity);
         assertEquals(activity, s.getBody());
+    }
+
+    @Test
+    public void testUpdate() {
+        controller.add(activity);
+        activity.title = "test";
+
+        controller.updateActivity(activity);
+
+        Activity newActivity = repo.findById(activity.id);
+        assertEquals("test", newActivity.title);
     }
 }
