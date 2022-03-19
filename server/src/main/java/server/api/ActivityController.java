@@ -5,8 +5,6 @@ import commons.Question;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,14 +21,12 @@ import server.database.ActivityRepository;
 @RequestMapping("/api/activities")
 public class ActivityController {
 
-    @Autowired
-    private LongPollingController longPollingController;
-
     private final ActivityRepository repo;
+    private final Random rand;
 
-
-    public ActivityController(ActivityRepository repo) {
+    public ActivityController(ActivityRepository repo, Random random) {
         this.repo = repo;
+        this.rand = random;
     }
 
     private static boolean nullOrEmpty(String s) {
@@ -40,14 +36,6 @@ public class ActivityController {
     @GetMapping(path = {"", "/"})
     public List<Activity> getAll() {
         return repo.findAll();
-    }
-
-    /**
-     * FOR DEMONSTRATION OF HOW LONG POLLING WORKS
-     */
-    @GetMapping(path = {"test/{gameId}"})
-    public void sendHelloEmojiToAll(@PathVariable int gameId) {
-        longPollingController.dispatch(gameId, "EMOJI", Pair.of("name", "Per"), Pair.of("reaction", "happy"));
     }
 
     /**
@@ -178,23 +166,22 @@ public class ActivityController {
      */
     public void generateTrueFalseQuestion(int typeOfQuestion, List<Question> questions) {
         String id = associateQuestion(typeOfQuestion);
-        Random activitiesNumber = new Random();
-        int numberOfActivities = activitiesNumber.nextInt(2) + 1;
+        int numberOfActivities = rand.nextInt(2) + 1;
         List<Activity> activities = fetchRandom(numberOfActivities);
         String question = "";
         int correctAnswer = 0;
 
         if (numberOfActivities == 1) {
             int correctNumber = activities.get(0).consumptionInWh;
-            int wrongNumber = correctNumber * 110 / 100;
+            int wrongNumber = correctNumber * 3;
             if (wrongNumber % 2 == 0) {
-                question = activities.get(0).title + " consumes " + wrongNumber + "per hour.";
+                question = activities.get(0).title + " consumes " + wrongNumber + " Wh per hour.";
                 correctAnswer = 1;
             } else {
-                question = activities.get(0).title + " consumes " + correctNumber + "per hour.";
+                question = activities.get(0).title + " consumes " + correctNumber + " Wh per hour.";
             }
         } else {
-            question = activities.get(0).title + " consumes more than " + activities.get(1) + ".";
+            question = activities.get(0).title + " consumes more than " + activities.get(1).title + ".";
             if (activities.get(0).consumptionInWh < activities.get(1).consumptionInWh) {
                 correctAnswer = 1;
             }
@@ -284,7 +271,7 @@ public class ActivityController {
             }
         }
         String id = associateQuestion(typeOfQuestion);
-        String question = "Instead of " + activities.get(i).title + "  you can do...";
+        String question = "Instead of " + activities.get(i).title + " you can do...";
         Question questionInsteadOf = new Question(activities, question, correctAnswer, id);
         questions.add(questionInsteadOf);
     }
