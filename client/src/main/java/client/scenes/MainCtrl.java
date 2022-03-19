@@ -163,6 +163,8 @@ public class MainCtrl implements MainCtrlRequirements {
     }
 
     public void playerLeavesLobby() {
+        serverUtils.leaveLobby(player);
+        showMainFrame();
     }
 
     /**
@@ -183,7 +185,29 @@ public class MainCtrl implements MainCtrlRequirements {
 
     @Override
     public void startMultiplayerGame() {
-        // TODO: enable long polling
+        intermediateLeaderboardShown = true;
+        isMultiplayerGame = true;
+        timeoutRoundCheck = 1;
+        game = serverUtils.startMultiplayerGame();
+        //questionFrameCtrl.initializeMultiplayerGame();
+        showQuestionFrame();
+        nextEvent();
+    }
+
+    public void joinLobby() {
+        Lobby lobby = serverUtils.joinLobby(this.player);
+        setLobby(lobby);
+        lobbyCtrl.initializeLobby(lobby);
+        longPollingUtils.setActive(true);
+        showLobbyFrame();
+    }
+
+    public void addPlayerToLobby(String player) {
+        lobbyCtrl.addPlayer(player);
+    }
+
+    public void removePlayerFromLobby(String player) {
+        lobbyCtrl.removePlayer(player);
     }
 
     /**
@@ -213,7 +237,6 @@ public class MainCtrl implements MainCtrlRequirements {
         // The current event is a question
         game.incrementRound();
         questionFrameCtrl.incrementQuestionNumber();
-        System.out.println(game.getPlayers());
         if (isMultiplayerGame) {
             questionFrameCtrl.setLeaderboardContents(game.getPlayers());
         }

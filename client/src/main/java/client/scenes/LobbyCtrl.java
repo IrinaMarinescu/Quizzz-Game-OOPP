@@ -1,8 +1,10 @@
 package client.scenes;
 
 import client.scenes.controllerrequirements.LobbyCtrlRequirements;
+import commons.Lobby;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,14 +26,7 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
 
     private final MainCtrl mainCtrl;
 
-    ObservableList<String> list = FXCollections.observableArrayList(
-        "Yannick",
-        "Per",
-        "Irina",
-        "Andrei",
-        "Mirella",
-        "Chris"
-    );
+    ObservableList<String> list = FXCollections.observableArrayList();
 
     /**
      * Injects mainCtrl, so it's possible to call methods from there
@@ -41,6 +36,13 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
     @Inject
     public LobbyCtrl(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
+    }
+
+    public void initializeLobby(Lobby lobby) {
+        list = FXCollections.observableArrayList(lobby.getPlayers().stream().map(player -> player.getName()).collect(
+            Collectors.toList()));
+        table.setItems(list);
+        table.setItems(list);
     }
 
     /**
@@ -68,7 +70,6 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         name.setCellValueFactory(s -> new SimpleStringProperty(s.getValue()));
-
         table.setItems(list);
     }
 

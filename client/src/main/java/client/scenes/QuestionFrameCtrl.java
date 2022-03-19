@@ -123,7 +123,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         emoteCtrl.initialize(reactionContainer, timeUtils);
 
         playerColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getName()));
-        scoreColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getScoreString()));
+        scoreColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().scoreToString()));
 
         lastEscapeKeyPressTime = 0;
     }

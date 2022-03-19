@@ -61,7 +61,8 @@ public class LongPollingUtils {
     private void sendPoll() {
         String json = ClientBuilder.newClient(new ClientConfig())
             .target(serverUtils.getServerIP())
-            .path("poll/" + mainCtrl.getGame().getId())
+            .path("poll/" + (mainCtrl.getGame() == null ? mainCtrl.getLobby().getId() :
+                mainCtrl.getGame().getId()))
             .request(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
             .get(new GenericType<>() {
@@ -75,6 +76,7 @@ public class LongPollingUtils {
             e.printStackTrace();
             System.err.println("Error while parsing JSON from long polling on client-side");
         }
+        active = false;
     }
 
     /**
@@ -97,11 +99,11 @@ public class LongPollingUtils {
                 break;
             case "DISCONNECT":
                 String nameDisconnect = response.get("name").asText();
-                // lobbyCtrl.remove(nameDisconnect);
+                mainCtrl.removePlayerFromLobby(nameDisconnect);
                 break;
             case "JOIN":
                 String nameJoin = response.get("name").asText();
-                // lobbyCtrl.add(nameJoin);
+                mainCtrl.addPlayerToLobby(nameJoin);
                 break;
             default:
                 System.err.println("Unknown long polling response type");

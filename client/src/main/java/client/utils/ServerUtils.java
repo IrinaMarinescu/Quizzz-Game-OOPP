@@ -98,6 +98,20 @@ public class ServerUtils {
     }
 
     /**
+     * Remove player to the lobby
+     *
+     * @param player that has to be removed to the lobby
+     * @return The Lobby object that player has been removed to
+     */
+    public boolean leaveLobby(LeaderboardEntry player) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+            .target(serverIP).path("api/lobby/remove") //
+            .request(APPLICATION_JSON) //
+            .accept(APPLICATION_JSON) //
+            .post(Entity.entity(player, APPLICATION_JSON), Boolean.class);
+    }
+
+    /**
      * Create new Game with the players that are currently in the lobby and list of 20 questions
      *
      * @return newly created Game object with unique ID

@@ -6,8 +6,12 @@ import commons.Lobby;
 import commons.Question;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,11 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/lobby")
 public class LobbyController {
 
+    @Autowired
+    private LongPollingController longPollingController;
+
     private Lobby lobby;
 
     public LobbyController() {
-        UUID lobbyId = UUID.randomUUID();
-        lobby = new Lobby(lobbyId);
+        lobby = new Lobby(UUID.randomUUID());
     }
 
     /**
@@ -38,10 +44,11 @@ public class LobbyController {
      * @param player that has to be added to the lobby
      * @return true if the player was not in the lobby, false otherwise
      */
-    @PostMapping("/add-player")
-    public Lobby addPlayerToLobby(LeaderboardEntry player) {
+    @PostMapping("add")
+    public ResponseEntity<Lobby> addPlayerToLobby(@RequestBody LeaderboardEntry player) {
         lobby.addPlayer(player);
-        return lobby;
+        longPollingController.dispatch(lobby.getId(), "JOIN", Pair.of("name", player.getName()));
+        return ResponseEntity.ok(lobby);
     }
 
     /**
@@ -50,9 +57,10 @@ public class LobbyController {
      * @param player that has to be removed from the lobby
      * @return true if the player was in the lobby, false otherwise
      */
-    @PostMapping("/remove-player")
-    public boolean removePlayerFromLobby(LeaderboardEntry player) {
-        return lobby.removePlayer(player);
+    @PostMapping("remove")
+    public ResponseEntity<Boolean> removePlayerFromLobby(@RequestBody LeaderboardEntry player) {
+        longPollingController.dispatch(lobby.getId(), "DISCONNECT", Pair.of("name", player.getName()));
+        return ResponseEntity.ok(lobby.removePlayer(player));
     }
 
     /**

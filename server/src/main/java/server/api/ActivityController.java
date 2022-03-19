@@ -5,6 +5,7 @@ import commons.Question;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +47,7 @@ public class ActivityController {
      * FOR DEMONSTRATION OF HOW LONG POLLING WORKS
      */
     @GetMapping(path = {"test/{gameId}"})
-    public void sendHelloEmojiToAll(@PathVariable int gameId) {
+    public void sendHelloEmojiToAll(@PathVariable UUID gameId) {
         longPollingController.dispatch(gameId, "EMOJI", Pair.of("name", "Per"), Pair.of("reaction", "happy"));
     }
 
