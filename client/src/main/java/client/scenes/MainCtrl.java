@@ -65,6 +65,9 @@ public class MainCtrl implements MainCtrlRequirements {
     private MainFrameCtrl mainFrameCtrl;
     private Scene mainFrame;
 
+    private LobbyCtrl lobbyCtrl;
+    private Scene lobbyFrame;
+
     private QuestionFrameCtrl questionFrameCtrl;
     private Scene questionFrame;
 
@@ -95,8 +98,9 @@ public class MainCtrl implements MainCtrlRequirements {
     public void initialize(TimeUtils timeUtils, ServerUtils serverUtils, LongPollingUtils longPollingUtils,
                            Stage primaryStage,
                            Pair<MainFrameCtrl, Parent> mainFrame,
-                           Pair<QuestionFrameCtrl, Parent> questionFrame,
+                           Pair<LobbyCtrl, Parent> lobbyFrame,
                            Pair<LeaderboardCtrl, Parent> leaderboard,
+                           Pair<QuestionFrameCtrl, Parent> questionFrame,
                            Pair<OpenQuestionCtrl, Parent> openQuestion,
                            Pair<QuestionOneImageCtrl, Parent> questionOneImage) {
 
@@ -110,21 +114,23 @@ public class MainCtrl implements MainCtrlRequirements {
         });
         primaryStage.setOnCloseRequest(e -> disconnect());
 
+        this.mainFrameCtrl = mainFrame.getKey();
+        this.mainFrame = new Scene(mainFrame.getValue());
+
+        this.lobbyCtrl = lobbyFrame.getKey();
+        this.lobbyFrame = new Scene(lobbyFrame.getValue());
+
+        this.leaderboardCtrl = leaderboard.getKey();
+        this.leaderboard = new Scene(leaderboard.getValue());
+
+        this.questionFrameCtrl = questionFrame.getKey();
+        this.questionFrame = new Scene(questionFrame.getValue());
+
         this.openQuestionCtrl = openQuestion.getKey();
         this.openQuestion = openQuestion.getValue();
 
         this.questionOneImageCtrl = questionOneImage.getKey();
         this.questionOneImage = questionOneImage.getValue();
-
-        this.mainFrameCtrl = mainFrame.getKey();
-        this.mainFrame = new Scene(mainFrame.getValue());
-        this.mainFrame.setOnKeyPressed(e -> mainFrameCtrl.keyPressed(e.getCode()));
-
-        this.questionFrameCtrl = questionFrame.getKey();
-        this.questionFrame = new Scene(questionFrame.getValue());
-
-        this.leaderboardCtrl = leaderboard.getKey();
-        this.leaderboard = new Scene(leaderboard.getValue());
 
         primaryStage.setTitle("Quizzzzz!");
         showMainFrame();
@@ -169,7 +175,7 @@ public class MainCtrl implements MainCtrlRequirements {
         intermediateLeaderboardShown = false;
         isMultiplayerGame = false;
         timeoutRoundCheck = 1;
-        game = serverUtils.getGame();
+        game = serverUtils.startSingleplayer();
         questionFrameCtrl.initializeSingleplayerGame();
         showQuestionFrame();
         nextEvent();
@@ -207,7 +213,10 @@ public class MainCtrl implements MainCtrlRequirements {
         // The current event is a question
         game.incrementRound();
         questionFrameCtrl.incrementQuestionNumber();
-        questionFrameCtrl.setLeaderboardContents(game.getPlayers());
+        System.out.println(game.getPlayers());
+        if (isMultiplayerGame) {
+            questionFrameCtrl.setLeaderboardContents(game.getPlayers());
+        }
         Platform.runLater(() -> questionFrameCtrl.setRemainingTime(ROUND_TIME));
         questionStartTime = timeUtils.now();
         questionEndTime = questionStartTime + ROUND_TIME * 1000.0;
@@ -328,9 +337,6 @@ public class MainCtrl implements MainCtrlRequirements {
         showLeaderboard(serverUtils.getSoloLeaderboard(maxSize), maxSize, "solo");
     }
 
-    public void showLobbyFrame() {
-    }
-
     /**
      * Shows leaderboard
      *
@@ -348,6 +354,15 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     public void showMainFrame() {
         primaryStage.setScene(mainFrame);
+        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
+    }
+
+    /**
+     * Shows lobby frame
+     */
+    public void showLobbyFrame() {
+        primaryStage.setScene(lobbyFrame);
+
     }
 
     /**

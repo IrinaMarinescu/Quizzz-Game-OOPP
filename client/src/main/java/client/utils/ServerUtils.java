@@ -50,7 +50,7 @@ public class ServerUtils {
      * @param serverIP IP to set
      */
     public void setServerIP(String serverIP) {
-        if (validateIP(serverIP)) {
+        if (validateIP(serverIP) && !serverIP.equals("")) {
             this.serverIP = serverIP;
         }
     }
@@ -63,7 +63,7 @@ public class ServerUtils {
      */
     public boolean validateIP(String serverIP) {
         return ClientBuilder.newClient(new ClientConfig()) //
-            .target(serverIP).path("api/game/validate") //
+            .target(!serverIP.equals("") ? serverIP : this.serverIP).path("api/game/validate") //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //
             .get(String.class).equals("Connected");

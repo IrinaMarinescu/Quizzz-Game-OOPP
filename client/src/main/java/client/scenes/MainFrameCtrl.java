@@ -112,7 +112,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     public void joinLobby() {
         if (server.validateIP(serverIP.getText()) && server.validateUsername(username.getText())) {
             server.setServerIP(serverIP.getText());
-            mainCtrl.startMultiplayerGame();
+            mainCtrl.showLobbyFrame();
         } else if (!server.validateUsername(serverIP.getText())) {
             displayServerIPError(true);
         } else {

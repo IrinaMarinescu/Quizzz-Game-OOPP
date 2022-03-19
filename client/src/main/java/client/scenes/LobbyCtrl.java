@@ -24,6 +24,15 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
 
     private final MainCtrl mainCtrl;
 
+    ObservableList<String> list = FXCollections.observableArrayList(
+        "Yannick",
+        "Per",
+        "Irina",
+        "Andrei",
+        "Mirella",
+        "Chris"
+    );
+
     /**
      * Injects mainCtrl, so it's possible to call methods from there
      *
@@ -50,21 +59,10 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
         mainCtrl.playerLeavesLobby();
     }
 
-    ObservableList<String> list = FXCollections.observableArrayList(
-            "Yannick",
-            "Per",
-            "Irina",
-            "Andrei",
-            "Mirella",
-            "Chris"
-    );
-
-
     /**
      * Sets up the table for the lobby screen
      *
-     * @param url url
-     *
+     * @param url            url
      * @param resourceBundle resourceBundle
      */
     @Override
