@@ -123,13 +123,13 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
     @Override
     public void initialize(Question question) {
         this.question = question;
-        this.questionText.setText("Instead of " + question.getActivities().get(0).title + ", what could you do?");
+        this.questionText.setText(question.getQuestion());
         this.positionCorrectAnswer = question.getCorrectAnswer();
         String correctAnswer = question.getActivities().get(positionCorrectAnswer).title;
 
-        String imagePath = question.getActivities().get(0).imagePath;
-        Image image = new Image(imagePath, 480, 500, false, true);
-        imageField.setImage(image);
+        //String imagePath = question.getActivities().get(0).imagePath;
+        //Image image = new Image(imagePath, 480, 500, false, true);
+        //imageField.setImage(image);
 
         this.buttons = new ArrayList<>();
         Collections.addAll(buttons, answerA, answerB, answerC);
