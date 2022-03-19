@@ -188,10 +188,10 @@ public class ActivityController {
             long correctNumber = activities.get(0).consumptionInWh;
             long wrongNumber = correctNumber * 110 / 100;
             if (wrongNumber % 2 == 0) {
-                question = activities.get(0).title + " consumes " + wrongNumber + "per hour.";
+                question = activities.get(0).title + " consumes " + wrongNumber + " per hour.";
                 correctAnswer = 1;
             } else {
-                question = activities.get(0).title + " consumes " + correctNumber + "per hour.";
+                question = activities.get(0).title + " consumes " + correctNumber + " per hour.";
             }
         } else {
             question = activities.get(0).title + " consumes more than " + activities.get(1) + ".";
@@ -285,6 +285,7 @@ public class ActivityController {
         }
         String id = associateQuestion(typeOfQuestion);
         String question = "Instead of " + activities.get(i).title + "  you can do...";
+        questions.remove(i);
         Question questionInsteadOf = new Question(activities, question, correctAnswer, id);
         questions.add(questionInsteadOf);
     }
