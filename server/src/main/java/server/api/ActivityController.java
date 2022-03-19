@@ -172,8 +172,8 @@ public class ActivityController {
         int correctAnswer = 0;
 
         if (numberOfActivities == 1) {
-            int correctNumber = activities.get(0).consumptionInWh;
-            int wrongNumber = correctNumber * 3;
+            long correctNumber = activities.get(0).consumptionInWh;
+            long wrongNumber = correctNumber * 3;
             if (wrongNumber % 2 == 0) {
                 question = activities.get(0).title + " consumes " + wrongNumber + " Wh per hour.";
                 correctAnswer = 1;

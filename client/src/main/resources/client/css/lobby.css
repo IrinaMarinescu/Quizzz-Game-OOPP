@@ -1,0 +1,67 @@
+@import 'global.css';
+
+.table-view .column-header-background {
+    -fx-background-color: -topBarColor;
+    -fx-background-radius: 15px 15px 0 0;
+    -fx-pref-height: 40px;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-background-color:transparent;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-size: 26;
+    -fx-font-style: bold;
+}
+
+.table-row-cell {
+    -fx-pref-height: 40px;
+}
+
+.table-view .table-row-cell {
+    -fx-cell-size: 40;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+
+.table-view .scroll-bar * {
+    -fx-min-height: 0;
+    -fx-pref-height: 0;
+    -fx-max-height: 0;
+}
+
+.table-view .table-column {
+    -fx-alignment: CENTER;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: -lightBlue;
+    -fx-background-insets: 0, 0 0 1 0;
+}
+
+.table-row-cell:even {
+    -fx-background-color: -lightishBlue;
+    -fx-background-insets: 0, 0 0 1 0;
+}
+
+#arrow {
+    -fx-pref-height: 80;
+    -fx-pref-width: 80;
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+
+    -fx-background-size: 75%;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+    -fx-background-image: url('../icons/arrow-left.png');
+}
+
+#arrow:hover {
+    -fx-opacity: 0.8;
+}
+
+/*.arrow {
+    -fx-background-image: url("/arrow.png");
+}*/

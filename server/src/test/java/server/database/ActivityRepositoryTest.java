@@ -46,7 +46,7 @@ class ActivityRepositoryTest {
     @Test
     public void testUpdateActivity() {
         Activity activity = repo.findById("00-a");
-        activity.consumptionInWh = 100;
+        activity.consumptionInWh = 100L;
 
         repo.save(activity);
 

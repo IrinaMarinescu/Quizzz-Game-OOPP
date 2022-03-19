@@ -15,4 +15,6 @@ public interface LobbyCtrlRequirements {
      * @param name The name of the player
      */
     void removePlayer(String name);
+
+    void clearPlayers();
 }
