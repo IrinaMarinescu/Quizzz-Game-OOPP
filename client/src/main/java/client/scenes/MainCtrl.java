@@ -241,22 +241,26 @@ public class MainCtrl implements MainCtrlRequirements {
 
         switch (currentQuestionType) {
             case "trueFalseQuestion":
-                // TODO
+                currentQuestionCtrl = questionTrueFalseCtrl;
+                questionFrameCtrl.setCenterContent(questionTrueFalse);
                 questionFrameCtrl.setWrongAnswerJoker(false);
                 break;
             case "openQuestion":
                 currentQuestionCtrl = openQuestionCtrl;
                 questionFrameCtrl.setCenterContent(openQuestion);
+                questionFrameCtrl.setWrongAnswerJoker(false);
                 break;
             case "threePicturesQuestion":
-                // TODO
+                currentQuestionCtrl = questionThreePicturesCtrl;
+                questionFrameCtrl.setCenterContent(questionThreePictures);
                 break;
             case "oneImageQuestion":
                 currentQuestionCtrl = questionOneImageCtrl;
                 questionFrameCtrl.setCenterContent(questionOneImage);
                 break;
             case "insteadOfQuestion":
-                // TODO
+                currentQuestionCtrl = insteadOfQuestionCtrl;
+                questionFrameCtrl.setCenterContent(insteadOfQuestion);
                 break;
             default:
                 System.err.println("Unrecognized question type in MainCtrl");
@@ -333,7 +337,7 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     @Override
     public void eliminateWrongAnswer() {
-        // currentQuestionCtrl.eliminateWrongAnswer();
+        currentQuestionCtrl.removeIncorrectAnswer();
     }
 
     /**

@@ -71,7 +71,7 @@ public class Main extends Application {
             FXML.load(QuestionFrameCtrl.class, "client/scenes/questionFrame.fxml", "client/css/questionFrame.css");
         var openQuestion = FXML.load(OpenQuestionCtrl.class, "client/scenes/OpenQuestion.fxml", null);
         var questionOneImage = FXML.load(QuestionOneImageCtrl.class, "client/scenes/QuestionOneImage.fxml", null);
-        var questionTrueFalse = FXML.load(QuestionTrueFalseCtrl.class, "client/scenes/QuestionThreePictures.fxml",
+        var questionTrueFalse = FXML.load(QuestionTrueFalseCtrl.class, "client/scenes/QuestionTrueFalse.fxml",
             "client/css/questionTrueFalse.css");
         var questionThreePictures =
             FXML.load(QuestionThreePicturesCtrl.class, "client/scenes/QuestionThreePictures.fxml",
@@ -92,6 +92,6 @@ public class Main extends Application {
 
         mainCtrl.initialize(timeUtils, serverUtils, longPollingUtils, primaryStage, mainFrame, questionFrame,
             leaderboard, openQuestion,
-            questionOneImage);
+            questionOneImage, insteadOfQuestion, questionTrueFalse, questionThreePictures);
     }
 }
