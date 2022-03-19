@@ -5,8 +5,6 @@ import commons.Question;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,14 +21,16 @@ import server.database.ActivityRepository;
 @RequestMapping("/api/activities")
 public class ActivityController {
 
-    @Autowired
-    private LongPollingController longPollingController;
+    public static final double SIMILARITY_FACTOR = 1.5;
+    private long totalRecords;
 
     private final ActivityRepository repo;
+    private final Random rand;
 
-
-    public ActivityController(ActivityRepository repo) {
+    public ActivityController(ActivityRepository repo, Random random) {
         this.repo = repo;
+        this.rand = random;
+        this.totalRecords = this.repo.count();
     }
 
     private static boolean nullOrEmpty(String s) {
@@ -43,15 +43,19 @@ public class ActivityController {
     }
 
     /**
-     * FOR DEMONSTRATION OF HOW LONG POLLING WORKS
-     */
-    @GetMapping(path = {"test/{gameId}"})
-    public void sendHelloEmojiToAll(@PathVariable int gameId) {
-        longPollingController.dispatch(gameId, "EMOJI", Pair.of("name", "Per"), Pair.of("reaction", "happy"));
-    }
-
-    /**
      * Uses the function defined {@link ActivityRepository} to fetch a number of random entries from the activity table.
+     * <p>
+     * <p>
+     * The consumptionInWh values for the retrieved activities should be similar:
+     * Let X be an arbitrary activity.
+     * All retrieved activities Y will satisfy
+     * <p>
+     * X.consumptionInWh / SIMILARITY_FACTOR <= Y.consumptionInWh <= X.consumptionInWh * SIMILARITY_FACTOR
+     * <p>
+     * Note that while SIMILARITY_FACTOR is constant, the resultant bounds will be gradually relaxed
+     * until sufficiently many results are found.
+     * This may happen when the initial selected activity has extreme consumptionInWh (E.g., largest in the DB).
+     * <p>
      *
      * @param limit the number of entries
      * @return the specified amount of activities, randomly chosen from the DB;
@@ -59,7 +63,18 @@ public class ActivityController {
      */
     @GetMapping("random/{limit}")
     public List<Activity> fetchRandom(@PathVariable("limit") int limit) {
-        List<Activity> res = repo.fetchRandomActivities(limit);
+        long initialConsumption = repo.fetchRandomActivities(1, 0, Long.MAX_VALUE).get(0).consumptionInWh;
+        double lowerBound = initialConsumption;
+        double upperBound = initialConsumption;
+
+        limit = (int) Math.min(limit, totalRecords);
+        List<Activity> res;
+        do {
+            lowerBound /= SIMILARITY_FACTOR;
+            upperBound *= SIMILARITY_FACTOR;
+            res = repo.fetchRandomActivities(limit, (long) lowerBound, (long) upperBound);
+        } while (res.size() < limit);
+
         return res;
     }
 
@@ -77,6 +92,7 @@ public class ActivityController {
             return ResponseEntity.badRequest().build();
         }
 
+        totalRecords++;
         Activity saved = repo.save(activity);
         return ResponseEntity.ok(saved);
     }
@@ -95,6 +111,7 @@ public class ActivityController {
             saved.add(repo.save(activity));
         }
 
+        totalRecords = repo.count();
         return ResponseEntity.ok(saved);
     }
 
@@ -178,23 +195,22 @@ public class ActivityController {
      */
     public void generateTrueFalseQuestion(int typeOfQuestion, List<Question> questions) {
         String id = associateQuestion(typeOfQuestion);
-        Random activitiesNumber = new Random();
-        int numberOfActivities = activitiesNumber.nextInt(2) + 1;
+        int numberOfActivities = rand.nextInt(2) + 1;
         List<Activity> activities = fetchRandom(numberOfActivities);
         String question = "";
         int correctAnswer = 0;
 
         if (numberOfActivities == 1) {
             long correctNumber = activities.get(0).consumptionInWh;
-            long wrongNumber = correctNumber * 110 / 100;
+            long wrongNumber = correctNumber * 3;
             if (wrongNumber % 2 == 0) {
-                question = activities.get(0).title + " consumes " + wrongNumber + "per hour.";
+                question = activities.get(0).title + " consumes " + wrongNumber + " Wh per hour.";
                 correctAnswer = 1;
             } else {
-                question = activities.get(0).title + " consumes " + correctNumber + "per hour.";
+                question = activities.get(0).title + " consumes " + correctNumber + " Wh per hour.";
             }
         } else {
-            question = activities.get(0).title + " consumes more than " + activities.get(1) + ".";
+            question = activities.get(0).title + " consumes more than " + activities.get(1).title + ".";
             if (activities.get(0).consumptionInWh < activities.get(1).consumptionInWh) {
                 correctAnswer = 1;
             }
@@ -284,7 +300,7 @@ public class ActivityController {
             }
         }
         String id = associateQuestion(typeOfQuestion);
-        String question = "Instead of " + activities.get(i).title + "  you can do...";
+        String question = "Instead of " + activities.get(i).title + " you can do...";
         Question questionInsteadOf = new Question(activities, question, correctAnswer, id);
         questions.add(questionInsteadOf);
     }
