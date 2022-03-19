@@ -5,9 +5,7 @@ import commons.Question;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,25 +41,6 @@ public class ActivityController {
     @GetMapping(path = {"", "/"})
     public List<Activity> getAll() {
         return repo.findAll();
-    }
-
-    /**
-     * FOR DEMONSTRATION OF HOW LONG POLLING WORKS
-     */
-    @GetMapping(path = {"test/{gameId}"})
-    public void sendHelloEmojiToAll(@PathVariable UUID gameId) {
-        longPollingController.dispatch(gameId, "EMOJI", Pair.of("name", "Per"), Pair.of("reaction", "happy"));
-    }
-
-    @PostMapping("/sendEmote/{gameID}")
-    public void sendNewEmoteToAll(@PathVariable UUID gameId, @RequestBody String username,
-                                  @RequestBody String typeReaction) {
-        longPollingController.dispatch(gameId, "EMOJI", Pair.of("name", username), Pair.of("reaction", typeReaction));
-    }
-
-    @GetMapping(path = "/halveTime/{gameId}")
-    public void halveTimeToAll(@PathVariable UUID gameId) {
-        longPollingController.dispatch(gameId, "HALVE_TIME");
     }
 
     /**

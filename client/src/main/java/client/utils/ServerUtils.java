@@ -26,6 +26,7 @@ import jakarta.ws.rs.core.GenericType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import javafx.util.Pair;
 import org.glassfish.jersey.client.ClientConfig;
 
 /**
@@ -100,17 +101,17 @@ public class ServerUtils {
         return new ArrayList<>();
     }
 
-    public List sendNewEmoji(String username, String reaction) {
-        List<String> details = List.of(username, reaction);
-        return ClientBuilder.newClient(new ClientConfig()) //
+    public void sendNewEmoji(String username, String reaction) {
+        Pair<String, String> details = new Pair<>(username, reaction);
+        ClientBuilder.newClient(new ClientConfig()) //
             .target(serverIP).path("api/sendEmote/{gameId}") //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //
             .post(Entity.entity(details, APPLICATION_JSON), List.class);
     }
 
-    public boolean halveTime(UUID gameId) {
-        return ClientBuilder.newClient(new ClientConfig()) //
+    public void halveTime(UUID gameId) {
+        ClientBuilder.newClient(new ClientConfig()) //
             .target(serverIP).path("api/halveTime/{gameId}") //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //

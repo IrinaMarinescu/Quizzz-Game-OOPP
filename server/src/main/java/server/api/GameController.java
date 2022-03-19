@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -98,4 +101,16 @@ public class GameController {
         this.receivingGameId = receivingGameId;
         notifyAll();
     }
+    @PostMapping("/sendEmote/{gameID}")
+    public void sendNewEmoteToAll(@PathVariable UUID gameId, @RequestBody String username,
+                                  @RequestBody String typeReaction) {
+        longPollingController.dispatch(gameId, "EMOJI", Pair.of("name", username), Pair.of("reaction", typeReaction));
+    }
+
+    @GetMapping(path = "/halveTime/{gameId}")
+    public void halveTimeToAll(@PathVariable UUID gameId) {
+        longPollingController.dispatch(gameId, "HALVE_TIME");
+    }
+
+
 }
