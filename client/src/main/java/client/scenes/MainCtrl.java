@@ -162,11 +162,6 @@ public class MainCtrl implements MainCtrlRequirements {
         this.lobby = lobby;
     }
 
-    public void playerLeavesLobby() {
-        serverUtils.leaveLobby(player);
-        showMainFrame();
-    }
-
     /**
      * Starts a singleplayer game
      * <p>
@@ -201,6 +196,12 @@ public class MainCtrl implements MainCtrlRequirements {
         longPollingUtils.setActive(true);
         showLobbyFrame();
     }
+
+    public void playerLeavesLobby() {
+        serverUtils.leaveLobby(player);
+        showMainFrame();
+    }
+
 
     public void addPlayerToLobby(String player) {
         lobbyCtrl.addPlayer(player);

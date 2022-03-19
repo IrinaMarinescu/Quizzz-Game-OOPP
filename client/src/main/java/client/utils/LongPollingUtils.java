@@ -76,7 +76,6 @@ public class LongPollingUtils {
             e.printStackTrace();
             System.err.println("Error while parsing JSON from long polling on client-side");
         }
-        active = false;
     }
 
     /**
