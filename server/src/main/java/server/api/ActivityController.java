@@ -82,6 +82,7 @@ public class ActivityController {
         return ResponseEntity.ok(candidate);
     }
 
+
     /**
      * Gets an activity object and updates in accordingly in the database.
      *
@@ -111,6 +112,26 @@ public class ActivityController {
         Activity saved = repo.save(activity);
         return ResponseEntity.ok(saved);
     }
+
+    /**public ResponseEntity<String> getImage(String path) {
+
+        try {
+            //System.out.println(path);
+            BufferedImage img = ImageIO.read(new File("./activity_bank/" + path));
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(img, path.split("\\.")[1], baos);
+            baos.flush();
+            Base64.Encoder base = Base64.getEncoder();
+            String encodedImage = base.encodeToString(baos.toByteArray());
+
+            return ResponseEntity.ok(encodedImage);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return ResponseEntity.badRequest().build();
+    }**/
 
     /**
      * This function gets a list of activities to add to the database in bulk.

@@ -18,6 +18,7 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
+import client.scenes.AdminInterfaceCtrl;
 import client.scenes.LeaderboardCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.MainFrameCtrl;
@@ -26,7 +27,6 @@ import client.scenes.questioncontrollers.OpenQuestionCtrl;
 import client.scenes.questioncontrollers.QuestionOneImageCtrl;
 import client.scenes.questioncontrollers.QuestionThreePicturesCtrl;
 import client.scenes.questioncontrollers.QuestionTrueFalseCtrl;
-import client.utils.LongPollingUtils;
 import client.utils.ServerUtils;
 import client.utils.TimeUtils;
 import com.google.inject.Injector;
@@ -86,14 +86,19 @@ public class Main extends Application {
         var leaderboard =
             FXML.load(LeaderboardCtrl.class, "client/scenes/Leaderboard.fxml", "client/css/leaderboardPage.css");
 
-        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        LongPollingUtils longPollingUtils = INJECTOR.getInstance(client.utils.LongPollingUtils.class);
+        var adminInterface =
+            FXML.load(AdminInterfaceCtrl.class, "client/scenes/AdminInterface.fxml", "client/css/adminPage.css");
 
+        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+        var longPollingUtils = INJECTOR.getInstance(client.utils.LongPollingUtils.class);
         var serverUtils = INJECTOR.getInstance(ServerUtils.class);
         var timeUtils = INJECTOR.getInstance(TimeUtils.class);
 
-        mainCtrl.initialize(timeUtils, serverUtils, longPollingUtils, primaryStage, mainFrame, questionFrame,
-            leaderboard, openQuestion,
-            questionOneImage);
+        mainCtrl.initialize(timeUtils, serverUtils,
+            longPollingUtils, primaryStage,
+            mainFrame, questionFrame,
+            leaderboard, adminInterface,
+            openQuestion, questionOneImage);
+
     }
 }

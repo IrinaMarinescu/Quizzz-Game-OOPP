@@ -71,6 +71,9 @@ public class MainCtrl implements MainCtrlRequirements {
     private LeaderboardCtrl leaderboardCtrl;
     private Scene leaderboard;
 
+    private AdminInterfaceCtrl adminInterfaceCtrl;
+    private Scene adminInterfaceFrame;
+
     private OpenQuestionCtrl openQuestionCtrl;
     private Node openQuestion;
 
@@ -78,6 +81,8 @@ public class MainCtrl implements MainCtrlRequirements {
     private Node questionOneImage;
 
     QuestionRequirements currentQuestionCtrl = null;
+
+    private boolean widthChanged = false;
 
     /**
      * Initializes this class
@@ -89,14 +94,17 @@ public class MainCtrl implements MainCtrlRequirements {
      * @param mainFrame        Welcome screen FXML and controller
      * @param questionFrame    Question Frame screen FXML and controller
      * @param leaderboard      Leaderboard screen FXML and controller
+     * @param adminInterface   Admin Interface screen FXML and controller
      * @param openQuestion     Open question node FXML and controller
      * @param questionOneImage Question with one image FXML and controller
      */
+
     public void initialize(TimeUtils timeUtils, ServerUtils serverUtils, LongPollingUtils longPollingUtils,
                            Stage primaryStage,
                            Pair<MainFrameCtrl, Parent> mainFrame,
                            Pair<QuestionFrameCtrl, Parent> questionFrame,
                            Pair<LeaderboardCtrl, Parent> leaderboard,
+                           Pair<AdminInterfaceCtrl, Parent> adminInterface,
                            Pair<OpenQuestionCtrl, Parent> openQuestion,
                            Pair<QuestionOneImageCtrl, Parent> questionOneImage) {
 
@@ -126,10 +134,24 @@ public class MainCtrl implements MainCtrlRequirements {
         this.leaderboardCtrl = leaderboard.getKey();
         this.leaderboard = new Scene(leaderboard.getValue());
 
+        this.adminInterfaceCtrl = adminInterface.getKey();
+        this.adminInterfaceFrame = new Scene(adminInterface.getValue());
+
         primaryStage.setTitle("Quizzzzz!");
         showMainFrame();
 
         primaryStage.show();
+    }
+
+
+    public ServerUtils getServerUtils() {
+        return serverUtils;
+    }
+
+
+    public void showAdminInterface() {
+        adminInterfaceCtrl.initialize(serverUtils.fetchActivities());
+        primaryStage.setScene(adminInterfaceFrame);
     }
 
     public LeaderboardEntry getPlayer() {
