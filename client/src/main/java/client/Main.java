@@ -22,10 +22,7 @@ import client.scenes.LeaderboardCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.MainFrameCtrl;
 import client.scenes.QuestionFrameCtrl;
-import client.scenes.questioncontrollers.OpenQuestionCtrl;
-import client.scenes.questioncontrollers.QuestionOneImageCtrl;
-import client.scenes.questioncontrollers.QuestionThreePicturesCtrl;
-import client.scenes.questioncontrollers.QuestionTrueFalseCtrl;
+import client.scenes.questioncontrollers.*;
 import client.utils.LongPollingUtils;
 import client.utils.ServerUtils;
 import client.utils.TimeUtils;
@@ -79,6 +76,7 @@ public class Main extends Application {
         var questionThreePictures =
             FXML.load(QuestionThreePicturesCtrl.class, "client/scenes/QuestionThreePictures.fxml",
                 "client/css/questionsThreePictures.css");
+        var insteadOfQuestion = FXML.load(InsteadOfQuestionCtrl.class, "client/scenes/InsteadOfQuestion.fxml", null);
 
         var mainFrame =
             FXML.load(MainFrameCtrl.class, "client/scenes/mainFrame.fxml", "client/css/mainFrame.css");

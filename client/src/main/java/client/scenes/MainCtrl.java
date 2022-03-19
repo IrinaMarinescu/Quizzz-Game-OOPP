@@ -18,8 +18,7 @@ package client.scenes;
 
 import client.scenes.controllerrequirements.MainCtrlRequirements;
 import client.scenes.controllerrequirements.QuestionRequirements;
-import client.scenes.questioncontrollers.OpenQuestionCtrl;
-import client.scenes.questioncontrollers.QuestionOneImageCtrl;
+import client.scenes.questioncontrollers.*;
 import client.utils.LongPollingUtils;
 import client.utils.ServerUtils;
 import client.utils.TimeUtils;
@@ -77,6 +76,15 @@ public class MainCtrl implements MainCtrlRequirements {
     private QuestionOneImageCtrl questionOneImageCtrl;
     private Node questionOneImage;
 
+    private InsteadOfQuestionCtrl insteadOfQuestionCtrl;
+    private Node insteadOfQuestion;
+
+    private QuestionTrueFalseCtrl questionTrueFalseCtrl;
+    private Node questionTrueFalse;
+
+    private QuestionThreePicturesCtrl questionThreePicturesCtrl;
+    private Node questionThreePictures;
+
     QuestionRequirements currentQuestionCtrl = null;
 
     /**
@@ -91,6 +99,9 @@ public class MainCtrl implements MainCtrlRequirements {
      * @param leaderboard      Leaderboard screen FXML and controller
      * @param openQuestion     Open question node FXML and controller
      * @param questionOneImage Question with one image FXML and controller
+     * @param insteadOfQuestion Instead of question node FXML and controller
+     * @param questionTrueFalse True False question node FXML and controller
+     * @param questionThreePictures Question with three pictures node FXML and controller
      */
     public void initialize(TimeUtils timeUtils, ServerUtils serverUtils, LongPollingUtils longPollingUtils,
                            Stage primaryStage,
@@ -98,7 +109,10 @@ public class MainCtrl implements MainCtrlRequirements {
                            Pair<QuestionFrameCtrl, Parent> questionFrame,
                            Pair<LeaderboardCtrl, Parent> leaderboard,
                            Pair<OpenQuestionCtrl, Parent> openQuestion,
-                           Pair<QuestionOneImageCtrl, Parent> questionOneImage) {
+                           Pair<QuestionOneImageCtrl, Parent> questionOneImage,
+                           Pair<InsteadOfQuestionCtrl, Parent> insteadOfQuestion,
+                           Pair<QuestionTrueFalseCtrl, Parent> questionTrueFalse,
+                           Pair<QuestionThreePicturesCtrl, Parent> questionThreePictures) {
 
         this.timeUtils = timeUtils;
         this.serverUtils = serverUtils;
@@ -115,6 +129,15 @@ public class MainCtrl implements MainCtrlRequirements {
 
         this.questionOneImageCtrl = questionOneImage.getKey();
         this.questionOneImage = questionOneImage.getValue();
+
+        this.insteadOfQuestionCtrl = insteadOfQuestion.getKey();
+        this.insteadOfQuestion = insteadOfQuestion.getValue();
+
+        this.questionTrueFalseCtrl = questionTrueFalse.getKey();
+        this.questionTrueFalse = questionTrueFalse.getValue();
+
+        this.questionThreePicturesCtrl = questionThreePictures.getKey();
+        this.questionThreePictures = questionThreePictures.getValue();
 
         this.mainFrameCtrl = mainFrame.getKey();
         this.mainFrame = new Scene(mainFrame.getValue());
