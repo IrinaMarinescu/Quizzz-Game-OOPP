@@ -2,7 +2,6 @@ package client.scenes;
 
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
-
 import javax.inject.Inject;
 
 public class FinalScreenCtrl {

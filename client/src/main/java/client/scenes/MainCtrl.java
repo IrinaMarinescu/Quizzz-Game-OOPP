@@ -240,8 +240,7 @@ public class MainCtrl implements MainCtrlRequirements {
                 return;
             }
             questionFrameCtrl.setLeaderboardContents(game.getPlayers());
-        }
-        else if (game.getRound() == TOTAL_ROUNDS) {
+        } else if (game.getRound() == TOTAL_ROUNDS) {
             showFinalScreen();
         }
 

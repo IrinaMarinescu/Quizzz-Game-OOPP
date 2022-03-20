@@ -18,8 +18,16 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
-import client.scenes.*;
-import client.scenes.questioncontrollers.*;
+import client.scenes.FinalScreenCtrl;
+import client.scenes.LeaderboardCtrl;
+import client.scenes.MainCtrl;
+import client.scenes.MainFrameCtrl;
+import client.scenes.QuestionFrameCtrl;
+import client.scenes.questioncontrollers.InsteadOfQuestionCtrl;
+import client.scenes.questioncontrollers.OpenQuestionCtrl;
+import client.scenes.questioncontrollers.QuestionOneImageCtrl;
+import client.scenes.questioncontrollers.QuestionThreePicturesCtrl;
+import client.scenes.questioncontrollers.QuestionTrueFalseCtrl;
 import client.utils.LongPollingUtils;
 import client.utils.ServerUtils;
 import client.utils.TimeUtils;
@@ -87,10 +95,11 @@ public class Main extends Application {
         var serverUtils = INJECTOR.getInstance(ServerUtils.class);
         var timeUtils = INJECTOR.getInstance(TimeUtils.class);
 
-        var finalScreen = FXML.load(FinalScreenCtrl.class, "client/scenes/FinalSingleplayerScreen.fxml", null);
+        var finalScreen = FXML.load(FinalScreenCtrl.class,
+                "client/scenes/FinalSingleplayerScreen.fxml", null);
 
-        mainCtrl.initialize(timeUtils, serverUtils, longPollingUtils, primaryStage, finalScreen, mainFrame, questionFrame,
-            leaderboard, openQuestion,
+        mainCtrl.initialize(timeUtils, serverUtils, longPollingUtils, primaryStage, finalScreen, mainFrame,
+                questionFrame, leaderboard, openQuestion,
             questionOneImage, insteadOfQuestion, questionTrueFalse, questionThreePictures);
     }
 }

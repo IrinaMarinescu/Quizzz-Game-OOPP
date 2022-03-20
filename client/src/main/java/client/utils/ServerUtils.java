@@ -24,8 +24,6 @@ import commons.Lobby;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
-
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.UUID;
 import org.glassfish.jersey.client.ClientConfig;

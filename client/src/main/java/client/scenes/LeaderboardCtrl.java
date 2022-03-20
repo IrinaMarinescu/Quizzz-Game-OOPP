@@ -122,5 +122,7 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
         this.maxSize = maxSize;
     }
 
-    public void backToMainFrame(){mainCtrl.showMainFrame();}
+    public void backToMainFrame() {
+        mainCtrl.showMainFrame();
+    }
 }
