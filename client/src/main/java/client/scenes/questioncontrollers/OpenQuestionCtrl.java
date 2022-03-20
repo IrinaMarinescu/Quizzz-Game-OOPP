@@ -67,6 +67,9 @@ public class OpenQuestionCtrl implements QuestionRequirements {
         long correctAnswer = this.question.getActivities().get(0).consumptionInWh;
         long percentageOff = ((Math.abs(correctAnswer - this.answer)) / correctAnswer) * 100;
         long baseScore = 100 - percentageOff / 2;
+        if (baseScore < 0) {
+            baseScore = 0;
+        }
         mainCtrl.addPoints(baseScore);
     }
 
@@ -83,6 +86,7 @@ public class OpenQuestionCtrl implements QuestionRequirements {
             answerText.setText("");
             submitButton.setText("Submit");
             submitButton.setDisable(false);
+            entryField.setText("");
         });
 
         //String imagePath = question.getActivities().get(0).imagePath;
