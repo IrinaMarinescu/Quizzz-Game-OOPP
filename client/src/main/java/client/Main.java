@@ -75,13 +75,15 @@ public class Main extends Application {
         var questionFrame =
             FXML.load(QuestionFrameCtrl.class, "client/scenes/questionFrame.fxml", "client/css/questionFrame.css");
         var openQuestion = FXML.load(OpenQuestionCtrl.class, "client/scenes/OpenQuestion.fxml", null);
-        var questionOneImage = FXML.load(QuestionOneImageCtrl.class, "client/scenes/QuestionOneImage.fxml", null);
+        var questionOneImage = FXML.load(QuestionOneImageCtrl.class,
+                "client/scenes/QuestionOneImage.fxml", "client/css/questionOneImage.css");
         var questionTrueFalse = FXML.load(QuestionTrueFalseCtrl.class, "client/scenes/QuestionTrueFalse.fxml",
             "client/css/questionTrueFalse.css");
         var questionThreePictures =
             FXML.load(QuestionThreePicturesCtrl.class, "client/scenes/QuestionThreePictures.fxml",
                 "client/css/questionsThreePictures.css");
-        var insteadOfQuestion = FXML.load(InsteadOfQuestionCtrl.class, "client/scenes/InsteadOfQuestion.fxml", null);
+        var insteadOfQuestion = FXML.load(InsteadOfQuestionCtrl.class,
+                "client/scenes/InsteadOfQuestion.fxml", "client/css/insteadOfQuestion.css");
 
         var mainFrame =
             FXML.load(MainFrameCtrl.class, "client/scenes/mainFrame.fxml", "client/css/mainFrame.css");
