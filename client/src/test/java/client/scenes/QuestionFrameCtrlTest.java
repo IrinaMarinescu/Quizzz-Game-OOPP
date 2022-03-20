@@ -73,6 +73,7 @@ class QuestionFrameCtrlTest {
         assertSame(mainCtrlDOC, sut.mainCtrl);
     }
 
+    /*
     @Test
     public void setCenterContentOne() {
         assertNull(sut.borderPane.getCenter());
@@ -88,6 +89,7 @@ class QuestionFrameCtrlTest {
         sut.setCenterContent(new Rectangle());
         assertEquals(Rectangle.class, sut.borderPane.getCenter().getClass());
     }
+     */
 
     @Test
     public void setLeaderboardContentsOne() {
