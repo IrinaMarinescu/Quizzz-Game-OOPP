@@ -24,6 +24,8 @@ import commons.Lobby;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.UUID;
 import org.glassfish.jersey.client.ClientConfig;
@@ -62,11 +64,15 @@ public class ServerUtils {
      * @return true if serverIP is correct, false otherwise
      */
     public boolean validateIP(String serverIP) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-            .target(serverIP).path("api/game/validate") //
-            .request(APPLICATION_JSON) //
-            .accept(APPLICATION_JSON) //
-            .get(String.class).equals("Connected");
+        try {
+            return ClientBuilder.newClient(new ClientConfig()) //
+                    .target(serverIP).path("api/game/validate") //
+                    .request(APPLICATION_JSON) //
+                    .accept(APPLICATION_JSON) //
+                    .get(String.class).equals("Connected");
+        } catch (RuntimeException e) {
+            return false;
+        }
     }
 
     /**
