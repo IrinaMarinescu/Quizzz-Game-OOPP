@@ -113,6 +113,12 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
                 buttons.get(i).setOpacity(0.5);
             }
         }
+
+        if (selectedAnswerButton == positionCorrectAnswer) {
+            mainCtrl.addPoints(100);
+        } else {
+            mainCtrl.addPoints(0);
+        }
     }
 
     /**
@@ -165,12 +171,6 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
             if (i != positionCorrectAnswer) {
                 wrong.get(i).setVisible(true);
             }
-        }
-
-        if (selectedAnswerButton == positionCorrectAnswer) {
-            mainCtrl.addPoints(100);
-        } else {
-            mainCtrl.addPoints(0);
         }
     }
 

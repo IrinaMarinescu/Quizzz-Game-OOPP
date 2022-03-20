@@ -63,6 +63,11 @@ public class OpenQuestionCtrl implements QuestionRequirements {
         } else {
             errorMessage.setVisible(true);
         }
+
+        long correctAnswer = this.question.getActivities().get(0).consumptionInWh;
+        long percentageOff = ((Math.abs(correctAnswer - this.answer)) / correctAnswer) * 100;
+        long baseScore = 100 - percentageOff / 2;
+        mainCtrl.addPoints(baseScore);
     }
 
     /**
@@ -94,9 +99,6 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     public void revealCorrectAnswer() {
         long correctAnswer = this.question.getActivities().get(0).consumptionInWh;
         answerText.setText("It takes " + correctAnswer + "Wh!");
-        long percentageOff = ((Math.abs(correctAnswer - this.answer)) / correctAnswer) * 100;
-        long baseScore = 100 - percentageOff / 2;
-        mainCtrl.addPoints(baseScore);
     }
 
     /**
