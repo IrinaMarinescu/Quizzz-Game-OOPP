@@ -231,7 +231,7 @@ public class ActivityController {
         String id = associateQuestion(typeOfQuestion);
 
         List<Activity> activities = fetchRandom(3);
-        String question = "Which consumes more?";
+        String question = "What consumes the most?";
         int correctAnswer = 0;
         for (int i = 1; i < 3; i++) {
             if (activities.get(correctAnswer).consumptionInWh < activities.get(i).consumptionInWh) {
@@ -284,7 +284,7 @@ public class ActivityController {
             }
         }
         String id = associateQuestion(typeOfQuestion);
-        String question = "Instead of " + activities.get(i).title + "  you can do...";
+        String question = "What can you do instead of " + activities.get(i).title + "?";
         activities.remove(i);
         if (correctAnswer > i) {
             correctAnswer--;

@@ -156,10 +156,12 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
         }
 
         String[] values = new String[3];
-        for (int i = 0; i < 3; i++) {
-            values[i] = randomConsumption();
-        }
-        values[positionCorrectAnswer] = String.valueOf(actualConsumption);
+        do {
+            for (int i = 0; i < 3; i++) {
+                values[i] = randomConsumption();
+            }
+            values[positionCorrectAnswer] = String.valueOf(actualConsumption);
+        } while (values[0] == values[1] || values[1] == values[2] || values[2] == values[0]);
 
         Platform.runLater(() -> {
             for (int i = 0; i < 3; i++) {
@@ -181,7 +183,7 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
         int min = (int) Math.floor(actualConsumption - fifteenPercent);
         int randomConsumption = (int) Math.floor(Math.random() * (max - min + 1) + min);
         //rounding the number to the appropriate number of zeroes at the end to make it harder to guess
-        randomConsumption = (int) (randomConsumption / (Math.pow(10, zeros) * Math.pow(10, zeros)));
+        randomConsumption = (int) ((int) (randomConsumption / Math.pow(10, zeros - 1)) * Math.pow(10, zeros - 1));
         return String.valueOf(randomConsumption);
     }
 
