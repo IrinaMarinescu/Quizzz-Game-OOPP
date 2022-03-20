@@ -3,6 +3,7 @@ package client.scenes;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import client.dependedoncomponents.LeaderboardCtrlDOC;
+import client.dependedoncomponents.MainCtrlDOC;
 import commons.LeaderboardEntry;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +21,7 @@ class LeaderboardCtrlTest {
 
     @BeforeEach
     void setUp() {
-        leaderboardCtrl = new LeaderboardCtrlDOC();
+        leaderboardCtrl = new LeaderboardCtrlDOC(new MainCtrlDOC());
         placeHolderEntries = List.of(
                 new LeaderboardEntry("Someone", 100),
                 new LeaderboardEntry("test", 500),
@@ -32,7 +33,7 @@ class LeaderboardCtrlTest {
     @Test
     void testInitialize() {
         assertEquals(leaderboardCtrl.getMaxSize(), 4);
-        assertEquals(leaderboardCtrl.getType(), leaderboardCtrl.TYPE_FINAL);
+        assertEquals(leaderboardCtrl.getType(), LeaderboardCtrl.TYPE_FINAL);
     }
 
     @Test

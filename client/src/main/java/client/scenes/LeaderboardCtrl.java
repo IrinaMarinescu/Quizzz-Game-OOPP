@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javax.inject.Inject;
 
 
 public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
@@ -37,6 +38,14 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
 
     private int type;
     private int maxSize;
+
+    private MainCtrl mainCtrl;
+
+    @Inject
+    public LeaderboardCtrl(MainCtrl mainCtrl) {
+        this.mainCtrl = mainCtrl;
+    }
+
 
     /**
      * {@inheritDoc}
@@ -93,6 +102,13 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
         } else {
             this.type = TYPE_SOLO;
         }
+    }
+
+    /**
+     * Redirects the user to the main frame.
+     */
+    public void showMainFrame() {
+        mainCtrl.showMainFrame();
     }
 
     public int getType() {
