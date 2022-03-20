@@ -7,80 +7,64 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0"
-      prefWidth="1156.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="client.scenes.questioncontrollers.QuestionThreePicturesCtrl">
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="1156.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.questioncontrollers.QuestionThreePicturesCtrl">
     <children>
-        <Button id="Answer C" fx:id="answerC" alignment="TOP_CENTER" layoutX="779.0" layoutY="329.0"
-                mnemonicParsing="false" onAction="#answerCSelected" stylesheets="@../css/questionsThreePictures.css"
-                text="Answer C"/>
-        <TextField id="Question" fx:id="questionOutput" alignment="CENTER" layoutX="77.0" layoutY="42.0"
-                   stylesheets="@../css/questionsThreePictures.css" text="Temporary Question">
+        <Button id="Answer C" fx:id="answerC" alignment="TOP_CENTER" layoutX="779.0" layoutY="329.0" mnemonicParsing="false" onAction="#answerCSelected" stylesheets="@../css/questionsThreePictures.css" text="Answer C" />
+        <TextField id="Question" fx:id="questionOutput" alignment="CENTER" editable="false" layoutX="77.0" layoutY="42.0" stylesheets="@../css/questionsThreePictures.css" text="Temporary Question">
             <font>
-                <Font name="System Bold" size="30.0"/>
+                <Font name="System Bold" size="30.0" />
             </font>
         </TextField>
-        <Button fx:id="answerA" alignment="TOP_CENTER" layoutX="77.0" layoutY="329.0" mnemonicParsing="false"
-                onAction="#answerASelected" stylesheets="@../css/questionsThreePictures.css" text="Answer A">
+        <Button fx:id="answerA" alignment="TOP_CENTER" layoutX="77.0" layoutY="329.0" mnemonicParsing="false" onAction="#answerASelected" stylesheets="@../css/questionsThreePictures.css" text="Answer A">
             <opaqueInsets>
-                <Insets/>
+                <Insets />
             </opaqueInsets>
         </Button>
-        <Button id="Answer B" fx:id="answerB" alignment="TOP_CENTER" layoutX="428.0" layoutY="329.0"
-                mnemonicParsing="false" onAction="#answerBSelected" stylesheets="@../css/questionsThreePictures.css"
-                text="Answer B"/>
-        <ImageView id="imageA" fx:id="imageA" fitHeight="186.0" fitWidth="200.0" layoutX="134.0" layoutY="394.0"
-                   pickOnBounds="true" preserveRatio="true">
+        <Button id="Answer B" fx:id="answerB" alignment="TOP_CENTER" layoutX="428.0" layoutY="329.0" mnemonicParsing="false" onAction="#answerBSelected" stylesheets="@../css/questionsThreePictures.css" text="Answer B" />
+        <ImageView id="imageA" fx:id="imageA" fitHeight="186.0" fitWidth="200.0" layoutX="134.0" layoutY="394.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@../temporary/temporaryPicture.png"/>
+                <Image url="@../temporary/temporaryPicture.png" />
             </image>
         </ImageView>
-        <ImageView id="imageB" fx:id="imageB" fitHeight="186.0" fitWidth="200.0" layoutX="485.0" layoutY="394.0"
-                   pickOnBounds="true" preserveRatio="true">
+        <ImageView id="imageB" fx:id="imageB" fitHeight="186.0" fitWidth="200.0" layoutX="485.0" layoutY="394.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@../temporary/temporaryPicture.png"/>
+                <Image url="@../temporary/temporaryPicture.png" />
             </image>
         </ImageView>
-        <ImageView id="imageC" fx:id="imageC" fitHeight="186.0" fitWidth="200.0" layoutX="836.0" layoutY="394.0"
-                   pickOnBounds="true" preserveRatio="true">
+        <ImageView id="imageC" fx:id="imageC" fitHeight="186.0" fitWidth="200.0" layoutX="836.0" layoutY="394.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@../temporary/temporaryPicture.png"/>
+                <Image url="@../temporary/temporaryPicture.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="correctA" fitHeight="83.0" fitWidth="111.0" layoutX="169.0" layoutY="223.0"
-                   pickOnBounds="true" preserveRatio="true">
+        <ImageView fx:id="correctA" fitHeight="83.0" fitWidth="111.0" layoutX="169.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@../icons/correct.png"/>
+                <Image url="@../icons/correct.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="correctB" fitHeight="83.0" fitWidth="111.0" layoutX="524.0" layoutY="223.0"
-                   pickOnBounds="true" preserveRatio="true">
+        <ImageView fx:id="correctB" fitHeight="83.0" fitWidth="111.0" layoutX="524.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@../icons/correct.png"/>
+                <Image url="@../icons/correct.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="correctC" fitHeight="83.0" fitWidth="111.0" layoutX="875.0" layoutY="223.0"
-                   pickOnBounds="true" preserveRatio="true">
+        <ImageView fx:id="correctC" fitHeight="83.0" fitWidth="111.0" layoutX="875.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@../icons/correct.png"/>
+                <Image url="@../icons/correct.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="wrongA" fitHeight="83.0" fitWidth="108.0" layoutX="170.0" layoutY="224.0" pickOnBounds="true"
-                   preserveRatio="true">
+        <ImageView fx:id="wrongA" fitHeight="83.0" fitWidth="108.0" layoutX="170.0" layoutY="224.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@../icons/wrong.png"/>
+                <Image url="@../icons/wrong.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="wrongB" fitHeight="83.0" fitWidth="108.0" layoutX="530.0" layoutY="223.0" pickOnBounds="true"
-                   preserveRatio="true">
+        <ImageView fx:id="wrongB" fitHeight="83.0" fitWidth="108.0" layoutX="530.0" layoutY="223.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@../icons/wrong.png"/>
+                <Image url="@../icons/wrong.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="wrongC" fitHeight="83.0" fitWidth="108.0" layoutX="881.0" layoutY="224.0" pickOnBounds="true"
-                   preserveRatio="true">
+        <ImageView fx:id="wrongC" fitHeight="83.0" fitWidth="108.0" layoutX="881.0" layoutY="224.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@../icons/wrong.png"/>
+                <Image url="@../icons/wrong.png" />
             </image>
         </ImageView>
     </children>

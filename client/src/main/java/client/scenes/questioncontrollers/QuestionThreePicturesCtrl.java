@@ -87,15 +87,16 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
             wrong.get(i).setVisible(false);
             answers.get(i).setOpacity(1);
             answers.get(i).setStyle("-fx-border-color:  #5CB4BF");
+            answers.get(i).setDisable(false);
         });
     }
 
     public void setAnswers(Question question) {
         for (int i = 0; i < question.getActivities().size(); i++) {
             String title = question.getActivities().get(i).title;
-            String imagePath = question.getActivities().get(i).imagePath;
-            Image image = new Image(imagePath, 200, 186, true, false);
-            images.get(i).setImage(image);
+            //String imagePath = question.getActivities().get(i).imagePath;
+            //Image image = new Image(imagePath, 200, 186, true, false);
+            //images.get(i).setImage(image);
             answers.get(i).setText(title);
         }
     }
@@ -121,7 +122,7 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
     private void setChosenAnswer() {
         answers.get(selectedAnswerButton).setStyle("-fx-border-color: #028090");
         for (int i = 0; i < 3; i++) {
-            answers.get(i).setOnAction(null);
+            answers.get(i).setDisable(true);
             if (i != selectedAnswerButton) {
                 answers.get(i).setOpacity(0.5);
             }
