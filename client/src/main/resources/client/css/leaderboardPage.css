@@ -1,2 +1,12 @@
 @import 'global.css';
 @import 'smallLeaderboard.css';
+
+Button {
+    -fx-background-color: -greenish;
+    -fx-background-radius: 40;
+    -fx-pref-height: 30;
+    -fx-padding: 0 60 0 60;
+    -fx-font-size: 15;
+
+    -fx-focus-color: transparent;
+}
