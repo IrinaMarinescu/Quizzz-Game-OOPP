@@ -18,7 +18,11 @@ package client.scenes;
 
 import client.scenes.controllerrequirements.MainCtrlRequirements;
 import client.scenes.controllerrequirements.QuestionRequirements;
-import client.scenes.questioncontrollers.*;
+import client.scenes.questioncontrollers.InsteadOfQuestionCtrl;
+import client.scenes.questioncontrollers.OpenQuestionCtrl;
+import client.scenes.questioncontrollers.QuestionOneImageCtrl;
+import client.scenes.questioncontrollers.QuestionThreePicturesCtrl;
+import client.scenes.questioncontrollers.QuestionTrueFalseCtrl;
 import client.utils.LongPollingUtils;
 import client.utils.ServerUtils;
 import client.utils.TimeUtils;
@@ -42,7 +46,7 @@ public class MainCtrl implements MainCtrlRequirements {
     public static final int ROUND_TIME = 10;
     public static final int OVERVIEW_TIME = 5;
     public static final int LEADERBOARD_TIME = 10;
-    public static final int TOTAL_ROUNDS = 4; // should be 20
+    public static final int TOTAL_ROUNDS = 20;
 
     private LeaderboardEntry player;
     private Game game;
@@ -69,6 +73,9 @@ public class MainCtrl implements MainCtrlRequirements {
 
     private LeaderboardCtrl leaderboardCtrl;
     private Scene leaderboard;
+
+    private FinalScreenCtrl finalScreenCtrl;
+    private Node finalScreen;
 
     private OpenQuestionCtrl openQuestionCtrl;
     private Node openQuestion;
@@ -97,6 +104,7 @@ public class MainCtrl implements MainCtrlRequirements {
      * @param mainFrame        Welcome screen FXML and controller
      * @param questionFrame    Question Frame screen FXML and controller
      * @param leaderboard      Leaderboard screen FXML and controller
+     * @param finalScreen Final screen FXML and controller
      * @param openQuestion     Open question node FXML and controller
      * @param questionOneImage Question with one image FXML and controller
      * @param insteadOfQuestion Instead of question node FXML and controller
@@ -105,6 +113,7 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     public void initialize(TimeUtils timeUtils, ServerUtils serverUtils, LongPollingUtils longPollingUtils,
                            Stage primaryStage,
+                           Pair<FinalScreenCtrl, Parent> finalScreen,
                            Pair<MainFrameCtrl, Parent> mainFrame,
                            Pair<QuestionFrameCtrl, Parent> questionFrame,
                            Pair<LeaderboardCtrl, Parent> leaderboard,
@@ -123,6 +132,9 @@ public class MainCtrl implements MainCtrlRequirements {
             questionFrameCtrl.resizeTimerBar(newVal.intValue(), oldVal.intValue() - newVal.intValue());
         });
         primaryStage.setOnCloseRequest(e -> disconnect());
+
+        this.finalScreenCtrl = finalScreen.getKey();
+        this.finalScreen = finalScreen.getValue();
 
         this.openQuestionCtrl = openQuestion.getKey();
         this.openQuestion = openQuestion.getValue();
@@ -192,7 +204,7 @@ public class MainCtrl implements MainCtrlRequirements {
         intermediateLeaderboardShown = false;
         isMultiplayerGame = false;
         timeoutRoundCheck = 1;
-        game = serverUtils.getGame();
+        game = serverUtils.startSingleplayer();
         questionFrameCtrl.initializeSingleplayerGame();
         showQuestionFrame();
         nextEvent();
@@ -209,28 +221,33 @@ public class MainCtrl implements MainCtrlRequirements {
     private void nextEvent() {
         game.setPlayers(serverUtils.getUpdatedScores(game.getId()));
 
-        // The current event is the intermediate leaderboard
-        if (game.getRound() == TOTAL_ROUNDS / 2 && !intermediateLeaderboardShown) {
-            intermediateLeaderboardShown = true;
-            showLeaderboard(game.getPlayers(), 10, "intermediate");
+        if (isMultiplayerGame) {
+            // The current event is the intermediate leaderboard
+            if (game.getRound() == TOTAL_ROUNDS / 2 && !intermediateLeaderboardShown) {
+                intermediateLeaderboardShown = true;
+                showLeaderboard(game.getPlayers(), 10, "intermediate");
 
-            timeUtils.runAfterDelay(() -> {
-                showQuestionFrame();
-                nextEvent();
-            }, LEADERBOARD_TIME);
-            return;
+                timeUtils.runAfterDelay(() -> {
+                    showQuestionFrame();
+                    nextEvent();
+                }, LEADERBOARD_TIME);
+                return;
+            }
+
+            // The current event is the final leaderboard; the game is over
+            if (game.getRound() == TOTAL_ROUNDS) {
+                showLeaderboard(game.getPlayers(), 10, "final");
+                return;
+            }
+            questionFrameCtrl.setLeaderboardContents(game.getPlayers());
         }
-
-        // The current event is the final leaderboard; the game is over
-        if (game.getRound() == TOTAL_ROUNDS) {
-            showLeaderboard(game.getPlayers(), 10, "final");
-            return;
+        else if (game.getRound() == TOTAL_ROUNDS) {
+            showFinalScreen();
         }
 
         // The current event is a question
         game.incrementRound();
         questionFrameCtrl.incrementQuestionNumber();
-        questionFrameCtrl.setLeaderboardContents(game.getPlayers());
         Platform.runLater(() -> questionFrameCtrl.setRemainingTime(ROUND_TIME));
         questionStartTime = timeUtils.now();
         questionEndTime = questionStartTime + ROUND_TIME * 1000.0;
@@ -271,6 +288,11 @@ public class MainCtrl implements MainCtrlRequirements {
         setQuestionTimeouts(ROUND_TIME);
     }
 
+    private void showFinalScreen() {
+        finalScreenCtrl.setPoints(getPlayer().getScore());
+        questionFrameCtrl.setCenterContent(finalScreen);
+    }
+
     /**
      * Initializes timeouts until events that will happen after question and overview
      *
@@ -293,6 +315,7 @@ public class MainCtrl implements MainCtrlRequirements {
 
             Platform.runLater(() -> questionFrameCtrl.setRemainingTime(OVERVIEW_TIME));
             timeUtils.runAfterDelay(this::nextEvent, OVERVIEW_TIME);
+            //Platform.runLater(() -> nextEvent());
         }, delay);
     }
 
@@ -383,6 +406,5 @@ public class MainCtrl implements MainCtrlRequirements {
     public void showQuestionFrame() {
         primaryStage.setScene(questionFrame);
         questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
-
     }
 }
