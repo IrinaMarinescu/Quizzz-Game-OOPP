@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javax.inject.Inject;
 
@@ -148,9 +148,11 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
             buttons.get(i).setDisable(false);
         }
 
-        answerA.setText(question.getActivities().get(1).title);
-        answerB.setText(question.getActivities().get(2).title);
-        answerC.setText(question.getActivities().get(3).title);
+        Platform.runLater(() -> {
+            answerA.setText(question.getActivities().get(0).title);
+            answerB.setText(question.getActivities().get(1).title);
+            answerC.setText(question.getActivities().get(2).title);
+        });
     }
 
     /**

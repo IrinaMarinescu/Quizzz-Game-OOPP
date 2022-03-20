@@ -97,18 +97,18 @@ public class MainCtrl implements MainCtrlRequirements {
     /**
      * Initializes this class
      *
-     * @param timeUtils        Only instance of TimeUtils class
-     * @param serverUtils      Only instance of ServerUtils class
-     * @param longPollingUtils Only instance of LongPollingUtils class
-     * @param primaryStage     Only stage
-     * @param mainFrame        Welcome screen FXML and controller
-     * @param questionFrame    Question Frame screen FXML and controller
-     * @param leaderboard      Leaderboard screen FXML and controller
-     * @param finalScreen Final screen FXML and controller
-     * @param openQuestion     Open question node FXML and controller
-     * @param questionOneImage Question with one image FXML and controller
-     * @param insteadOfQuestion Instead of question node FXML and controller
-     * @param questionTrueFalse True False question node FXML and controller
+     * @param timeUtils             Only instance of TimeUtils class
+     * @param serverUtils           Only instance of ServerUtils class
+     * @param longPollingUtils      Only instance of LongPollingUtils class
+     * @param primaryStage          Only stage
+     * @param mainFrame             Welcome screen FXML and controller
+     * @param questionFrame         Question Frame screen FXML and controller
+     * @param leaderboard           Leaderboard screen FXML and controller
+     * @param finalScreen           Final screen FXML and controller
+     * @param openQuestion          Open question node FXML and controller
+     * @param questionOneImage      Question with one image FXML and controller
+     * @param insteadOfQuestion     Instead of question node FXML and controller
+     * @param questionTrueFalse     True False question node FXML and controller
      * @param questionThreePictures Question with three pictures node FXML and controller
      */
     public void initialize(TimeUtils timeUtils, ServerUtils serverUtils, LongPollingUtils longPollingUtils,
@@ -242,12 +242,13 @@ public class MainCtrl implements MainCtrlRequirements {
             questionFrameCtrl.setLeaderboardContents(game.getPlayers());
         } else if (game.getRound() == TOTAL_ROUNDS) {
             showFinalScreen();
+            return;
         }
 
         // The current event is a question
         game.incrementRound();
-        questionFrameCtrl.incrementQuestionNumber();
-        Platform.runLater(() -> questionFrameCtrl.setRemainingTime(ROUND_TIME));
+        Platform.runLater(() -> questionFrameCtrl.incrementQuestionNumber());
+        questionFrameCtrl.setRemainingTime(ROUND_TIME);
         questionStartTime = timeUtils.now();
         questionEndTime = questionStartTime + ROUND_TIME * 1000.0;
         pointsGained = 0;
@@ -283,6 +284,7 @@ public class MainCtrl implements MainCtrlRequirements {
                 break;
         }
         currentQuestionCtrl.initialize(currentQuestion);
+        Platform.runLater(() -> questionFrameCtrl.setRemainingTime(ROUND_TIME));
 
         setQuestionTimeouts(ROUND_TIME);
     }
@@ -305,10 +307,10 @@ public class MainCtrl implements MainCtrlRequirements {
 
             timeoutRoundCheck++;
             currentQuestionCtrl.revealCorrectAnswer();
-            questionFrameCtrl.addPoints(pointsGained);
+            Platform.runLater(() -> questionFrameCtrl.addPoints(pointsGained));
             questionFrameCtrl.tempDisableJokers(OVERVIEW_TIME);
             serverUtils.sendPointsGained(game.getId(), player, pointsGained);
-            if (currentQuestionType.equals("trueFalseQuestion")) {
+            if (currentQuestionType.equals("trueFalseQuestion") || currentQuestionType.equals("openQuestion")) {
                 questionFrameCtrl.setWrongAnswerJoker(true);
             }
 

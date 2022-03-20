@@ -66,6 +66,7 @@ public class TimerBarCtrl {
      * @param seconds The length of the full animation in seconds
      */
     public void setRemainingTime(double seconds) {
+        timeUtils.runAfterDelay(() -> resize(displayWidth, 0), 1);
         timerBar.getStyleClass().remove("fast");
         animationPlaying = true;
 
@@ -118,7 +119,7 @@ public class TimerBarCtrl {
         if (-change == newSize) {
             return;
         }
-        
+
         displayWidth = newSize;
         totalProgress += (now() - currentAnimationStartTime) / currentAnimationLength;
         animation.setByX(-newSize);

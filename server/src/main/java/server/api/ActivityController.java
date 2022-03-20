@@ -286,6 +286,9 @@ public class ActivityController {
         String id = associateQuestion(typeOfQuestion);
         String question = "Instead of " + activities.get(i).title + "  you can do...";
         activities.remove(i);
+        if (correctAnswer > i) {
+            correctAnswer--;
+        }
         Question questionInsteadOf = new Question(activities, question, correctAnswer, id);
         questions.add(questionInsteadOf);
     }

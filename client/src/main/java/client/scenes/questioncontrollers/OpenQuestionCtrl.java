@@ -5,6 +5,7 @@ import client.scenes.QuestionFrameCtrl;
 import client.scenes.controllerrequirements.QuestionRequirements;
 import commons.Question;
 import java.util.Scanner;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -72,10 +73,12 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     @Override
     public void initialize(Question question) {
         this.question = question;
-        questionField.setText("How many Wh does " + question.getActivities().get(0).title + " take?");
-        answerText.setText("");
-        submitButton.setText("Submit");
-        submitButton.setDisable(false);
+        Platform.runLater(() -> {
+            questionField.setText("How many Wh does " + question.getActivities().get(0).title + " take?");
+            answerText.setText("");
+            submitButton.setText("Submit");
+            submitButton.setDisable(false);
+        });
 
         //String imagePath = question.getActivities().get(0).imagePath;
         //Image image = new Image(imagePath, 480, 500, false, true);

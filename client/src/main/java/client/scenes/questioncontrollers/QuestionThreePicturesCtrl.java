@@ -7,10 +7,10 @@ import commons.Question;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javax.inject.Inject;
 
@@ -92,13 +92,15 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
     }
 
     public void setAnswers(Question question) {
-        for (int i = 0; i < question.getActivities().size(); i++) {
-            String title = question.getActivities().get(i).title;
-            //String imagePath = question.getActivities().get(i).imagePath;
-            //Image image = new Image(imagePath, 200, 186, true, false);
-            //images.get(i).setImage(image);
-            answers.get(i).setText(title);
-        }
+        Platform.runLater(() -> {
+            for (int i = 0; i < question.getActivities().size(); i++) {
+                String title = question.getActivities().get(i).title;
+                //String imagePath = question.getActivities().get(i).imagePath;
+                //Image image = new Image(imagePath, 200, 186, true, false);
+                //images.get(i).setImage(image);
+                answers.get(i).setText(title);
+            }
+        });
     }
 
     @FXML

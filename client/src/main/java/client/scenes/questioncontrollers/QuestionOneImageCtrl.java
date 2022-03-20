@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javax.inject.Inject;
 
@@ -149,17 +149,17 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
             buttons.get(i).setDisable(false);
         }
 
-        //do while loop to prevent multiple answer options from being the same number
-        do {
-            buttons.get(positionCorrectAnswer).setText(String.valueOf(actualConsumption));
+        String[] values = new String[3];
+        for (int i = 0; i < 3; i++) {
+            values[i] = randomConsumption();
+        }
+        values[positionCorrectAnswer] = String.valueOf(actualConsumption);
+
+        Platform.runLater(() -> {
             for (int i = 0; i < 3; i++) {
-                if (i != positionCorrectAnswer) {
-                    buttons.get(i).setText(randomConsumption());
-                }
+                buttons.get(i).setText(values[i]);
             }
-        } while (answerA.getText().equals(answerB.getText())
-                || answerC.getText().equals(answerB.getText())
-                || answerC.getText().equals(answerA.getText()));
+        });
     }
 
     /**
@@ -170,7 +170,7 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
     private String randomConsumption() {
         long actualConsumption = this.question.getActivities().get(0).consumptionInWh;
         int zeros = countZeros(actualConsumption);
-        double fifteenPercent = actualConsumption / 100.00 * 15.00;
+        double fifteenPercent = ((double) actualConsumption) / 100.00 * 15.00;
         int max = (int) Math.ceil(actualConsumption + fifteenPercent);
         int min = (int) Math.floor(actualConsumption - fifteenPercent);
         int randomConsumption = (int) Math.floor(Math.random() * (max - min + 1) + min);

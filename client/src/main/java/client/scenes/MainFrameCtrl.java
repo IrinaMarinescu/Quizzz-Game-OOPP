@@ -102,6 +102,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     public void startSingleplayerGame() {
         if (server.validateIP(serverIP.getText())) {
             server.setServerIP(serverIP.getText());
+            mainCtrl.setPlayer(username.getText(), 0);
             mainCtrl.startSingleplayerGame();
         } else {
             displayServerIPError(true);
