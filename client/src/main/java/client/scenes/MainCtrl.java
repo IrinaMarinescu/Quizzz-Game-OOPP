@@ -204,7 +204,7 @@ public class MainCtrl implements MainCtrlRequirements {
         intermediateLeaderboardShown = false;
         isMultiplayerGame = false;
         timeoutRoundCheck = 1;
-        game = serverUtils.startSingleplayer();
+        this.game = serverUtils.startSingleplayer();
         questionFrameCtrl.initializeSingleplayerGame();
         showQuestionFrame();
         nextEvent();
@@ -252,7 +252,7 @@ public class MainCtrl implements MainCtrlRequirements {
         questionEndTime = questionStartTime + ROUND_TIME * 1000.0;
         pointsGained = 0;
         doublePoints = false;
-        Question currentQuestion = game.getNextQuestion();
+        Question currentQuestion = game.nextQuestion();
         currentQuestionType = currentQuestion.getQuestionType();
 
         switch (currentQuestionType) {

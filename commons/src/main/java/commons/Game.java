@@ -28,11 +28,8 @@ public class Game {
         return questions;
     }
 
-    public Question getNextQuestion() {
-        if (round <= 19) {
-            return questions.get(round);
-        }
-        return null;
+    public Question nextQuestion() {
+        return questions.get(round - 1);
     }
 
     public List<LeaderboardEntry> getPlayers() {
