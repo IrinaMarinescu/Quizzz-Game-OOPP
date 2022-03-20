@@ -188,13 +188,13 @@ public class ActivityController {
             long correctNumber = activities.get(0).consumptionInWh;
             long wrongNumber = correctNumber * 110 / 100;
             if (wrongNumber % 2 == 0) {
-                question = activities.get(0).title + " consumes " + wrongNumber + " per hour.";
+                question = activities.get(0).title + " consumes " + wrongNumber + "Wh.";
                 correctAnswer = 1;
             } else {
-                question = activities.get(0).title + " consumes " + correctNumber + " per hour.";
+                question = activities.get(0).title + " consumes " + correctNumber + "Wh.";
             }
         } else {
-            question = activities.get(0).title + " consumes more than " + activities.get(1) + ".";
+            question = activities.get(0).title + " consumes more than " + activities.get(1).title + ".";
             if (activities.get(0).consumptionInWh < activities.get(1).consumptionInWh) {
                 correctAnswer = 1;
             }
