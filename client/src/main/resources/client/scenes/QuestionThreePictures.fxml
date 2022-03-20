@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -11,7 +12,7 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="1156.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.questioncontrollers.QuestionThreePicturesCtrl">
     <children>
         <Button id="Answer C" fx:id="answerC" alignment="TOP_CENTER" layoutX="779.0" layoutY="329.0" mnemonicParsing="false" onAction="#answerCSelected" stylesheets="@../css/questionsThreePictures.css" text="Answer C" />
-        <TextField id="Question" fx:id="questionOutput" alignment="CENTER" editable="false" layoutX="77.0" layoutY="42.0" stylesheets="@../css/questionsThreePictures.css" text="Temporary Question">
+        <TextField id="Question" alignment="CENTER" editable="false" layoutX="77.0" layoutY="42.0" stylesheets="@../css/questionsThreePictures.css">
             <font>
                 <Font name="System Bold" size="30.0" />
             </font>
@@ -67,5 +68,10 @@
                 <Image url="@../icons/wrong.png" />
             </image>
         </ImageView>
+      <Label fx:id="questionOutput" alignment="CENTER" contentDisplay="CENTER" layoutX="86.0" layoutY="69.0" prefHeight="60.0" prefWidth="981.0" text="Temporary Question" textFill="WHITE">
+         <font>
+            <Font size="48.0" />
+         </font>
+      </Label>
     </children>
 </Pane>

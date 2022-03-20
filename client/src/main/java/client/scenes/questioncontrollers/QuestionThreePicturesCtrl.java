@@ -10,6 +10,7 @@ import java.util.stream.IntStream;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javax.inject.Inject;
@@ -36,7 +37,7 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
     Button answerC;
 
     @FXML
-    TextField questionOutput;
+    Label questionOutput;
 
     @FXML
     ImageView imageA;
@@ -206,7 +207,7 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
         return answerC;
     }
 
-    public TextField getQuestionOutput() {
+    public Label getQuestionOutput() {
         return questionOutput;
     }
 

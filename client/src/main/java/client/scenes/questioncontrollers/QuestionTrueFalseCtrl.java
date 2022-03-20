@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -32,7 +33,7 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
     Button falseButton;
 
     @FXML
-    TextField questionOutput;
+    Label questionOutput;
 
     @FXML
     ImageView imageOutput;
@@ -142,7 +143,7 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
         return falseButton;
     }
 
-    public TextField getQuestionOutput() {
+    public Label getQuestionOutput() {
         return questionOutput;
     }
 
