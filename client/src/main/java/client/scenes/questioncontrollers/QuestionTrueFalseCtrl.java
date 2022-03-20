@@ -72,6 +72,7 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
             wrong.get(i).setVisible(false);
             answers.get(i).setOpacity(1);
             answers.get(i).setStyle("-fx-border-color:  #5CB4BF");
+            answers.get(i).setDisable(false);
         });
     }
 
