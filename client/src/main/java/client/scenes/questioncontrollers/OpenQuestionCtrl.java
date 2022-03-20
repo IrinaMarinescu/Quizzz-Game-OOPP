@@ -76,6 +76,10 @@ public class OpenQuestionCtrl implements QuestionRequirements {
         answerText.setText("");
         submitButton.setText("Submit");
         submitButton.setDisable(false);
+
+        //String imagePath = question.getActivities().get(0).imagePath;
+        //Image image = new Image(imagePath, 480, 500, false, true);
+        //imageField.setImage(image);
     }
 
     /**

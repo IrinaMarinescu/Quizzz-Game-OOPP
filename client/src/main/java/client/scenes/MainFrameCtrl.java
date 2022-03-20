@@ -42,6 +42,8 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     @FXML
     private Button trophy;
     @FXML
+    private Button singlePlayer;
+    @FXML
     private TextField username;
     @FXML
     private TextField serverIP;

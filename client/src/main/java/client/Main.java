@@ -18,10 +18,7 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
-import client.scenes.LeaderboardCtrl;
-import client.scenes.MainCtrl;
-import client.scenes.MainFrameCtrl;
-import client.scenes.QuestionFrameCtrl;
+import client.scenes.*;
 import client.scenes.questioncontrollers.*;
 import client.utils.LongPollingUtils;
 import client.utils.ServerUtils;
@@ -90,7 +87,9 @@ public class Main extends Application {
         var serverUtils = INJECTOR.getInstance(ServerUtils.class);
         var timeUtils = INJECTOR.getInstance(TimeUtils.class);
 
-        mainCtrl.initialize(timeUtils, serverUtils, longPollingUtils, primaryStage, mainFrame, questionFrame,
+        var finalScreen = FXML.load(FinalScreenCtrl.class, "client/scenes/FinalSingleplayerScreen.fxml", null);
+
+        mainCtrl.initialize(timeUtils, serverUtils, longPollingUtils, primaryStage, finalScreen, mainFrame, questionFrame,
             leaderboard, openQuestion,
             questionOneImage, insteadOfQuestion, questionTrueFalse, questionThreePictures);
     }
