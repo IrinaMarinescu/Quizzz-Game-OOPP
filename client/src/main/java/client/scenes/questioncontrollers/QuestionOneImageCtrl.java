@@ -128,9 +128,9 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
         long actualConsumption = question.getActivities().get(0).consumptionInWh;
         this.positionCorrectAnswer = (new Random()).nextInt(3);
 
-        String imagePath = question.getActivities().get(0).imagePath;
-        Image image = new Image(imagePath, 480, 500, false, true);
-        imageField.setImage(image);
+        //String imagePath = question.getActivities().get(0).imagePath;
+        //Image image = new Image(imagePath, 480, 500, false, true);
+        //imageField.setImage(image);
 
         this.buttons = new ArrayList<>();
         Collections.addAll(buttons, answerA, answerB, answerC);
@@ -149,17 +149,17 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
             buttons.get(i).setDisable(false);
         }
 
-        //while loop to prevent multiple answer options from being the same number
-        while (answerA.getText().equals(answerB.getText())
-            || answerC.getText().equals(answerB.getText())
-            || answerC.getText().equals(answerA.getText())) {
+        //do while loop to prevent multiple answer options from being the same number
+        do {
             buttons.get(positionCorrectAnswer).setText(String.valueOf(actualConsumption));
             for (int i = 0; i < 3; i++) {
                 if (i != positionCorrectAnswer) {
                     buttons.get(i).setText(randomConsumption());
                 }
             }
-        }
+        } while (answerA.getText().equals(answerB.getText())
+                || answerC.getText().equals(answerB.getText())
+                || answerC.getText().equals(answerA.getText()));
     }
 
     /**
