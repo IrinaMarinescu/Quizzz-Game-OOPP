@@ -96,7 +96,7 @@ public class Main extends Application {
         var adminInterface =
             FXML.load(AdminInterfaceCtrl.class, "client/scenes/AdminInterface.fxml", "client/css/adminPage.css");
 
-            var questionFrame =
+        var questionFrame =
             FXML.load(QuestionFrameCtrl.class, "client/scenes/questionFrame.fxml", "client/css/questionFrame.css");
 
         var questionTrueFalse = FXML.load(QuestionTrueFalseCtrl.class, "client/scenes/QuestionTrueFalse.fxml",

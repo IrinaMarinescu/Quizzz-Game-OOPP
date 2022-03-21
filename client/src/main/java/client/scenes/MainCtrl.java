@@ -177,10 +177,10 @@ public class MainCtrl implements MainCtrlRequirements {
 
         primaryStage.show();
     }
+
     public ServerUtils getServerUtils() {
         return serverUtils;
     }
-
 
     public void showAdminInterface() {
         adminInterfaceCtrl.initialize(serverUtils.fetchActivities());

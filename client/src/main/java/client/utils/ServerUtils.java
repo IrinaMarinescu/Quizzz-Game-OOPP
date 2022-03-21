@@ -71,6 +71,7 @@ public class ServerUtils {
             .accept(APPLICATION_JSON) //
             .get(String.class).equals("Connected");
     }
+
     /**
      * Lets the user input no IP when trying to use the app.
      * If the "Server IP" field is empty, localhost:8080 will be the default.
