@@ -75,6 +75,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
      * If the server IP entered by the user is correct redirect to the frame with the global leaderboard
      * otherwise show a server IP error
      */
+    @FXML
     public void openLeaderboard() {
         if (serverUtils.validateIP(serverIP.getText())) {
             serverUtils.setServerIP(serverIP.getText());
@@ -123,6 +124,19 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     }
 
     /**
+     * If the user has entered a correct server IP, they will be redirected to the admin interface.
+     * Otherwise, they will be shown an error.
+     */
+    public void showAdmin() {
+        if (serverUtils.validateIP(serverIP.getText())) {
+            serverUtils.setServerIP(serverIP.getText());
+            mainCtrl.showAdminInterface();
+        } else {
+            System.out.println("invalid ip!");
+        }
+    }
+
+    /**
      * Display the username error
      *
      * @param show If true displays the error otherwise hides it
@@ -163,6 +177,9 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
                     mainCtrl.disconnect();
                 }
                 lastEscapeKeyPressTime = Clock.systemDefaultZone().millis();
+                break;
+            case CONTROL:
+                showAdmin();
                 break;
             default:
                 break;

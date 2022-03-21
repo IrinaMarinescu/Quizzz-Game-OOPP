@@ -76,6 +76,9 @@ public class MainCtrl implements MainCtrlRequirements {
     private LeaderboardCtrl leaderboardCtrl;
     private Scene leaderboard;
 
+    private AdminInterfaceCtrl adminInterfaceCtrl;
+    private Scene adminInterfaceFrame;
+
     private QuestionFrameCtrl questionFrameCtrl;
     private Scene questionFrame;
 
@@ -96,6 +99,8 @@ public class MainCtrl implements MainCtrlRequirements {
 
     QuestionRequirements currentQuestionCtrl = null;
 
+    private boolean widthChanged = false;
+
     /**
      * Initializes this class
      *
@@ -107,14 +112,17 @@ public class MainCtrl implements MainCtrlRequirements {
      * @param mainFrame        Welcome screen FXML and controller
      * @param questionFrame    Question Frame screen FXML and controller
      * @param leaderboard      Leaderboard screen FXML and controller
+     * @param adminInterface   Admin Interface screen FXML and controller
      * @param openQuestion     Open question node FXML and controller
      * @param questionOneImage Question with one image FXML and controller
      */
-    public void initialize(ServerUtils serverUtils, GameUtils gameUtils, LobbyUtils lobbyUtils, TimeUtils timeUtils,
+    public void initialize(ServerUtils serverUtils, GameUtils gameUtils, 
+                           LobbyUtils lobbyUtils, TimeUtils timeUtils,
                            Stage primaryStage,
                            Pair<MainFrameCtrl, Parent> mainFrame,
                            Pair<LobbyCtrl, Parent> lobbyFrame,
                            Pair<LeaderboardCtrl, Parent> leaderboard,
+                           Pair<AdminInterfaceCtrl, Parent> adminInterface,
                            Pair<QuestionFrameCtrl, Parent> questionFrame,
                            Pair<QuestionTrueFalseCtrl, Parent> questionTrueFalse,
                            Pair<OpenQuestionCtrl, Parent> openQuestion,
@@ -143,6 +151,9 @@ public class MainCtrl implements MainCtrlRequirements {
         this.leaderboardCtrl = leaderboard.getKey();
         this.leaderboard = new Scene(leaderboard.getValue());
 
+        this.adminInterfaceCtrl = adminInterface.getKey();
+        this.adminInterfaceFrame = new Scene(adminInterface.getValue());
+
         this.questionFrameCtrl = questionFrame.getKey();
         this.questionFrame = new Scene(questionFrame.getValue());
 
@@ -165,6 +176,19 @@ public class MainCtrl implements MainCtrlRequirements {
         showMainFrame();
 
         primaryStage.show();
+    }
+
+    public ServerUtils getServerUtils() {
+        return serverUtils;
+    }
+
+    public void showAdminInterface() {
+        adminInterfaceCtrl.initialize(serverUtils.fetchActivities());
+        primaryStage.setScene(adminInterfaceFrame);
+    }
+
+    public LeaderboardEntry getPlayer() {
+        return this.player;
     }
 
     /**

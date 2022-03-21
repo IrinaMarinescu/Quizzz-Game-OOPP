@@ -32,14 +32,20 @@ class ActivityControllerTest {
 
     private ActivityController sut;
 
+    private Activity activity;
+    private Activity nullActivity;
+
+
     @BeforeEach
     public void setUp() {
         sut = new ActivityController(repo, new Random());
+        activity = new Activity("00-a", "ss/ss.png", "a", 5, "b");
+        nullActivity = new Activity(null, null, null, 0, null);
     }
 
     @Test
     public void cannotAddNullTitleOrSource() {
-        var s = sut.add(new Activity(null, null, null, 0, null));
+        var s = sut.add(nullActivity);
         assertEquals(BAD_REQUEST, s.getStatusCode());
     }
 
@@ -73,7 +79,7 @@ class ActivityControllerTest {
 
     @Test
     public void testAdd() {
-        var s = sut.add(new Activity("00-a", "ss/ss.png", "a", 5, "b"));
+        var s = sut.add(activity);
         Activity activity = repo.findById("00-a");
 
         assertEquals(activity.consumptionInWh, 5);
@@ -159,6 +165,29 @@ class ActivityControllerTest {
     }
 
     @Test
+    public void testDeleteNotFound() {
+        var s = sut.deleteActivity(nullActivity);
+        assertEquals(BAD_REQUEST, s.getStatusCode());
+    }
+
+    @Test
+    public void testDelete() {
+        var s = sut.add(activity);
+        sut.deleteActivity(activity);
+        assertEquals(activity, s.getBody());
+    }
+
+    @Test
+    public void testUpdate() {
+        sut.add(activity);
+        activity.title = "test";
+
+        sut.updateActivity(activity);
+
+        Activity newActivity = repo.findById(activity.id);
+        assertEquals("test", newActivity.title);
+    }
+
     void generateThreePicturesQuestion() {
         sut.importActivities(List.of(
             new Activity("00-b", "ss/ss.png", "flying a plane", 10, "b"),
