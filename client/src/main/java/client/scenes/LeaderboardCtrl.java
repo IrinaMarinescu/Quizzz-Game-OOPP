@@ -34,8 +34,6 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     @FXML
     private GridPane buttonGrid;
 
-
-
     /**
      * Field <code>type</code> in <code>LeaderboardCtrl</code>
      * denotes the type of leaderboard to be shown. The controller will handle:
@@ -54,6 +52,8 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     private int maxSize;
 
     private MainCtrl mainCtrl;
+
+    protected boolean test = false;
 
     @Inject
     public LeaderboardCtrl(MainCtrl mainCtrl) {
@@ -113,20 +113,24 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
         if (type.equals("intermediate")) {
             this.type = TYPE_INTERMED;
             texts = new Pair<>("Intermediate Leaderboard", "Scores after 10 rounds - go get 'em!");
-            backBtn.setVisible(false);
-            buttonGrid.setVisible(false);
+            setButtonAndGrid(false, false);
         } else if (type.equals("final")) {
             this.type = TYPE_FINAL;
             texts = new Pair<>("Final Leaderboard", "Final scores");
-            backBtn.setVisible(false);
-            buttonGrid.setVisible(true);
+            setButtonAndGrid(false, true);
         } else {
             this.type = TYPE_SOLO;
             texts = new Pair<>("Global Leaderboard", "All-time top players in singleplayer");
-            backBtn.setVisible(true);
-            buttonGrid.setVisible(false);
+            setButtonAndGrid(true, false);
         }
         formatLabels(texts);
+    }
+
+    protected void setButtonAndGrid(boolean buttonVisibility, boolean gridVisibility) {
+        if(!test) {
+            backBtn.setVisible(buttonVisibility);
+            buttonGrid.setVisible(gridVisibility);
+        }
     }
 
     /**
@@ -135,8 +139,10 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      * @param texts a Pair of two strings, containing the titles to be set.
      */
     protected void formatLabels(Pair<String, String> texts) {
-        pageTitle.setText(texts.getKey());
-        leaderboardTitle.setText(texts.getValue());
+        if(!test) {
+            pageTitle.setText(texts.getKey());
+            leaderboardTitle.setText(texts.getValue());
+        }
     }
 
     /**

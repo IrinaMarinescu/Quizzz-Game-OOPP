@@ -13,6 +13,7 @@ public class LeaderboardCtrlDOC extends LeaderboardCtrl {
 
     public LeaderboardCtrlDOC(MainCtrl mainCtrl) {
         super(mainCtrl);
+        test = true;
     }
 
     @Override
@@ -20,6 +21,7 @@ public class LeaderboardCtrlDOC extends LeaderboardCtrl {
         setMaxSize(maxSize);
         setLeaderboardType(type);
         setEntries(entries);
+
     }
 
     public void setEntries(List<LeaderboardEntry> entries) {
