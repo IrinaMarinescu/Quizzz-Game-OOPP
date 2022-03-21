@@ -268,8 +268,54 @@ public class ActivityController {
         String id = associateQuestion(typeOfQuestion);
         List<Activity> activities = fetchRandom(1);
         String question = "How much energy in Wh does " + activities.get(0).title + " consume?";
+        long a1 = 0;
+        long a2 = 0;
+        do {
+            a1 = randomConsumption(activities.get(0));
+            a2 = randomConsumption(activities.get(0));
+        } while (a1 == a2 || a1 == activities.get(0).consumptionInWh || a2 == activities.get(0).consumptionInWh);
+        activities.add(new Activity("", "", "", a1, ""));
+        activities.add(new Activity ("", "", "", a2, ""));
         Question openQuestion = new Question(activities, question, 0, id);
         questions.add(openQuestion);
+    }
+
+    /**
+     * Generates a random consumption value within a 15% range of the consumption of the correct answer
+     *
+     * @return returns a long with the random value, so that it can be displayed in the buttons
+     */
+    private long randomConsumption(Activity a) {
+        long actualConsumption = a.consumptionInWh;
+        int zeros = countZeros(actualConsumption);
+        double fifteenPercent = ((double) actualConsumption) / 100.00 * 15.00;
+        long max = (long) Math.ceil(actualConsumption + fifteenPercent);
+        long min = (long) Math.floor(actualConsumption - fifteenPercent);
+        long randomConsumption = (long) Math.floor(Math.random() * (max - min + 1) + min);
+        //rounding the number to the appropriate number of zeroes at the end to make it harder to guess
+        randomConsumption = (long) ((long) (randomConsumption / Math.pow(10, zeros - 1)) * Math.pow(10, zeros - 1));
+        return randomConsumption;
+    }
+
+    /**
+     * Counts the number of zeros at the end of the consumption to correctly round the options on the other two buttons
+     *
+     * @param actualConsumption The consumption of the activity for which the number of zeroes has to be counted
+     * @return The number of zeroes in the consumption
+     */
+    public static int countZeros(long actualConsumption) {
+        String number = String.valueOf(actualConsumption);
+        int counter = 0;
+        for (int i = 0; i < number.length(); i++) {
+            if (i + 1 == number.length() || number.charAt(i + 1) == '0') {
+                if (number.charAt(i) == '0') {
+                    counter++;
+                }
+            } else if (i + 1 != number.length() && number.charAt(i + 1) != '0') {
+                counter = 0;
+            }
+        }
+        return counter;
     }
 
     /**
