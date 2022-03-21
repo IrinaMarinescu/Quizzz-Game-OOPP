@@ -341,9 +341,7 @@ public class ActivityController {
      * @param questions      the list of all the questions
      */
     public void generateOneImageQuestion(int typeOfQuestion, List<Question> questions) {
-        String id = associateQuestion(typeOfQuestion);
         List<Activity> activities = fetchRandom(1);
-        String question = "How much energy in Wh does " + activities.get(0).title + " consume?";
         long a1 = 0;
         long a2 = 0;
         do {
@@ -351,7 +349,9 @@ public class ActivityController {
             a2 = randomConsumption(activities.get(0));
         } while (a1 == a2 || a1 == activities.get(0).consumptionInWh || a2 == activities.get(0).consumptionInWh);
         activities.add(new Activity("", "", "", a1, ""));
-        activities.add(new Activity ("", "", "", a2, ""));
+        activities.add(new Activity("", "", "", a2, ""));
+        String id = associateQuestion(typeOfQuestion);
+        String question = "How much energy in Wh does " + activities.get(0).title + " consume?";
         Question questionOneImage = new Question(activities, question, 0, id);
         questions.add(questionOneImage);
     }
