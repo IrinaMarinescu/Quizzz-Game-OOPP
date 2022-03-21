@@ -52,12 +52,12 @@ class QuestionFrameCtrlTest {
      */
     @BeforeEach
     public void setup() {
-        mainCtrlDOC = new MainCtrlDOC();
         timeUtilsDOC = new TimeUtilsDOC(150);
+        mainCtrlDOC = new MainCtrlDOC();
         emoteCtrlDOC = new EmoteCtrlDOC();
         timerBarCtrlDOC = new TimerBarCtrlDOC();
 
-        sut = new QuestionFrameCtrl(mainCtrlDOC, timerBarCtrlDOC, emoteCtrlDOC, timeUtilsDOC);
+        sut = new QuestionFrameCtrl(timeUtilsDOC, mainCtrlDOC, timerBarCtrlDOC, emoteCtrlDOC);
 
         sut.test = true;
         sut.sideLeaderboard = new VBox();

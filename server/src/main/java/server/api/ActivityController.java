@@ -5,6 +5,9 @@ import commons.Question;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,6 +82,37 @@ public class ActivityController {
     }
 
     /**
+     * Used to delete an activity from the DB, by ID
+     *
+     * @param activity the activity to delete
+     * @return a bad request error, if an activity does not exist, or the deleted activity otherwise
+     */
+    @PostMapping("del")
+    @Transactional
+    public ResponseEntity<Activity> deleteActivity(@RequestBody Activity activity) {
+        Activity candidate = repo.findById(activity.id);
+        if (candidate == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        repo.deleteById(activity.id);
+        return ResponseEntity.ok(candidate);
+    }
+
+
+    /**
+     * Gets an activity object and updates in accordingly in the database.
+     *
+     * @param activity the activity object to update in the DB.
+     * @return the same object, if the operation is successful.
+     */
+    @PostMapping("update")
+    public ResponseEntity<Activity> updateActivity(@RequestBody Activity activity) {
+        repo.save(activity);
+        return ResponseEntity.ok(activity);
+    }
+
+    /**
      * This function will get a json-encoded Activity and will save it in the DB.
      * We can test this endpoint with Postman until we have a working UI.
      *
@@ -97,6 +131,12 @@ public class ActivityController {
         return ResponseEntity.ok(saved);
     }
 
+    /**
+     * This function gets a list of activities to add to the database in bulk.
+     *
+     * @param activities the list of the activities to add
+     * @return the same list, if the operation is successful.
+     */
     @PostMapping("import")
     public ResponseEntity<List<Activity>> importActivities(@RequestBody List<Activity> activities) {
         for (var activity : activities) {

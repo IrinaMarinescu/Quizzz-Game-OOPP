@@ -2,6 +2,7 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import client.scenes.LobbyCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.QuestionFrameCtrl;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,6 +21,7 @@ public class LongPollingUtils {
 
     private final ServerUtils serverUtils;
     private final MainCtrl mainCtrl;
+    private final LobbyCtrl lobbyCtrl;
     public final QuestionFrameCtrl questionFrameCtrl;
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -32,9 +34,11 @@ public class LongPollingUtils {
      * @param questionFrameCtrl QuestionFrameCtrl object
      */
     @Inject
-    public LongPollingUtils(ServerUtils serverUtils, MainCtrl mainCtrl, QuestionFrameCtrl questionFrameCtrl) {
+    public LongPollingUtils(ServerUtils serverUtils, MainCtrl mainCtrl, LobbyCtrl lobbyCtrl,
+                            QuestionFrameCtrl questionFrameCtrl) {
         this.serverUtils = serverUtils;
         this.mainCtrl = mainCtrl;
+        this.lobbyCtrl = lobbyCtrl;
         this.questionFrameCtrl = questionFrameCtrl;
 
         this.active = false;
@@ -62,7 +66,7 @@ public class LongPollingUtils {
     private void sendPoll() {
         String json = ClientBuilder.newClient(new ClientConfig())
             .target(serverUtils.getServerIP())
-            .path("poll/" + (mainCtrl.getGame() == null ? mainCtrl.getLobby().getId() :
+            .path("poll/" + (mainCtrl.getGame() == null ? lobbyCtrl.getLobby().getId() :
                 mainCtrl.getGame().getId()))
             .request(APPLICATION_JSON)
             .accept(APPLICATION_JSON)

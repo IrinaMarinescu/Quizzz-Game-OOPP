@@ -16,6 +16,7 @@
 
 package client;
 
+import client.scenes.AdminInterfaceCtrl;
 import client.scenes.LeaderboardCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.MainFrameCtrl;
@@ -44,20 +45,22 @@ public class MyModule implements Module {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(MainFrameCtrl.class).in(Scopes.SINGLETON);
         binder.bind(LeaderboardCtrl.class).in(Scopes.SINGLETON);
-        // TODO: bind lobbyCtrl, admin screen, countdown screen (?)
-
+        // TODO: bind lobbyCtrl, countdown screen (?)
+        binder.bind(AdminInterfaceCtrl.class).in(Scopes.SINGLETON);
         binder.bind(QuestionFrameCtrl.class).in(Scopes.SINGLETON);
         binder.bind(TimerBarCtrl.class).in(Scopes.SINGLETON);
         binder.bind(EmoteCtrl.class).in(Scopes.SINGLETON);
-
         binder.bind(OpenQuestionCtrl.class).in(Scopes.SINGLETON);
         binder.bind(InsteadOfQuestionCtrl.class).in(Scopes.SINGLETON);
         binder.bind(QuestionOneImageCtrl.class).in(Scopes.SINGLETON);
         binder.bind(QuestionThreePicturesCtrl.class).in(Scopes.SINGLETON);
         binder.bind(QuestionTrueFalseCtrl.class).in(Scopes.SINGLETON);
-
+        /**
+         * bind utilies below
+         * **/
         binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
         binder.bind(TimeUtils.class).in(Scopes.SINGLETON);
         binder.bind(LongPollingUtils.class).in(Scopes.SINGLETON);
+
     }
 }

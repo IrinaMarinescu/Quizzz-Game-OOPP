@@ -18,7 +18,7 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
-import client.scenes.InsteadOfQuestionCtrl;
+import client.scenes.AdminInterfaceCtrl;
 import client.scenes.LeaderboardCtrl;
 import client.scenes.LobbyCtrl;
 import client.scenes.MainCtrl;
@@ -92,6 +92,9 @@ public class Main extends Application {
         var leaderboard =
             FXML.load(LeaderboardCtrl.class, "client/scenes/Leaderboard.fxml", "client/css/leaderboardPage.css");
 
+        var adminInterface =
+            FXML.load(AdminInterfaceCtrl.class, "client/scenes/AdminInterface.fxml", "client/css/adminPage.css");
+
         var questionFrame =
             FXML.load(QuestionFrameCtrl.class, "client/scenes/questionFrame.fxml", "client/css/questionFrame.css");
 
@@ -109,8 +112,13 @@ public class Main extends Application {
         var insteadOfQuestion =
             FXML.load(InsteadOfQuestionCtrl.class, "client/scenes/InsteadOfQuestion.fxml", null);
 
-        mainCtrl.initialize(serverUtils, gameUtils, lobbyUtils, timeUtils, primaryStage, mainFrame,
-            lobbyFrame, leaderboard, questionFrame, questionTrueFalse, openQuestion, questionThreePictures,
-            questionOneImage, insteadOfQuestion);
+        mainCtrl.initialize(serverUtils, gameUtils, 
+            lobbyUtils, timeUtils, 
+            primaryStage, mainFrame,
+            lobbyFrame, leaderboard,
+            adminInterface, questionFrame, 
+            questionTrueFalse, openQuestion, 
+            questionThreePictures, questionOneImage, 
+            insteadOfQuestion);
     }
 }

@@ -18,9 +18,10 @@ public class LobbyUtils {
     public boolean active;
 
     /**
-     * Constructor
+     * Injects serverUtils and mainCtrl, so it's possible to call methods from there
      *
      * @param serverUtils ServerUtils object
+     * @param mainCtrl    MainCtrl object
      */
     @Inject
     public LobbyUtils(ServerUtils serverUtils, MainCtrl mainCtrl) {
@@ -33,8 +34,7 @@ public class LobbyUtils {
     /**
      * Check if another user in lobby already uses this name
      *
-     * @param username provided by player in the TextField
-     * @return true if the username is not used yet, false otherwise
+     * @param username The username provided by the player in the TextField
      */
     public boolean validateUsername(String username) {
         return !ClientBuilder.newClient(new ClientConfig()) //
@@ -47,7 +47,7 @@ public class LobbyUtils {
     /**
      * Add player to the lobby
      *
-     * @param player that has to be added to the lobby
+     * @param player The player that has to be added to the lobby
      * @return The Lobby object that player has been added to
      */
     public Lobby joinLobby(LeaderboardEntry player) {
@@ -61,11 +61,10 @@ public class LobbyUtils {
     /**
      * Remove player to the lobby
      *
-     * @param player that has to be removed to the lobby
-     * @return The Lobby object that player has been removed to
+     * @param player The player that has to be removed to the lobby
      */
-    public boolean leaveLobby(LeaderboardEntry player) {
-        return ClientBuilder.newClient(new ClientConfig()) //
+    public void leaveLobby(LeaderboardEntry player) {
+        ClientBuilder.newClient(new ClientConfig()) //
             .target(serverUtils.getServerIP()).path("api/lobby/remove") //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //
@@ -100,7 +99,7 @@ public class LobbyUtils {
             .get(Lobby.class);
 
         if (active) {
-            mainCtrl.updateLobby(lobby);
+            mainCtrl.setLobby(lobby);
         }
     }
 }

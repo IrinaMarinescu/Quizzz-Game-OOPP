@@ -29,7 +29,7 @@ public class GameControllerTest {
         Question question = new Question(List.of(activity), "world", 0, "TrueFalse");
         ActivityControllerDOC activityControllerDOC = new ActivityControllerDOC(repo, new RandomDOC(0), question);
 
-        sut = new GameController(activityControllerDOC, null, null);
+        sut = new GameController(activityControllerDOC, null);
     }
 
     @Test
