@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -237,17 +235,17 @@ public class ActivityController {
         String id = associateQuestion(typeOfQuestion);
         int numberOfActivities = rand.nextInt(2) + 1;
         List<Activity> activities = fetchRandom(numberOfActivities);
-        String question = "";
+        String question;
         int correctAnswer = 0;
 
         if (numberOfActivities == 1) {
             long correctNumber = activities.get(0).consumptionInWh;
             long wrongNumber = correctNumber * 3;
             if (wrongNumber % 2 == 0) {
-                question = activities.get(0).title + " consumes " + wrongNumber + " Wh per hour.";
+                question = activities.get(0).title + " consumes " + wrongNumber + "Wh.";
                 correctAnswer = 1;
             } else {
-                question = activities.get(0).title + " consumes " + correctNumber + " Wh per hour.";
+                question = activities.get(0).title + " consumes " + correctNumber + "Wh.";
             }
         } else {
             question = activities.get(0).title + " consumes more than " + activities.get(1).title + ".";
@@ -287,7 +285,7 @@ public class ActivityController {
         String id = associateQuestion(typeOfQuestion);
 
         List<Activity> activities = fetchRandom(3);
-        String question = "Which consumes more?";
+        String question = "What consumes the most?";
         int correctAnswer = 0;
         for (int i = 1; i < 3; i++) {
             if (activities.get(correctAnswer).consumptionInWh < activities.get(i).consumptionInWh) {
@@ -340,7 +338,11 @@ public class ActivityController {
             }
         }
         String id = associateQuestion(typeOfQuestion);
-        String question = "Instead of " + activities.get(i).title + " you can do...";
+        String question = "What can you do instead of " + activities.get(i).title + "?";
+        activities.remove(i);
+        if (correctAnswer > i) {
+            correctAnswer--;
+        }
         Question questionInsteadOf = new Question(activities, question, correctAnswer, id);
         questions.add(questionInsteadOf);
     }

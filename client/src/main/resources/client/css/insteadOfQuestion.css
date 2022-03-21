@@ -1,0 +1,28 @@
+@import 'global.css';
+
+Button {
+    -fx-background-color: -lightishBlue;
+    -fx-background-radius: 20;
+    -fx-pref-height: 129;
+    -fx-pref-width: 441;
+    -fx-padding: 0 60 0 60;
+
+    -fx-focus-color: transparent;
+}
+
+.Button:hover {
+    -fx-opacity: 0.7;
+}
+
+TextField {
+    -fx-background-color: -darkCyan;
+    -fx-background-radius: 10;
+    -fx-pref-height: 123;
+    -fx-pref-width: 1002;
+    -fx-padding: 0 60 0 60;
+    -fx-text-fill: white;
+}
+
+TextArea {
+    -fx-background-color: -lightishBlue;
+}

@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javax.inject.Inject;
 
@@ -36,7 +37,7 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
     Button answerC;
 
     @FXML
-    TextField questionText;
+    Label questionText;
 
     @FXML
     ImageView imageField;
@@ -114,6 +115,12 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
                 buttons.get(i).setOpacity(0.5);
             }
         }
+
+        if (selectedAnswerButton == positionCorrectAnswer) {
+            mainCtrl.addPoints(100);
+        } else {
+            mainCtrl.addPoints(0);
+        }
     }
 
     /**
@@ -128,9 +135,9 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
         long actualConsumption = question.getActivities().get(0).consumptionInWh;
         this.positionCorrectAnswer = (new Random()).nextInt(3);
 
-        String imagePath = question.getActivities().get(0).imagePath;
-        Image image = new Image(imagePath, 480, 500, false, true);
-        imageField.setImage(image);
+        //String imagePath = question.getActivities().get(0).imagePath;
+        //Image image = new Image(imagePath, 480, 500, false, true);
+        //imageField.setImage(image);
 
         this.buttons = new ArrayList<>();
         Collections.addAll(buttons, answerA, answerB, answerC);
@@ -149,17 +156,19 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
             buttons.get(i).setDisable(false);
         }
 
-        //while loop to prevent multiple answer options from being the same number
-        while (answerA.getText().equals(answerB.getText())
-            || answerC.getText().equals(answerB.getText())
-            || answerC.getText().equals(answerA.getText())) {
-            buttons.get(positionCorrectAnswer).setText(String.valueOf(actualConsumption));
+        String[] values = new String[3];
+        do {
             for (int i = 0; i < 3; i++) {
-                if (i != positionCorrectAnswer) {
-                    buttons.get(i).setText(randomConsumption());
-                }
+                values[i] = randomConsumption();
             }
-        }
+            values[positionCorrectAnswer] = String.valueOf(actualConsumption);
+        } while (values[0].equals(values[1]) || values[1].equals(values[2]) || values[2].equals(values[0]));
+
+        Platform.runLater(() -> {
+            for (int i = 0; i < 3; i++) {
+                buttons.get(i).setText(values[i]);
+            }
+        });
     }
 
     /**
@@ -170,12 +179,12 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
     private String randomConsumption() {
         long actualConsumption = this.question.getActivities().get(0).consumptionInWh;
         int zeros = countZeros(actualConsumption);
-        double fifteenPercent = actualConsumption / 100.00 * 15.00;
+        double fifteenPercent = ((double) actualConsumption) / 100.00 * 15.00;
         int max = (int) Math.ceil(actualConsumption + fifteenPercent);
         int min = (int) Math.floor(actualConsumption - fifteenPercent);
         int randomConsumption = (int) Math.floor(Math.random() * (max - min + 1) + min);
         //rounding the number to the appropriate number of zeroes at the end to make it harder to guess
-        randomConsumption = (int) (randomConsumption / (Math.pow(10, zeros) * Math.pow(10, zeros)));
+        randomConsumption = (int) ((int) (randomConsumption / Math.pow(10, zeros - 1)) * Math.pow(10, zeros - 1));
         return String.valueOf(randomConsumption);
     }
 
@@ -210,12 +219,6 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
             if (i != positionCorrectAnswer) {
                 wrong.get(i).setVisible(true);
             }
-        }
-
-        if (selectedAnswerButton == positionCorrectAnswer) {
-            mainCtrl.addPoints(100);
-        } else {
-            mainCtrl.addPoints(0);
         }
     }
 

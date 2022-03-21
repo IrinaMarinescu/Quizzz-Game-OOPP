@@ -5,6 +5,7 @@ import client.scenes.QuestionFrameCtrl;
 import client.scenes.controllerrequirements.QuestionRequirements;
 import commons.Question;
 import java.util.Scanner;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -62,6 +63,14 @@ public class OpenQuestionCtrl implements QuestionRequirements {
         } else {
             errorMessage.setVisible(true);
         }
+
+        long correctAnswer = this.question.getActivities().get(0).consumptionInWh;
+        long percentageOff = ((Math.abs(correctAnswer - this.answer)) / correctAnswer) * 100;
+        long baseScore = 100 - percentageOff / 2;
+        if (baseScore < 0) {
+            baseScore = 0;
+        }
+        mainCtrl.addPoints(baseScore);
     }
 
     /**
@@ -72,10 +81,17 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     @Override
     public void initialize(Question question) {
         this.question = question;
-        questionField.setText("How many Wh does " + question.getActivities().get(0).title + " take?");
-        answerText.setText("");
-        submitButton.setText("Submit");
-        submitButton.setDisable(false);
+        Platform.runLater(() -> {
+            questionField.setText(question.getQuestion());
+            answerText.setText("");
+            submitButton.setText("Submit");
+            submitButton.setDisable(false);
+            entryField.setText("");
+        });
+
+        //String imagePath = question.getActivities().get(0).imagePath;
+        //Image image = new Image(imagePath, 480, 500, false, true);
+        //imageField.setImage(image);
     }
 
     /**
@@ -87,9 +103,6 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     public void revealCorrectAnswer() {
         long correctAnswer = this.question.getActivities().get(0).consumptionInWh;
         answerText.setText("It takes " + correctAnswer + "Wh!");
-        long percentageOff = ((Math.abs(correctAnswer - this.answer)) / correctAnswer) * 100;
-        long baseScore = 100 - percentageOff / 2;
-        mainCtrl.addPoints(baseScore);
     }
 
     /**

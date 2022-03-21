@@ -97,6 +97,9 @@ public class MainCtrl implements MainCtrlRequirements {
     private InsteadOfQuestionCtrl insteadOfQuestionCtrl;
     private Node insteadOfQuestion;
 
+    private FinalScreenCtrl finalScreenCtrl;
+    private Node finalScreen;
+
     QuestionRequirements currentQuestionCtrl = null;
 
     private boolean widthChanged = false;
@@ -115,8 +118,9 @@ public class MainCtrl implements MainCtrlRequirements {
      * @param adminInterface   Admin Interface screen FXML and controller
      * @param openQuestion     Open question node FXML and controller
      * @param questionOneImage Question with one image FXML and controller
+     * @param finalScreen      Final screen FXML and controller
      */
-    public void initialize(ServerUtils serverUtils, GameUtils gameUtils, 
+    public void initialize(ServerUtils serverUtils, GameUtils gameUtils,
                            LobbyUtils lobbyUtils, TimeUtils timeUtils,
                            Stage primaryStage,
                            Pair<MainFrameCtrl, Parent> mainFrame,
@@ -128,7 +132,8 @@ public class MainCtrl implements MainCtrlRequirements {
                            Pair<OpenQuestionCtrl, Parent> openQuestion,
                            Pair<QuestionThreePicturesCtrl, Parent> questionThreePictures,
                            Pair<QuestionOneImageCtrl, Parent> questionOneImage,
-                           Pair<InsteadOfQuestionCtrl, Parent> insteadOfQuestion) {
+                           Pair<InsteadOfQuestionCtrl, Parent> insteadOfQuestion,
+                           Pair<FinalScreenCtrl, Parent> finalScreen) {
 
         this.serverUtils = serverUtils;
         this.gameUtils = gameUtils;
@@ -227,7 +232,7 @@ public class MainCtrl implements MainCtrlRequirements {
         intermediateLeaderboardShown = false;
         isMultiplayerGame = false;
         timeoutRoundCheck = 1;
-        game = gameUtils.startSingleplayer();
+        this.game = gameUtils.startSingleplayer();
         questionFrameCtrl.initializeSingleplayerGame();
         showQuestionFrame();
         nextEvent();
@@ -271,31 +276,37 @@ public class MainCtrl implements MainCtrlRequirements {
     private void nextEvent() {
         game.setPlayers(serverUtils.getUpdatedScores(game.getId()));
 
-        // The current event is the intermediate leaderboard
-        if (game.getRound() == TOTAL_ROUNDS / 2 && !intermediateLeaderboardShown) {
-            intermediateLeaderboardShown = true;
-            showLeaderboard(game.getPlayers(), 10, "intermediate");
+        if (isMultiplayerGame) {
+            // The current event is the intermediate leaderboard
+            if (game.getRound() == TOTAL_ROUNDS / 2 && !intermediateLeaderboardShown) {
+                intermediateLeaderboardShown = true;
+                showLeaderboard(game.getPlayers(), 10, "intermediate");
 
-            timeUtils.runAfterDelay(() -> {
-                showQuestionFrame();
-                nextEvent();
-            }, LEADERBOARD_TIME);
-            return;
-        }
+                timeUtils.runAfterDelay(() -> {
+                    showQuestionFrame();
+                    nextEvent();
+                }, LEADERBOARD_TIME);
+                return;
+            }
 
-        // The current event is the final leaderboard; the game is over
-        if (game.getRound() == TOTAL_ROUNDS) {
-            showLeaderboard(game.getPlayers(), 10, "final");
+            // The current event is the final leaderboard; the game is over
+            if (game.getRound() == TOTAL_ROUNDS) {
+                showLeaderboard(game.getPlayers(), 10, "final");
+                return;
+            }
+            questionFrameCtrl.setLeaderboardContents(game.getPlayers());
+        } else if (game.getRound() == TOTAL_ROUNDS) {
+            showFinalScreen();
             return;
         }
 
         // The current event is a question
         game.incrementRound();
-        questionFrameCtrl.incrementQuestionNumber();
+        Platform.runLater(() -> questionFrameCtrl.incrementQuestionNumber());
+        questionFrameCtrl.setRemainingTime(ROUND_TIME);
         if (isMultiplayerGame) {
             questionFrameCtrl.setLeaderboardContents(game.getPlayers());
         }
-        Platform.runLater(() -> questionFrameCtrl.setRemainingTime(ROUND_TIME));
         questionStartTime = timeUtils.now();
         questionEndTime = questionStartTime + ROUND_TIME * 1000.0;
         pointsGained = 0;
@@ -305,7 +316,6 @@ public class MainCtrl implements MainCtrlRequirements {
 
         switch (currentQuestionType) {
             case "trueFalseQuestion":
-                // TODO
                 currentQuestionCtrl = questionTrueFalseCtrl;
                 questionFrameCtrl.setCenterContent(questionTrueFalse);
                 questionFrameCtrl.setWrongAnswerJoker(false);
@@ -313,11 +323,11 @@ public class MainCtrl implements MainCtrlRequirements {
             case "openQuestion":
                 currentQuestionCtrl = openQuestionCtrl;
                 questionFrameCtrl.setCenterContent(openQuestion);
+                questionFrameCtrl.setWrongAnswerJoker(false);
                 break;
             case "threePicturesQuestion":
                 currentQuestionCtrl = questionThreePicturesCtrl;
                 questionFrameCtrl.setCenterContent(questionThreePictures);
-                // TODO
                 break;
             case "oneImageQuestion":
                 currentQuestionCtrl = questionOneImageCtrl;
@@ -326,15 +336,20 @@ public class MainCtrl implements MainCtrlRequirements {
             case "insteadOfQuestion":
                 currentQuestionCtrl = insteadOfQuestionCtrl;
                 questionFrameCtrl.setCenterContent(insteadOfQuestion);
-                // TODO
                 break;
             default:
                 System.err.println("Unrecognized question type in MainCtrl");
                 break;
         }
         currentQuestionCtrl.initialize(currentQuestion);
+        Platform.runLater(() -> questionFrameCtrl.setRemainingTime(ROUND_TIME));
 
         setQuestionTimeouts(ROUND_TIME);
+    }
+
+    private void showFinalScreen() {
+        finalScreenCtrl.setPoints(getPlayer().getScore());
+        questionFrameCtrl.setCenterContent(finalScreen);
     }
 
     /**
@@ -350,15 +365,16 @@ public class MainCtrl implements MainCtrlRequirements {
 
             timeoutRoundCheck++;
             currentQuestionCtrl.revealCorrectAnswer();
-            questionFrameCtrl.addPoints(pointsGained);
+            Platform.runLater(() -> questionFrameCtrl.addPoints(pointsGained));
             questionFrameCtrl.tempDisableJokers(OVERVIEW_TIME);
             serverUtils.sendPointsGained(game.getId(), player, pointsGained);
-            if (currentQuestionType.equals("trueFalseQuestion")) {
+            if (currentQuestionType.equals("trueFalseQuestion") || currentQuestionType.equals("openQuestion")) {
                 questionFrameCtrl.setWrongAnswerJoker(true);
             }
 
             Platform.runLater(() -> questionFrameCtrl.setRemainingTime(OVERVIEW_TIME));
             timeUtils.runAfterDelay(this::nextEvent, OVERVIEW_TIME);
+            //Platform.runLater(() -> nextEvent());
         }, delay);
     }
 
@@ -403,7 +419,7 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     @Override
     public void eliminateWrongAnswer() {
-        // currentQuestionCtrl.eliminateWrongAnswer();
+        currentQuestionCtrl.removeIncorrectAnswer();
     }
 
     /**
@@ -458,6 +474,5 @@ public class MainCtrl implements MainCtrlRequirements {
     public void showQuestionFrame() {
         primaryStage.setScene(questionFrame);
         questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
-
     }
 }

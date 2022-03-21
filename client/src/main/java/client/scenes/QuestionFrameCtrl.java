@@ -189,7 +189,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      * @param questionNode The node to be inserted in the center of the frame
      */
     public void setCenterContent(Node questionNode) {
-        borderPane.setCenter(questionNode);
+        Platform.runLater(() -> borderPane.setCenter(questionNode));
     }
 
     /**
@@ -340,13 +340,15 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      * @param enable Whether to enable the joker
      */
     private void setJokerEnabled(Button joker, boolean enable) {
-        if (enable) {
-            joker.getStyleClass().remove("usedJoker");
-            joker.getStyleClass().add("clickable");
-        } else {
-            joker.getStyleClass().add("usedJoker");
-            joker.getStyleClass().remove("clickable");
-        }
+        Platform.runLater(() -> {
+            if (enable) {
+                joker.getStyleClass().remove("usedJoker");
+                joker.getStyleClass().add("clickable");
+            } else {
+                joker.getStyleClass().add("usedJoker");
+                joker.getStyleClass().remove("clickable");
+            }
+        });
     }
 
     /**
@@ -390,6 +392,12 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
             setJokerEnabled(joker, false);
             timeUtils.runAfterDelay(() -> setJokerEnabled(joker, true), duration);
         }
+
+        timeUtils.runAfterDelay(() -> {
+            for (Button joker : jokers) {
+                setJokerEnabled(joker, true);
+            }
+        }, duration);
     }
 
     /**

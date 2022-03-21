@@ -21,7 +21,6 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import commons.Activity;
 import commons.Game;
 import commons.LeaderboardEntry;
-import commons.Lobby;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -65,11 +64,15 @@ public class ServerUtils {
      * @return true if serverIP is correct, false otherwise
      */
     public boolean validateIP(String serverIP) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-            .target(parseIP(serverIP)).path("api/game/validate") //
-            .request(APPLICATION_JSON) //
-            .accept(APPLICATION_JSON) //
-            .get(String.class).equals("Connected");
+        try {
+            return ClientBuilder.newClient(new ClientConfig()) //
+                .target(parseIP(serverIP)).path("api/game/validate") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(String.class).equals("Connected");
+        } catch (RuntimeException e) {
+            return false;
+        }
     }
 
     /**
@@ -81,60 +84,6 @@ public class ServerUtils {
      */
     private String parseIP(String serverIP) {
         return (serverIP.length() != 0) ? serverIP : "http://localhost:8080/";
-    }
-
-    /**
-     * Check if another user in lobby already uses this name
-     *
-     * @param username provided by player in the TextField
-     * @return true if the username is not used yet, false otherwise
-     */
-    public boolean validateUsername(String username) {
-        return !ClientBuilder.newClient(new ClientConfig()) //
-            .target(serverIP).path("api/lobby") //
-            .request(APPLICATION_JSON) //
-            .accept(APPLICATION_JSON) //
-            .get(Lobby.class).isUsernameTaken(username);
-    }
-
-    /**
-     * Add player to the lobby
-     *
-     * @param player that has to be added to the lobby
-     * @return The Lobby object that player has been added to
-     */
-    public Lobby joinLobby(LeaderboardEntry player) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-            .target(serverIP).path("api/lobby/add") //
-            .request(APPLICATION_JSON) //
-            .accept(APPLICATION_JSON) //
-            .post(Entity.entity(player, APPLICATION_JSON), Lobby.class);
-    }
-
-    /**
-     * Create new Game with the players that are currently in the lobby and list of 20 questions
-     *
-     * @return newly created Game object with unique ID
-     */
-    public Game startMultiplayerGame() {
-        return ClientBuilder.newClient(new ClientConfig()) //
-            .target(serverIP).path("api/game/multiplayer/start") //
-            .request(APPLICATION_JSON) //
-            .accept(APPLICATION_JSON) //
-            .get(Game.class);
-    }
-
-    /**
-     * Create new Game with a list of 20 questions
-     *
-     * @return newly created Game object with unique ID
-     */
-    public Game startSingleplayer() {
-        return ClientBuilder.newClient(new ClientConfig()) //
-            .target(serverIP).path("api/game/singleplayer/start") //
-            .request(APPLICATION_JSON) //
-            .accept(APPLICATION_JSON) //
-            .get(Game.class);
     }
 
     /**
