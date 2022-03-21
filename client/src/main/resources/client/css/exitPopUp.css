@@ -1,0 +1,17 @@
+@import 'global.css';
+
+#rectangle {
+    -fx-background-colour: -topBarColour;
+    -fx-background-radius: 40;
+    -fx-padding: 0 30 0 30;
+}
+
+Button {
+    -fx-background-color: -greenish;
+    -fx-background-radius: 40;
+    -fx-pref-height: 60;
+    -fx-padding: 0 60 0 60;
+    -fx-font-size: 28;
+
+    -fx-focus-color: transparent;
+}

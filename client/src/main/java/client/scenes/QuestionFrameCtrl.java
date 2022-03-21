@@ -419,7 +419,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     private void disconnect() {
         long now = timeUtils.now();
         if (now - lastEscapeKeyPressTime < 200) {
-            mainCtrl.disconnect();
+            mainCtrl.exitGameChecker();
         }
         lastEscapeKeyPressTime = now;
     }

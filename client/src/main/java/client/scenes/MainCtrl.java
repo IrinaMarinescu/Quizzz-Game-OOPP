@@ -36,6 +36,7 @@ import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -100,6 +101,10 @@ public class MainCtrl implements MainCtrlRequirements {
     private FinalScreenCtrl finalScreenCtrl;
     private Node finalScreen;
 
+    private ExitPopUpCtrl exitPopUpCtrl;
+    private Scene exitPopUp;
+    private Stage exitCheck;
+
     QuestionRequirements currentQuestionCtrl = null;
 
     private boolean widthChanged = false;
@@ -133,7 +138,8 @@ public class MainCtrl implements MainCtrlRequirements {
                            Pair<QuestionThreePicturesCtrl, Parent> questionThreePictures,
                            Pair<QuestionOneImageCtrl, Parent> questionOneImage,
                            Pair<InsteadOfQuestionCtrl, Parent> insteadOfQuestion,
-                           Pair<FinalScreenCtrl, Parent> finalScreen) {
+                           Pair<FinalScreenCtrl, Parent> finalScreen,
+                           Pair<ExitPopUpCtrl, Parent> exitPopUp) {
 
         this.serverUtils = serverUtils;
         this.gameUtils = gameUtils;
@@ -176,6 +182,13 @@ public class MainCtrl implements MainCtrlRequirements {
 
         this.insteadOfQuestionCtrl = insteadOfQuestion.getKey();
         this.insteadOfQuestion = insteadOfQuestion.getValue();
+
+        this.exitPopUpCtrl = exitPopUp.getKey();
+        this.exitPopUp = new Scene(exitPopUp.getValue());
+
+        exitCheck = new Stage();
+        exitCheck.setScene(exitPopUp.getValue().getScene());
+        exitCheck.initOwner(primaryStage);
 
         primaryStage.setTitle("Quizzzzz!");
         showMainFrame();
@@ -482,5 +495,14 @@ public class MainCtrl implements MainCtrlRequirements {
     public void showQuestionFrame() {
         primaryStage.setScene(questionFrame);
         questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
+    }
+
+    public void exitGameChecker() {
+        exitCheck.initModality(Modality.WINDOW_MODAL);
+        exitCheck.showAndWait();
+    }
+
+    public void deniedExit() {
+        exitCheck.hide();
     }
 }
