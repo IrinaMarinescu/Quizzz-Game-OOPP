@@ -15,6 +15,14 @@ public class Question {
     public Question() {
     }
 
+    /**
+     * Constructor
+     *
+     * @param activities    The list of activities that make up the question
+     * @param question      The text of the question (E.g., "How much energy does this activity use?")
+     * @param correctAnswer The index of the correct answer
+     * @param questionType  The type of the question (E.g., "openQuestion")
+     */
     public Question(List<Activity> activities, String question, int correctAnswer, String questionType) {
         this.activities = activities;
         this.question = question;
@@ -22,22 +30,39 @@ public class Question {
         this.questionType = questionType;
     }
 
+    /**
+     * @return The list of activities
+     */
     public List<Activity> getActivities() {
         return activities;
     }
 
+    /**
+     * @return The text of the question
+     */
     public String getQuestion() {
         return question;
     }
 
+    /**
+     * Setter for question field
+     *
+     * @param question The updated text of the question
+     */
     public void setQuestion(String question) {
         this.question = question;
     }
 
+    /**
+     * @return The index of the correct answer
+     */
     public int getCorrectAnswer() {
         return correctAnswer;
     }
 
+    /**
+     * @return The type of the question
+     */
     public String getQuestionType() {
         return this.questionType;
     }

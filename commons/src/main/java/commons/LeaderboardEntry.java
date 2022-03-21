@@ -60,7 +60,7 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
      *
      * @return Value of score field (cast to a string)
      */
-    public String getScoreString() {
+    public String scoreToString() {
         return score.toString();
     }
 
@@ -90,7 +90,7 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
             return false;
         }
         LeaderboardEntry that = (LeaderboardEntry) o;
-        return getName().equals(that.getName()) && getScoreString().equals(that.getScoreString());
+        return getName().equals(that.getName()) && scoreToString().equals(that.scoreToString());
     }
 
     /**

@@ -3,6 +3,9 @@ package commons;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Holds information about an ongoing game
+ */
 public class Game {
 
     private UUID id;
@@ -17,6 +20,13 @@ public class Game {
     public Game() {
     }
 
+    /**
+     * Constructor
+     *
+     * @param id        The id of the game
+     * @param questions The questions in this game
+     * @param players   The player of this game
+     */
     public Game(UUID id, List<Question> questions, List<LeaderboardEntry> players) {
         this.id = id;
         this.questions = questions;
@@ -24,30 +34,55 @@ public class Game {
         this.round = 0;
     }
 
+    /**
+     * Returns all questions
+     *
+     * @return A list containing all questions
+     */
     public List<Question> getQuestions() {
         return questions;
     }
 
-    public Question getNextQuestion() {
+    /**
+     * @return The next question, based on current round
+     */
+    public Question nextQuestion() {
         return questions.get(round - 1);
     }
 
+    /**
+     * @return A list of all players (corresponding LeaderboardEntries)
+     */
     public List<LeaderboardEntry> getPlayers() {
         return players;
     }
 
+    /**
+     * @return The ID of this game
+     */
     public UUID getId() {
         return id;
     }
 
+    /**
+     * @return The current round
+     */
     public int getRound() {
         return round;
     }
 
+    /**
+     * Increments the number of the round
+     */
     public void incrementRound() {
         round++;
     }
 
+    /**
+     * Sets players
+     *
+     * @param players A list of players (corresponding LeaderboardEntries)
+     */
     public void setPlayers(List<LeaderboardEntry> players) {
         this.players = players;
     }

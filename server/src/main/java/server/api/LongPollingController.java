@@ -3,6 +3,7 @@ package server.api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.UUID;
 import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,7 @@ public class LongPollingController {
 
     private final ObjectMapper mapper = new ObjectMapper();
     public String json;
-    public int receivingGameId = 0;
+    public UUID receivingGameId = UUID.randomUUID();
 
     /**
      * This is where front-end sends a request which gets stored
@@ -28,11 +29,11 @@ public class LongPollingController {
      * @return A JSON string corresponding to the result
      */
     @GetMapping(path = {"/{gameId}"})
-    synchronized ResponseEntity<String> receivePoll(@PathVariable int gameId) {
+    synchronized ResponseEntity<String> receivePoll(@PathVariable UUID gameId) {
         try {
             do {
                 wait();
-            } while (gameId != receivingGameId);
+            } while (!gameId.equals(receivingGameId));
         } catch (InterruptedException e) {
             e.printStackTrace();
             System.err.println("Thread that was paused due to long polling on server got interrupted");
@@ -66,7 +67,7 @@ public class LongPollingController {
      */
 
     @SafeVarargs
-    final synchronized void dispatch(int receivingGameId, String type, Pair<String, String>... keyValuePairs) {
+    final synchronized void dispatch(UUID receivingGameId, String type, Pair<String, String>... keyValuePairs) {
         this.receivingGameId = receivingGameId;
 
         ObjectNode res = mapper.createObjectNode();

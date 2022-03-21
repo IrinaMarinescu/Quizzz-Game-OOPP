@@ -7,13 +7,12 @@
 }
 
 .table-view .column-header, .table-view .filler {
-    -fx-background-color:transparent;
+    -fx-background-color: transparent;
 }
 
 .table-view .column-header .label {
-    -fx-text-fill: white;
     -fx-font-size: 26;
-    -fx-font-style: bold;
+    -fx-font-family: 'Roboto Bold', sans-serif;
 }
 
 .table-row-cell {
@@ -23,7 +22,7 @@
 .table-view .table-row-cell {
     -fx-cell-size: 40;
     -fx-font-size: 20;
-    -fx-font-weight: bold;
+    -fx-font-family: 'Roboto Bold', sans-serif;
 }
 
 .table-view .scroll-bar * {
