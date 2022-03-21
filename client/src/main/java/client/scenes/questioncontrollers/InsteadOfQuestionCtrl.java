@@ -169,6 +169,7 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
     public void revealCorrectAnswer() {
         correct.get(positionCorrectAnswer).setVisible(true);
         for (int i = 0; i < 3; i++) {
+            buttons.get(i).setDisable(true);
             if (i != positionCorrectAnswer) {
                 wrong.get(i).setVisible(true);
             }

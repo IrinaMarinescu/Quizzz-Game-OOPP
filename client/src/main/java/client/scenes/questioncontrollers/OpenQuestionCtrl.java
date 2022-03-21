@@ -101,6 +101,7 @@ public class OpenQuestionCtrl implements QuestionRequirements {
      */
     @Override
     public void revealCorrectAnswer() {
+        submitButton.setDisable(true);
         long correctAnswer = this.question.getActivities().get(0).consumptionInWh;
         answerText.setText("It takes " + correctAnswer + "Wh!");
     }
