@@ -23,7 +23,8 @@ import client.scenes.questioncontrollers.OpenQuestionCtrl;
 import client.scenes.questioncontrollers.QuestionOneImageCtrl;
 import client.scenes.questioncontrollers.QuestionThreePicturesCtrl;
 import client.scenes.questioncontrollers.QuestionTrueFalseCtrl;
-import client.utils.LongPollingUtils;
+import client.utils.GameUtils;
+import client.utils.LobbyUtils;
 import client.utils.ServerUtils;
 import client.utils.TimeUtils;
 import commons.Game;
@@ -59,26 +60,36 @@ public class MainCtrl implements MainCtrlRequirements {
     private int timeoutRoundCheck;
     private String currentQuestionType;
 
-    private TimeUtils timeUtils;
     private ServerUtils serverUtils;
-    private LongPollingUtils longPollingUtils;
-    private Lobby lobby;
+    private GameUtils gameUtils;
+    private LobbyUtils lobbyUtils;
+    private TimeUtils timeUtils;
+
     private Stage primaryStage;
 
     private MainFrameCtrl mainFrameCtrl;
     private Scene mainFrame;
 
-    private QuestionFrameCtrl questionFrameCtrl;
-    private Scene questionFrame;
+    private LobbyCtrl lobbyCtrl;
+    private Scene lobbyFrame;
 
     private LeaderboardCtrl leaderboardCtrl;
     private Scene leaderboard;
 
-    private FinalScreenCtrl finalScreenCtrl;
-    private Node finalScreen;
+    private AdminInterfaceCtrl adminInterfaceCtrl;
+    private Scene adminInterfaceFrame;
+
+    private QuestionFrameCtrl questionFrameCtrl;
+    private Scene questionFrame;
+
+    private QuestionTrueFalseCtrl questionTrueFalseCtrl;
+    private Node questionTrueFalse;
 
     private OpenQuestionCtrl openQuestionCtrl;
     private Node openQuestion;
+
+    private QuestionThreePicturesCtrl questionThreePicturesCtrl;
+    private Node questionThreePictures;
 
     private QuestionOneImageCtrl questionOneImageCtrl;
     private Node questionOneImage;
@@ -86,58 +97,79 @@ public class MainCtrl implements MainCtrlRequirements {
     private InsteadOfQuestionCtrl insteadOfQuestionCtrl;
     private Node insteadOfQuestion;
 
-    private QuestionTrueFalseCtrl questionTrueFalseCtrl;
-    private Node questionTrueFalse;
-
-    private QuestionThreePicturesCtrl questionThreePicturesCtrl;
-    private Node questionThreePictures;
+    private FinalScreenCtrl finalScreenCtrl;
+    private Node finalScreen;
 
     QuestionRequirements currentQuestionCtrl = null;
+
+    private boolean widthChanged = false;
 
     /**
      * Initializes this class
      *
-     * @param timeUtils             Only instance of TimeUtils class
-     * @param serverUtils           Only instance of ServerUtils class
-     * @param longPollingUtils      Only instance of LongPollingUtils class
-     * @param primaryStage          Only stage
-     * @param mainFrame             Welcome screen FXML and controller
-     * @param questionFrame         Question Frame screen FXML and controller
-     * @param leaderboard           Leaderboard screen FXML and controller
-     * @param finalScreen           Final screen FXML and controller
-     * @param openQuestion          Open question node FXML and controller
-     * @param questionOneImage      Question with one image FXML and controller
-     * @param insteadOfQuestion     Instead of question node FXML and controller
-     * @param questionTrueFalse     True False question node FXML and controller
-     * @param questionThreePictures Question with three pictures node FXML and controller
+     * @param timeUtils        Only instance of TimeUtils class
+     * @param serverUtils      Only instance of ServerUtils class
+     * @param gameUtils        Only instance of GameUtils class
+     * @param lobbyUtils       Only instance of LobbyUtils class
+     * @param primaryStage     Only stage
+     * @param mainFrame        Welcome screen FXML and controller
+     * @param questionFrame    Question Frame screen FXML and controller
+     * @param leaderboard      Leaderboard screen FXML and controller
+     * @param adminInterface   Admin Interface screen FXML and controller
+     * @param openQuestion     Open question node FXML and controller
+     * @param questionOneImage Question with one image FXML and controller
+     * @param finalScreen      Final screen FXML and controller
      */
-    public void initialize(TimeUtils timeUtils, ServerUtils serverUtils, LongPollingUtils longPollingUtils,
+    public void initialize(ServerUtils serverUtils, GameUtils gameUtils,
+                           LobbyUtils lobbyUtils, TimeUtils timeUtils,
                            Stage primaryStage,
-                           Pair<FinalScreenCtrl, Parent> finalScreen,
                            Pair<MainFrameCtrl, Parent> mainFrame,
-                           Pair<QuestionFrameCtrl, Parent> questionFrame,
+                           Pair<LobbyCtrl, Parent> lobbyFrame,
                            Pair<LeaderboardCtrl, Parent> leaderboard,
+                           Pair<AdminInterfaceCtrl, Parent> adminInterface,
+                           Pair<QuestionFrameCtrl, Parent> questionFrame,
+                           Pair<QuestionTrueFalseCtrl, Parent> questionTrueFalse,
                            Pair<OpenQuestionCtrl, Parent> openQuestion,
+                           Pair<QuestionThreePicturesCtrl, Parent> questionThreePictures,
                            Pair<QuestionOneImageCtrl, Parent> questionOneImage,
                            Pair<InsteadOfQuestionCtrl, Parent> insteadOfQuestion,
-                           Pair<QuestionTrueFalseCtrl, Parent> questionTrueFalse,
-                           Pair<QuestionThreePicturesCtrl, Parent> questionThreePictures) {
+                           Pair<FinalScreenCtrl, Parent> finalScreen) {
 
-        this.timeUtils = timeUtils;
         this.serverUtils = serverUtils;
-        this.longPollingUtils = longPollingUtils; // note that long polling is not active by default!
+        this.gameUtils = gameUtils;
+        this.lobbyUtils = lobbyUtils;
+        this.timeUtils = timeUtils;
+
         this.primaryStage = primaryStage;
 
-        primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
-            questionFrameCtrl.resizeTimerBar(newVal.intValue(), oldVal.intValue() - newVal.intValue());
-        });
+        primaryStage.widthProperty().addListener(
+            (obs, oldVal, newVal) -> questionFrameCtrl.resizeTimerBar(newVal.intValue(),
+                oldVal.intValue() - newVal.intValue()));
         primaryStage.setOnCloseRequest(e -> disconnect());
 
-        this.finalScreenCtrl = finalScreen.getKey();
-        this.finalScreen = finalScreen.getValue();
+        this.mainFrameCtrl = mainFrame.getKey();
+        this.mainFrame = new Scene(mainFrame.getValue());
+
+        this.lobbyCtrl = lobbyFrame.getKey();
+        this.lobbyFrame = new Scene(lobbyFrame.getValue());
+
+        this.leaderboardCtrl = leaderboard.getKey();
+        this.leaderboard = new Scene(leaderboard.getValue());
+
+        this.adminInterfaceCtrl = adminInterface.getKey();
+        this.adminInterfaceFrame = new Scene(adminInterface.getValue());
+
+        this.questionFrameCtrl = questionFrame.getKey();
+        this.questionFrame = new Scene(questionFrame.getValue());
+
+        this.questionTrueFalseCtrl = questionTrueFalse.getKey();
+        this.questionTrueFalse = questionTrueFalse.getValue();
 
         this.openQuestionCtrl = openQuestion.getKey();
         this.openQuestion = openQuestion.getValue();
+
+        this.questionThreePicturesCtrl = questionThreePictures.getKey();
+        this.questionThreePictures = questionThreePictures.getValue();
 
         this.questionOneImageCtrl = questionOneImage.getKey();
         this.questionOneImage = questionOneImage.getValue();
@@ -145,32 +177,31 @@ public class MainCtrl implements MainCtrlRequirements {
         this.insteadOfQuestionCtrl = insteadOfQuestion.getKey();
         this.insteadOfQuestion = insteadOfQuestion.getValue();
 
-        this.questionTrueFalseCtrl = questionTrueFalse.getKey();
-        this.questionTrueFalse = questionTrueFalse.getValue();
-
-        this.questionThreePicturesCtrl = questionThreePictures.getKey();
-        this.questionThreePictures = questionThreePictures.getValue();
-
-        this.mainFrameCtrl = mainFrame.getKey();
-        this.mainFrame = new Scene(mainFrame.getValue());
-        this.mainFrame.setOnKeyPressed(e -> mainFrameCtrl.keyPressed(e.getCode()));
-
-        this.questionFrameCtrl = questionFrame.getKey();
-        this.questionFrame = new Scene(questionFrame.getValue());
-
-        this.leaderboardCtrl = leaderboard.getKey();
-        this.leaderboard = new Scene(leaderboard.getValue());
-
         primaryStage.setTitle("Quizzzzz!");
         showMainFrame();
 
         primaryStage.show();
     }
 
+    public ServerUtils getServerUtils() {
+        return serverUtils;
+    }
+
+    public void showAdminInterface() {
+        adminInterfaceCtrl.initialize(serverUtils.fetchActivities());
+        primaryStage.setScene(adminInterfaceFrame);
+    }
+
     public LeaderboardEntry getPlayer() {
         return this.player;
     }
 
+    /**
+     * Set player to new Player Object with given attributes
+     *
+     * @param username The name of the player
+     * @param points   The number of points the player has
+     */
     public void setPlayer(String username, int points) {
         this.player = new LeaderboardEntry(username, points);
     }
@@ -184,14 +215,11 @@ public class MainCtrl implements MainCtrlRequirements {
     }
 
     public Lobby getLobby() {
-        return lobby;
+        return lobbyCtrl.getLobby();
     }
 
     public void setLobby(Lobby lobby) {
-        this.lobby = lobby;
-    }
-
-    public void playerLeavesLobby() {
+        lobbyCtrl.setLobby(lobby);
     }
 
     /**
@@ -204,15 +232,42 @@ public class MainCtrl implements MainCtrlRequirements {
         intermediateLeaderboardShown = false;
         isMultiplayerGame = false;
         timeoutRoundCheck = 1;
-        this.game = serverUtils.startSingleplayer();
+        this.game = gameUtils.startSingleplayer();
         questionFrameCtrl.initializeSingleplayerGame();
         showQuestionFrame();
         nextEvent();
     }
 
+    /**
+     * Starts multiplayer game for all players in the lobby, switch to question frame
+     */
     @Override
     public void startMultiplayerGame() {
-        // TODO: enable long polling
+        intermediateLeaderboardShown = true;
+        isMultiplayerGame = true;
+        timeoutRoundCheck = 1;
+        questionFrameCtrl.initializeMultiplayerGame(this.game.getPlayers());
+        lobbyUtils.setActive(false);
+        showQuestionFrame();
+        nextEvent();
+    }
+
+    /**
+     * Add player to the lobby, display it and start long polling for the lobby
+     */
+    public void joinLobby() {
+        setLobby(lobbyUtils.joinLobby(this.player));
+        lobbyUtils.setActive(true);
+        gameUtils.setActive(true);
+        showLobbyFrame();
+    }
+
+    /**
+     * Remove player from the lobby and switch to main frame
+     */
+    public void playerLeavesLobby() {
+        lobbyUtils.leaveLobby(player);
+        showMainFrame();
     }
 
     /**
@@ -249,6 +304,9 @@ public class MainCtrl implements MainCtrlRequirements {
         game.incrementRound();
         Platform.runLater(() -> questionFrameCtrl.incrementQuestionNumber());
         questionFrameCtrl.setRemainingTime(ROUND_TIME);
+        if (isMultiplayerGame) {
+            questionFrameCtrl.setLeaderboardContents(game.getPlayers());
+        }
         questionStartTime = timeUtils.now();
         questionEndTime = questionStartTime + ROUND_TIME * 1000.0;
         pointsGained = 0;
@@ -373,15 +431,6 @@ public class MainCtrl implements MainCtrlRequirements {
         showMainFrame();
     }
 
-    @Override
-    public void showGlobalLeaderboardFrame() {
-        int maxSize = 10;
-        showLeaderboard(serverUtils.getSoloLeaderboard(maxSize), maxSize, "solo");
-    }
-
-    public void showLobbyFrame() {
-    }
-
     /**
      * Shows leaderboard
      *
@@ -395,10 +444,28 @@ public class MainCtrl implements MainCtrlRequirements {
     }
 
     /**
+     * Show global leaderboard frame
+     */
+    @Override
+    public void showGlobalLeaderboardFrame() {
+        int maxSize = 10;
+        showLeaderboard(serverUtils.getSoloLeaderboard(maxSize), maxSize, "solo");
+    }
+
+    /**
      * Shows main frame (welcome/splash screen)
      */
     public void showMainFrame() {
         primaryStage.setScene(mainFrame);
+        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
+    }
+
+    /**
+     * Shows lobby frame
+     */
+    public void showLobbyFrame() {
+        primaryStage.setScene(lobbyFrame);
+
     }
 
     /**

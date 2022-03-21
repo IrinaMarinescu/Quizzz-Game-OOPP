@@ -5,8 +5,7 @@ import commons.Question;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
+import javax.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,14 +22,16 @@ import server.database.ActivityRepository;
 @RequestMapping("/api/activities")
 public class ActivityController {
 
-    @Autowired
-    private LongPollingController longPollingController;
+    public static final double SIMILARITY_FACTOR = 1.5;
+    private long totalRecords;
 
     private final ActivityRepository repo;
+    private final Random rand;
 
-
-    public ActivityController(ActivityRepository repo) {
+    public ActivityController(ActivityRepository repo, Random random) {
         this.repo = repo;
+        this.rand = random;
+        this.totalRecords = this.repo.count();
     }
 
     private static boolean nullOrEmpty(String s) {
@@ -43,15 +44,19 @@ public class ActivityController {
     }
 
     /**
-     * FOR DEMONSTRATION OF HOW LONG POLLING WORKS
-     */
-    @GetMapping(path = {"test/{gameId}"})
-    public void sendHelloEmojiToAll(@PathVariable int gameId) {
-        longPollingController.dispatch(gameId, "EMOJI", Pair.of("name", "Per"), Pair.of("reaction", "happy"));
-    }
-
-    /**
      * Uses the function defined {@link ActivityRepository} to fetch a number of random entries from the activity table.
+     * <p>
+     * <p>
+     * The consumptionInWh values for the retrieved activities should be similar:
+     * Let X be an arbitrary activity.
+     * All retrieved activities Y will satisfy
+     * <p>
+     * X.consumptionInWh / SIMILARITY_FACTOR <= Y.consumptionInWh <= X.consumptionInWh * SIMILARITY_FACTOR
+     * <p>
+     * Note that while SIMILARITY_FACTOR is constant, the resultant bounds will be gradually relaxed
+     * until sufficiently many results are found.
+     * This may happen when the initial selected activity has extreme consumptionInWh (E.g., largest in the DB).
+     * <p>
      *
      * @param limit the number of entries
      * @return the specified amount of activities, randomly chosen from the DB;
@@ -59,8 +64,50 @@ public class ActivityController {
      */
     @GetMapping("random/{limit}")
     public List<Activity> fetchRandom(@PathVariable("limit") int limit) {
-        List<Activity> res = repo.fetchRandomActivities(limit);
+        long initialConsumption = repo.fetchRandomActivities(1, 0, Long.MAX_VALUE).get(0).consumptionInWh;
+        double lowerBound = initialConsumption;
+        double upperBound = initialConsumption;
+
+        limit = (int) Math.min(limit, totalRecords);
+        List<Activity> res;
+        do {
+            lowerBound /= SIMILARITY_FACTOR;
+            upperBound *= SIMILARITY_FACTOR;
+            res = repo.fetchRandomActivities(limit, (long) lowerBound, (long) upperBound);
+        } while (res.size() < limit);
+
         return res;
+    }
+
+    /**
+     * Used to delete an activity from the DB, by ID
+     *
+     * @param activity the activity to delete
+     * @return a bad request error, if an activity does not exist, or the deleted activity otherwise
+     */
+    @PostMapping("del")
+    @Transactional
+    public ResponseEntity<Activity> deleteActivity(@RequestBody Activity activity) {
+        Activity candidate = repo.findById(activity.id);
+        if (candidate == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        repo.deleteById(activity.id);
+        return ResponseEntity.ok(candidate);
+    }
+
+
+    /**
+     * Gets an activity object and updates in accordingly in the database.
+     *
+     * @param activity the activity object to update in the DB.
+     * @return the same object, if the operation is successful.
+     */
+    @PostMapping("update")
+    public ResponseEntity<Activity> updateActivity(@RequestBody Activity activity) {
+        repo.save(activity);
+        return ResponseEntity.ok(activity);
     }
 
     /**
@@ -77,10 +124,17 @@ public class ActivityController {
             return ResponseEntity.badRequest().build();
         }
 
+        totalRecords++;
         Activity saved = repo.save(activity);
         return ResponseEntity.ok(saved);
     }
 
+    /**
+     * This function gets a list of activities to add to the database in bulk.
+     *
+     * @param activities the list of the activities to add
+     * @return the same list, if the operation is successful.
+     */
     @PostMapping("import")
     public ResponseEntity<List<Activity>> importActivities(@RequestBody List<Activity> activities) {
         for (var activity : activities) {
@@ -95,6 +149,7 @@ public class ActivityController {
             saved.add(repo.save(activity));
         }
 
+        totalRecords = repo.count();
         return ResponseEntity.ok(saved);
     }
 
@@ -178,15 +233,14 @@ public class ActivityController {
      */
     public void generateTrueFalseQuestion(int typeOfQuestion, List<Question> questions) {
         String id = associateQuestion(typeOfQuestion);
-        Random activitiesNumber = new Random();
-        int numberOfActivities = activitiesNumber.nextInt(2) + 1;
+        int numberOfActivities = rand.nextInt(2) + 1;
         List<Activity> activities = fetchRandom(numberOfActivities);
-        String question = "";
+        String question;
         int correctAnswer = 0;
 
         if (numberOfActivities == 1) {
             long correctNumber = activities.get(0).consumptionInWh;
-            long wrongNumber = correctNumber * 110 / 100;
+            long wrongNumber = correctNumber * 3;
             if (wrongNumber % 2 == 0) {
                 question = activities.get(0).title + " consumes " + wrongNumber + "Wh.";
                 correctAnswer = 1;

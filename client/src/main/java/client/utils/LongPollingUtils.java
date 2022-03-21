@@ -2,11 +2,13 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import client.scenes.LobbyCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.QuestionFrameCtrl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import commons.Game;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
 import javax.inject.Inject;
@@ -19,6 +21,7 @@ public class LongPollingUtils {
 
     private final ServerUtils serverUtils;
     private final MainCtrl mainCtrl;
+    private final LobbyCtrl lobbyCtrl;
     public final QuestionFrameCtrl questionFrameCtrl;
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -31,9 +34,11 @@ public class LongPollingUtils {
      * @param questionFrameCtrl QuestionFrameCtrl object
      */
     @Inject
-    public LongPollingUtils(ServerUtils serverUtils, MainCtrl mainCtrl, QuestionFrameCtrl questionFrameCtrl) {
+    public LongPollingUtils(ServerUtils serverUtils, MainCtrl mainCtrl, LobbyCtrl lobbyCtrl,
+                            QuestionFrameCtrl questionFrameCtrl) {
         this.serverUtils = serverUtils;
         this.mainCtrl = mainCtrl;
+        this.lobbyCtrl = lobbyCtrl;
         this.questionFrameCtrl = questionFrameCtrl;
 
         this.active = false;
@@ -61,7 +66,8 @@ public class LongPollingUtils {
     private void sendPoll() {
         String json = ClientBuilder.newClient(new ClientConfig())
             .target(serverUtils.getServerIP())
-            .path("poll/" + mainCtrl.getGame().getId())
+            .path("poll/" + (mainCtrl.getGame() == null ? lobbyCtrl.getLobby().getId() :
+                mainCtrl.getGame().getId()))
             .request(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
             .get(new GenericType<>() {
@@ -85,7 +91,13 @@ public class LongPollingUtils {
     public void performAction(JsonNode response) {
         switch (response.get("type").asText()) {
             case "START_MP_GAME":
-                // TODO
+                try {
+                    Game game = new ObjectMapper().readValue(response.get("game").asText(), Game.class);
+                    mainCtrl.setGame(game);
+                    mainCtrl.startMultiplayerGame();
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
                 break;
             case "EMOJI":
                 String name = response.get("name").asText();
@@ -97,11 +109,9 @@ public class LongPollingUtils {
                 break;
             case "DISCONNECT":
                 String nameDisconnect = response.get("name").asText();
-                // lobbyCtrl.remove(nameDisconnect);
                 break;
             case "JOIN":
                 String nameJoin = response.get("name").asText();
-                // lobbyCtrl.add(nameJoin);
                 break;
             default:
                 System.err.println("Unknown long polling response type");

@@ -53,11 +53,9 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      * {@inheritDoc}
      *
      * @param entries a List of instances of LeaderboardEntry.
-     *
      * @param maxSize the maximum size of the leaderboard - how many records to show.
      *                if <code>entries</code> has more elements than that, the function trims automatically.
-     *
-     * @param type the type of the leaderboard. can either be "solo", "intermediate", "final".
+     * @param type    the type of the leaderboard. can either be "solo", "intermediate", "final".
      */
     @Override
     public void initialize(List<LeaderboardEntry> entries, int maxSize, String type) {
@@ -65,7 +63,7 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
         setLeaderboardType(type);
 
         playerColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getName()));
-        scoreColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getScoreString()));
+        scoreColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().scoreToString()));
 
         fillLeaderboard(entries);
     }
