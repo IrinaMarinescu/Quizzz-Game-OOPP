@@ -21,10 +21,10 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import commons.Activity;
 import commons.Game;
 import commons.LeaderboardEntry;
-import commons.Lobby;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.glassfish.jersey.client.ClientConfig;
@@ -70,7 +70,6 @@ public class ServerUtils {
             .accept(APPLICATION_JSON) //
             .get(String.class).equals("Connected");
     }
-
     /**
      * Lets the user input no IP when trying to use the app.
      * If the "Server IP" field is empty, localhost:8080 will be the default.
@@ -142,6 +141,8 @@ public class ServerUtils {
      * @param limit the number of entries to fetch
      * @return a list of leaderboard entries, at most <code>limit</code> in number, sorted by the score.
      */
+=======
+>>>>>>> client/src/main/java/client/utils/ServerUtils.java
     public List<LeaderboardEntry> getSoloLeaderboard(int limit) {
         return ClientBuilder.newClient(new ClientConfig()) //
             .target(serverIP).path("api/leaderboard/" + limit) //
@@ -177,7 +178,7 @@ public class ServerUtils {
 
     public List<LeaderboardEntry> getUpdatedScores(UUID gameId) {
         // TODO retrieve updated scores for this game from the server
-        return null;
+        return new ArrayList<>();
     }
 
     public void disconnect(UUID gameId, LeaderboardEntry player) {

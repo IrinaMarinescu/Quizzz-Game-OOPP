@@ -33,9 +33,9 @@ class LeaderboardEntryTest {
 
     @Test
     void getScoreString() {
-        assertEquals("24", sut.getScoreString());
-        assertNotNull(sut.getScoreString());
-        assertNotEquals(24, sut.getScoreString());
+        assertEquals("24", sut.scoreToString());
+        assertNotNull(sut.scoreToString());
+        assertNotEquals(24, sut.scoreToString());
     }
 
     @Test

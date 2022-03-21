@@ -95,16 +95,20 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
 
 
     /**
-     * Injects necessary dependencies
+     * Injects mainCtrl, lobbyUtils and mainCtrl, so it's possible to call methods from there
      *
-     * @param mainCtrl The main front-end controller
+     * @param timeUtils    The instance of TimeUtils
+     * @param mainCtrl     The instance of MainCtrl
+     * @param timerBarCtrl The instance of TimerBarCtrl
+     * @param emoteCtrl    The instance of EmoteCtrl
      */
     @Inject
-    public QuestionFrameCtrl(MainCtrl mainCtrl, TimerBarCtrl timerBarCtrl, EmoteCtrl emoteCtrl, TimeUtils timeUtils) {
+    public QuestionFrameCtrl(TimeUtils timeUtils, MainCtrl mainCtrl, TimerBarCtrl timerBarCtrl,
+                             EmoteCtrl emoteCtrl) {
+        this.timeUtils = timeUtils;
         this.mainCtrl = mainCtrl;
         this.timerBarCtrl = timerBarCtrl;
         this.emoteCtrl = emoteCtrl;
-        this.timeUtils = timeUtils;
     }
 
     /**
@@ -123,7 +127,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         emoteCtrl.initialize(reactionContainer, timeUtils);
 
         playerColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getName()));
-        scoreColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getScoreString()));
+        scoreColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().scoreToString()));
 
         lastEscapeKeyPressTime = 0;
     }
@@ -138,19 +142,19 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     /**
      * Resets the question frame and initializes settings for a new multiplayer game
      *
-     * @param names The names of all players involved
+     * @param players The list of all players involved
      */
-    public void initializeMultiplayerGame(List<String> names) {
-        startNewGame(true, names);
+    public void initializeMultiplayerGame(List<LeaderboardEntry> players) {
+        startNewGame(true, players);
     }
 
     /**
      * Initializes settings for a new game
      *
      * @param isMultiplayerGame Whether this is a multiplayer game
-     * @param playerNames       The names of the players involved
+     * @param players           The players involved
      */
-    private void startNewGame(boolean isMultiplayerGame, List<String> playerNames) {
+    private void startNewGame(boolean isMultiplayerGame, List<LeaderboardEntry> players) {
         this.isMultiplayerGame = isMultiplayerGame;
         this.gameScore = 0;
         this.questionNumber = -1;
@@ -171,9 +175,6 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         }
 
         if (isMultiplayerGame) {
-            List<LeaderboardEntry> players = playerNames.stream()
-                .map(p -> new LeaderboardEntry(p, 0))
-                .collect(Collectors.toList());
             setLeaderboardContents(players);
         } else {
             sideLeaderboard.setVisible(false);
@@ -288,7 +289,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     /**
      * Method to be run when a user chooses to send an emoticon
      * <p>
-     * TODO: make theis send a request to the server, delete placeholders
+     * TODO: make this send a request to the server, delete placeholders
      */
     @FXML
     private void addReaction(ActionEvent e) {
@@ -387,9 +388,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     public void tempDisableJokers(double duration) {
         for (Button joker : jokers) {
             setJokerEnabled(joker, false);
-            timeUtils.runAfterDelay(() -> {
-                setJokerEnabled(joker, true);
-            }, duration);
+            timeUtils.runAfterDelay(() -> setJokerEnabled(joker, true), duration);
         }
     }
 

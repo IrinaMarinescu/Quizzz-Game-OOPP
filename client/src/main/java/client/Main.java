@@ -20,13 +20,17 @@ import static com.google.inject.Guice.createInjector;
 
 import client.scenes.AdminInterfaceCtrl;
 import client.scenes.LeaderboardCtrl;
+import client.scenes.LobbyCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.MainFrameCtrl;
 import client.scenes.QuestionFrameCtrl;
+import client.scenes.questioncontrollers.InsteadOfQuestionCtrl;
 import client.scenes.questioncontrollers.OpenQuestionCtrl;
 import client.scenes.questioncontrollers.QuestionOneImageCtrl;
 import client.scenes.questioncontrollers.QuestionThreePicturesCtrl;
 import client.scenes.questioncontrollers.QuestionTrueFalseCtrl;
+import client.utils.GameUtils;
+import client.utils.LobbyUtils;
 import client.utils.ServerUtils;
 import client.utils.TimeUtils;
 import com.google.inject.Injector;
@@ -70,18 +74,21 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        var questionFrame =
-            FXML.load(QuestionFrameCtrl.class, "client/scenes/questionFrame.fxml", "client/css/questionFrame.css");
-        var openQuestion = FXML.load(OpenQuestionCtrl.class, "client/scenes/OpenQuestion.fxml", null);
-        var questionOneImage = FXML.load(QuestionOneImageCtrl.class, "client/scenes/QuestionOneImage.fxml", null);
-        var questionTrueFalse = FXML.load(QuestionTrueFalseCtrl.class, "client/scenes/QuestionThreePictures.fxml",
-            "client/css/questionTrueFalse.css");
-        var questionThreePictures =
-            FXML.load(QuestionThreePicturesCtrl.class, "client/scenes/QuestionThreePictures.fxml",
-                "client/css/questionsThreePictures.css");
+        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
+
+        var serverUtils = INJECTOR.getInstance(ServerUtils.class);
+
+        var timeUtils = INJECTOR.getInstance(TimeUtils.class);
+
+        var gameUtils = INJECTOR.getInstance(GameUtils.class);
+
+        var lobbyUtils = INJECTOR.getInstance(LobbyUtils.class);
 
         var mainFrame =
-            FXML.load(MainFrameCtrl.class, "client/scenes/mainFrame.fxml", "client/css/mainFrame.css");
+            FXML.load(MainFrameCtrl.class, "client/scenes/MainFrame.fxml", "client/css/mainFrame.css");
+
+        var lobbyFrame =
+            FXML.load(LobbyCtrl.class, "client/scenes/LobbyFrame.fxml", "client/css/lobbyFrame.css");
 
         var leaderboard =
             FXML.load(LeaderboardCtrl.class, "client/scenes/Leaderboard.fxml", "client/css/leaderboardPage.css");
@@ -89,16 +96,35 @@ public class Main extends Application {
         var adminInterface =
             FXML.load(AdminInterfaceCtrl.class, "client/scenes/AdminInterface.fxml", "client/css/adminPage.css");
 
+            var questionFrame =
+            FXML.load(QuestionFrameCtrl.class, "client/scenes/questionFrame.fxml", "client/css/questionFrame.css");
+
+        var questionTrueFalse = FXML.load(QuestionTrueFalseCtrl.class, "client/scenes/QuestionTrueFalse.fxml",
+            "client/css/questionTrueFalse.css");
+
+        var openQuestion = FXML.load(OpenQuestionCtrl.class, "client/scenes/OpenQuestion.fxml", null);
+
+        var questionThreePictures =
+            FXML.load(QuestionThreePicturesCtrl.class, "client/scenes/QuestionThreePictures.fxml",
+                "questionsThreePictures.css");
+
+        var questionOneImage = FXML.load(QuestionOneImageCtrl.class, "client/scenes/QuestionOneImage.fxml", null);
+
+        var insteadOfQuestion =
+            FXML.load(InsteadOfQuestionCtrl.class, "client/scenes/InsteadOfQuestion.fxml", null);
+
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         var longPollingUtils = INJECTOR.getInstance(client.utils.LongPollingUtils.class);
         var serverUtils = INJECTOR.getInstance(ServerUtils.class);
         var timeUtils = INJECTOR.getInstance(TimeUtils.class);
 
-        mainCtrl.initialize(timeUtils, serverUtils,
-            longPollingUtils, primaryStage,
-            mainFrame, questionFrame,
-            leaderboard, adminInterface,
-            openQuestion, questionOneImage);
-
+        mainCtrl.initialize(serverUtils, gameUtils, 
+            lobbyUtils, timeUtils, 
+            primaryStage, mainFrame,
+            lobbyFrame, leaderboard,
+            adminInterface, questionFrame, 
+            questionTrueFalse, openQuestion, 
+            questionThreePictures, questionOneImage, 
+            insteadOfQuestion);
     }
 }
