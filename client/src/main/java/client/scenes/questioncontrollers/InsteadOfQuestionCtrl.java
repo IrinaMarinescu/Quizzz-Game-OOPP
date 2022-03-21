@@ -12,7 +12,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javax.inject.Inject;
 
@@ -130,7 +129,7 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
     @Override
     public void initialize(Question question) {
         this.question = question;
-        this.questionText.setText(question.getQuestion());
+        Platform.runLater(() -> this.questionText.setText(question.getQuestion()));
         this.positionCorrectAnswer = question.getCorrectAnswer();
         String correctAnswer = question.getActivities().get(positionCorrectAnswer).title;
 

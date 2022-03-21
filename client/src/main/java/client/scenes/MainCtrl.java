@@ -317,42 +317,41 @@ public class MainCtrl implements MainCtrlRequirements {
         Question currentQuestion = game.nextQuestion();
         currentQuestionType = currentQuestion.getQuestionType();
 
+        Node questionNode = null;
         switch (currentQuestionType) {
             case "trueFalseQuestion":
                 currentQuestionCtrl = questionTrueFalseCtrl;
-                questionFrameCtrl.setCenterContent(questionTrueFalse);
+                questionNode = questionTrueFalse;
                 questionFrameCtrl.setWrongAnswerJoker(false);
                 break;
             case "openQuestion":
                 currentQuestionCtrl = openQuestionCtrl;
-                questionFrameCtrl.setCenterContent(openQuestion);
+                questionNode = openQuestion;
                 questionFrameCtrl.setWrongAnswerJoker(false);
                 break;
             case "threePicturesQuestion":
                 currentQuestionCtrl = questionThreePicturesCtrl;
-                questionFrameCtrl.setCenterContent(questionThreePictures);
+                questionNode = questionThreePictures;
                 break;
             case "oneImageQuestion":
                 currentQuestionCtrl = questionOneImageCtrl;
-                questionFrameCtrl.setCenterContent(questionOneImage);
+                questionNode = questionOneImage;
                 break;
             case "insteadOfQuestion":
                 currentQuestionCtrl = insteadOfQuestionCtrl;
-                questionFrameCtrl.setCenterContent(insteadOfQuestion);
+                questionNode = insteadOfQuestion;
                 break;
             default:
                 System.err.println("Unrecognized question type in MainCtrl");
                 break;
         }
         currentQuestionCtrl.initialize(currentQuestion);
-        Platform.runLater(() -> questionFrameCtrl.setRemainingTime(ROUND_TIME));
-
-        setQuestionTimeouts(ROUND_TIME);
+        questionFrameCtrl.setCenterContent(questionNode, true);
     }
 
     private void showFinalScreen() {
         finalScreenCtrl.setPoints(player.getScore());
-        questionFrameCtrl.setCenterContent(finalScreen);
+        questionFrameCtrl.setCenterContent(finalScreen, false);
     }
 
     /**
@@ -360,24 +359,27 @@ public class MainCtrl implements MainCtrlRequirements {
      *
      * @param delay The time until the end of the question
      */
-    private void setQuestionTimeouts(double delay) {
+    void setQuestionTimeouts(double delay) {
+        int expectedRound = game.getRound();
         timeUtils.runAfterDelay(() -> {
-            if (game.getRound() != timeoutRoundCheck) {
+            if (expectedRound != timeoutRoundCheck) {
                 return;
             }
 
             timeoutRoundCheck++;
+            Platform.runLater(() -> {
+                timeUtils.runAfterDelay(this::nextEvent, OVERVIEW_TIME);
+                questionFrameCtrl.setRemainingTime(OVERVIEW_TIME);
+            });
+
             currentQuestionCtrl.revealCorrectAnswer();
             Platform.runLater(() -> questionFrameCtrl.addPoints(pointsGained));
+            player.setScore(player.getScore() + pointsGained);
             questionFrameCtrl.tempDisableJokers(OVERVIEW_TIME);
             serverUtils.sendPointsGained(game.getId(), player, pointsGained);
             if (currentQuestionType.equals("trueFalseQuestion") || currentQuestionType.equals("openQuestion")) {
                 questionFrameCtrl.setWrongAnswerJoker(true);
             }
-
-            Platform.runLater(() -> questionFrameCtrl.setRemainingTime(OVERVIEW_TIME));
-            timeUtils.runAfterDelay(this::nextEvent, OVERVIEW_TIME);
-            //Platform.runLater(() -> nextEvent());
         }, delay);
     }
 
@@ -395,7 +397,9 @@ public class MainCtrl implements MainCtrlRequirements {
                 pointsGained *= 2;
             }
         }
-        player.setScore(player.getScore() + pointsGained);
+        if (!isMultiplayerGame) {
+            setQuestionTimeouts(0.0);
+        }
     }
 
     /**

@@ -107,7 +107,7 @@ public class Main extends Application {
 
         var questionThreePictures =
             FXML.load(QuestionThreePicturesCtrl.class, "client/scenes/QuestionThreePictures.fxml",
-                "questionsThreePictures.css");
+                "client/css/questionsThreePictures.css");
 
         var questionOneImage = FXML.load(QuestionOneImageCtrl.class, "client/scenes/QuestionOneImage.fxml",
             "client/css/questionOneImage.css");

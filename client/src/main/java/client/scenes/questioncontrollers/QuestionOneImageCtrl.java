@@ -12,7 +12,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javax.inject.Inject;
 
@@ -131,7 +130,9 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
     @Override
     public void initialize(Question question) {
         this.question = question;
-        this.questionText.setText("How much does " + question.getActivities().get(0).title + " consume in Wh?");
+        Platform.runLater(() -> {
+            this.questionText.setText("How much does " + question.getActivities().get(0).title + " consume in Wh?");
+        });
         long actualConsumption = question.getActivities().get(0).consumptionInWh;
         this.positionCorrectAnswer = (new Random()).nextInt(3);
 
