@@ -407,15 +407,7 @@ public class MainCtrl implements MainCtrlRequirements {
     public String getUsername() {
         return player.getName();
     }
-
-    public void showLobbyFrame() {
-    }
-
-    @Override
-    public void halveRemainingTime() {
-
-    }
-
+    
     /**
      * Shows main frame (welcome/splash screen)
      */
