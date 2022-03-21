@@ -82,7 +82,7 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     public void initialize(Question question) {
         this.question = question;
         Platform.runLater(() -> {
-            questionField.setText("How many Wh does " + question.getActivities().get(0).title + " take?");
+            questionField.setText(question.getQuestion());
             answerText.setText("");
             submitButton.setText("Submit");
             submitButton.setDisable(false);
