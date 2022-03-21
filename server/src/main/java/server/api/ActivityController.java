@@ -268,14 +268,6 @@ public class ActivityController {
         String id = associateQuestion(typeOfQuestion);
         List<Activity> activities = fetchRandom(1);
         String question = "How much energy in Wh does " + activities.get(0).title + " consume?";
-        long a1 = 0;
-        long a2 = 0;
-        do {
-            a1 = randomConsumption(activities.get(0));
-            a2 = randomConsumption(activities.get(0));
-        } while (a1 == a2 || a1 == activities.get(0).consumptionInWh || a2 == activities.get(0).consumptionInWh);
-        activities.add(new Activity("", "", "", a1, ""));
-        activities.add(new Activity ("", "", "", a2, ""));
         Question openQuestion = new Question(activities, question, 0, id);
         questions.add(openQuestion);
     }
@@ -352,6 +344,14 @@ public class ActivityController {
         String id = associateQuestion(typeOfQuestion);
         List<Activity> activities = fetchRandom(1);
         String question = "How much energy in Wh does " + activities.get(0).title + " consume?";
+        long a1 = 0;
+        long a2 = 0;
+        do {
+            a1 = randomConsumption(activities.get(0));
+            a2 = randomConsumption(activities.get(0));
+        } while (a1 == a2 || a1 == activities.get(0).consumptionInWh || a2 == activities.get(0).consumptionInWh);
+        activities.add(new Activity("", "", "", a1, ""));
+        activities.add(new Activity ("", "", "", a2, ""));
         Question questionOneImage = new Question(activities, question, 0, id);
         questions.add(questionOneImage);
     }
