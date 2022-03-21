@@ -443,6 +443,14 @@ public class MainCtrl implements MainCtrlRequirements {
         primaryStage.setScene(leaderboard);
     }
 
+    public String getUsername() {
+        return player.getName();
+    }
+
+    public void halveRemainingTime() {
+        questionFrameCtrl.halveRemainingTime();
+    }
+
     /**
      * Show global leaderboard frame
      */

@@ -3,6 +3,7 @@ package client.scenes;
 import client.scenes.controllerrequirements.QuestionFrameRequirements;
 import client.scenes.framecomponents.EmoteCtrl;
 import client.scenes.framecomponents.TimerBarCtrl;
+import client.utils.ServerUtils;
 import client.utils.TimeUtils;
 import commons.LeaderboardEntry;
 import java.net.URL;
@@ -41,6 +42,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     private final TimerBarCtrl timerBarCtrl;
     private final EmoteCtrl emoteCtrl;
     TimeUtils timeUtils;
+    ServerUtils serverUtils;
 
     @FXML
     public Rectangle topBar;
@@ -103,12 +105,13 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      * @param emoteCtrl    The instance of EmoteCtrl
      */
     @Inject
-    public QuestionFrameCtrl(TimeUtils timeUtils, MainCtrl mainCtrl, TimerBarCtrl timerBarCtrl,
-                             EmoteCtrl emoteCtrl) {
-        this.timeUtils = timeUtils;
+    public QuestionFrameCtrl(MainCtrl mainCtrl, TimerBarCtrl timerBarCtrl, EmoteCtrl emoteCtrl, TimeUtils timeUtils,
+                             ServerUtils serverUtils) {
         this.mainCtrl = mainCtrl;
         this.timerBarCtrl = timerBarCtrl;
         this.emoteCtrl = emoteCtrl;
+        this.timeUtils = timeUtils;
+        this.serverUtils = serverUtils;
     }
 
     /**
@@ -293,8 +296,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      */
     @FXML
     private void addReaction(ActionEvent e) {
-        //Useful stuff below
-        displayNewEmoji("Per", ((Node) e.getSource()).getId());
+        serverUtils.sendNewEmoji(mainCtrl.getUsername(), ((Node) e.getSource()).getId());
     }
 
     /**
@@ -321,6 +323,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      */
     public void halveRemainingTime() {
         timerBarCtrl.halveRemainingTime();
+        serverUtils.halveTime(mainCtrl.getGame().getId());
     }
 
     /**

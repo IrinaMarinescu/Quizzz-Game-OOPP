@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +26,7 @@ public class GameController {
 
     private final ActivityController activityController;
     private final LobbyController lobbyController;
+    private final LongPollingController longPollingController;
 
     /**
      * Set up an empty game map, activityController and lobbyController, so it's possible to call methods from there
@@ -30,10 +34,12 @@ public class GameController {
      * @param activityController ActivityController object
      * @param lobbyController    LobbyController object
      */
-    public GameController(ActivityController activityController, LobbyController lobbyController) {
+    public GameController(ActivityController activityController, LobbyController lobbyController,
+                          LongPollingController longPollingController) {
         games = new HashMap<>();
         this.activityController = activityController;
         this.lobbyController = lobbyController;
+        this.longPollingController = longPollingController;
     }
 
     /**
@@ -96,4 +102,17 @@ public class GameController {
         this.receivingGameId = receivingGameId;
         notifyAll();
     }
+
+    @PostMapping("/sendEmote/{gameID}")
+    public void sendNewEmoteToAll(@PathVariable UUID gameID, @RequestBody String username,
+                                  @RequestBody String typeReaction) {
+        longPollingController.dispatch(gameID, "EMOJI", Pair.of("name", username), Pair.of("reaction", typeReaction));
+    }
+
+    @GetMapping(path = "/halveTime/{gameId}")
+    public void halveTimeToAll(@PathVariable UUID gameId) {
+        longPollingController.dispatch(gameId, "HALVE_TIME");
+    }
+
+
 }
