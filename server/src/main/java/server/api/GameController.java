@@ -23,11 +23,16 @@ public class GameController {
 
     private final ActivityController activityController;
     private final LobbyController lobbyController;
+    private final LongPollingController longPollingController;
 
-    public GameController(ActivityController activityController, LobbyController lobbyController) {
+    public GameController(ActivityController activityController,
+                          LobbyController lobbyController,
+                          LongPollingController longPollingController) {
+
         games = new HashMap<>();
         this.activityController = activityController;
         this.lobbyController = lobbyController;
+        this.longPollingController = longPollingController;
     }
 
     /**
@@ -93,5 +98,4 @@ public class GameController {
         this.receivingGameId = receivingGameId;
         notifyAll();
     }
-
 }
