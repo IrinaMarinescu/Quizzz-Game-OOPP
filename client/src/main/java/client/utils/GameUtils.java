@@ -17,9 +17,10 @@ public class GameUtils {
     public boolean active;
 
     /**
-     * Constructor
+     * Injects serverUtils and mainCtrl, so it's possible to call methods from there
      *
-     * @param serverUtils ServerUtils object
+     * @param serverUtils The instance of ServerUtils
+     * @param mainCtrl    The instance of MainCtrl
      */
     @Inject
     public GameUtils(ServerUtils serverUtils, MainCtrl mainCtrl) {
@@ -31,11 +32,9 @@ public class GameUtils {
 
     /**
      * Create new Game with the players that are currently in the lobby and list of 20 questions
-     *
-     * @return newly created Game object with unique ID
      */
-    public Game startMultiplayerGame() {
-        return ClientBuilder.newClient(new ClientConfig()) //
+    public void startMultiplayerGame() {
+        ClientBuilder.newClient(new ClientConfig()) //
             .target(serverUtils.getServerIP()).path("api/game/multiplayer/start") //
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //

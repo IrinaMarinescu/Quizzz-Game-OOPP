@@ -52,8 +52,8 @@ class QuestionFrameCtrlTest {
      */
     @BeforeEach
     public void setup() {
-        mainCtrlDOC = new MainCtrlDOC();
         timeUtilsDOC = new TimeUtilsDOC(150);
+        mainCtrlDOC = new MainCtrlDOC();
         emoteCtrlDOC = new EmoteCtrlDOC();
         timerBarCtrlDOC = new TimerBarCtrlDOC();
 
@@ -73,6 +73,7 @@ class QuestionFrameCtrlTest {
         assertSame(mainCtrlDOC, sut.mainCtrl);
     }
 
+    /*
     @Test
     public void setCenterContentOne() {
         assertNull(sut.borderPane.getCenter());
@@ -88,6 +89,7 @@ class QuestionFrameCtrlTest {
         sut.setCenterContent(new Rectangle());
         assertEquals(Rectangle.class, sut.borderPane.getCenter().getClass());
     }
+     */
 
     @Test
     public void setLeaderboardContentsOne() {

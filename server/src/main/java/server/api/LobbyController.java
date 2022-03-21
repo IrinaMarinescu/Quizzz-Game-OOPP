@@ -22,6 +22,9 @@ public class LobbyController {
     public UUID receivingLobbyId = UUID.randomUUID();
 
 
+    /**
+     * Set up an empty lobby
+     */
     public LobbyController() {
         lobby = new Lobby(UUID.randomUUID());
     }
@@ -46,19 +49,18 @@ public class LobbyController {
     public ResponseEntity<Lobby> addPlayerToLobby(@RequestBody LeaderboardEntry player) {
         lobby.addPlayer(player);
         dispatch(lobby.getId());
-        return ResponseEntity.ok(lobby);
+        return ResponseEntity.ok(this.lobby);
     }
 
     /**
      * Removes specified player from the lobby
      *
      * @param player that has to be removed from the lobby
-     * @return true if the player was in the lobby, false otherwise
      */
     @PostMapping("remove")
-    public ResponseEntity<Boolean> removePlayerFromLobby(@RequestBody LeaderboardEntry player) {
+    public void removePlayerFromLobby(@RequestBody LeaderboardEntry player) {
+        lobby.removePlayer(player);
         dispatch(lobby.getId());
-        return ResponseEntity.ok(lobby.removePlayer(player));
     }
 
     /**

@@ -97,9 +97,12 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
 
 
     /**
-     * Injects necessary dependencies
+     * Injects mainCtrl, lobbyUtils and mainCtrl, so it's possible to call methods from there
      *
-     * @param mainCtrl The main front-end controller
+     * @param timeUtils    The instance of TimeUtils
+     * @param mainCtrl     The instance of MainCtrl
+     * @param timerBarCtrl The instance of TimerBarCtrl
+     * @param emoteCtrl    The instance of EmoteCtrl
      */
     @Inject
     public QuestionFrameCtrl(MainCtrl mainCtrl, TimerBarCtrl timerBarCtrl, EmoteCtrl emoteCtrl, TimeUtils timeUtils,
@@ -189,7 +192,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      * @param questionNode The node to be inserted in the center of the frame
      */
     public void setCenterContent(Node questionNode) {
-        borderPane.setCenter(questionNode);
+        Platform.runLater(() -> borderPane.setCenter(questionNode));
     }
 
     /**
@@ -289,7 +292,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     /**
      * Method to be run when a user chooses to send an emoticon
      * <p>
-     * TODO: make theis send a request to the server, delete placeholders
+     * TODO: make this send a request to the server, delete placeholders
      */
     @FXML
     private void addReaction(ActionEvent e) {
@@ -340,13 +343,15 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      * @param enable Whether to enable the joker
      */
     private void setJokerEnabled(Button joker, boolean enable) {
-        if (enable) {
-            joker.getStyleClass().remove("usedJoker");
-            joker.getStyleClass().add("clickable");
-        } else {
-            joker.getStyleClass().add("usedJoker");
-            joker.getStyleClass().remove("clickable");
-        }
+        Platform.runLater(() -> {
+            if (enable) {
+                joker.getStyleClass().remove("usedJoker");
+                joker.getStyleClass().add("clickable");
+            } else {
+                joker.getStyleClass().add("usedJoker");
+                joker.getStyleClass().remove("clickable");
+            }
+        });
     }
 
     /**
@@ -388,10 +393,14 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     public void tempDisableJokers(double duration) {
         for (Button joker : jokers) {
             setJokerEnabled(joker, false);
-            timeUtils.runAfterDelay(() -> {
-                setJokerEnabled(joker, true);
-            }, duration);
+            timeUtils.runAfterDelay(() -> setJokerEnabled(joker, true), duration);
         }
+
+        timeUtils.runAfterDelay(() -> {
+            for (Button joker : jokers) {
+                setJokerEnabled(joker, true);
+            }
+        }, duration);
     }
 
     /**

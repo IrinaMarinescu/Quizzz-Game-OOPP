@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,13 +27,13 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
     private int selectedAnswerButton;
 
     @FXML
-    Button trueAnswer;
+    Button trueButton;
 
     @FXML
-    Button falseAnswer;
+    Button falseButton;
 
     @FXML
-    TextField questionOutput;
+    Label questionOutput;
 
     @FXML
     ImageView imageOutput;
@@ -58,20 +59,21 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
     @Override
     public void initialize(Question question) {
         this.question = question;
-        this.answers = List.of(trueAnswer, falseAnswer);
+        this.answers = List.of(trueButton, falseButton);
         this.correct = List.of(correctTrue, correctFalse);
         this.wrong = List.of(wrongTrue, wrongFalse);
 
         this.positionCorrectAnswer = question.getCorrectAnswer();
         this.questionOutput.setText(question.getQuestion());
-        this.imageOutput.setImage(new Image(question.getActivities().get(0).imagePath, 200, 186, true, false));
-        trueAnswer.setText("True");
-        falseAnswer.setText("False");
+        //this.imageOutput.setImage(new Image(question.getActivities().get(0).imagePath, 200, 186, true, false));
+        trueButton.setText("True");
+        falseButton.setText("False");
         IntStream.range(0, correct.size()).forEach(i -> {
             correct.get(i).setVisible(false);
             wrong.get(i).setVisible(false);
             answers.get(i).setOpacity(1);
             answers.get(i).setStyle("-fx-border-color:  #5CB4BF");
+            answers.get(i).setDisable(false);
         });
     }
 
@@ -89,20 +91,10 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
 
     private void setChosenAnswer() {
         answers.get(selectedAnswerButton).setStyle("-fx-border-color: #028090");
-        for (int i = 0; i < 3; i++) {
-            answers.get(i).setOnAction(null);
+        for (int i = 0; i < 2; i++) {
+            answers.get(i).setDisable(true);
             if (i != selectedAnswerButton) {
                 answers.get(i).setOpacity(0.5);
-            }
-        }
-    }
-
-    @Override
-    public void revealCorrectAnswer() {
-        correct.get(positionCorrectAnswer).setVisible(true);
-        for (int i = 0; i < 3; i++) {
-            if (i != positionCorrectAnswer) {
-                wrong.get(i).setVisible(true);
             }
         }
 
@@ -110,6 +102,16 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
             mainCtrl.addPoints(100);
         } else {
             mainCtrl.addPoints(0);
+        }
+    }
+
+    @Override
+    public void revealCorrectAnswer() {
+        correct.get(positionCorrectAnswer).setVisible(true);
+        for (int i = 0; i < 2; i++) {
+            if (i != positionCorrectAnswer) {
+                wrong.get(i).setVisible(true);
+            }
         }
     }
 
@@ -134,14 +136,14 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
     }
 
     public Button getTrueAnswer() {
-        return trueAnswer;
+        return trueButton;
     }
 
     public Button getFalseAnswer() {
-        return falseAnswer;
+        return falseButton;
     }
 
-    public TextField getQuestionOutput() {
+    public Label getQuestionOutput() {
         return questionOutput;
     }
 

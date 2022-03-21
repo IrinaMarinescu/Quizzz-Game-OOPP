@@ -2,7 +2,7 @@ package client.scenes;
 
 import client.scenes.controllerrequirements.LobbyCtrlRequirements;
 import client.utils.GameUtils;
-import client.utils.ServerUtils;
+import commons.LeaderboardEntry;
 import commons.Lobby;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -26,24 +26,39 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
     @FXML
     private TableView<String> table;
 
-    private final ServerUtils serverUtils;
     private final GameUtils gameUtils;
 
     private final MainCtrl mainCtrl;
 
+    private Lobby lobby;
+
     ObservableList<String> list = FXCollections.observableArrayList();
 
     /**
-     * Injects mainCtrl, so it's possible to call methods from there
+     * Injects mainCtrl, gameUtils and mainCtrl, so it's possible to call methods from there
      *
-     * @param mainCtrl injects mainCtrl
+     * @param gameUtils The instance of GameUtils
+     * @param mainCtrl  The instance of MainCtrl
      */
     @Inject
-    public LobbyCtrl(ServerUtils serverUtils, GameUtils gameUtils, MainCtrl mainCtrl) {
-        this.serverUtils = serverUtils;
+    public LobbyCtrl(GameUtils gameUtils, MainCtrl mainCtrl) {
         this.gameUtils = gameUtils;
         this.mainCtrl = mainCtrl;
     }
+
+    /**
+     * Sets up the table for the lobby screen
+     *
+     * @param url            url
+     * @param resourceBundle resourceBundle
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        name.setCellValueFactory(s -> new SimpleStringProperty(s.getValue()));
+        table.setItems(list);
+        this.lobby = new Lobby();
+    }
+
 
     /**
      * Calls startMultiplayerGame() method in mainCtrl
@@ -61,25 +76,18 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
         mainCtrl.playerLeavesLobby();
     }
 
-    /**
-     * Sets up the table for the lobby screen
-     *
-     * @param url            url
-     * @param resourceBundle resourceBundle
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        name.setCellValueFactory(s -> new SimpleStringProperty(s.getValue()));
-        table.setItems(list);
+    public Lobby getLobby() {
+        return lobby;
     }
 
     /**
-     * Set up the given lobby
+     * Set up the given lobby and update displayed list of players
      *
      * @param lobby The lobby that has to be set
      */
-    public void updateLobby(Lobby lobby) {
-        list = FXCollections.observableArrayList(lobby.getPlayers().stream().map(player -> player.getName()).collect(
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
+        list = FXCollections.observableArrayList(lobby.getPlayers().stream().map(LeaderboardEntry::getName).collect(
             Collectors.toList()));
         table.setItems(list);
     }

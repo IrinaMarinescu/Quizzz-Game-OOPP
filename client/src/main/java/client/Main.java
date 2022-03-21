@@ -18,6 +18,8 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
+import client.scenes.AdminInterfaceCtrl;
+import client.scenes.FinalScreenCtrl;
 import client.scenes.LeaderboardCtrl;
 import client.scenes.LobbyCtrl;
 import client.scenes.MainCtrl;
@@ -92,6 +94,9 @@ public class Main extends Application {
         var leaderboard =
             FXML.load(LeaderboardCtrl.class, "client/scenes/Leaderboard.fxml", "client/css/leaderboardPage.css");
 
+        var adminInterface =
+            FXML.load(AdminInterfaceCtrl.class, "client/scenes/AdminInterface.fxml", "client/css/adminPage.css");
+
         var questionFrame =
             FXML.load(QuestionFrameCtrl.class, "client/scenes/questionFrame.fxml", "client/css/questionFrame.css");
 
@@ -104,13 +109,23 @@ public class Main extends Application {
             FXML.load(QuestionThreePicturesCtrl.class, "client/scenes/QuestionThreePictures.fxml",
                 "questionsThreePictures.css");
 
-        var questionOneImage = FXML.load(QuestionOneImageCtrl.class, "client/scenes/QuestionOneImage.fxml", null);
+        var questionOneImage = FXML.load(QuestionOneImageCtrl.class, "client/scenes/QuestionOneImage.fxml",
+            "client/css/questionOneImage.css");
 
         var insteadOfQuestion =
-            FXML.load(InsteadOfQuestionCtrl.class, "client/scenes/InsteadOfQuestion.fxml", null);
+            FXML.load(InsteadOfQuestionCtrl.class, "client/scenes/InsteadOfQuestion.fxml",
+                "client/css/insteadOfQuestion.css");
 
-        mainCtrl.initialize(serverUtils, gameUtils, lobbyUtils, timeUtils, primaryStage, mainFrame,
-            lobbyFrame, leaderboard, questionFrame, questionTrueFalse, openQuestion, questionThreePictures,
-            questionOneImage, insteadOfQuestion);
+        var finalScreen = FXML.load(FinalScreenCtrl.class,
+            "client/scenes/FinalSingleplayerScreen.fxml", null);
+
+        mainCtrl.initialize(serverUtils, gameUtils,
+            lobbyUtils, timeUtils,
+            primaryStage, mainFrame,
+            lobbyFrame, leaderboard,
+            adminInterface, questionFrame,
+            questionTrueFalse, openQuestion,
+            questionThreePictures, questionOneImage,
+            insteadOfQuestion, finalScreen);
     }
 }
