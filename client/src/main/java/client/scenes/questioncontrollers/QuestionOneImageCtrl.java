@@ -162,7 +162,7 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
                 values[i] = randomConsumption();
             }
             values[positionCorrectAnswer] = String.valueOf(actualConsumption);
-        } while (values[0] == values[1] || values[1] == values[2] || values[2] == values[0]);
+        } while (values[0].equals(values[1]) || values[1].equals(values[2]) || values[2].equals(values[0]));
 
         Platform.runLater(() -> {
             for (int i = 0; i < 3; i++) {
