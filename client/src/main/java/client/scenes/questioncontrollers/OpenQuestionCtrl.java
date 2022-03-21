@@ -17,7 +17,7 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     private MainCtrl mainCtrl;
     private QuestionFrameCtrl questionFrameCtrl;
     private Question question;
-    private int answer;
+    private long answer;
 
     @FXML
     Button submitButton;
@@ -55,8 +55,8 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     public void submit() {
         String ans = entryField.getText();
         Scanner scanner = new Scanner(ans);
-        if (scanner.hasNextInt()) {
-            this.answer = scanner.nextInt();
+        if (scanner.hasNextLong()) {
+            this.answer = scanner.nextLong();
             errorMessage.setVisible(false);
             submitButton.setText("Submitted!");
             submitButton.setDisable(true);
