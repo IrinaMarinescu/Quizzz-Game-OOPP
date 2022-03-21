@@ -102,11 +102,13 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      * @param mainCtrl The main front-end controller
      */
     @Inject
-    public QuestionFrameCtrl(MainCtrl mainCtrl, TimerBarCtrl timerBarCtrl, EmoteCtrl emoteCtrl, TimeUtils timeUtils) {
+    public QuestionFrameCtrl(MainCtrl mainCtrl, TimerBarCtrl timerBarCtrl, EmoteCtrl emoteCtrl, TimeUtils timeUtils,
+                             ServerUtils serverUtils) {
         this.mainCtrl = mainCtrl;
         this.timerBarCtrl = timerBarCtrl;
         this.emoteCtrl = emoteCtrl;
         this.timeUtils = timeUtils;
+        this.serverUtils = serverUtils;
     }
 
     /**

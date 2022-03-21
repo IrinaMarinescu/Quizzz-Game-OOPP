@@ -102,9 +102,9 @@ public class GameController {
         notifyAll();
     }
     @PostMapping("/sendEmote/{gameID}")
-    public void sendNewEmoteToAll(@PathVariable UUID gameId, @RequestBody String username,
+    public void sendNewEmoteToAll(@PathVariable UUID gameID, @RequestBody String username,
                                   @RequestBody String typeReaction) {
-        longPollingController.dispatch(gameId, "EMOJI", Pair.of("name", username), Pair.of("reaction", typeReaction));
+        longPollingController.dispatch(gameID, "EMOJI", Pair.of("name", username), Pair.of("reaction", typeReaction));
     }
 
     @GetMapping(path = "/halveTime/{gameId}")
