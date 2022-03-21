@@ -47,7 +47,7 @@ public class MainCtrl implements MainCtrlRequirements {
     public static final int ROUND_TIME = 10;
     public static final int OVERVIEW_TIME = 5;
     public static final int LEADERBOARD_TIME = 10;
-    public static final int TOTAL_ROUNDS = 4; // should be 20
+    public static final int TOTAL_ROUNDS = 20;
 
     private LeaderboardEntry player;
     private Game game;
@@ -65,7 +65,6 @@ public class MainCtrl implements MainCtrlRequirements {
     private LobbyUtils lobbyUtils;
     private TimeUtils timeUtils;
 
-    private Lobby lobby;
     private Stage primaryStage;
 
     private MainFrameCtrl mainFrameCtrl;
@@ -130,9 +129,9 @@ public class MainCtrl implements MainCtrlRequirements {
 
         this.primaryStage = primaryStage;
 
-        primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
-            questionFrameCtrl.resizeTimerBar(newVal.intValue(), oldVal.intValue() - newVal.intValue());
-        });
+        primaryStage.widthProperty().addListener(
+            (obs, oldVal, newVal) -> questionFrameCtrl.resizeTimerBar(newVal.intValue(),
+                oldVal.intValue() - newVal.intValue()));
         primaryStage.setOnCloseRequest(e -> disconnect());
 
         this.mainFrameCtrl = mainFrame.getKey();
@@ -168,10 +167,12 @@ public class MainCtrl implements MainCtrlRequirements {
         primaryStage.show();
     }
 
-    public LeaderboardEntry getPlayer() {
-        return this.player;
-    }
-
+    /**
+     * Set player to new Player Object with given attributes
+     *
+     * @param username The name of the player
+     * @param points   The number of points the player has
+     */
     public void setPlayer(String username, int points) {
         this.player = new LeaderboardEntry(username, points);
     }
@@ -185,11 +186,11 @@ public class MainCtrl implements MainCtrlRequirements {
     }
 
     public Lobby getLobby() {
-        return lobby;
+        return lobbyCtrl.getLobby();
     }
 
     public void setLobby(Lobby lobby) {
-        this.lobby = lobby;
+        lobbyCtrl.setLobby(lobby);
     }
 
     /**
@@ -208,6 +209,9 @@ public class MainCtrl implements MainCtrlRequirements {
         nextEvent();
     }
 
+    /**
+     * Starts multiplayer game for all players in the lobby, switch to question frame
+     */
     @Override
     public void startMultiplayerGame() {
         intermediateLeaderboardShown = true;
@@ -219,21 +223,22 @@ public class MainCtrl implements MainCtrlRequirements {
         nextEvent();
     }
 
+    /**
+     * Add player to the lobby, display it and start long polling for the lobby
+     */
     public void joinLobby() {
         setLobby(lobbyUtils.joinLobby(this.player));
-        lobbyCtrl.updateLobby(this.lobby);
         lobbyUtils.setActive(true);
         gameUtils.setActive(true);
         showLobbyFrame();
     }
 
+    /**
+     * Remove player from the lobby and switch to main frame
+     */
     public void playerLeavesLobby() {
         lobbyUtils.leaveLobby(player);
         showMainFrame();
-    }
-
-    public void updateLobby(Lobby lobby) {
-        lobbyCtrl.updateLobby(lobby);
     }
 
     /**
@@ -386,12 +391,6 @@ public class MainCtrl implements MainCtrlRequirements {
         showMainFrame();
     }
 
-    @Override
-    public void showGlobalLeaderboardFrame() {
-        int maxSize = 10;
-        showLeaderboard(serverUtils.getSoloLeaderboard(maxSize), maxSize, "solo");
-    }
-
     /**
      * Shows leaderboard
      *
@@ -402,6 +401,15 @@ public class MainCtrl implements MainCtrlRequirements {
     private void showLeaderboard(List<LeaderboardEntry> players, int maxSize, String type) {
         leaderboardCtrl.initialize(players, maxSize, type);
         primaryStage.setScene(leaderboard);
+    }
+
+    /**
+     * Show global leaderboard frame
+     */
+    @Override
+    public void showGlobalLeaderboardFrame() {
+        int maxSize = 10;
+        showLeaderboard(serverUtils.getSoloLeaderboard(maxSize), maxSize, "solo");
     }
 
     /**

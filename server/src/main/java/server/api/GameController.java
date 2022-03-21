@@ -18,21 +18,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/game")
 public class GameController {
 
-    private Map<UUID, Game> games;
+    private final Map<UUID, Game> games;
     public UUID receivingGameId = UUID.randomUUID();
 
     private final ActivityController activityController;
     private final LobbyController lobbyController;
-    private final LongPollingController longPollingController;
 
-    public GameController(ActivityController activityController,
-                          LobbyController lobbyController,
-                          LongPollingController longPollingController) {
-
+    /**
+     * Set up an empty game map, activityController and lobbyController, so it's possible to call methods from there
+     *
+     * @param activityController ActivityController object
+     * @param lobbyController    LobbyController object
+     */
+    public GameController(ActivityController activityController, LobbyController lobbyController) {
         games = new HashMap<>();
         this.activityController = activityController;
         this.lobbyController = lobbyController;
-        this.longPollingController = longPollingController;
     }
 
     /**
@@ -47,15 +48,12 @@ public class GameController {
 
     /**
      * Create a new Game with the players that are currently in the lobby and randomly generated list of questions
-     *
-     * @return Game object with unique id, list of 20 questions and list of players
      */
     @GetMapping("/multiplayer/start")
-    public Game startMultiplayerGame() {
+    public void startMultiplayerGame() {
         Game newGame = lobbyController.createGame(activityController.generateQuestions());
         games.put(newGame.getId(), newGame);
         dispatch(newGame.getId());
-        return newGame;
     }
 
     /**
