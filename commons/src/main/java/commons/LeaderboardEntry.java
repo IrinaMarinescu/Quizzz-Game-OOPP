@@ -100,4 +100,14 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     public int hashCode() {
         return Objects.hash(getName(), getScore());
     }
+
+    /**
+     * Setter of the score field
+     *
+     * @param score Number of points a player has
+     */
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
 }

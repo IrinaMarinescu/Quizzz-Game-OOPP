@@ -177,6 +177,9 @@ public class MainCtrl implements MainCtrlRequirements {
         this.insteadOfQuestionCtrl = insteadOfQuestion.getKey();
         this.insteadOfQuestion = insteadOfQuestion.getValue();
 
+        this.finalScreenCtrl = finalScreen.getKey();
+        this.finalScreen = finalScreen.getValue();
+
         primaryStage.setTitle("Quizzzzz!");
         showMainFrame();
 
@@ -348,7 +351,7 @@ public class MainCtrl implements MainCtrlRequirements {
     }
 
     private void showFinalScreen() {
-        finalScreenCtrl.setPoints(getPlayer().getScore());
+        finalScreenCtrl.setPoints(player.getScore());
         questionFrameCtrl.setCenterContent(finalScreen);
     }
 
@@ -392,6 +395,7 @@ public class MainCtrl implements MainCtrlRequirements {
                 pointsGained *= 2;
             }
         }
+        player.setScore(player.getScore() + pointsGained);
     }
 
     /**
