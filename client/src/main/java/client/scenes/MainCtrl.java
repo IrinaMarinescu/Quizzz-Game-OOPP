@@ -408,9 +408,6 @@ public class MainCtrl implements MainCtrlRequirements {
         return player.getName();
     }
 
-    public void showLobbyFrame() {
-    }
-
     public void halveRemainingTime() {
         questionFrameCtrl.halveRemainingTime();
     }

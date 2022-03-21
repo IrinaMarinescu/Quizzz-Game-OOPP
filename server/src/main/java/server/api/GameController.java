@@ -101,6 +101,7 @@ public class GameController {
         this.receivingGameId = receivingGameId;
         notifyAll();
     }
+
     @PostMapping("/sendEmote/{gameID}")
     public void sendNewEmoteToAll(@PathVariable UUID gameID, @RequestBody String username,
                                   @RequestBody String typeReaction) {
