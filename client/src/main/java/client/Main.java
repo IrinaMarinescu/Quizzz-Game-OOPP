@@ -19,11 +19,13 @@ package client;
 import static com.google.inject.Guice.createInjector;
 
 import client.scenes.AdminInterfaceCtrl;
+import client.scenes.FinalScreenCtrl;
 import client.scenes.LeaderboardCtrl;
 import client.scenes.LobbyCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.MainFrameCtrl;
 import client.scenes.QuestionFrameCtrl;
+import client.scenes.questioncontrollers.InsteadOfQuestionCtrl;
 import client.scenes.questioncontrollers.OpenQuestionCtrl;
 import client.scenes.questioncontrollers.QuestionOneImageCtrl;
 import client.scenes.questioncontrollers.QuestionThreePicturesCtrl;
@@ -107,18 +109,23 @@ public class Main extends Application {
             FXML.load(QuestionThreePicturesCtrl.class, "client/scenes/QuestionThreePictures.fxml",
                 "questionsThreePictures.css");
 
-        var questionOneImage = FXML.load(QuestionOneImageCtrl.class, "client/scenes/QuestionOneImage.fxml", null);
+        var questionOneImage = FXML.load(QuestionOneImageCtrl.class, "client/scenes/QuestionOneImage.fxml",
+            "client/css/questionOneImage.css");
 
         var insteadOfQuestion =
-            FXML.load(InsteadOfQuestionCtrl.class, "client/scenes/InsteadOfQuestion.fxml", null);
+            FXML.load(InsteadOfQuestionCtrl.class, "client/scenes/InsteadOfQuestion.fxml",
+                "client/css/insteadOfQuestion.css");
 
-        mainCtrl.initialize(serverUtils, gameUtils, 
-            lobbyUtils, timeUtils, 
+        var finalScreen = FXML.load(FinalScreenCtrl.class,
+            "client/scenes/FinalSingleplayerScreen.fxml", null);
+
+        mainCtrl.initialize(serverUtils, gameUtils,
+            lobbyUtils, timeUtils,
             primaryStage, mainFrame,
             lobbyFrame, leaderboard,
-            adminInterface, questionFrame, 
-            questionTrueFalse, openQuestion, 
-            questionThreePictures, questionOneImage, 
-            insteadOfQuestion);
+            adminInterface, questionFrame,
+            questionTrueFalse, openQuestion,
+            questionThreePictures, questionOneImage,
+            insteadOfQuestion, finalScreen);
     }
 }

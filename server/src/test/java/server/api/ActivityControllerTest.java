@@ -128,7 +128,7 @@ class ActivityControllerTest {
         sut.generateTrueFalseQuestion(0, res);
         Question q = res.get(0);
 
-        assertEquals("flying a plane consumes 30 Wh per hour.", q.getQuestion());
+        assertEquals("flying a plane consumes 30Wh.", q.getQuestion());
         assertSame(1, q.getCorrectAnswer());
     }
 
@@ -227,7 +227,7 @@ class ActivityControllerTest {
         sut.generateInsteadOfQuestion(4, res);
         Question q = res.get(0);
 
-        assertEquals("Instead of using a lamp you can do...", q.getQuestion());
+        assertEquals("What can you do instead of using a lamp?", q.getQuestion());
         assertEquals("flying a plane", q.getActivities().get(q.getCorrectAnswer()).title);
     }
 }

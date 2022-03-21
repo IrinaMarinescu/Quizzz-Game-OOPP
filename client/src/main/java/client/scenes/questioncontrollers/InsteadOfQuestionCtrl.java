@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javax.inject.Inject;
 
@@ -35,7 +36,7 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
     Button answerC;
 
     @FXML
-    TextField questionText;
+    Label questionText;
 
     @FXML
     ImageView imageField;
@@ -113,6 +114,12 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
                 buttons.get(i).setOpacity(0.5);
             }
         }
+
+        if (selectedAnswerButton == positionCorrectAnswer) {
+            mainCtrl.addPoints(100);
+        } else {
+            mainCtrl.addPoints(0);
+        }
     }
 
     /**
@@ -123,13 +130,13 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
     @Override
     public void initialize(Question question) {
         this.question = question;
-        this.questionText.setText("Instead of " + question.getActivities().get(0).title + ", what could you do?");
+        this.questionText.setText(question.getQuestion());
         this.positionCorrectAnswer = question.getCorrectAnswer();
         String correctAnswer = question.getActivities().get(positionCorrectAnswer).title;
 
-        String imagePath = question.getActivities().get(0).imagePath;
-        Image image = new Image(imagePath, 480, 500, false, true);
-        imageField.setImage(image);
+        //String imagePath = question.getActivities().get(0).imagePath;
+        //Image image = new Image(imagePath, 480, 500, false, true);
+        //imageField.setImage(image);
 
         this.buttons = new ArrayList<>();
         Collections.addAll(buttons, answerA, answerB, answerC);
@@ -148,9 +155,11 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
             buttons.get(i).setDisable(false);
         }
 
-        answerA.setText(question.getActivities().get(1).title);
-        answerB.setText(question.getActivities().get(2).title);
-        answerC.setText(question.getActivities().get(3).title);
+        Platform.runLater(() -> {
+            answerA.setText(question.getActivities().get(0).title);
+            answerB.setText(question.getActivities().get(1).title);
+            answerC.setText(question.getActivities().get(2).title);
+        });
     }
 
     /**
@@ -163,12 +172,6 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
             if (i != positionCorrectAnswer) {
                 wrong.get(i).setVisible(true);
             }
-        }
-
-        if (selectedAnswerButton == positionCorrectAnswer) {
-            mainCtrl.addPoints(100);
-        } else {
-            mainCtrl.addPoints(0);
         }
     }
 

@@ -1,6 +1,7 @@
 package client.dependedoncomponents;
 
 import client.scenes.LeaderboardCtrl;
+import client.scenes.MainCtrl;
 import commons.LeaderboardEntry;
 import java.util.List;
 
@@ -9,6 +10,11 @@ import java.util.List;
  */
 public class LeaderboardCtrlDOC extends LeaderboardCtrl {
     public List<LeaderboardEntry> entries;
+
+    public LeaderboardCtrlDOC(MainCtrl mainCtrl) {
+        super(null);
+    }
+
 
     @Override
     public void initialize(List<LeaderboardEntry> entries, int maxSize, String type) {

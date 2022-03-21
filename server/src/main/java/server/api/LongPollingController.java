@@ -46,24 +46,23 @@ public class LongPollingController {
      * This generates a JSON String and sends it to all connected players.
      * <p>
      *
-     * @param receivingGameId The ID of the game to which the data must be sent to
-     * @param type            The type of the request
-     *                        (Possible values: "START_MP_GAME", "EMOJI", "HALVE_TIME", "DISCONNECT", "JOIN")
-     * @param keyValuePairs   The key value pairs in generated JSON String
-     *                        <p>
-     *                        <p>
-     *                        EXAMPLE:
-     *                        <p>
-     *                        <p>
-     *                        dispatch(4, "EMOJI", Pair.of("name", "Per"), Pair.of("reaction", "happy"))
-     *                        <p>
-     *                        <p>
-     *                        WILL RESULT IN FOLLOWING JSON STRING SENT TO ALL PLAYERS IN LOBBY WITH ID 4:
-     *                        <p>
-     *                        <p>
-     *                        {"type":"EMOJI","name":"Per","reaction":"happy"}
-     *                        <p>
-     *                        <p>
+     * @param gameId        - The ID of the game to whuch the data must be sent to
+     * @param type          - the type of the request
+     *                      (Possible values: "START_MP_GAME", "EMOJI", "HALVE_TIME", "DISCONNECT", "JOIN")
+     * @param keyValuePairs The key value pairs in generated JSON String
+     *                      <p>
+     *                      <p>
+     *                      EXAMPLE:
+     *                      <p>
+     *                      <p>
+     *                      dispatch(4, "EMOJI", Pair.of("name", "Per"), Pair.of("reaction", "happy"))
+     *                      <p>
+     *                      <p>
+     *                      WILL RESULT IN FOLLOWING JSON STRING SENT TO ALL PLAYERS IN LOBBY WITH ID 4:
+     *                      <p>
+     *                      <p>
+     *                      {"type":"EMOJI","name":"Per","reaction":"happy"}
+     *                      <p>
      */
 
     @SafeVarargs

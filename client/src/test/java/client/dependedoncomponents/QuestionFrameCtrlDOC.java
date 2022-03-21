@@ -8,7 +8,7 @@ import client.scenes.QuestionFrameCtrl;
 public class QuestionFrameCtrlDOC extends QuestionFrameCtrl implements SupportsLogging {
 
     public QuestionFrameCtrlDOC() {
-        super(null, null, null, null);
+        super(null, null, null, null, null);
         clearLogs();
     }
 

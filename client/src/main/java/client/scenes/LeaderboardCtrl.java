@@ -1,6 +1,8 @@
 package client.scenes;
 
 import client.scenes.controllerrequirements.LeaderboardCtrlRequirements;
+import client.utils.ServerUtils;
+import com.google.inject.Inject;
 import commons.LeaderboardEntry;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,12 +10,15 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 
 public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
 
+    @FXML
+    private Button back;
     @FXML
     private TableView<LeaderboardEntry> leaderboard;
     @FXML
@@ -35,8 +40,14 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     public static final int TYPE_INTERMED = 2;
     public static final int TYPE_FINAL = 3;
 
+    private final MainCtrl mainCtrl;
     private int type;
     private int maxSize;
+
+    @Inject
+    public LeaderboardCtrl(MainCtrl mainCtrl) {
+        this.mainCtrl = mainCtrl;
+    }
 
     /**
      * {@inheritDoc}
@@ -107,5 +118,9 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
 
     protected void setMaxSize(int maxSize) {
         this.maxSize = maxSize;
+    }
+
+    public void backToMainFrame() {
+        mainCtrl.showMainFrame();
     }
 }

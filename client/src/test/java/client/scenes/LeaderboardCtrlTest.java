@@ -20,7 +20,7 @@ class LeaderboardCtrlTest {
 
     @BeforeEach
     void setUp() {
-        leaderboardCtrl = new LeaderboardCtrlDOC();
+        leaderboardCtrl = new LeaderboardCtrlDOC(null);
         placeHolderEntries = List.of(
                 new LeaderboardEntry("Someone", 100),
                 new LeaderboardEntry("test", 500),
