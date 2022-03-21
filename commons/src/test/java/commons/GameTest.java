@@ -73,12 +73,12 @@ class GameTest {
 
     @Test
     void getNextQuestionBeforeFirstRound() {
-        assertThrows(IndexOutOfBoundsException.class, () -> sut.getNextQuestion());
+        assertThrows(IndexOutOfBoundsException.class, () -> sut.nextQuestion());
     }
 
     @Test
     void getNextQuestionFirstRound() {
         sut.incrementRound();
-        assertSame(question, sut.getNextQuestion());
+        assertSame(question, sut.nextQuestion());
     }
 }

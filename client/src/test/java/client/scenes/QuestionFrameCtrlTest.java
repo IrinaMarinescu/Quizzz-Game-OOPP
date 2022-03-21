@@ -114,7 +114,6 @@ class QuestionFrameCtrlTest {
         for (int i = 0; i < QuestionFrameCtrl.LEADERBOARD_SIZE_MAX + 10; i++) {
             entries.add(new LeaderboardEntry("James", 1));
         }
-        System.out.println(entries.size());
         entries = sut.setLeaderboardContents(entries);
 
         assertSame(QuestionFrameCtrl.LEADERBOARD_SIZE_MAX, entries.size());

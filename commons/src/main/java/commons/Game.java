@@ -46,7 +46,7 @@ public class Game {
     /**
      * @return The next question, based on current round
      */
-    public Question getNextQuestion() {
+    public Question nextQuestion() {
         return questions.get(round - 1);
     }
 

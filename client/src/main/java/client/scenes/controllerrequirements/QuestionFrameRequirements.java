@@ -18,9 +18,9 @@ public interface QuestionFrameRequirements {
     /**
      * Resets the question frame and initializes settings for a new multiplayer game
      *
-     * @param names The names of all players involved
+     * @param players The names of all players involved
      */
-    void initializeMultiplayerGame(List<String> names);
+    void initializeMultiplayerGame(List<LeaderboardEntry> players);
 
     /**
      * Sets node containing question at the center of the frame

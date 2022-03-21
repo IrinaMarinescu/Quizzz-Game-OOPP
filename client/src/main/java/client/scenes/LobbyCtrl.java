@@ -1,8 +1,12 @@
 package client.scenes;
 
 import client.scenes.controllerrequirements.LobbyCtrlRequirements;
+import client.utils.GameUtils;
+import client.utils.ServerUtils;
+import commons.Lobby;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,7 +26,12 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
     @FXML
     private TableView<String> table;
 
+    private final ServerUtils serverUtils;
+    private final GameUtils gameUtils;
+
     private final MainCtrl mainCtrl;
+
+    ObservableList<String> list = FXCollections.observableArrayList();
 
     /**
      * Injects mainCtrl, so it's possible to call methods from there
@@ -30,7 +39,9 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
      * @param mainCtrl injects mainCtrl
      */
     @Inject
-    public LobbyCtrl(MainCtrl mainCtrl) {
+    public LobbyCtrl(ServerUtils serverUtils, GameUtils gameUtils, MainCtrl mainCtrl) {
+        this.serverUtils = serverUtils;
+        this.gameUtils = gameUtils;
         this.mainCtrl = mainCtrl;
     }
 
@@ -39,7 +50,7 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
      */
     @FXML
     public void initializeMultiplayerGame() {
-        mainCtrl.startMultiplayerGame();
+        gameUtils.startMultiplayerGame();
     }
 
     /**
@@ -50,58 +61,26 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
         mainCtrl.playerLeavesLobby();
     }
 
-    ObservableList<String> list = FXCollections.observableArrayList(
-            "Yannick",
-            "Per",
-            "Irina",
-            "Andrei",
-            "Mirella",
-            "Chris"
-    );
-
-
     /**
      * Sets up the table for the lobby screen
      *
-     * @param url url
-     *
+     * @param url            url
      * @param resourceBundle resourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         name.setCellValueFactory(s -> new SimpleStringProperty(s.getValue()));
-
         table.setItems(list);
     }
 
     /**
-     * Adds a player to the lobby, reloads the table
+     * Set up the given lobby
      *
-     * @param name The name of the player to be added
+     * @param lobby The lobby that has to be set
      */
-    @Override
-    public void addPlayer(String name) {
-        list.add(name);
-        table.setItems(list);
-    }
-
-    /**
-     * Removes a player from the lobby, reloads the table
-     *
-     * @param name The name of the player
-     */
-    @Override
-    public void removePlayer(String name) {
-        list.remove(name);
-        table.setItems(list);
-    }
-
-    /**
-     * Removes all players from the lobby, reloads the table
-     */
-    @Override
-    public void clearPlayers() {
-        list.clear();
+    public void updateLobby(Lobby lobby) {
+        list = FXCollections.observableArrayList(lobby.getPlayers().stream().map(player -> player.getName()).collect(
+            Collectors.toList()));
         table.setItems(list);
     }
 }
