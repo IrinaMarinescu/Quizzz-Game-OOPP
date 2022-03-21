@@ -191,14 +191,12 @@ public class MainCtrl implements MainCtrlRequirements {
         return this.player;
     }
 
-=======
     /**
      * Set player to new Player Object with given attributes
      *
      * @param username The name of the player
      * @param points   The number of points the player has
      */
->>>>>>> client/src/main/java/client/scenes/MainCtrl.java
     public void setPlayer(String username, int points) {
         this.player = new LeaderboardEntry(username, points);
     }

@@ -113,11 +113,6 @@ public class Main extends Application {
         var insteadOfQuestion =
             FXML.load(InsteadOfQuestionCtrl.class, "client/scenes/InsteadOfQuestion.fxml", null);
 
-        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        var longPollingUtils = INJECTOR.getInstance(client.utils.LongPollingUtils.class);
-        var serverUtils = INJECTOR.getInstance(ServerUtils.class);
-        var timeUtils = INJECTOR.getInstance(TimeUtils.class);
-
         mainCtrl.initialize(serverUtils, gameUtils, 
             lobbyUtils, timeUtils, 
             primaryStage, mainFrame,

@@ -21,6 +21,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import commons.Activity;
 import commons.Game;
 import commons.LeaderboardEntry;
+import commons.Lobby;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -141,8 +142,6 @@ public class ServerUtils {
      * @param limit the number of entries to fetch
      * @return a list of leaderboard entries, at most <code>limit</code> in number, sorted by the score.
      */
-=======
->>>>>>> client/src/main/java/client/utils/ServerUtils.java
     public List<LeaderboardEntry> getSoloLeaderboard(int limit) {
         return ClientBuilder.newClient(new ClientConfig()) //
             .target(serverIP).path("api/leaderboard/" + limit) //

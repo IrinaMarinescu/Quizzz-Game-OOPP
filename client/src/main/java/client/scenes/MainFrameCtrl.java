@@ -128,8 +128,8 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
      * Otherwise, they will be shown an error.
      */
     public void showAdmin() {
-        if (server.validateIP(serverIP.getText())) {
-            server.setServerIP(serverIP.getText());
+        if (serverUtils.validateIP(serverIP.getText())) {
+            serverUtils.setServerIP(serverIP.getText());
             mainCtrl.showAdminInterface();
         } else {
             System.out.println("invalid ip!");
