@@ -37,7 +37,7 @@ public class LeaderboardController {
      * Uses the function defined in {@link LeaderboardEntryRepository} to fetch the top performers from the leaderboard.
      *
      * @param limit the number of entries to fetch
-     * @returna list containing the specified number of leaderboard entries, ordered by score
+     * @return a list containing the specified number of leaderboard entries, ordered by score
      */
     @GetMapping("/{limit}")
     public List<LeaderboardEntry> fetchTopPerformers(@PathVariable("limit") int limit) {

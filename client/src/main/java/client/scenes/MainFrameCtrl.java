@@ -29,8 +29,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-//import javafx.scene.control.TableColumn;
-//import javafx.scene.control.TableView;
 
 public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
 
@@ -41,8 +39,6 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
 
     private long lastEscapeKeyPressTime;
 
-    //@FXML
-    //private Button trophy;
     @FXML
     private TextField username;
     @FXML
@@ -54,13 +50,13 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     @FXML
     private Text serverIPError;
 
-    //@FXML
-    //private Text helpPointsGained;
-    //@FXML
-    //private Button helpMenuScore;
-    //@FXML
-    //private Button helpMenuQuestionNumber;
-
+    /**
+     * Injects mainCtrl, lobbyUtils and mainCtrl, so it's possible to call methods from there
+     *
+     * @param serverUtils The instance of ServerUtils
+     * @param lobbyUtils  The instance of LobbyUtils
+     * @param mainCtrl    The instance of MainCtrl
+     */
     @Inject
     public MainFrameCtrl(ServerUtils serverUtils, LobbyUtils lobbyUtils, MainCtrl mainCtrl) {
         this.serverUtils = serverUtils;
@@ -129,7 +125,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     /**
      * Display the username error
      *
-     * @param show if true displays the error otherwise hides it
+     * @param show If true displays the error otherwise hides it
      */
     @Override
     public void displayUsernameError(boolean show) {
@@ -139,7 +135,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     /**
      * Display the server IP error
      *
-     * @param show if true displays the error otherwise hides it
+     * @param show If true displays the error otherwise hides it
      */
     @Override
     public void displayServerIPError(boolean show) {

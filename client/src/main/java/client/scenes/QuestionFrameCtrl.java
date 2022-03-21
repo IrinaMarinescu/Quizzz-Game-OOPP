@@ -95,16 +95,20 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
 
 
     /**
-     * Injects necessary dependencies
+     * Injects mainCtrl, lobbyUtils and mainCtrl, so it's possible to call methods from there
      *
-     * @param mainCtrl The main front-end controller
+     * @param timeUtils    The instance of TimeUtils
+     * @param mainCtrl     The instance of MainCtrl
+     * @param timerBarCtrl The instance of TimerBarCtrl
+     * @param emoteCtrl    The instance of EmoteCtrl
      */
     @Inject
-    public QuestionFrameCtrl(MainCtrl mainCtrl, TimerBarCtrl timerBarCtrl, EmoteCtrl emoteCtrl, TimeUtils timeUtils) {
+    public QuestionFrameCtrl(TimeUtils timeUtils, MainCtrl mainCtrl, TimerBarCtrl timerBarCtrl,
+                             EmoteCtrl emoteCtrl) {
+        this.timeUtils = timeUtils;
         this.mainCtrl = mainCtrl;
         this.timerBarCtrl = timerBarCtrl;
         this.emoteCtrl = emoteCtrl;
-        this.timeUtils = timeUtils;
     }
 
     /**
@@ -285,7 +289,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     /**
      * Method to be run when a user chooses to send an emoticon
      * <p>
-     * TODO: make theis send a request to the server, delete placeholders
+     * TODO: make this send a request to the server, delete placeholders
      */
     @FXML
     private void addReaction(ActionEvent e) {
@@ -384,9 +388,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     public void tempDisableJokers(double duration) {
         for (Button joker : jokers) {
             setJokerEnabled(joker, false);
-            timeUtils.runAfterDelay(() -> {
-                setJokerEnabled(joker, true);
-            }, duration);
+            timeUtils.runAfterDelay(() -> setJokerEnabled(joker, true), duration);
         }
     }
 
