@@ -23,10 +23,13 @@ import client.scenes.LobbyCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.MainFrameCtrl;
 import client.scenes.QuestionFrameCtrl;
+import client.scenes.questioncontrollers.InsteadOfQuestionCtrl;
 import client.scenes.questioncontrollers.OpenQuestionCtrl;
 import client.scenes.questioncontrollers.QuestionOneImageCtrl;
 import client.scenes.questioncontrollers.QuestionThreePicturesCtrl;
 import client.scenes.questioncontrollers.QuestionTrueFalseCtrl;
+import client.utils.GameUtils;
+import client.utils.LobbyUtils;
 import client.utils.ServerUtils;
 import client.utils.TimeUtils;
 import com.google.inject.Injector;
@@ -72,11 +75,13 @@ public class Main extends Application {
 
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
 
-        var timeUtils = INJECTOR.getInstance(TimeUtils.class);
-
         var serverUtils = INJECTOR.getInstance(ServerUtils.class);
 
-        var longPollingUtils = INJECTOR.getInstance(client.utils.LongPollingUtils.class);
+        var timeUtils = INJECTOR.getInstance(TimeUtils.class);
+
+        var gameUtils = INJECTOR.getInstance(GameUtils.class);
+
+        var lobbyUtils = INJECTOR.getInstance(LobbyUtils.class);
 
         var mainFrame =
             FXML.load(MainFrameCtrl.class, "client/scenes/MainFrame.fxml", "client/css/mainFrame.css");
@@ -90,19 +95,22 @@ public class Main extends Application {
         var questionFrame =
             FXML.load(QuestionFrameCtrl.class, "client/scenes/questionFrame.fxml", "client/css/questionFrame.css");
 
-        var openQuestion = FXML.load(OpenQuestionCtrl.class, "client/scenes/OpenQuestion.fxml", null);
-
-        var questionOneImage = FXML.load(QuestionOneImageCtrl.class, "client/scenes/QuestionOneImage.fxml", null);
-
-        var questionTrueFalse = FXML.load(QuestionTrueFalseCtrl.class, "client/scenes/QuestionThreePictures.fxml",
+        var questionTrueFalse = FXML.load(QuestionTrueFalseCtrl.class, "client/scenes/QuestionTrueFalse.fxml",
             "client/css/questionTrueFalse.css");
+
+        var openQuestion = FXML.load(OpenQuestionCtrl.class, "client/scenes/OpenQuestion.fxml", null);
 
         var questionThreePictures =
             FXML.load(QuestionThreePicturesCtrl.class, "client/scenes/QuestionThreePictures.fxml",
-                "client/css/questionsThreePictures.css");
+                "questionsThreePictures.css");
 
-        mainCtrl.initialize(timeUtils, serverUtils, longPollingUtils, primaryStage, mainFrame, lobbyFrame, leaderboard,
-            questionFrame, openQuestion,
-            questionOneImage);
+        var questionOneImage = FXML.load(QuestionOneImageCtrl.class, "client/scenes/QuestionOneImage.fxml", null);
+
+        var insteadOfQuestion =
+            FXML.load(InsteadOfQuestionCtrl.class, "client/scenes/InsteadOfQuestion.fxml", null);
+
+        mainCtrl.initialize(serverUtils, gameUtils, lobbyUtils, timeUtils, primaryStage, mainFrame,
+            lobbyFrame, leaderboard, questionFrame, questionTrueFalse, openQuestion, questionThreePictures,
+            questionOneImage, insteadOfQuestion);
     }
 }

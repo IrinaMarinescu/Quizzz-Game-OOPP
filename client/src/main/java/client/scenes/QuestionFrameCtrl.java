@@ -138,19 +138,19 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     /**
      * Resets the question frame and initializes settings for a new multiplayer game
      *
-     * @param names The names of all players involved
+     * @param players The list of all players involved
      */
-    public void initializeMultiplayerGame(List<String> names) {
-        startNewGame(true, names);
+    public void initializeMultiplayerGame(List<LeaderboardEntry> players) {
+        startNewGame(true, players);
     }
 
     /**
      * Initializes settings for a new game
      *
      * @param isMultiplayerGame Whether this is a multiplayer game
-     * @param playerNames       The names of the players involved
+     * @param players           The players involved
      */
-    private void startNewGame(boolean isMultiplayerGame, List<String> playerNames) {
+    private void startNewGame(boolean isMultiplayerGame, List<LeaderboardEntry> players) {
         this.isMultiplayerGame = isMultiplayerGame;
         this.gameScore = 0;
         this.questionNumber = -1;
@@ -171,9 +171,6 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         }
 
         if (isMultiplayerGame) {
-            List<LeaderboardEntry> players = playerNames.stream()
-                .map(p -> new LeaderboardEntry(p, 0))
-                .collect(Collectors.toList());
             setLeaderboardContents(players);
         } else {
             sideLeaderboard.setVisible(false);

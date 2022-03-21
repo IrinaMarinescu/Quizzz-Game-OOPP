@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class GameController {
 
     private Map<UUID, Game> games;
+    public UUID receivingGameId = UUID.randomUUID();
+
     private final ActivityController activityController;
     private final LobbyController lobbyController;
 
@@ -45,6 +49,7 @@ public class GameController {
     public Game startMultiplayerGame() {
         Game newGame = lobbyController.createGame(activityController.generateQuestions());
         games.put(newGame.getId(), newGame);
+        dispatch(newGame.getId());
         return newGame;
     }
 
@@ -56,6 +61,37 @@ public class GameController {
     @GetMapping("/singleplayer/start")
     public Game startSingleplayer() {
         return new Game(UUID.randomUUID(), activityController.generateQuestions(), new ArrayList<>());
+    }
+
+    /**
+     * This is where front-end sends a request which gets stored
+     *
+     * @param gameId The id of the game to which data will be returned to
+     * @return A JSON string corresponding to the result
+     */
+    @GetMapping(path = {"/{gameId}"})
+    synchronized ResponseEntity<Game> receivePoll(@PathVariable UUID gameId) {
+        try {
+            do {
+                wait();
+            } while (!gameId.equals(receivingGameId));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            System.err.println("Thread that was paused due to long polling on server got interrupted");
+        }
+        return ResponseEntity.ok(games.get(receivingGameId));
+    }
+
+    /**
+     * This must be called by server-side methods to send data to the client.
+     * This generates a JSON Lobby and sends it to all connected players.
+     *
+     * @param receivingGameId The ID of the game to which the data must be sent to
+     */
+
+    final synchronized void dispatch(UUID receivingGameId) {
+        this.receivingGameId = receivingGameId;
+        notifyAll();
     }
 
 }

@@ -6,10 +6,9 @@ import commons.Lobby;
 import commons.Question;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/lobby")
 public class LobbyController {
 
-    @Autowired
-    private LongPollingController longPollingController;
-
     private Lobby lobby;
+    public UUID receivingLobbyId = UUID.randomUUID();
+
 
     public LobbyController() {
         lobby = new Lobby(UUID.randomUUID());
@@ -47,7 +45,7 @@ public class LobbyController {
     @PostMapping("add")
     public ResponseEntity<Lobby> addPlayerToLobby(@RequestBody LeaderboardEntry player) {
         lobby.addPlayer(player);
-        longPollingController.dispatch(lobby.getId(), "JOIN", Pair.of("name", player.getName()));
+        dispatch(lobby.getId());
         return ResponseEntity.ok(lobby);
     }
 
@@ -59,7 +57,7 @@ public class LobbyController {
      */
     @PostMapping("remove")
     public ResponseEntity<Boolean> removePlayerFromLobby(@RequestBody LeaderboardEntry player) {
-        longPollingController.dispatch(lobby.getId(), "DISCONNECT", Pair.of("name", player.getName()));
+        dispatch(lobby.getId());
         return ResponseEntity.ok(lobby.removePlayer(player));
     }
 
@@ -71,9 +69,39 @@ public class LobbyController {
      */
     public Game createGame(List<Question> questions) {
         Game newGame = new Game(lobby.getId(), questions, lobby.getPlayers());
-        UUID lobbyId = UUID.randomUUID();
-        lobby = new Lobby(lobbyId);
+        lobby = new Lobby(UUID.randomUUID());
         return newGame;
+    }
+
+    /**
+     * This is where front-end sends a request which gets stored
+     *
+     * @param lobbyId The id of the game to which data will be returned to
+     * @return A JSON string corresponding to the result
+     */
+    @GetMapping(path = {"/{lobbyId}"})
+    synchronized ResponseEntity<Lobby> receivePoll(@PathVariable UUID lobbyId) {
+        try {
+            do {
+                wait();
+            } while (!lobbyId.equals(receivingLobbyId));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            System.err.println("Thread that was paused due to long polling on server got interrupted");
+        }
+        return ResponseEntity.ok(lobby);
+    }
+
+    /**
+     * This must be called by server-side methods to send data to the client.
+     * This generates a JSON Lobby and sends it to all connected players.
+     *
+     * @param receivingLobbyId The ID of the lobby to which the data must be sent to
+     */
+
+    final synchronized void dispatch(UUID receivingLobbyId) {
+        this.receivingLobbyId = receivingLobbyId;
+        notifyAll();
     }
 
 }

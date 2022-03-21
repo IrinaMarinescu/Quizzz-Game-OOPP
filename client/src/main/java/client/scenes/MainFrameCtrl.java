@@ -17,6 +17,7 @@
 package client.scenes;
 
 import client.scenes.controllerrequirements.MainFrameCtrlRequirements;
+import client.utils.LobbyUtils;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import java.net.URL;
@@ -33,7 +34,9 @@ import javafx.scene.text.Text;
 
 public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
 
-    private final ServerUtils server;
+    private final ServerUtils serverUtils;
+    private final LobbyUtils lobbyUtils;
+
     private final MainCtrl mainCtrl;
 
     private long lastEscapeKeyPressTime;
@@ -59,8 +62,9 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     //private Button helpMenuQuestionNumber;
 
     @Inject
-    public MainFrameCtrl(ServerUtils server, MainCtrl mainCtrl) {
-        this.server = server;
+    public MainFrameCtrl(ServerUtils serverUtils, LobbyUtils lobbyUtils, MainCtrl mainCtrl) {
+        this.serverUtils = serverUtils;
+        this.lobbyUtils = lobbyUtils;
         this.mainCtrl = mainCtrl;
     }
 
@@ -76,8 +80,8 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
      * otherwise show a server IP error
      */
     public void openLeaderboard() {
-        if (server.validateIP(serverIP.getText())) {
-            server.setServerIP(serverIP.getText());
+        if (serverUtils.validateIP(serverIP.getText())) {
+            serverUtils.setServerIP(serverIP.getText());
 
             mainCtrl.showGlobalLeaderboardFrame();
         } else {
@@ -97,8 +101,8 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
      * If the server IP entered by the user is correct start a new single player Game, otherwise show a server IP error
      */
     public void startSingleplayerGame() {
-        if (server.validateIP(serverIP.getText())) {
-            server.setServerIP(serverIP.getText());
+        if (serverUtils.validateIP(serverIP.getText())) {
+            serverUtils.setServerIP(serverIP.getText());
             mainCtrl.setPlayer(username.getText(), 0);
             mainCtrl.startSingleplayerGame();
         } else {
@@ -111,11 +115,11 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
      * join the Lobby, otherwise show a server IP error
      */
     public void joinLobby() {
-        if (server.validateIP(serverIP.getText()) && server.validateUsername(username.getText())) {
-            server.setServerIP(serverIP.getText());
+        if (serverUtils.validateIP(serverIP.getText()) && lobbyUtils.validateUsername(username.getText())) {
+            serverUtils.setServerIP(serverIP.getText());
             mainCtrl.setPlayer(username.getText(), 0);
             mainCtrl.joinLobby();
-        } else if (!server.validateUsername(serverIP.getText())) {
+        } else if (!lobbyUtils.validateUsername(serverIP.getText())) {
             displayServerIPError(true);
         } else {
             displayUsernameError(true);

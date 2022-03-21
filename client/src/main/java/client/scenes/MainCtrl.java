@@ -18,9 +18,13 @@ package client.scenes;
 
 import client.scenes.controllerrequirements.MainCtrlRequirements;
 import client.scenes.controllerrequirements.QuestionRequirements;
+import client.scenes.questioncontrollers.InsteadOfQuestionCtrl;
 import client.scenes.questioncontrollers.OpenQuestionCtrl;
 import client.scenes.questioncontrollers.QuestionOneImageCtrl;
-import client.utils.LongPollingUtils;
+import client.scenes.questioncontrollers.QuestionThreePicturesCtrl;
+import client.scenes.questioncontrollers.QuestionTrueFalseCtrl;
+import client.utils.GameUtils;
+import client.utils.LobbyUtils;
 import client.utils.ServerUtils;
 import client.utils.TimeUtils;
 import commons.Game;
@@ -56,9 +60,11 @@ public class MainCtrl implements MainCtrlRequirements {
     private int timeoutRoundCheck;
     private String currentQuestionType;
 
-    private TimeUtils timeUtils;
     private ServerUtils serverUtils;
-    private LongPollingUtils longPollingUtils;
+    private GameUtils gameUtils;
+    private LobbyUtils lobbyUtils;
+    private TimeUtils timeUtils;
+
     private Lobby lobby;
     private Stage primaryStage;
 
@@ -68,17 +74,26 @@ public class MainCtrl implements MainCtrlRequirements {
     private LobbyCtrl lobbyCtrl;
     private Scene lobbyFrame;
 
+    private LeaderboardCtrl leaderboardCtrl;
+    private Scene leaderboard;
+
     private QuestionFrameCtrl questionFrameCtrl;
     private Scene questionFrame;
 
-    private LeaderboardCtrl leaderboardCtrl;
-    private Scene leaderboard;
+    private QuestionTrueFalseCtrl questionTrueFalseCtrl;
+    private Node questionTrueFalse;
 
     private OpenQuestionCtrl openQuestionCtrl;
     private Node openQuestion;
 
+    private QuestionThreePicturesCtrl questionThreePicturesCtrl;
+    private Node questionThreePictures;
+
     private QuestionOneImageCtrl questionOneImageCtrl;
     private Node questionOneImage;
+
+    private InsteadOfQuestionCtrl insteadOfQuestionCtrl;
+    private Node insteadOfQuestion;
 
     QuestionRequirements currentQuestionCtrl = null;
 
@@ -87,7 +102,8 @@ public class MainCtrl implements MainCtrlRequirements {
      *
      * @param timeUtils        Only instance of TimeUtils class
      * @param serverUtils      Only instance of ServerUtils class
-     * @param longPollingUtils Only instance of LongPollingUtils class
+     * @param gameUtils        Only instance of GameUtils class
+     * @param lobbyUtils       Only instance of LobbyUtils class
      * @param primaryStage     Only stage
      * @param mainFrame        Welcome screen FXML and controller
      * @param questionFrame    Question Frame screen FXML and controller
@@ -95,18 +111,23 @@ public class MainCtrl implements MainCtrlRequirements {
      * @param openQuestion     Open question node FXML and controller
      * @param questionOneImage Question with one image FXML and controller
      */
-    public void initialize(TimeUtils timeUtils, ServerUtils serverUtils, LongPollingUtils longPollingUtils,
+    public void initialize(ServerUtils serverUtils, GameUtils gameUtils, LobbyUtils lobbyUtils, TimeUtils timeUtils,
                            Stage primaryStage,
                            Pair<MainFrameCtrl, Parent> mainFrame,
                            Pair<LobbyCtrl, Parent> lobbyFrame,
                            Pair<LeaderboardCtrl, Parent> leaderboard,
                            Pair<QuestionFrameCtrl, Parent> questionFrame,
+                           Pair<QuestionTrueFalseCtrl, Parent> questionTrueFalse,
                            Pair<OpenQuestionCtrl, Parent> openQuestion,
-                           Pair<QuestionOneImageCtrl, Parent> questionOneImage) {
+                           Pair<QuestionThreePicturesCtrl, Parent> questionThreePictures,
+                           Pair<QuestionOneImageCtrl, Parent> questionOneImage,
+                           Pair<InsteadOfQuestionCtrl, Parent> insteadOfQuestion) {
 
-        this.timeUtils = timeUtils;
         this.serverUtils = serverUtils;
-        this.longPollingUtils = longPollingUtils; // note that long polling is not active by default!
+        this.gameUtils = gameUtils;
+        this.lobbyUtils = lobbyUtils;
+        this.timeUtils = timeUtils;
+
         this.primaryStage = primaryStage;
 
         primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
@@ -126,11 +147,20 @@ public class MainCtrl implements MainCtrlRequirements {
         this.questionFrameCtrl = questionFrame.getKey();
         this.questionFrame = new Scene(questionFrame.getValue());
 
+        this.questionTrueFalseCtrl = questionTrueFalse.getKey();
+        this.questionTrueFalse = questionTrueFalse.getValue();
+
         this.openQuestionCtrl = openQuestion.getKey();
         this.openQuestion = openQuestion.getValue();
 
+        this.questionThreePicturesCtrl = questionThreePictures.getKey();
+        this.questionThreePictures = questionThreePictures.getValue();
+
         this.questionOneImageCtrl = questionOneImage.getKey();
         this.questionOneImage = questionOneImage.getValue();
+
+        this.insteadOfQuestionCtrl = insteadOfQuestion.getKey();
+        this.insteadOfQuestion = insteadOfQuestion.getValue();
 
         primaryStage.setTitle("Quizzzzz!");
         showMainFrame();
@@ -172,7 +202,7 @@ public class MainCtrl implements MainCtrlRequirements {
         intermediateLeaderboardShown = false;
         isMultiplayerGame = false;
         timeoutRoundCheck = 1;
-        game = serverUtils.startSingleplayer();
+        game = gameUtils.startSingleplayer();
         questionFrameCtrl.initializeSingleplayerGame();
         showQuestionFrame();
         nextEvent();
@@ -183,32 +213,27 @@ public class MainCtrl implements MainCtrlRequirements {
         intermediateLeaderboardShown = true;
         isMultiplayerGame = true;
         timeoutRoundCheck = 1;
-        game = serverUtils.startMultiplayerGame();
-        //questionFrameCtrl.initializeMultiplayerGame();
+        questionFrameCtrl.initializeMultiplayerGame(this.game.getPlayers());
+        lobbyUtils.setActive(false);
         showQuestionFrame();
         nextEvent();
     }
 
     public void joinLobby() {
-        Lobby lobby = serverUtils.joinLobby(this.player);
-        setLobby(lobby);
-        lobbyCtrl.initializeLobby(lobby);
-        longPollingUtils.setActive(true);
+        setLobby(lobbyUtils.joinLobby(this.player));
+        lobbyCtrl.updateLobby(this.lobby);
+        lobbyUtils.setActive(true);
+        gameUtils.setActive(true);
         showLobbyFrame();
     }
 
     public void playerLeavesLobby() {
-        serverUtils.leaveLobby(player);
+        lobbyUtils.leaveLobby(player);
         showMainFrame();
     }
 
-
-    public void addPlayerToLobby(String player) {
-        lobbyCtrl.addPlayer(player);
-    }
-
-    public void removePlayerFromLobby(String player) {
-        lobbyCtrl.removePlayer(player);
+    public void updateLobby(Lobby lobby) {
+        lobbyCtrl.updateLobby(lobby);
     }
 
     /**
@@ -246,12 +271,14 @@ public class MainCtrl implements MainCtrlRequirements {
         questionEndTime = questionStartTime + ROUND_TIME * 1000.0;
         pointsGained = 0;
         doublePoints = false;
-        Question currentQuestion = game.getNextQuestion();
+        Question currentQuestion = game.nextQuestion();
         currentQuestionType = currentQuestion.getQuestionType();
 
         switch (currentQuestionType) {
             case "trueFalseQuestion":
                 // TODO
+                currentQuestionCtrl = questionTrueFalseCtrl;
+                questionFrameCtrl.setCenterContent(questionTrueFalse);
                 questionFrameCtrl.setWrongAnswerJoker(false);
                 break;
             case "openQuestion":
@@ -259,6 +286,8 @@ public class MainCtrl implements MainCtrlRequirements {
                 questionFrameCtrl.setCenterContent(openQuestion);
                 break;
             case "threePicturesQuestion":
+                currentQuestionCtrl = questionThreePicturesCtrl;
+                questionFrameCtrl.setCenterContent(questionThreePictures);
                 // TODO
                 break;
             case "oneImageQuestion":
@@ -266,6 +295,8 @@ public class MainCtrl implements MainCtrlRequirements {
                 questionFrameCtrl.setCenterContent(questionOneImage);
                 break;
             case "insteadOfQuestion":
+                currentQuestionCtrl = insteadOfQuestionCtrl;
+                questionFrameCtrl.setCenterContent(insteadOfQuestion);
                 // TODO
                 break;
             default:

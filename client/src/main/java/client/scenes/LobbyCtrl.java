@@ -1,6 +1,8 @@
 package client.scenes;
 
 import client.scenes.controllerrequirements.LobbyCtrlRequirements;
+import client.utils.GameUtils;
+import client.utils.ServerUtils;
 import commons.Lobby;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -24,6 +26,9 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
     @FXML
     private TableView<String> table;
 
+    private final ServerUtils serverUtils;
+    private final GameUtils gameUtils;
+
     private final MainCtrl mainCtrl;
 
     ObservableList<String> list = FXCollections.observableArrayList();
@@ -34,15 +39,10 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
      * @param mainCtrl injects mainCtrl
      */
     @Inject
-    public LobbyCtrl(MainCtrl mainCtrl) {
+    public LobbyCtrl(ServerUtils serverUtils, GameUtils gameUtils, MainCtrl mainCtrl) {
+        this.serverUtils = serverUtils;
+        this.gameUtils = gameUtils;
         this.mainCtrl = mainCtrl;
-    }
-
-    public void initializeLobby(Lobby lobby) {
-        list = FXCollections.observableArrayList(lobby.getPlayers().stream().map(player -> player.getName()).collect(
-            Collectors.toList()));
-        table.setItems(list);
-        table.setItems(list);
     }
 
     /**
@@ -50,7 +50,7 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
      */
     @FXML
     public void initializeMultiplayerGame() {
-        mainCtrl.startMultiplayerGame();
+        gameUtils.startMultiplayerGame();
     }
 
     /**
@@ -74,33 +74,13 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
     }
 
     /**
-     * Adds a player to the lobby, reloads the table
+     * Set up the given lobby
      *
-     * @param name The name of the player to be added
+     * @param lobby The lobby that has to be set
      */
-    @Override
-    public void addPlayer(String name) {
-        list.add(name);
-        table.setItems(list);
-    }
-
-    /**
-     * Removes a player from the lobby, reloads the table
-     *
-     * @param name The name of the player
-     */
-    @Override
-    public void removePlayer(String name) {
-        list.remove(name);
-        table.setItems(list);
-    }
-
-    /**
-     * Removes all players from the lobby, reloads the table
-     */
-    @Override
-    public void clearPlayers() {
-        list.clear();
+    public void updateLobby(Lobby lobby) {
+        list = FXCollections.observableArrayList(lobby.getPlayers().stream().map(player -> player.getName()).collect(
+            Collectors.toList()));
         table.setItems(list);
     }
 }

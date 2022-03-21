@@ -28,8 +28,9 @@ public class Game {
         return questions;
     }
 
-    public Question getNextQuestion() {
-        return questions.get(round - 1);
+
+    public Question nextQuestion() {
+        return questions.get(round);
     }
 
     public List<LeaderboardEntry> getPlayers() {
