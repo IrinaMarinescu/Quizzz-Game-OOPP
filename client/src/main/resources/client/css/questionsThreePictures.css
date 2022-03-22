@@ -10,6 +10,21 @@ Button {
     -fx-focus-color: transparent;
 }
 
+VBox {
+    -fx-background-color: -lightishBlue;
+    -fx-background-radius: 20;
+    -fx-pref-height: 300;
+    -fx-pref-width: 300;
+    -fx-padding: 0;
+
+    -fx-focus-color: transparent;
+    -fx-text-fill: white;
+}
+
+Text {
+    -fx-padding: 10;
+}
+
 .Button:hover {
     -fx-opacity: 0.7;
 }

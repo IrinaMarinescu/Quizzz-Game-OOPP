@@ -9,10 +9,9 @@ import java.util.Random;
 import java.util.stream.IntStream;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 import javax.inject.Inject;
 
 public class QuestionThreePicturesCtrl implements QuestionRequirements {
@@ -20,7 +19,7 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
     private MainCtrl mainCtrl;
     private QuestionFrameCtrl questionFrameCtrl;
     private Question question;
-    private List<Button> answers;
+    private List<Text> answers;
     private List<ImageView> images;
     private List<ImageView> wrong;
     private List<ImageView> correct;
@@ -28,13 +27,13 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
     private int selectedAnswerButton;
 
     @FXML
-    Button answerA;
+    Text answerA;
 
     @FXML
-    Button answerB;
+    Text answerB;
 
     @FXML
-    Button answerC;
+    Text answerC;
 
     @FXML
     Label questionOutput;
@@ -178,50 +177,6 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
 
     public Question getQuestion() {
         return question;
-    }
-
-    public List<Button> getAnswers() {
-        return answers;
-    }
-
-    public List<ImageView> getImages() {
-        return images;
-    }
-
-    public int getPositionCorrectAnswer() {
-        return positionCorrectAnswer;
-    }
-
-    public int getSelectedAnswerButton() {
-        return selectedAnswerButton;
-    }
-
-    public Button getAnswerA() {
-        return answerA;
-    }
-
-    public Button getAnswerB() {
-        return answerB;
-    }
-
-    public Button getAnswerC() {
-        return answerC;
-    }
-
-    public Label getQuestionOutput() {
-        return questionOutput;
-    }
-
-    public ImageView getImageA() {
-        return imageA;
-    }
-
-    public ImageView getImageB() {
-        return imageB;
-    }
-
-    public ImageView getImageC() {
-        return imageC;
     }
 
 }

@@ -9,8 +9,8 @@ import java.util.stream.IntStream;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 import javax.inject.Inject;
 
 
@@ -32,7 +32,7 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
     Button falseButton;
 
     @FXML
-    Label questionOutput;
+    Text questionOutput;
 
     @FXML
     ImageView imageOutput;
@@ -126,33 +126,4 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
     public Question getQuestion() {
         return question;
     }
-
-    public List<Button> getAnswers() {
-        return answers;
-    }
-
-    public int getPositionCorrectAnswer() {
-        return positionCorrectAnswer;
-    }
-
-    public int getSelectedAnswerButton() {
-        return selectedAnswerButton;
-    }
-
-    public Button getTrueAnswer() {
-        return trueButton;
-    }
-
-    public Button getFalseAnswer() {
-        return falseButton;
-    }
-
-    public Label getQuestionOutput() {
-        return questionOutput;
-    }
-
-    public ImageView getImageOutput() {
-        return imageOutput;
-    }
-
 }
