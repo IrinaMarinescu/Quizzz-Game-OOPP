@@ -28,16 +28,9 @@ public class ExitPopUpCtrl {
         this.mainCtrl = mainCtrl;
     }
 
-    public void initialize() {
-        rectangle.setVisible(false);
-        yesButton.setVisible(false);
-        noButton.setVisible(false);
-
-    }
-
     public void buttonClick(ActionEvent e) {
-        Button button = (Button) e.getSource();
-        if (button.equals(yesButton)) {
+        String button = ((Button) e.getSource()).getId();
+        if (button.equals(yesButton.getId())) {
             mainCtrl.disconnect();
             return;
         }
