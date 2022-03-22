@@ -248,6 +248,9 @@ public class MainCtrl implements MainCtrlRequirements {
         timeoutRoundCheck = 1;
         questionFrameCtrl.initializeMultiplayerGame(this.game.getPlayers());
         lobbyUtils.setActive(false);
+        gameUtils.setActive("game", false);
+        gameUtils.setActive("features", true);
+
         showQuestionFrame();
         nextEvent();
     }
@@ -258,7 +261,7 @@ public class MainCtrl implements MainCtrlRequirements {
     public void joinLobby() {
         setLobby(lobbyUtils.joinLobby(this.player));
         lobbyUtils.setActive(true);
-        gameUtils.setActive(true);
+        gameUtils.setActive("game", true);
         showLobbyFrame();
     }
 
@@ -407,6 +410,10 @@ public class MainCtrl implements MainCtrlRequirements {
         questionEndTime -= timeUntilRoundEnd;
         questionFrameCtrl.halveRemainingTime();
         setQuestionTimeouts(timeUntilRoundEnd / 1000.0);
+    }
+
+    public void displayNewEmoji(String name, String reaction) {
+        questionFrameCtrl.displayNewEmoji(name, reaction);
     }
 
     /**

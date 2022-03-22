@@ -3,7 +3,6 @@ package client.scenes;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -18,8 +17,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -57,7 +54,7 @@ class QuestionFrameCtrlTest {
         emoteCtrlDOC = new EmoteCtrlDOC();
         timerBarCtrlDOC = new TimerBarCtrlDOC();
 
-        sut = new QuestionFrameCtrl(mainCtrlDOC, timerBarCtrlDOC, emoteCtrlDOC, timeUtilsDOC, null);
+        sut = new QuestionFrameCtrl(null, timeUtilsDOC, null, mainCtrlDOC, timerBarCtrlDOC, emoteCtrlDOC);
 
         sut.test = true;
         sut.sideLeaderboard = new VBox();

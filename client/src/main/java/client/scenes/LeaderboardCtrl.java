@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.scenes.controllerrequirements.LeaderboardCtrlRequirements;
-import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.LeaderboardEntry;
 import java.util.List;
