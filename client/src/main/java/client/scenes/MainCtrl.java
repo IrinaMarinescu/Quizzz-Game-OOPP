@@ -347,11 +347,6 @@ public class MainCtrl implements MainCtrlRequirements {
         setQuestionTimeouts(ROUND_TIME);
     }
 
-    private void showFinalScreen() {
-        finalScreenCtrl.setPoints(getPlayer().getScore());
-        questionFrameCtrl.setCenterContent(finalScreen);
-    }
-
     /**
      * Initializes timeouts until events that will happen after question and overview
      *
@@ -482,5 +477,13 @@ public class MainCtrl implements MainCtrlRequirements {
     public void showQuestionFrame() {
         primaryStage.setScene(questionFrame);
         questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
+    }
+
+    /**
+     * Shows final screen frame (after playing the game)
+     */
+    private void showFinalScreen() {
+        finalScreenCtrl.setPoints(getPlayer().getScore());
+        questionFrameCtrl.setCenterContent(finalScreen);
     }
 }
