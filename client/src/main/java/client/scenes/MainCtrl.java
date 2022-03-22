@@ -503,6 +503,6 @@ public class MainCtrl implements MainCtrlRequirements {
     }
 
     public void deniedExit() {
-        exitCheck.hide();
+        exitCheck.close();
     }
 }
