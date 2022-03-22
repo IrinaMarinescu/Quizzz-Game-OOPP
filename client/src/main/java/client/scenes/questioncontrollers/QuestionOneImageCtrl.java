@@ -10,9 +10,8 @@ import java.util.List;
 import java.util.Random;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 import javax.inject.Inject;
 
 public class QuestionOneImageCtrl implements QuestionRequirements {
@@ -20,23 +19,23 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
     private MainCtrl mainCtrl;
     private QuestionFrameCtrl questionFrameCtrl;
     private Question question;
-    private List<Button> buttons;
+    private List<Text> buttons;
     private List<ImageView> correct;
     private List<ImageView> wrong;
     private int positionCorrectAnswer;
     private int selectedAnswerButton;
 
     @FXML
-    Button answerA;
+    Text answerA;
 
     @FXML
-    Button answerB;
+    Text answerB;
 
     @FXML
-    Button answerC;
+    Text answerC;
 
     @FXML
-    Label questionText;
+    Text questionText;
 
     @FXML
     ImageView imageField;
