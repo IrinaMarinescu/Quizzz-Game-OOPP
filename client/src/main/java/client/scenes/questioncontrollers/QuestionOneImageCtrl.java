@@ -11,6 +11,7 @@ import java.util.Random;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javax.inject.Inject;
 
@@ -22,6 +23,7 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
     private List<Text> buttons;
     private List<ImageView> correct;
     private List<ImageView> wrong;
+    private List<VBox> boxes;
     private int positionCorrectAnswer;
     private int selectedAnswerButton;
 
@@ -57,6 +59,15 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
 
     @FXML
     ImageView wrongC;
+
+    @FXML
+    VBox boxA;
+
+    @FXML
+    VBox boxB;
+
+    @FXML
+    VBox boxC;
 
     /**
      * Injects necessary dependencies
@@ -106,11 +117,10 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
      * the other answers
      */
     private void setChosenAnswer() {
-        buttons.get(selectedAnswerButton).setStyle("-fx-border-color: #028090");
         for (int i = 0; i < 3; i++) {
-            buttons.get(i).setDisable(true);
+            boxes.get(i).setDisable(true);
             if (i != selectedAnswerButton) {
-                buttons.get(i).setOpacity(0.5);
+                boxes.get(i).setOpacity(0.5);
             }
         }
 
@@ -148,12 +158,14 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
         this.wrong = new ArrayList<>();
         Collections.addAll(wrong, wrongA, wrongB, wrongC);
 
+        this.boxes = new ArrayList<>();
+        Collections.addAll(boxes, boxA, boxB, boxC);
+
         for (int i = 0; i < 3; i++) {
             correct.get(i).setVisible(false);
             wrong.get(i).setVisible(false);
-            buttons.get(i).setOpacity(1);
-            buttons.get(i).setStyle("-fx-border-color:  #5CB4BF");
-            buttons.get(i).setDisable(false);
+            boxes.get(i).setOpacity(1);
+            boxes.get(i).setDisable(false);
         }
 
         String[] values = new String[3];
@@ -181,7 +193,7 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
     public void revealCorrectAnswer() {
         correct.get(positionCorrectAnswer).setVisible(true);
         for (int i = 0; i < 3; i++) {
-            buttons.get(i).setDisable(true);
+            boxes.get(i).setDisable(true);
             if (i != positionCorrectAnswer) {
                 wrong.get(i).setVisible(true);
             }
@@ -210,9 +222,7 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
             }
         }
 
-        buttons.get(removedAnswer).setOpacity(0.5);
-        buttons.get(removedAnswer).setDisable(true);
+        boxes.get(removedAnswer).setOpacity(0.5);
+        boxes.get(removedAnswer).setDisable(true);
     }
-
-    ;
 }

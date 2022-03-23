@@ -32,7 +32,7 @@
     -fx-background-image: url('../icons/angle-left-solid.png');
 }
 
-#trophy:hover, #back:hover {
+#trophy:hover {
     -fx-opacity: 0.8;
 }
 

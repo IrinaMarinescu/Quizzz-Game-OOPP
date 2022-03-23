@@ -192,7 +192,8 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     /**
      * Sets node containing question at the center of the frame
      *
-     * @param node The node to be inserted in the center of the frame
+     * @param node    The node to be inserted in the center of the frame
+     * @param animate Whether to play the timer bar animation
      */
     public void setCenterContent(Node node, boolean animate) {
         Platform.runLater(() -> {
@@ -200,7 +201,6 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
             if (animate) {
                 setRemainingTime(ROUND_TIME);
                 mainCtrl.setQuestionTimeouts(ROUND_TIME);
-                resizeTimerBar(timerBarCtrl.displayWidth, 0);
             }
         });
     }
@@ -357,11 +357,11 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
             if (enable) {
                 joker.getStyleClass().remove("usedJoker");
                 if (!joker.getStyleClass().contains("usedJoker")) {
-                    joker.getStyleClass().add("clickable");
+                    joker.getStyleClass().add("clickableGreen");
                 }
             } else {
                 joker.getStyleClass().add("usedJoker");
-                joker.getStyleClass().remove("clickable");
+                joker.getStyleClass().remove("clickableGreen");
             }
         });
     }
@@ -377,7 +377,6 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         if (joker.getStyleClass().contains("usedJoker")) {
             return;
         }
-
         setJokerEnabled(joker, false);
 
         switch (joker.getId()) {

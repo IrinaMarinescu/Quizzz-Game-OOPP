@@ -12,7 +12,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1156.0" stylesheets="@../css/questionsThreePictures.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.questioncontrollers.QuestionThreePicturesCtrl">
     <children>
-        <TextField id="Question" alignment="CENTER" editable="false" layoutX="77.0" layoutY="42.0" stylesheets="@../css/questionsThreePictures.css">
+        <TextField id="Question" alignment="CENTER" editable="false" layoutX="77.0" layoutY="40.0" stylesheets="@../css/questionsThreePictures.css">
             <font>
                 <Font name="System Bold" size="30.0" />
             </font>
@@ -47,12 +47,12 @@
                 <Image url="@../icons/wrong.png" />
             </image>
         </ImageView>
-      <Label fx:id="questionOutput" alignment="CENTER" contentDisplay="CENTER" layoutX="86.0" layoutY="69.0" prefHeight="60.0" prefWidth="981.0" text="Temporary Question" textFill="WHITE">
+      <Label fx:id="questionOutput" alignment="CENTER" contentDisplay="CENTER" layoutX="88.0" layoutY="67.0" prefHeight="60.0" prefWidth="981.0" text="Temporary Question" textFill="WHITE">
          <font>
             <Font size="48.0" />
          </font>
       </Label>
-      <VBox alignment="CENTER" layoutX="75.0" layoutY="315.0" onMouseClicked="#answerASelected" prefHeight="200.0" prefWidth="100.0">
+      <VBox fx:id="boxA" alignment="CENTER" layoutX="75.0" layoutY="315.0" onMouseClicked="#answerASelected" prefHeight="200.0" prefWidth="100.0" styleClass="clickableBlue">
          <children>
             <Text fx:id="answerA" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="a" textAlignment="CENTER" wrappingWidth="290.0">
                <font>
@@ -75,7 +75,7 @@
             <Insets />
          </opaqueInsets>
       </VBox>
-      <VBox alignment="CENTER" layoutX="429.0" layoutY="315.0" onMouseClicked="#answerBSelected" prefHeight="200.0" prefWidth="100.0">
+      <VBox fx:id="boxB" alignment="CENTER" layoutX="429.0" layoutY="315.0" onMouseClicked="#answerBSelected" prefHeight="200.0" prefWidth="100.0" styleClass="clickableBlue">
          <children>
             <Text fx:id="answerB" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="b" textAlignment="CENTER" wrappingWidth="290.0">
                <font>
@@ -98,7 +98,7 @@
             <Insets />
          </opaqueInsets>
       </VBox>
-      <VBox alignment="CENTER" layoutX="781.0" layoutY="315.0" onMouseClicked="#answerCSelected" prefHeight="200.0" prefWidth="100.0">
+      <VBox fx:id="boxC" alignment="CENTER" layoutX="781.0" layoutY="315.0" onMouseClicked="#answerCSelected" prefHeight="200.0" prefWidth="100.0" styleClass="clickableBlue">
          <children>
             <Text fx:id="answerC" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="c" textAlignment="CENTER" wrappingWidth="290.0">
                <font>

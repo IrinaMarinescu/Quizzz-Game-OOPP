@@ -32,6 +32,7 @@ import commons.LeaderboardEntry;
 import commons.Lobby;
 import commons.Question;
 import java.util.List;
+import java.util.UUID;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -361,17 +362,13 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     void setQuestionTimeouts(double delay) {
         int expectedRound = game.getRound();
+        UUID expectedGame = game.getId();
         timeUtils.runAfterDelay(() -> {
-            if (expectedRound != timeoutRoundCheck) {
+            if (expectedRound != timeoutRoundCheck || !expectedGame.equals(game.getId())) {
                 return;
             }
 
             timeoutRoundCheck++;
-            Platform.runLater(() -> {
-                timeUtils.runAfterDelay(this::nextEvent, OVERVIEW_TIME);
-                questionFrameCtrl.setRemainingTime(OVERVIEW_TIME);
-            });
-
             currentQuestionCtrl.revealCorrectAnswer();
             Platform.runLater(() -> questionFrameCtrl.addPoints(pointsGained));
             player.setScore(player.getScore() + pointsGained);
@@ -380,6 +377,11 @@ public class MainCtrl implements MainCtrlRequirements {
             if (currentQuestionType.equals("trueFalseQuestion") || currentQuestionType.equals("openQuestion")) {
                 questionFrameCtrl.setWrongAnswerJoker(true);
             }
+
+            Platform.runLater(() -> {
+                questionFrameCtrl.setRemainingTime(OVERVIEW_TIME);
+                timeUtils.runAfterDelay(this::nextEvent, OVERVIEW_TIME);
+            });
         }, delay);
     }
 

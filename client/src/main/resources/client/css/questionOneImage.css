@@ -1,13 +1,13 @@
 @import 'global.css';
 
 .answerButton {
-    -fx-background-color: -lightishBlue;
     -fx-background-radius: 20;
     -fx-pref-height: 129;
     -fx-pref-width: 441;
     -fx-padding: 10;
 
     -fx-focus-color: transparent;
+    -fx-font-size: 28;
 }
 
 .Button:hover {
@@ -19,8 +19,4 @@
     -fx-background-radius: 10;
     -fx-pref-height: 123;
     -fx-padding: 10;
-}
-
-TextArea {
-    -fx-background-color: -lightishBlue;
 }

@@ -56,14 +56,6 @@ TextField, Button {
     -fx-background-image: url('../icons/circle-question-solid.png');
 }
 
-#singleplayer {
-    -fx-background-color: -darkCyan;
-}
-
-#multiplayer {
-    -fx-background-color: -darkCyan;
-}
-
 #title {
     -fx-fill: -darkCyan;
     -fx-font-size: 100;

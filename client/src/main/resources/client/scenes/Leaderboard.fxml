@@ -27,19 +27,22 @@
                             <left>
                                 <HBox prefHeight="80.0" prefWidth="300.0" BorderPane.alignment="CENTER">
                                     <children>
-                              <Button fx:id="back" minHeight="80.0" minWidth="70.0" mnemonicParsing="false" onAction="#backToMainFrame" prefHeight="70.0" prefWidth="50.0" style="-fx-background-color: transparent;">
-                                 <graphic>
-                                              <ImageView fx:id="trophy" fitHeight="60.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" styleClass="clickable" x="10.0" y="10.0">
-                                                  <image>
-                                                      <Image url="@../icons/angle-left-solid.png" />
-                                                  </image>
-                                                  <cursor>
-                                                      <Cursor fx:constant="HAND" />
-                                                  </cursor>
-                                              </ImageView>
-                                 </graphic>
-                              </Button>
+                                        <Button fx:id="back" minHeight="80.0" minWidth="70.0" mnemonicParsing="false" onAction="#backToMainFrame" prefHeight="70.0" prefWidth="50.0" style="-fx-background-color: transparent;">
+                                            <graphic>
+                                                <ImageView id="back" fx:id="trophy" fitHeight="60.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" styleClass="clickableGreen" x="10.0" y="10.0">
+                                                    <image>
+                                                        <Image url="@../icons/angle-left-solid.png" />
+                                                    </image>
+                                                    <cursor>
+                                                        <Cursor fx:constant="HAND" />
+                                                    </cursor>
+                                                </ImageView>
+                                            </graphic>
+                                        </Button>
                                     </children>
+                           <BorderPane.margin>
+                              <Insets left="10.0" />
+                           </BorderPane.margin>
                                 </HBox>
                             </left>
                             <center>
@@ -52,7 +55,7 @@
                             <right>
                                 <HBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="80.0" prefWidth="280.0" BorderPane.alignment="CENTER">
                                     <BorderPane.margin>
-                                        <Insets right="20.0" />
+                                        <Insets right="30.0" />
                                     </BorderPane.margin>
                                 </HBox>
                             </right>

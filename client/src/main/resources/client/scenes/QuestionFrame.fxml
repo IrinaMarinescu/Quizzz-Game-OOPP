@@ -33,7 +33,7 @@
                         <Button fx:id="doublePoints" mnemonicParsing="false" onAction="#useJoker" BorderPane.alignment="CENTER">
                             <styleClass>
                                 <String fx:value="circle" />
-                                <String fx:value="clickable" />
+                                <String fx:value="clickableGreen" />
                             </styleClass>
                             <cursor>
                                 <Cursor fx:constant="DEFAULT" />
@@ -47,7 +47,7 @@
                         <Button fx:id="halveTime" mnemonicParsing="false" onAction="#useJoker" BorderPane.alignment="CENTER">
                             <styleClass>
                                 <String fx:value="circle" />
-                                <String fx:value="clickable" />
+                                <String fx:value="clickableGreen" />
                             </styleClass>
                             <opaqueInsets>
                                 <Insets />
@@ -67,7 +67,7 @@
                         <Button fx:id="eliminateWrongAnswer" mnemonicParsing="false" onAction="#useJoker" BorderPane.alignment="CENTER">
                             <styleClass>
                                 <String fx:value="circle" />
-                                <String fx:value="clickable" />
+                                <String fx:value="clickableGreen" />
                             </styleClass>
                             <BorderPane.margin>
                                 <Insets right="20.0" />
@@ -91,7 +91,7 @@
                                     <styleClass>
                                         <String fx:value="circle" />
                                         <String fx:value="smallCircle" />
-                                        <String fx:value="clickable" />
+                                        <String fx:value="clickableGreen" />
                                     </styleClass>
                                     <cursor>
                                         <Cursor fx:constant="DEFAULT" />
@@ -107,7 +107,7 @@
                                     <styleClass>
                                         <String fx:value="circle" />
                                         <String fx:value="smallCircle" />
-                                        <String fx:value="clickable" />
+                                        <String fx:value="clickableGreen" />
                                     </styleClass>
                                     <cursor>
                                         <Cursor fx:constant="DEFAULT" />
@@ -123,7 +123,7 @@
                                     <styleClass>
                                         <String fx:value="circle" />
                                         <String fx:value="smallCircle" />
-                                        <String fx:value="clickable" />
+                                        <String fx:value="clickableGreen" />
                                     </styleClass>
                                     <cursor>
                                         <Cursor fx:constant="DEFAULT" />
@@ -139,7 +139,7 @@
                                     <styleClass>
                                         <String fx:value="circle" />
                                         <String fx:value="smallCircle" />
-                                        <String fx:value="clickable" />
+                                        <String fx:value="clickableGreen" />
                                     </styleClass>
                                     <cursor>
                                         <Cursor fx:constant="DEFAULT" />
@@ -173,13 +173,13 @@
                         <Button fx:id="help" mnemonicParsing="false" onAction="#toggleHelpMenuVisibility">
                             <styleClass>
                                 <String fx:value="circle" />
-                                <String fx:value="clickable" />
+                                <String fx:value="clickableGreen" />
                             </styleClass>
                             <cursor>
                                 <Cursor fx:constant="DEFAULT" />
                             </cursor>
                             <HBox.margin>
-                                <Insets bottom="10.0" left="20.0" />
+                                <Insets left="20.0" />
                             </HBox.margin>
                             <tooltip>
                                 <Tooltip id="tooltip" text="Toggle help menu visibility" />
@@ -223,7 +223,7 @@
                     </VBox.margin>
                 </VBox>
                 <Region prefHeight="0.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                <VBox fx:id="helpMenuContainer" alignment="BOTTOM_CENTER" maxHeight="-Infinity" prefHeight="434.0" prefWidth="200.0" visible="false" VBox.vgrow="ALWAYS">
+                <VBox fx:id="helpMenuContainer" alignment="BOTTOM_CENTER" maxHeight="-Infinity" prefHeight="434.0" prefWidth="200.0" stylesheets="@../css/smallLeaderboard.css" visible="false" VBox.vgrow="ALWAYS">
                     <children>
                         <Button id="leaderboardTitle" minHeight="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="200.0" text="Help">
                             <VBox.margin>
@@ -371,7 +371,7 @@
                 <HBox prefHeight="80.0" prefWidth="675.0" BorderPane.alignment="CENTER_LEFT">
                     <children>
                         <Rectangle fx:id="topBar" arcHeight="5.0" arcWidth="5.0" height="80.0" stroke="BLACK" strokeWidth="0.0" width="3600.0" />
-                        <Button fx:id="trophy" mnemonicParsing="false" onAction="#toggleLeaderboardVisibility" styleClass="clickable">
+                        <Button fx:id="trophy" mnemonicParsing="false" onAction="#toggleLeaderboardVisibility" styleClass="clickableGreen">
                             <HBox.margin>
                                 <Insets left="10.0" />
                             </HBox.margin>
@@ -379,7 +379,7 @@
                                 <Tooltip id="tooltip" text="Toggle leaderboard visibility [L]" />
                             </tooltip>
                         </Button>
-                        <Button fx:id="back" mnemonicParsing="false" onAction="#disconnect" styleClass="clickable">
+                        <Button fx:id="back" mnemonicParsing="false" onAction="#disconnect" styleClass="clickableGreen">
                             <tooltip>
                                 <Tooltip id="tooltip" text="Return to main menu [ESC x2]" />
                             </tooltip>

@@ -74,7 +74,6 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
                 correct.get(i).setVisible(false);
                 wrong.get(i).setVisible(false);
                 answers.get(i).setOpacity(1);
-                answers.get(i).setStyle("-fx-border-color:  #5CB4BF");
                 answers.get(i).setDisable(false);
             });
         });
@@ -93,7 +92,6 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
     }
 
     private void setChosenAnswer() {
-        answers.get(selectedAnswerButton).setStyle("-fx-border-color: #028090");
         for (int i = 0; i < 2; i++) {
             answers.get(i).setDisable(true);
             if (i != selectedAnswerButton) {

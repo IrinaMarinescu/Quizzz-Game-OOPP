@@ -87,6 +87,8 @@ public class OpenQuestionCtrl implements QuestionRequirements {
             submitButton.setText("Submit");
             submitButton.setDisable(false);
             entryField.setText("");
+            entryField.setDisable(false);
+            Platform.runLater(() -> entryField.requestFocus());
         });
 
         //String imagePath = question.getActivities().get(0).imagePath;
@@ -101,6 +103,7 @@ public class OpenQuestionCtrl implements QuestionRequirements {
      */
     @Override
     public void revealCorrectAnswer() {
+        entryField.setDisable(true);
         submitButton.setDisable(true);
         long correctAnswer = this.question.getActivities().get(0).consumptionInWh;
         answerText.setText("It takes " + correctAnswer + "Wh!");

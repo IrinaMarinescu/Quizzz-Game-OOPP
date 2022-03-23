@@ -2,11 +2,13 @@
 
 * {
     -greenish: #02C39A;
-    -buttonColorHover: #02B070;
+    -buttonColorHoverGreen: #01b975;
     -topBarColor: #05668D;
     -topBarBackgroundColor: #B4D1DD;
     -darkCyan: #028090;
+    -buttonColorHoverDark: #027383;
     -lightishBlue: #5CB4BF;
+    -buttonColorHoverBlue: #57a9b4;
     -lightBlue: #81C0C8;
 
     -dropshadow: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0);
@@ -60,14 +62,42 @@ Button {
     -fx-focus-color: transparent;
 }
 
-.clickable {
+.clickableDark {
+    -fx-background-color: -darkCyan;
+}
+
+.clickableBlue {
+    -fx-background-color: -lightishBlue;
+}
+
+.clickableGreen:hover {
+    -fx-background-color: -buttonColorHoverGreen;
+}
+
+.clickableDark:hover {
+    -fx-background-color: -buttonColorHoverDark;
+}
+
+.clickableBlue:hover {
+    -fx-background-color: -buttonColorHoverBlue;
+}
+
+.clickableGreen:pressed, .clickableDark:pressed, .clickableBlue:pressed {
+    -fx-effect: -dropshadow;
+}
+
+.clickableGreen, .clickableDark, .clickableBlue {
     -fx-cursor: hand;
 }
 
-.clickable:hover {
-    -fx-background-color: -buttonColorHover;
+TextField.clickableGreen:focused {
+    -fx-background-color: -buttonColorHoverGreen;
 }
 
-/*.clickable:pressed {*/
-/*    -fx-effect: -dropshadow;*/
-/*}*/
+TextField.clickableGreen:pressed {
+    -fx-effect: none;
+}
+
+#back:hover {
+    -fx-opacity: 0.8;
+}

@@ -23,6 +23,7 @@ VBox {
 
 Text {
     -fx-padding: 10;
+    -fx-font-size: 24;
 }
 
 .Button:hover {

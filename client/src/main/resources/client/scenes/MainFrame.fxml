@@ -13,13 +13,15 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+
 <BorderPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@../css/mainFrame.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MainFrameCtrl">
     <top>
         <BorderPane fx:id="topBar" prefHeight="75" prefWidth="1600" BorderPane.alignment="CENTER">
             <left>
                 <HBox fx:id="trophyBox" BorderPane.alignment="CENTER">
-                    <Button fx:id="trophy" mnemonicParsing="false" onAction="#openLeaderboard" styleClass="clickable">
+                    <Button fx:id="trophy" mnemonicParsing="false" onAction="#openLeaderboard" styleClass="clickableGreen">
                         <tooltip>
                             <Tooltip id="tooltip" text="Toggle leaderboard visibility" />
                         </tooltip>
@@ -34,19 +36,19 @@
                 <Text fx:id="title" text="Quizzzzz!" BorderPane.alignment="CENTER" />
             </VBox>
             <VBox alignment="CENTER" prefHeight="384.0" prefWidth="1200.0">
-                <TextField fx:id="username" alignment="CENTER_LEFT" prefColumnCount="1" promptText="Username" />
+                <TextField fx:id="username" alignment="CENTER_LEFT" prefColumnCount="1" promptText="Username" styleClass="clickableGreen" />
                 <Text fx:id="usernameError" styleClass="error" text="The username is already taken. Try again." visible="false" BorderPane.alignment="CENTER" />
                 <Region VBox.vgrow="ALWAYS" />
-                <TextField fx:id="serverIP" alignment="CENTER_LEFT" prefColumnCount="1" promptText="Server's IP" />
+                <TextField fx:id="serverIP" alignment="CENTER_LEFT" prefColumnCount="1" promptText="Server's IP" styleClass="clickableGreen" />
                 <Text fx:id="serverIPError" styleClass="error" text="The provided server IP is incorrect. Try again." visible="false" BorderPane.alignment="CENTER" />
                 <Region VBox.vgrow="ALWAYS" />
-                <Button fx:id="singleplayer" mnemonicParsing="false" onAction="#startSingleplayerGame" styleClass="clickable" text="Play Solo" />
+                <Button fx:id="singleplayer" mnemonicParsing="false" onAction="#startSingleplayerGame" styleClass="clickableDark" text="Play Solo" />
                 <Text styleClass="error" text="" visible="false" BorderPane.alignment="CENTER" />
                 <Region VBox.vgrow="ALWAYS" />
-                <Button fx:id="multiplayer" mnemonicParsing="false" onAction="#joinLobby" styleClass="clickable" text="Play with friends" />
+                <Button fx:id="multiplayer" mnemonicParsing="false" onAction="#joinLobby" styleClass="clickableDark" text="Play with friends" />
                 <Text styleClass="error" text="" visible="false" BorderPane.alignment="CENTER" />
                 <Region VBox.vgrow="ALWAYS" />
-                <Button fx:id="admin" layoutX="425.0" layoutY="283.0" mnemonicParsing="false" onAction="#showAdmin" prefHeight="64.0" styleClass="clickable" text="Admin" />
+                <Button fx:id="admin" layoutX="425.0" layoutY="283.0" mnemonicParsing="false" onAction="#showAdmin" prefHeight="64.0" styleClass="clickableGreen" text="Admin" />
             </VBox>
         </VBox>
     </center>
@@ -54,7 +56,7 @@
         <BorderPane fx:id="footBar" prefHeight="75" prefWidth="1600" BorderPane.alignment="CENTER">
             <left>
                 <HBox fx:id="helpBox" BorderPane.alignment="CENTER">
-                    <Button fx:id="help" mnemonicParsing="false" onAction="#toggleHelpMenuVisibility" styleClass="circle, clickable">
+                    <Button fx:id="help" mnemonicParsing="false" onAction="#toggleHelpMenuVisibility" styleClass="circle, clickableGreen">
                         <tooltip>
                             <Tooltip id="tooltip" text="Toggle help menu visibility" />
                         </tooltip>
@@ -66,8 +68,8 @@
     <left>
         <VBox>
             <Region VBox.vgrow="ALWAYS" />
-            <VBox fx:id="helpMenuContainer" alignment="CENTER" maxHeight="-Infinity" prefHeight="491.0" prefWidth="200.0" visible="false">
-                <FlowPane fx:id="helpMenuTitle" alignment="CENTER">
+            <VBox fx:id="helpMenuContainer" alignment="CENTER" maxHeight="-Infinity" prefHeight="491.0" prefWidth="220.0" visible="false">
+                <FlowPane fx:id="helpMenuTitle" alignment="CENTER" maxHeight="-Infinity" prefHeight="27.0" prefWidth="200.0">
                     <Text text="Help" />
                 </FlowPane>
                 <GridPane fx:id="helpMenu" alignment="CENTER" prefHeight="373.0" prefWidth="200.0">
@@ -110,7 +112,10 @@
                     <Text text="Halves time remaining for ALL players this question (once this game)" wrappingWidth="140.638671875" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                     <Text text="Doubles points you will gain this round (once this game)" wrappingWidth="140.638671875" GridPane.columnIndex="1" GridPane.rowIndex="3">
                     </Text>
-                    <Text text="Disables one wrong answer this round (once this game)" wrappingWidth="140.638671875" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <Text text="Disables one wrong answer this round (once this game)" wrappingWidth="140.638671875" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  <font>
+                     <Font size="10.0" />
+                  </font></Text>
                     <Text text="Hovering over this icon shows menu to send emojis" wrappingWidth="140.638671875" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                     <Button mnemonicParsing="false" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
                     <Button mnemonicParsing="false" text="0/20" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
@@ -120,6 +125,6 @@
         </VBox>
     </left>
     <right>
-        <VBox prefWidth="200.0" />
+        <VBox prefWidth="220.0" />
     </right>
 </BorderPane>
