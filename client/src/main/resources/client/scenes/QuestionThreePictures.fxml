@@ -2,7 +2,9 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
@@ -52,74 +54,95 @@
             <Font size="48.0" />
          </font>
       </Label>
-      <VBox fx:id="boxA" alignment="CENTER" layoutX="75.0" layoutY="315.0" onMouseClicked="#answerASelected" prefHeight="200.0" prefWidth="100.0" styleClass="clickableBlue">
-         <children>
-            <Text fx:id="answerA" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="a" textAlignment="CENTER" wrappingWidth="290.0">
-               <font>
-                  <Font size="24.0" />
-               </font>
-               <VBox.margin>
+      <ScrollPane layoutX="74.0" layoutY="315.0">
+         <content>
+            <VBox fx:id="boxA" alignment="CENTER" onMouseClicked="#answerASelected" prefHeight="200.0" prefWidth="100.0" styleClass="clickableBlue">
+               <children>
+                  <Text fx:id="answerA" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="a" textAlignment="CENTER" wrappingWidth="290.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Text>
+                  <ImageView id="imageA" fx:id="imageA" fitHeight="186.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../temporary/temporaryPicture.png" />
+                     </image>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </ImageView>
+               </children>
+               <opaqueInsets>
                   <Insets />
-               </VBox.margin>
-            </Text>
-            <ImageView id="imageA" fx:id="imageA" fitHeight="186.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../temporary/temporaryPicture.png" />
-               </image>
-               <VBox.margin>
-                  <Insets bottom="10.0" top="10.0" />
-               </VBox.margin>
-            </ImageView>
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </VBox>
-      <VBox fx:id="boxB" alignment="CENTER" layoutX="429.0" layoutY="315.0" onMouseClicked="#answerBSelected" prefHeight="200.0" prefWidth="100.0" styleClass="clickableBlue">
-         <children>
-            <Text fx:id="answerB" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="b" textAlignment="CENTER" wrappingWidth="290.0">
-               <font>
-                  <Font size="24.0" />
-               </font>
-               <VBox.margin>
+               </opaqueInsets>
+            </VBox>
+         </content>
+         <tooltip>
+            <Tooltip id="tooltip" text="Submit answer A [A] [1]" />
+         </tooltip>
+      </ScrollPane>
+      <ScrollPane layoutX="427.0" layoutY="315.0" prefHeight="200.0" prefWidth="200.0">
+         <content>
+            <VBox fx:id="boxB" alignment="CENTER" onMouseClicked="#answerBSelected" prefHeight="200.0" prefWidth="100.0" styleClass="clickableBlue">
+               <children>
+                  <Text fx:id="answerB" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="b" textAlignment="CENTER" wrappingWidth="290.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Text>
+                  <ImageView id="imageA" fx:id="imageB" fitHeight="186.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../temporary/temporaryPicture.png" />
+                     </image>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </ImageView>
+               </children>
+               <opaqueInsets>
                   <Insets />
-               </VBox.margin>
-            </Text>
-            <ImageView id="imageA" fx:id="imageB" fitHeight="186.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../temporary/temporaryPicture.png" />
-               </image>
-               <VBox.margin>
-                  <Insets bottom="10.0" top="10.0" />
-               </VBox.margin>
-            </ImageView>
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </VBox>
-      <VBox fx:id="boxC" alignment="CENTER" layoutX="781.0" layoutY="315.0" onMouseClicked="#answerCSelected" prefHeight="200.0" prefWidth="100.0" styleClass="clickableBlue">
-         <children>
-            <Text fx:id="answerC" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="c" textAlignment="CENTER" wrappingWidth="290.0">
-               <font>
-                  <Font size="24.0" />
-               </font>
-               <VBox.margin>
+               </opaqueInsets>
+            </VBox>
+         </content>
+         <tooltip>
+            <Tooltip id="tooltip" text="Submit answer B [B] [2]" />
+         </tooltip>
+      </ScrollPane>
+      <ScrollPane layoutX="780.0" layoutY="315.0" prefHeight="200.0" prefWidth="200.0">
+         <content>
+            <VBox fx:id="boxC" alignment="CENTER" onMouseClicked="#answerCSelected" prefHeight="200.0" prefWidth="100.0" styleClass="clickableBlue">
+               <children>
+                  <Text fx:id="answerC" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="c" textAlignment="CENTER" wrappingWidth="290.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Text>
+                  <ImageView id="imageA" fx:id="imageC" fitHeight="186.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../temporary/temporaryPicture.png" />
+                     </image>
+                     <VBox.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </VBox.margin>
+                  </ImageView>
+               </children>
+               <opaqueInsets>
                   <Insets />
-               </VBox.margin>
-            </Text>
-            <ImageView id="imageA" fx:id="imageC" fitHeight="186.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../temporary/temporaryPicture.png" />
-               </image>
-               <VBox.margin>
-                  <Insets bottom="10.0" top="10.0" />
-               </VBox.margin>
-            </ImageView>
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </VBox>
+               </opaqueInsets>
+            </VBox>
+         </content>
+         <tooltip>
+            <Tooltip id="tooltip" text="Submit answer C [C] [3]" />
+         </tooltip>
+      </ScrollPane>
     </children>
 </Pane>

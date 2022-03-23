@@ -62,6 +62,19 @@ Button {
     -fx-focus-color: transparent;
 }
 
+ScrollPane {
+    -fx-background-color: transparent;
+    -fx-background-radius: 40;
+    -fx-hbar-policy: NEVER;
+    -fx-vbar-policy: NEVER;
+    -fx-pref-height: 132;
+    -fx-pref-width: 444;
+}
+
+ScrollPane > .viewport {
+    -fx-background-color: transparent;
+}
+
 .clickableDark {
     -fx-background-color: -darkCyan;
 }
@@ -88,6 +101,10 @@ Button {
 
 .clickableGreen, .clickableDark, .clickableBlue {
     -fx-cursor: hand;
+}
+
+TextField.clickableGreen {
+    -fx-cursor: text;
 }
 
 TextField.clickableGreen:focused {

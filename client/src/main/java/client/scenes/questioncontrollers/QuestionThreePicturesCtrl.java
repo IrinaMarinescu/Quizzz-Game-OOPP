@@ -11,6 +11,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javax.inject.Inject;
@@ -133,6 +134,9 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
     }
 
     private void setChosenAnswer() {
+        if (boxes.get(selectedAnswerButton).isDisabled()) {
+            return;
+        }
         for (int i = 0; i < 3; i++) {
             boxes.get(i).setDisable(true);
             if (i != selectedAnswerButton) {
@@ -186,6 +190,28 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
 
     public Question getQuestion() {
         return question;
+    }
+
+    public void keyPressed(KeyCode e) {
+        switch (e) {
+            case DIGIT1:
+            case NUMPAD1:
+            case A:
+                answerASelected();
+                break;
+            case DIGIT2:
+            case NUMPAD2:
+            case B:
+                answerBSelected();
+                break;
+            case DIGIT3:
+            case NUMPAD3:
+            case C:
+                answerCSelected();
+                break;
+            default:
+                break;
+        }
     }
 
 }

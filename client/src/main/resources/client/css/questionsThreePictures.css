@@ -10,6 +10,11 @@ Button {
     -fx-focus-color: transparent;
 }
 
+ScrollPane {
+    -fx-pref-height: 385;
+    -fx-pref-width: 302;
+}
+
 VBox {
     -fx-background-color: -lightishBlue;
     -fx-background-radius: 20;

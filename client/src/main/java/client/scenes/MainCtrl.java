@@ -150,18 +150,23 @@ public class MainCtrl implements MainCtrlRequirements {
 
         this.mainFrameCtrl = mainFrame.getKey();
         this.mainFrame = new Scene(mainFrame.getValue());
+        this.mainFrame.setOnKeyPressed(e -> mainFrameCtrl.keyPressed(e.getCode()));
 
         this.lobbyCtrl = lobbyFrame.getKey();
         this.lobbyFrame = new Scene(lobbyFrame.getValue());
+        this.lobbyFrame.setOnKeyPressed(e -> lobbyCtrl.keyPressed(e.getCode()));
 
         this.leaderboardCtrl = leaderboard.getKey();
         this.leaderboard = new Scene(leaderboard.getValue());
+        this.leaderboard.setOnKeyPressed(e -> leaderboardCtrl.keyPressed(e.getCode()));
 
         this.adminInterfaceCtrl = adminInterface.getKey();
         this.adminInterfaceFrame = new Scene(adminInterface.getValue());
+        this.adminInterfaceFrame.setOnKeyPressed(e -> adminInterfaceCtrl.keyPressed(e.getCode()));
 
         this.questionFrameCtrl = questionFrame.getKey();
         this.questionFrame = new Scene(questionFrame.getValue());
+        this.questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
 
         this.questionTrueFalseCtrl = questionTrueFalse.getKey();
         this.questionTrueFalse = questionTrueFalse.getValue();
@@ -323,6 +328,7 @@ public class MainCtrl implements MainCtrlRequirements {
             case "trueFalseQuestion":
                 currentQuestionCtrl = questionTrueFalseCtrl;
                 questionNode = questionTrueFalse;
+                this.questionTrueFalse.setOnKeyPressed(e -> questionTrueFalseCtrl.keyPressed(e.getCode()));
                 questionFrameCtrl.setWrongAnswerJoker(false);
                 break;
             case "openQuestion":
@@ -475,7 +481,6 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     public void showMainFrame() {
         primaryStage.setScene(mainFrame);
-        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
     }
 
     /**
@@ -491,6 +496,10 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     public void showQuestionFrame() {
         primaryStage.setScene(questionFrame);
-        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
+    }
+
+    public void toggleModalVisibility() {
+        // TODO toggle visibility of modal ("do you really want to disconnect?")
+        // TODO inform player that they are runing game for others
     }
 }

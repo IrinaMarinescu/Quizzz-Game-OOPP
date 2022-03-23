@@ -6,6 +6,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -79,6 +80,9 @@
                             <VBox.margin>
                                 <Insets left="20.0" />
                             </VBox.margin>
+                     <tooltip>
+                        <Tooltip id="tooltip" text="Click on an activity to update or delete it" />
+                     </tooltip>
                         </TableView>
                     </children>
                 </VBox>
@@ -123,21 +127,39 @@
                                     <font>
                                         <Font size="1.0" />
                                     </font>
+                           <tooltip>
+                              <Tooltip id="tooltip" text="Update this activity" />
+                           </tooltip>
                                 </Button>
                                 <Button layoutX="25.0" layoutY="111.0" mnemonicParsing="false" onAction="#deleteSelectedActivity" prefHeight="31.0" prefWidth="240.0" styleClass="clickableGreen" text="delete selected" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                     <font>
                                         <Font size="1.0" />
                                     </font>
+                           <tooltip>
+                              <Tooltip id="tooltip" text="Delete this activity" />
+                           </tooltip>
                                 </Button>
                             </children>
                         </GridPane>
                         <TextField fx:id="activityIdField" editable="false" prefHeight="40.0" prefWidth="274.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <cursor>
                         <Cursor fx:constant="DEFAULT" />
-                     </cursor></TextField>
-                        <TextField fx:id="activityTitleField" styleClass="clickableGreen" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <TextField fx:id="activityConsumptionField" styleClass="clickableGreen" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <TextField fx:id="activitySourceField" styleClass="clickableGreen" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                     </cursor>
+                     <tooltip>
+                        <Tooltip id="tooltip" text="ID of activity" />
+                     </tooltip></TextField>
+                        <TextField fx:id="activityTitleField" styleClass="clickableGreen" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <tooltip>
+                        <Tooltip id="tooltip" text="Title of activity" />
+                     </tooltip></TextField>
+                        <TextField fx:id="activityConsumptionField" styleClass="clickableGreen" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                     <tooltip>
+                        <Tooltip id="tooltip" text="Consumption of activity in Wh" />
+                     </tooltip></TextField>
+                        <TextField fx:id="activitySourceField" styleClass="clickableGreen" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                     <tooltip>
+                        <Tooltip id="tooltip" text="Source of activity" />
+                     </tooltip></TextField>
                         <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="151.99998519207597" minWidth="10.0" prefWidth="91.66033656336576" />

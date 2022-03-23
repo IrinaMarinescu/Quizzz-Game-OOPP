@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -14,11 +15,17 @@
             <font>
                 <Font size="25.0" />
             </font>
+         <tooltip>
+            <Tooltip id="tooltip" text="Submit answer True [1] [T]" />
+         </tooltip>
         </Button>
         <Button id="False" fx:id="falseButton" layoutX="573.0" layoutY="496.0" mnemonicParsing="false" onAction="#falseSelected" styleClass="clickableBlue" stylesheets="@../css/questionTrueFalse.css" text="False">
             <font>
                 <Font size="25.0" />
             </font>
+         <tooltip>
+            <Tooltip id="tooltip" text="Submit answer False [F] [2]" />
+         </tooltip>
         </Button>
         <ImageView id="Image" fx:id="imageOutput" fitHeight="362.0" fitWidth="399.0" layoutX="125.0" layoutY="273.0" pickOnBounds="true" preserveRatio="true">
             <image>

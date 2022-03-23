@@ -10,6 +10,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import javax.inject.Inject;
 
@@ -123,5 +124,22 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
 
     public Question getQuestion() {
         return question;
+    }
+
+    public void keyPressed(KeyCode e) {
+        switch (e) {
+            case DIGIT1:
+            case NUMPAD1:
+            case T:
+                trueSelected();
+                break;
+            case DIGIT2:
+            case NUMPAD2:
+            case F:
+                falseSelected();
+                break;
+            default:
+                break;
+        }
     }
 }

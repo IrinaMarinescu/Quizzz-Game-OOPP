@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
@@ -23,6 +24,9 @@
             <font>
                 <Font size="40.0" />
             </font>
+         <tooltip>
+            <Tooltip id="tooltip" text="Submit your answer [ENTER]" />
+         </tooltip>
         </Button>
         <Text fx:id="answerText" fill="#fcfcfc" layoutX="553.0" layoutY="583.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="555.884913044079">
             <font>
@@ -43,8 +47,11 @@
                <VBox.margin>
                   <Insets bottom="25.0" top="25.0" />
                </VBox.margin>
+               <tooltip>
+                  <Tooltip id="tooltip" text="Type in your answer here" />
+               </tooltip>
               </TextField>
-              <Text fx:id="errorMessage" fill="#f56c6c" strokeType="OUTSIDE" strokeWidth="0.0" text="ERROR: You did not enter a number!" textAlignment="CENTER" visible="false" wrappingWidth="513.884913044079">
+              <Text fx:id="errorMessage" fill="#f56c6c" strokeType="OUTSIDE" strokeWidth="0.0" text="You did not enter a number!" textAlignment="CENTER" visible="false" wrappingWidth="513.884913044079">
                   <font>
                       <Font size="28.0" />
                   </font>

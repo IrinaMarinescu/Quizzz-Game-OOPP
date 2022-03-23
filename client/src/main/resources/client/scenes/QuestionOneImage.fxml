@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -16,32 +18,32 @@
                 <Image url="@../temporary/scooter.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="correctA" fitHeight="115.0" fitWidth="110.0" layoutX="560.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true" visible="false">
+        <ImageView fx:id="correctA" fitHeight="115.0" fitWidth="110.0" layoutX="560.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../icons/correct.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="correctB" fitHeight="115.0" fitWidth="110.0" layoutX="560.0" layoutY="392.0" pickOnBounds="true" preserveRatio="true" visible="false">
+        <ImageView fx:id="correctB" fitHeight="115.0" fitWidth="110.0" layoutX="560.0" layoutY="392.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../icons/correct.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="correctC" fitHeight="115.0" fitWidth="110.0" layoutX="560.0" layoutY="562.0" pickOnBounds="true" preserveRatio="true" visible="false">
+        <ImageView fx:id="correctC" fitHeight="115.0" fitWidth="110.0" layoutX="560.0" layoutY="562.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../icons/correct.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="wrongA" fitHeight="115.0" fitWidth="110.0" layoutX="570.0" layoutY="217.0" pickOnBounds="true" preserveRatio="true" visible="false">
+        <ImageView fx:id="wrongA" fitHeight="115.0" fitWidth="110.0" layoutX="570.0" layoutY="217.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../icons/wrong.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="wrongB" fitHeight="115.0" fitWidth="110.0" layoutX="570.0" layoutY="387.0" pickOnBounds="true" preserveRatio="true" visible="false">
+        <ImageView fx:id="wrongB" fitHeight="115.0" fitWidth="110.0" layoutX="570.0" layoutY="387.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../icons/wrong.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="wrongC" fitHeight="115.0" fitWidth="110.0" layoutX="570.0" layoutY="556.0" pickOnBounds="true" preserveRatio="true" visible="false">
+        <ImageView fx:id="wrongC" fitHeight="115.0" fitWidth="110.0" layoutX="570.0" layoutY="556.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../icons/wrong.png" />
             </image>
@@ -55,44 +57,65 @@
             </Text>
          </center>
       </BorderPane>
-      <VBox fx:id="boxA" alignment="CENTER" layoutX="670.0" layoutY="200.0" onMouseClicked="#setAnswerA" prefHeight="200.0" prefWidth="100.0">
-         <children>
-            <Text fx:id="answerA" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer A" textAlignment="CENTER" wrappingWidth="421.0">
-               <font>
-                  <Font size="28.0" />
-               </font>
-            </Text>
-         </children>
-         <styleClass>
-            <String fx:value="answerButton" />
-            <String fx:value="clickableBlue" />
-         </styleClass>
-      </VBox>
-      <VBox fx:id="boxB" alignment="CENTER" layoutX="670.0" layoutY="370.0" onMouseClicked="#setAnswerB" prefHeight="200.0" prefWidth="100.0">
-         <children>
-            <Text fx:id="answerB" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer B" textAlignment="CENTER" wrappingWidth="421.0">
-               <font>
-                  <Font size="28.0" />
-               </font>
-            </Text>
-         </children>
-         <styleClass>
-            <String fx:value="answerButton" />
-            <String fx:value="clickableBlue" />
-         </styleClass>
-      </VBox>
-      <VBox fx:id="boxC" alignment="CENTER" layoutX="670.0" layoutY="540.0" onMouseClicked="#setAnswerC" prefHeight="200.0" prefWidth="100.0">
-         <children>
-            <Text fx:id="answerC" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer C" textAlignment="CENTER" wrappingWidth="421.0">
-               <font>
-                  <Font size="28.0" />
-               </font>
-            </Text>
-         </children>
-         <styleClass>
-            <String fx:value="answerButton" />
-            <String fx:value="clickableBlue" />
-         </styleClass>
-      </VBox>
+      <ScrollPane layoutX="670.0" layoutY="200.0" prefHeight="200.0" prefWidth="200.0">
+         <content>
+            <VBox fx:id="boxA" alignment="CENTER" onMouseClicked="#setAnswerA" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Text fx:id="answerA" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer A" textAlignment="CENTER" wrappingWidth="421.0">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Text>
+               </children>
+               <styleClass>
+                  <String fx:value="answerButton" />
+                  <String fx:value="clickableBlue" />
+               </styleClass>
+            </VBox>
+         </content>
+         <tooltip>
+            <Tooltip id="tooltip" text="Submit answer A [A] [1]" />
+         </tooltip>
+      </ScrollPane>
+      <ScrollPane layoutX="670.0" layoutY="368.0" prefHeight="200.0" prefWidth="200.0">
+         <content>
+            <VBox fx:id="boxB" alignment="CENTER" onMouseClicked="#setAnswerB" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Text fx:id="answerB" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer B" textAlignment="CENTER" wrappingWidth="421.0">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Text>
+               </children>
+               <styleClass>
+                  <String fx:value="answerButton" />
+                  <String fx:value="clickableBlue" />
+               </styleClass>
+            </VBox>
+         </content>
+         <tooltip>
+            <Tooltip id="tooltip" text="Submit answer B [B] [2]" />
+         </tooltip>
+      </ScrollPane>
+      <ScrollPane layoutX="670.0" layoutY="538.0" prefHeight="200.0" prefWidth="200.0">
+         <content>
+            <VBox fx:id="boxC" alignment="CENTER" onMouseClicked="#setAnswerC" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Text fx:id="answerC" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer C" textAlignment="CENTER" wrappingWidth="421.0">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Text>
+               </children>
+               <styleClass>
+                  <String fx:value="answerButton" />
+                  <String fx:value="clickableBlue" />
+               </styleClass>
+            </VBox>
+         </content>
+         <tooltip>
+            <Tooltip id="tooltip" text="Submit answer C [C] [3]" />
+         </tooltip>
+      </ScrollPane>
     </children>
 </Pane>

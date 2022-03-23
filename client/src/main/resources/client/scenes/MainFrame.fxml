@@ -23,7 +23,7 @@
                 <HBox fx:id="trophyBox" BorderPane.alignment="CENTER">
                     <Button fx:id="trophy" mnemonicParsing="false" onAction="#openLeaderboard" styleClass="clickableGreen">
                         <tooltip>
-                            <Tooltip id="tooltip" text="Toggle leaderboard visibility" />
+                            <Tooltip id="tooltip" text="Show singleplayer leaderboard screen [L]" />
                         </tooltip>
                     </Button>
                 </HBox>
@@ -36,19 +36,34 @@
                 <Text fx:id="title" text="Quizzzzz!" BorderPane.alignment="CENTER" />
             </VBox>
             <VBox alignment="CENTER" prefHeight="384.0" prefWidth="1200.0">
-                <TextField fx:id="username" alignment="CENTER_LEFT" prefColumnCount="1" promptText="Username" styleClass="clickableGreen" />
+                <TextField fx:id="username" alignment="CENTER_LEFT" prefColumnCount="1" promptText="Username" styleClass="clickableGreen">
+               <tooltip>
+                  <Tooltip id="tooltip" text="Enter your username here" />
+               </tooltip></TextField>
                 <Text fx:id="usernameError" styleClass="error" text="The username is already taken. Try again." visible="false" BorderPane.alignment="CENTER" />
                 <Region VBox.vgrow="ALWAYS" />
-                <TextField fx:id="serverIP" alignment="CENTER_LEFT" prefColumnCount="1" promptText="Server's IP" styleClass="clickableGreen" />
+                <TextField fx:id="serverIP" alignment="CENTER_LEFT" prefColumnCount="1" promptText="Server's IP" styleClass="clickableGreen">
+               <tooltip>
+                  <Tooltip id="tooltip" text="Enter the server IP here (blank for localhost:8080)" />
+               </tooltip></TextField>
                 <Text fx:id="serverIPError" styleClass="error" text="The provided server IP is incorrect. Try again." visible="false" BorderPane.alignment="CENTER" />
                 <Region VBox.vgrow="ALWAYS" />
-                <Button fx:id="singleplayer" mnemonicParsing="false" onAction="#startSingleplayerGame" styleClass="clickableDark" text="Play Solo" />
+                <Button fx:id="singleplayer" mnemonicParsing="false" onAction="#startSingleplayerGame" styleClass="clickableDark" text="Play Solo">
+               <tooltip>
+                  <Tooltip id="tooltip" text="Play a singleplayer game [S]" />
+               </tooltip></Button>
                 <Text styleClass="error" text="" visible="false" BorderPane.alignment="CENTER" />
                 <Region VBox.vgrow="ALWAYS" />
-                <Button fx:id="multiplayer" mnemonicParsing="false" onAction="#joinLobby" styleClass="clickableDark" text="Play with friends" />
+                <Button fx:id="multiplayer" mnemonicParsing="false" onAction="#joinLobby" styleClass="clickableDark" text="Play with friends">
+               <tooltip>
+                  <Tooltip id="tooltip" text="Play a multiplayer game [M]" />
+               </tooltip></Button>
                 <Text styleClass="error" text="" visible="false" BorderPane.alignment="CENTER" />
                 <Region VBox.vgrow="ALWAYS" />
-                <Button fx:id="admin" layoutX="425.0" layoutY="283.0" mnemonicParsing="false" onAction="#showAdmin" prefHeight="64.0" styleClass="clickableGreen" text="Admin" />
+                <Button fx:id="admin" layoutX="425.0" layoutY="283.0" mnemonicParsing="false" onAction="#showAdmin" prefHeight="64.0" styleClass="clickableGreen" text="Admin">
+               <tooltip>
+                  <Tooltip id="tooltip" text="Show admin screen [CTRL]" />
+               </tooltip></Button>
             </VBox>
         </VBox>
     </center>

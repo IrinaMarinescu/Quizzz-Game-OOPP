@@ -11,6 +11,7 @@ import java.util.Random;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javax.inject.Inject;
@@ -117,6 +118,9 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
      * the other answers
      */
     private void setChosenAnswer() {
+        if (boxes.get(selectedAnswerButton).isDisabled()) {
+            return;
+        }
         for (int i = 0; i < 3; i++) {
             boxes.get(i).setDisable(true);
             if (i != selectedAnswerButton) {
@@ -211,5 +215,27 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
 
         boxes.get(removedAnswer).setOpacity(0.5);
         boxes.get(removedAnswer).setDisable(true);
+    }
+
+    public void keyPressed(KeyCode e) {
+        switch (e) {
+            case DIGIT1:
+            case NUMPAD1:
+            case A:
+                setAnswerA();
+                break;
+            case DIGIT2:
+            case NUMPAD2:
+            case B:
+                setAnswerB();
+                break;
+            case DIGIT3:
+            case NUMPAD3:
+            case C:
+                setAnswerC();
+                break;
+            default:
+                break;
+        }
     }
 }

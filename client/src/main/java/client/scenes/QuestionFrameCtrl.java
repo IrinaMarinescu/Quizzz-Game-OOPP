@@ -201,6 +201,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
             if (animate) {
                 setRemainingTime(ROUND_TIME);
                 mainCtrl.setQuestionTimeouts(ROUND_TIME);
+                Platform.runLater(() -> resizeTimerBar(timerBarCtrl.displayWidth, 0));
             }
         });
     }
@@ -427,11 +428,11 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      */
     @FXML
     private void disconnect() {
-        long now = timeUtils.now();
-        if (now - lastEscapeKeyPressTime < 200) {
-            mainCtrl.disconnect();
+        if (isMultiplayerGame) {
+            mainCtrl.toggleModalVisibility();
+        } else {
+            mainCtrl.showMainFrame();
         }
-        lastEscapeKeyPressTime = now;
     }
 
     /**
@@ -459,6 +460,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
                 disconnect();
                 break;
             default:
+                mainCtrl.currentQuestionCtrl.keyPressed(e);
                 break;
         }
     }

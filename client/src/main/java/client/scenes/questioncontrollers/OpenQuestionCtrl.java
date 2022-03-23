@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import javax.inject.Inject;
 
@@ -45,7 +46,6 @@ public class OpenQuestionCtrl implements QuestionRequirements {
         this.mainCtrl = mainCtrl;
         this.questionFrameCtrl = questionFrameCtrl;
     }
-
 
     /**
      * Reads the submitted answer and checks whether a number has actually been entered
@@ -117,5 +117,9 @@ public class OpenQuestionCtrl implements QuestionRequirements {
         //Disable joker for this question
     }
 
-    ;
+    public void keyPressed(KeyCode e) {
+        if (e == KeyCode.ENTER) {
+            submit();
+        }
+    }
 }
