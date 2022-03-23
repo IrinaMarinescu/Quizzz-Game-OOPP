@@ -10,6 +10,7 @@ import javafx.scene.text.Text;
 public class ExitPopUpCtrl {
 
     private final MainCtrl mainCtrl;
+    private int type;
 
     @FXML
     Rectangle rectangle;
@@ -26,15 +27,24 @@ public class ExitPopUpCtrl {
     @Inject
     public ExitPopUpCtrl(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
+        this.type = 0;
     }
 
     public void buttonClick(ActionEvent e) {
-        String button = ((Button) e.getSource()).getId();
-        if (button.equals(yesButton.getId())) {
-            mainCtrl.disconnect();
-            return;
+        String buttonID = ((Button) e.getSource()).getId();
+        if (buttonID.equals("yesButton")) {
+            if (this.type == 0) {
+                mainCtrl.disconnect();
+                return;
+            }
+            System.exit(0);
         }
-        mainCtrl.deniedExit();
+        if (buttonID.equals("noButton")) {
+            mainCtrl.deniedExit();
+        }
     }
 
+    public void setType(int type) {
+        this.type = type;
+    }
 }

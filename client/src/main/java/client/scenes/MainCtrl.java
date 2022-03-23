@@ -31,6 +31,8 @@ import commons.Game;
 import commons.LeaderboardEntry;
 import commons.Lobby;
 import commons.Question;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -43,7 +45,7 @@ import javafx.util.Pair;
 /**
  * Coordinates actions between different screens
  */
-public class MainCtrl implements MainCtrlRequirements {
+public class MainCtrl implements MainCtrlRequirements, WindowListener {
 
     public static final int ROUND_TIME = 10;
     public static final int OVERVIEW_TIME = 5;
@@ -441,6 +443,7 @@ public class MainCtrl implements MainCtrlRequirements {
     public void disconnect() {
         // TODO stop long polling
         serverUtils.disconnect(game.getId(), player);
+        exitCheck.close();
         showMainFrame();
     }
 
@@ -497,12 +500,49 @@ public class MainCtrl implements MainCtrlRequirements {
         questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
     }
 
-    public void exitGameChecker() {
+    public void exitGameChecker(int type) {
+        exitPopUpCtrl.setType(type);
         exitCheck.initModality(Modality.WINDOW_MODAL);
         exitCheck.showAndWait();
     }
 
     public void deniedExit() {
         exitCheck.close();
+        showQuestionFrame();
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        this.exitGameChecker(1);
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
     }
 }
