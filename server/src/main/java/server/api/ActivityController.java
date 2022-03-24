@@ -383,10 +383,11 @@ public class ActivityController {
                 i = j;
             }
         }
+        String title = activities.get(i).title;
         Activity temp = activities.get(i);
-        String question = "What can you do instead of " + activities.get(i).title + "?";
         activities.remove(i);
         activities.add(temp);
+        String question = "What can you do instead of " + title + "?";
         if (correctAnswer > i) {
             correctAnswer--;
         }
