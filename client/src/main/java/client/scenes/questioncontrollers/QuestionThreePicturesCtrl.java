@@ -104,7 +104,8 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
     }
 
     private void placeImage(int i) {
-        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/" + question.getActivities().get(i).imagePath;
+        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
+                + question.getActivities().get(i).imagePath;
         Image image = new Image(imagePath, 480, 500, true, false);
         switch (i) {
             case 0:
@@ -115,6 +116,8 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
                 break;
             case 2:
                 imageC.setImage(image);
+                break;
+            default:
                 break;
         }
     }

@@ -94,7 +94,8 @@ public class OpenQuestionCtrl implements QuestionRequirements {
             errorMessage.setVisible(false);
         });
 
-        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/" + question.getActivities().get(0).imagePath;
+        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
+                + question.getActivities().get(0).imagePath;
         Image image = new Image(imagePath, 480, 500, true, false);
         imageField.setImage(image);
     }

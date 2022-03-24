@@ -134,7 +134,8 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
         this.positionCorrectAnswer = question.getCorrectAnswer();
         String correctAnswer = question.getActivities().get(positionCorrectAnswer).title;
 
-        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/" + question.getActivities().get(3).imagePath;
+        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
+                + question.getActivities().get(3).imagePath;
         Image image = new Image(imagePath, 480, 500, true, false);
         imageField.setImage(image);
 

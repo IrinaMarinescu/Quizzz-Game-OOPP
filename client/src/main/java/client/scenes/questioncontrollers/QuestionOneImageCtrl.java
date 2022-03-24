@@ -137,7 +137,8 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
         long actualConsumption = question.getActivities().get(0).consumptionInWh;
         this.positionCorrectAnswer = (new Random()).nextInt(3);
 
-        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/" + question.getActivities().get(0).imagePath;
+        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
+                + question.getActivities().get(0).imagePath;
         Image image = new Image(imagePath, 480, 500, true, false);
         imageField.setImage(image);
 
