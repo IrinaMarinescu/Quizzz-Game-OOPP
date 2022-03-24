@@ -385,7 +385,9 @@ public class ActivityController {
         }
         String id = associateQuestion(typeOfQuestion);
         String question = "What can you do instead of " + activities.get(i).title + "?";
+        Activity temp = activities.get(i);
         activities.remove(i);
+        activities.add(temp);
         if (correctAnswer > i) {
             correctAnswer--;
         }
