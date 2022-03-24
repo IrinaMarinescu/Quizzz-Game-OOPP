@@ -164,8 +164,7 @@ public class GameUtils {
         String value = response.get("value").asText();
         switch (response.get("type").asText()) {
             case "EMOJI":
-                Platform.runLater(() -> mainCtrl.displayNewEmoji(
-                    mainCtrl.getPlayer().hasSameName(new LeaderboardEntry(name, 0)) ? "You" : name, value));
+                Platform.runLater(() -> mainCtrl.displayNewEmoji(name, value));
                 break;
             case "JOKER":
                 if (value.equals("HALVE_TIME") && !mainCtrl.getPlayer().hasSameName(new LeaderboardEntry(name, 0))) {
