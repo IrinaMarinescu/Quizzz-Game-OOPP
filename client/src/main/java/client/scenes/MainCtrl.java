@@ -55,9 +55,9 @@ public class MainCtrl implements MainCtrlRequirements {
     private boolean isMultiplayerGame;
     private boolean intermediateLeaderboardShown;
     private int pointsGained;
-    private long questionStartTime;
+    long questionStartTime;
     private boolean doublePoints;
-    private double questionEndTime;
+    double questionEndTime;
     private int timeoutRoundCheck;
     private String currentQuestionType;
 
@@ -313,11 +313,6 @@ public class MainCtrl implements MainCtrlRequirements {
         game.incrementRound();
         Platform.runLater(() -> questionFrameCtrl.incrementQuestionNumber());
         questionFrameCtrl.setRemainingTime(ROUND_TIME);
-        if (isMultiplayerGame) {
-            questionFrameCtrl.setLeaderboardContents(game.getPlayers());
-        }
-        questionStartTime = timeUtils.now();
-        questionEndTime = questionStartTime + ROUND_TIME * 1000.0;
         pointsGained = 0;
         doublePoints = false;
         Question currentQuestion = game.nextQuestion();

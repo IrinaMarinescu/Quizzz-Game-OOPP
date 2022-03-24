@@ -38,8 +38,6 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
 
     public boolean test = false;
 
-    public static final int LEADERBOARD_SIZE_MAX = 5;
-
     final MainCtrl mainCtrl;
     private final TimerBarCtrl timerBarCtrl;
     private final EmoteCtrl emoteCtrl;
@@ -89,6 +87,8 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     private TableColumn<LeaderboardEntry, String> playerColumn;
     @FXML
     private TableColumn<LeaderboardEntry, String> scoreColumn;
+    @FXML
+    private TableColumn<LeaderboardEntry, String> gainColumn;
 
     private List<Button> jokers;
 
@@ -96,7 +96,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     private int gameScore;
     private int questionNumber;
     long lastEscapeKeyPressTime;
-
+    private List<LeaderboardEntry> previousEntries;
 
     /**
      * Injects mainCtrl, lobbyUtils and mainCtrl, so it's possible to call methods from there
@@ -133,6 +133,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
 
         playerColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getName()));
         scoreColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().scoreToString()));
+        gainColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().gainToString()));
 
         lastEscapeKeyPressTime = 0;
     }
@@ -150,6 +151,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      * @param players The list of all players involved
      */
     public void initializeMultiplayerGame(List<LeaderboardEntry> players) {
+        previousEntries = players;
         startNewGame(true, players);
     }
 
@@ -192,16 +194,18 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     /**
      * Sets node containing question at the center of the frame
      *
-     * @param node    The node to be inserted in the center of the frame
-     * @param animate Whether to play the timer bar animation
+     * @param node           The node to be inserted in the center of the frame
+     * @param isQuestionNode Whether to play the timer bar animation
      */
-    public void setCenterContent(Node node, boolean animate) {
+    public void setCenterContent(Node node, boolean isQuestionNode) {
         Platform.runLater(() -> {
             borderPane.setCenter(node);
-            if (animate) {
+            if (isQuestionNode) {
                 setRemainingTime(ROUND_TIME);
                 mainCtrl.setQuestionTimeouts(ROUND_TIME);
                 Platform.runLater(() -> resizeTimerBar(timerBarCtrl.displayWidth, 0));
+                mainCtrl.questionStartTime = timeUtils.now();
+                mainCtrl.questionEndTime = mainCtrl.questionStartTime + ROUND_TIME * 1000.0;
             }
         });
     }
@@ -241,10 +245,9 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      * @param entries A list of LeaderboardEntry objects representing leaderboard fields
      */
     public List<LeaderboardEntry> setLeaderboardContents(List<LeaderboardEntry> entries) {
-        entries = entries.stream()
-            .sorted()
-            .limit(LEADERBOARD_SIZE_MAX)
-            .collect(Collectors.toList());
+        entries = entries.stream().sorted().collect(Collectors.toList());
+        entries.forEach(entry -> entry.setDifference(previousEntries));
+        previousEntries = entries;
 
         if (!test) {
             ObservableList<LeaderboardEntry> data = FXCollections.observableList(entries);
