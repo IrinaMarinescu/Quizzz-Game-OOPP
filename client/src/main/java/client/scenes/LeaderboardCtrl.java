@@ -60,7 +60,6 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
         this.mainCtrl = mainCtrl;
     }
 
-
     /**
      * {@inheritDoc}
      *
@@ -126,8 +125,14 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
         formatLabels(texts);
     }
 
+    /**
+     * Sets the visibility of the button and the button grid at the bottom of the page.
+     *
+     * @param buttonVisibility a boolean value, representing whether the back button should be visible or not.
+     * @param gridVisibility a boolean value, representing whether the bottom button grid should be visible or not.
+     */
     protected void setButtonAndGrid(boolean buttonVisibility, boolean gridVisibility) {
-        if(!test) {
+        if (!test) {
             backBtn.setVisible(buttonVisibility);
             buttonGrid.setVisible(gridVisibility);
         }
@@ -139,7 +144,7 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      * @param texts a Pair of two strings, containing the titles to be set.
      */
     protected void formatLabels(Pair<String, String> texts) {
-        if(!test) {
+        if (!test) {
             pageTitle.setText(texts.getKey());
             leaderboardTitle.setText(texts.getValue());
         }
@@ -156,18 +161,50 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
         // TODO: implement logic for starting another game
     }
 
+    /**
+     * Returns the type of the leaderboard.
+     *
+     * @return an integer, one of the following:
+     * <ul>
+     *      <li><code>LeaderboardCtrl.TYPE_SOLO</code> = 1</li>
+     *      <li><code>LeaderboardCtrl.TYPE_INTERMED</code> = 2</li>
+     *      <li><code>LeaderboardCtrl.TYPE_FINAL</code> = 3</li>
+     * </ul>
+     */
     public int getType() {
         return type;
     }
 
+    /**
+     * Returns the maximum size of the leaderboard (how many entries to show at max)
+     *
+     * @return an integer, representing the maximum number of entries that can be shown in the table.
+     */
     public int getMaxSize() {
         return maxSize;
     }
 
+
+    /**
+     * Sets the type of the leaderboard.
+     *
+     * @param type an integer, one of the following:
+     *        <ul>
+     *            <li><code>LeaderboardCtrl.TYPE_SOLO</code> = 1</li>
+     *            <li><code>LeaderboardCtrl.TYPE_INTERMED</code> = 2</li>
+     *            <li><code>LeaderboardCtrl.TYPE_FINAL</code> = 3</li>
+     *        </ul>
+     */
     protected void setType(int type) {
         this.type = type;
     }
 
+
+    /**
+     * Sets the maximum size of the leaderboard
+     *
+     * @param maxSize an integer, representing the maximum number of entries that can be shown in the table.
+     */
     protected void setMaxSize(int maxSize) {
         this.maxSize = maxSize;
     }
