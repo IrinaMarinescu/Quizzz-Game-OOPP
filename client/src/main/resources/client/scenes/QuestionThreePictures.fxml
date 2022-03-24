@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
@@ -18,6 +19,9 @@
             <font>
                 <Font name="System Bold" size="30.0" />
             </font>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
         </TextField>
         <ImageView fx:id="correctA" fitHeight="83.0" fitWidth="111.0" layoutX="171.0" layoutY="209.0" pickOnBounds="true" preserveRatio="true">
             <image>

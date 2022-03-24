@@ -115,6 +115,22 @@ TextField.clickableGreen:pressed {
     -fx-effect: none;
 }
 
-#back:hover {
+#trophy, #back {
+    -fx-pref-height: 80;
+    -fx-pref-width: 80;
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+
+    -fx-background-size: 75%;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+    -fx-background-image: url('../icons/trophy-solid.png');
+}
+
+#back {
+    -fx-background-image: url('../icons/angle-left-solid.png');
+}
+
+#trophy:hover, #back:hover {
     -fx-opacity: 0.8;
 }

@@ -33,7 +33,7 @@
                 <Font name="System Bold" size="44.0" />
             </font>
         </Text>
-        <Button fx:id="arrow" mnemonicParsing="false" onAction="#goBack" prefHeight="87.0" prefWidth="128.0" stylesheets="@../css/lobbyFrame.css">
+        <Button id="back" fx:id="arrow" mnemonicParsing="false" onAction="#goBack" prefHeight="87.0" prefWidth="128.0" styleClass="clickableGreen" stylesheets="@../css/lobbyFrame.css">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

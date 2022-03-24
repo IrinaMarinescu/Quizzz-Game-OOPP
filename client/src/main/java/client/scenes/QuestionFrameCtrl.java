@@ -428,11 +428,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      */
     @FXML
     private void disconnect() {
-        if (isMultiplayerGame) {
-            mainCtrl.toggleModalVisibility();
-        } else {
-            mainCtrl.showMainFrame();
-        }
+        mainCtrl.toggleModalVisibility();
     }
 
     /**
@@ -440,7 +436,8 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      *
      * @param e Information about a keypress performed by the user
      *          <p>
-     *          This should only be called by the MainCtrl showQuestionFrame method
+     *          This should only be called when initializing the scene
+     *          The keypress is passed to the current question controller if no was found
      */
     public void keyPressed(KeyCode e) {
         switch (e) {

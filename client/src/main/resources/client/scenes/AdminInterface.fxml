@@ -32,17 +32,11 @@
                             <left>
                                 <HBox prefHeight="80.0" prefWidth="300.0" BorderPane.alignment="CENTER">
                                     <children>
-                                        <ImageView id="back" fitHeight="60.0" onMouseClicked="#showMainFrame" pickOnBounds="true" preserveRatio="true" styleClass="clickableDark">
-                                            <HBox.margin>
-                                                <Insets left="20.0" top="10.0" />
-                                            </HBox.margin>
-                                            <image>
-                                                <Image url="@../icons/angle-left-solid.png" />
-                                            </image>
-                                            <cursor>
-                                                <Cursor fx:constant="HAND" />
-                                            </cursor>
-                                        </ImageView>
+                              <Button id="back" mnemonicParsing="false" onAction="#showMainFrame" styleClass="clickableGreen">
+                                 <tooltip>
+                                    <Tooltip id="tooltip" text="Return to welcome screen [ESC]" />
+                                 </tooltip>
+                              </Button>
                                     </children>
                                 </HBox>
                             </left>
@@ -81,7 +75,7 @@
                                 <Insets left="20.0" />
                             </VBox.margin>
                      <tooltip>
-                        <Tooltip id="tooltip" text="Click on an activity to update or delete it" />
+                        <Tooltip id="tooltip" text="Click on this activity to update or delete it" />
                      </tooltip>
                         </TableView>
                     </children>

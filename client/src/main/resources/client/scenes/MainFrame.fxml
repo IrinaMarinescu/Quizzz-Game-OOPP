@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
@@ -16,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@../css/mainFrame.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MainFrameCtrl">
+<BorderPane prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MainFrameCtrl">
     <top>
         <BorderPane fx:id="topBar" prefHeight="75" prefWidth="1600" BorderPane.alignment="CENTER">
             <left>
@@ -83,9 +85,12 @@
     <left>
         <VBox>
             <Region VBox.vgrow="ALWAYS" />
-            <VBox fx:id="helpMenuContainer" alignment="CENTER" maxHeight="-Infinity" prefHeight="491.0" prefWidth="220.0" visible="false">
-                <FlowPane fx:id="helpMenuTitle" alignment="CENTER" maxHeight="-Infinity" prefHeight="27.0" prefWidth="200.0">
-                    <Text text="Help" />
+            <VBox fx:id="helpMenuContainer" alignment="CENTER" maxHeight="-Infinity" prefHeight="452.0" prefWidth="220.0" visible="false">
+                <FlowPane fx:id="helpMenuTitle" alignment="CENTER" prefHeight="40.0" prefWidth="200.0">
+                    <Text text="Help">
+                  <FlowPane.margin>
+                     <Insets />
+                  </FlowPane.margin></Text>
                 </FlowPane>
                 <GridPane fx:id="helpMenu" alignment="CENTER" prefHeight="373.0" prefWidth="200.0">
                     <columnConstraints>
@@ -106,7 +111,10 @@
                     <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
                         <Image url="@../icons/trophy-solid.png" />
                     </ImageView>
-                    <Text text="+0" wrappingWidth="50.638671875" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Text id="helpPointsGained" text="+0" wrappingWidth="50.638671875" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                  <font>
+                     <Font size="28.0" />
+                  </font></Text>
                     <ImageView fitHeight="35.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                         <Image url="@../icons/hourglass-empty-solid.png" />
                     </ImageView>
@@ -119,9 +127,8 @@
                     <ImageView fitHeight="30.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
                         <Image url="@../emoticons/face-smile-solid.png" />
                     </ImageView>
-                    <Text text="Your total score this game" wrappingWidth="70" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                    <Text text="The number of the current question" wrappingWidth="70" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-                    <Text fx:id="EscX2" text="Esc x2" wrappingWidth="61.638671875" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                    <Text text="Your total score this game" wrappingWidth="122.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
+                    <Text text="The number of the current question" wrappingWidth="136.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
                     <Text text="Toggles leaderboard visibility" wrappingWidth="138.638671875" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                     <Text text="Your points gained last round" wrappingWidth="133.638671875" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     <Text text="Halves time remaining for ALL players this question (once this game)" wrappingWidth="140.638671875" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -132,9 +139,20 @@
                      <Font size="10.0" />
                   </font></Text>
                     <Text text="Hovering over this icon shows menu to send emojis" wrappingWidth="140.638671875" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                    <Button mnemonicParsing="false" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-                    <Button mnemonicParsing="false" text="0/20" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
-                    <Text text="To disconnect, quickly press the Escape key twice" wrappingWidth="147.638671875" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                    <Button mnemonicParsing="false" text="0" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+                  <GridPane.margin>
+                     <Insets left="5.0" />
+                  </GridPane.margin></Button>
+                    <Button mnemonicParsing="false" text="0/20" GridPane.halignment="CENTER" GridPane.rowIndex="7">
+                  <GridPane.margin>
+                     <Insets left="5.0" />
+                  </GridPane.margin></Button>
+                    <Text text="Return to this screen" wrappingWidth="147.638671875" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+               <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+                  <image>
+                     <Image url="@../icons/angle-left-solid.png" />
+                  </image>
+               </ImageView>
                 </GridPane>
             </VBox>
         </VBox>
@@ -142,4 +160,8 @@
     <right>
         <VBox prefWidth="220.0" />
     </right>
+   <stylesheets>
+      <URL value="@../css/mainFrame.css" />
+      <URL value="@../css/helpMenu.css" />
+   </stylesheets>
 </BorderPane>

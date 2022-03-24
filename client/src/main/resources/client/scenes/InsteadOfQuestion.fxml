@@ -114,7 +114,7 @@
               </VBox>
          </content>
          <tooltip>
-            <Tooltip id="tooltip" text="Submit answer C [C] [2]" />
+            <Tooltip id="tooltip" text="Submit answer C [C] [3]" />
          </tooltip>
       </ScrollPane>
     </children>

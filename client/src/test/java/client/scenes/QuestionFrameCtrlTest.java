@@ -3,7 +3,6 @@ package client.scenes;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -18,8 +17,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -225,17 +222,6 @@ class QuestionFrameCtrlTest {
         sut.keyPressed(KeyCode.ESCAPE);
         sut.keyPressed(KeyCode.ESCAPE);
 
-        assertSame(1, mainCtrlDOC.countLogs("disc"));
-    }
-
-    @Test
-    public void escapeFalse() {
-        sut.timeUtils = new TimeUtilsDOC(201);
-        for (int i = 0; i < 10; i++) {
-            sut.keyPressed(KeyCode.ESCAPE);
-        }
-
-        assertSame(0, mainCtrlDOC.countLogs("disc"));
-        assertSame(10, mainCtrlDOC.countLogs("now"));
+        assertSame(2, mainCtrlDOC.countLogs("modal"));
     }
 }

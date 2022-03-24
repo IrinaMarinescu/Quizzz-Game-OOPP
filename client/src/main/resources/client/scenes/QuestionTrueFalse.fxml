@@ -16,7 +16,7 @@
                 <Font size="25.0" />
             </font>
          <tooltip>
-            <Tooltip id="tooltip" text="Submit answer True [1] [T]" />
+            <Tooltip id="tooltip" text="Submit answer True [T] [1]" />
          </tooltip>
         </Button>
         <Button id="False" fx:id="falseButton" layoutX="573.0" layoutY="496.0" mnemonicParsing="false" onAction="#falseSelected" styleClass="clickableBlue" stylesheets="@../css/questionTrueFalse.css" text="False">
