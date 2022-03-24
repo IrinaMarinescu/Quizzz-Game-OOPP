@@ -9,6 +9,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javax.inject.Inject;
 
@@ -33,6 +35,9 @@ public class OpenQuestionCtrl implements QuestionRequirements {
 
     @FXML
     Text errorMessage;
+
+    @FXML
+    ImageView imageField;
 
     /**
      * Injects necessary dependencies
@@ -89,9 +94,9 @@ public class OpenQuestionCtrl implements QuestionRequirements {
             errorMessage.setVisible(false);
         });
 
-        //String imagePath = question.getActivities().get(0).imagePath;
-        //Image image = new Image(imagePath, 480, 500, false, true);
-        //imageField.setImage(image);
+        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/" + question.getActivities().get(0).imagePath;
+        Image image = new Image(imagePath, 480, 500, true, false);
+        imageField.setImage(image);
     }
 
     /**

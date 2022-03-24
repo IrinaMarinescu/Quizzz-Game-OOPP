@@ -12,6 +12,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javax.inject.Inject;
 
@@ -133,9 +134,9 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
         this.positionCorrectAnswer = question.getCorrectAnswer();
         String correctAnswer = question.getActivities().get(positionCorrectAnswer).title;
 
-        //String imagePath = question.getActivities().get(0).imagePath;
-        //Image image = new Image(imagePath, 480, 500, false, true);
-        //imageField.setImage(image);
+        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/" + question.getActivities().get(3).imagePath;
+        Image image = new Image(imagePath, 480, 500, true, false);
+        imageField.setImage(image);
 
         this.buttons = new ArrayList<>();
         Collections.addAll(buttons, answerA, answerB, answerC);
