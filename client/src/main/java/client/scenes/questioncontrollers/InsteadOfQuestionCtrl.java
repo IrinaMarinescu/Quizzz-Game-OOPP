@@ -120,7 +120,7 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
      * Disables all buttons now that an answer has been chosen, makes the button of the chosen answer white and pales
      * the other answers
      */
-    private void setChosenAnswer() {
+    protected void setChosenAnswer() {
         if (boxes.get(selectedAnswerButton).isDisabled()) {
             return;
         }

@@ -72,13 +72,12 @@ public class QuestionOneImageCtrlDOC extends QuestionOneImageCtrl {
      */
     private String randomConsumption() {
         long actualConsumption = super.getQuestion().getActivities().get(0).consumptionInWh;
-        int zeros = countZeros(actualConsumption);
         double fifteenPercent = ((double) actualConsumption) / 100.00 * 15.00;
         int max = (int) Math.ceil(actualConsumption + fifteenPercent);
         int min = (int) Math.floor(actualConsumption - fifteenPercent);
         int randomConsumption = (int) Math.floor(Math.random() * (max - min + 1) + min);
         //rounding the number to the appropriate number of zeroes at the end to make it harder to guess
-        randomConsumption = (int) ((int) (randomConsumption / Math.pow(10, zeros - 1)) * Math.pow(10, zeros - 1));
+        randomConsumption = (int) ((int) (randomConsumption));
         return String.valueOf(randomConsumption);
     }
 
