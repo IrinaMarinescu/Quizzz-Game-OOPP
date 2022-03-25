@@ -2,11 +2,13 @@
 
 * {
     -greenish: #02C39A;
-    -buttonColorHover: #02B070;
+    -buttonColorHoverGreen: #01b975;
     -topBarColor: #05668D;
     -topBarBackgroundColor: #B4D1DD;
     -darkCyan: #028090;
+    -buttonColorHoverDark: #027383;
     -lightishBlue: #5CB4BF;
+    -buttonColorHoverBlue: #57a9b4;
     -lightBlue: #81C0C8;
 
     -dropshadow: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 0);
@@ -60,14 +62,75 @@ Button {
     -fx-focus-color: transparent;
 }
 
-.clickable {
+ScrollPane {
+    -fx-background-color: transparent;
+    -fx-background-radius: 40;
+    -fx-hbar-policy: NEVER;
+    -fx-vbar-policy: NEVER;
+    -fx-pref-height: 132;
+    -fx-pref-width: 444;
+}
+
+ScrollPane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.clickableDark {
+    -fx-background-color: -darkCyan;
+}
+
+.clickableBlue {
+    -fx-background-color: -lightishBlue;
+}
+
+.clickableGreen:hover {
+    -fx-background-color: -buttonColorHoverGreen;
+}
+
+.clickableDark:hover {
+    -fx-background-color: -buttonColorHoverDark;
+}
+
+.clickableBlue:hover {
+    -fx-background-color: -buttonColorHoverBlue;
+}
+
+.clickableGreen:pressed, .clickableDark:pressed, .clickableBlue:pressed {
+    -fx-effect: -dropshadow;
+}
+
+.clickableGreen, .clickableDark, .clickableBlue {
     -fx-cursor: hand;
 }
 
-.clickable:hover {
-    -fx-background-color: -buttonColorHover;
+TextField.clickableGreen {
+    -fx-cursor: text;
 }
 
-/*.clickable:pressed {*/
-/*    -fx-effect: -dropshadow;*/
-/*}*/
+TextField.clickableGreen:focused {
+    -fx-background-color: -buttonColorHoverGreen;
+}
+
+TextField.clickableGreen:pressed {
+    -fx-effect: none;
+}
+
+#trophy, #back {
+    -fx-pref-height: 80;
+    -fx-pref-width: 80;
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+
+    -fx-background-size: 75%;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+    -fx-background-image: url('../icons/trophy-solid.png');
+}
+
+#back {
+    -fx-background-image: url('../icons/angle-left-solid.png');
+}
+
+#trophy:hover, #back:hover {
+    -fx-opacity: 0.8;
+}

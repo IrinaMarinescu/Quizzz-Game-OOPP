@@ -9,6 +9,9 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import javax.inject.Inject;
 
@@ -17,7 +20,7 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     private MainCtrl mainCtrl;
     private QuestionFrameCtrl questionFrameCtrl;
     private Question question;
-    private int answer;
+    private long answer;
 
     @FXML
     Button submitButton;
@@ -34,6 +37,9 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     @FXML
     Text errorMessage;
 
+    @FXML
+    ImageView imageField;
+
     /**
      * Injects necessary dependencies
      *
@@ -46,7 +52,6 @@ public class OpenQuestionCtrl implements QuestionRequirements {
         this.questionFrameCtrl = questionFrameCtrl;
     }
 
-
     /**
      * Reads the submitted answer and checks whether a number has actually been entered
      * Then changes the text on the button to 'Submitted!'
@@ -55,22 +60,21 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     public void submit() {
         String ans = entryField.getText();
         Scanner scanner = new Scanner(ans);
-        if (scanner.hasNextInt()) {
-            this.answer = scanner.nextInt();
+        if (scanner.hasNextLong()) {
+            this.answer = scanner.nextLong();
             errorMessage.setVisible(false);
             submitButton.setText("Submitted!");
             submitButton.setDisable(true);
+            long correctAnswer = this.question.getActivities().get(0).consumptionInWh;
+            long percentageOff = ((Math.abs(correctAnswer - this.answer)) / correctAnswer) * 100;
+            long baseScore = 100 - percentageOff / 2;
+            if (baseScore < 0) {
+                baseScore = 0;
+            }
+            mainCtrl.addPoints(baseScore);
         } else {
             errorMessage.setVisible(true);
         }
-
-        long correctAnswer = this.question.getActivities().get(0).consumptionInWh;
-        long percentageOff = ((Math.abs(correctAnswer - this.answer)) / correctAnswer) * 100;
-        long baseScore = 100 - percentageOff / 2;
-        if (baseScore < 0) {
-            baseScore = 0;
-        }
-        mainCtrl.addPoints(baseScore);
     }
 
     /**
@@ -87,11 +91,15 @@ public class OpenQuestionCtrl implements QuestionRequirements {
             submitButton.setText("Submit");
             submitButton.setDisable(false);
             entryField.setText("");
+            errorMessage.setVisible(false);
+            entryField.setDisable(false);
+            Platform.runLater(() -> entryField.requestFocus());
         });
 
-        //String imagePath = question.getActivities().get(0).imagePath;
-        //Image image = new Image(imagePath, 480, 500, false, true);
-        //imageField.setImage(image);
+        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
+            + question.getActivities().get(0).imagePath;
+        Image image = new Image(imagePath, 480, 500, true, false);
+        imageField.setImage(image);
     }
 
     /**
@@ -101,6 +109,8 @@ public class OpenQuestionCtrl implements QuestionRequirements {
      */
     @Override
     public void revealCorrectAnswer() {
+        entryField.setDisable(true);
+        submitButton.setDisable(true);
         long correctAnswer = this.question.getActivities().get(0).consumptionInWh;
         answerText.setText("It takes " + correctAnswer + "Wh!");
     }
@@ -113,5 +123,9 @@ public class OpenQuestionCtrl implements QuestionRequirements {
         //Disable joker for this question
     }
 
-    ;
+    public void keyPressed(KeyCode e) {
+        if (e == KeyCode.ENTER) {
+            submit();
+        }
+    }
 }

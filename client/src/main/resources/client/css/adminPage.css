@@ -34,6 +34,10 @@
     -fx-background-color: -lightishBlue;
 }
 
+.table-view .table-row-cell:hover {
+    -fx-background-color: -buttonColorHoverBlue;
+}
+
 .table-view .scroll-bar * {
     -fx-min-height: 0;
     -fx-pref-height: 0;

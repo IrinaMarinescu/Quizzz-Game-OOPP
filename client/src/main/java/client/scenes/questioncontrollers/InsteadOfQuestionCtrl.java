@@ -12,31 +12,36 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javax.inject.Inject;
 
 public class InsteadOfQuestionCtrl implements QuestionRequirements {
+
     private MainCtrl mainCtrl;
     private QuestionFrameCtrl questionFrameCtrl;
     private Question question;
-    private List<Button> buttons;
+    private List<Text> buttons;
     private List<ImageView> correct;
     private List<ImageView> wrong;
+    private List<VBox> boxes;
     private int positionCorrectAnswer;
     private int selectedAnswerButton;
 
     @FXML
-    Button answerA;
+    Text answerA;
 
     @FXML
-    Button answerB;
+    Text answerB;
 
     @FXML
-    Button answerC;
+    Text answerC;
 
     @FXML
-    Label questionText;
+    Text questionText;
 
     @FXML
     ImageView imageField;
@@ -58,6 +63,15 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
 
     @FXML
     ImageView wrongC;
+
+    @FXML
+    VBox boxA;
+
+    @FXML
+    VBox boxB;
+
+    @FXML
+    VBox boxC;
 
     /**
      * Injects necessary dependencies
@@ -107,11 +121,13 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
      * the other answers
      */
     private void setChosenAnswer() {
-        buttons.get(selectedAnswerButton).setStyle("-fx-border-color: #028090");
+        if (boxes.get(selectedAnswerButton).isDisabled()) {
+            return;
+        }
         for (int i = 0; i < 3; i++) {
-            buttons.get(i).setDisable(true);
+            boxes.get(i).setDisable(true);
             if (i != selectedAnswerButton) {
-                buttons.get(i).setOpacity(0.5);
+                boxes.get(i).setOpacity(0.5);
             }
         }
 
@@ -130,13 +146,14 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
     @Override
     public void initialize(Question question) {
         this.question = question;
-        this.questionText.setText(question.getQuestion());
+        Platform.runLater(() -> this.questionText.setText(question.getQuestion()));
         this.positionCorrectAnswer = question.getCorrectAnswer();
         String correctAnswer = question.getActivities().get(positionCorrectAnswer).title;
 
-        //String imagePath = question.getActivities().get(0).imagePath;
-        //Image image = new Image(imagePath, 480, 500, false, true);
-        //imageField.setImage(image);
+        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
+                + question.getActivities().get(3).imagePath;
+        Image image = new Image(imagePath, 480, 500, true, false);
+        imageField.setImage(image);
 
         this.buttons = new ArrayList<>();
         Collections.addAll(buttons, answerA, answerB, answerC);
@@ -147,12 +164,14 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
         this.wrong = new ArrayList<>();
         Collections.addAll(wrong, wrongA, wrongB, wrongC);
 
+        this.boxes = new ArrayList<>();
+        Collections.addAll(boxes, boxA, boxB, boxC);
+
         for (int i = 0; i < 3; i++) {
             correct.get(i).setVisible(false);
             wrong.get(i).setVisible(false);
-            buttons.get(i).setOpacity(1);
-            buttons.get(i).setStyle("-fx-border-color:  #5CB4BF");
-            buttons.get(i).setDisable(false);
+            boxes.get(i).setOpacity(1);
+            boxes.get(i).setDisable(false);
         }
 
         Platform.runLater(() -> {
@@ -169,6 +188,7 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
     public void revealCorrectAnswer() {
         correct.get(positionCorrectAnswer).setVisible(true);
         for (int i = 0; i < 3; i++) {
+            boxes.get(i).setDisable(true);
             if (i != positionCorrectAnswer) {
                 wrong.get(i).setVisible(true);
             }
@@ -197,7 +217,29 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
             }
         }
 
-        buttons.get(removedAnswer).setOpacity(0.5);
-        buttons.get(removedAnswer).setDisable(true);
+        boxes.get(removedAnswer).setOpacity(0.5);
+        boxes.get(removedAnswer).setDisable(true);
+    }
+
+    public void keyPressed(KeyCode e) {
+        switch (e) {
+            case DIGIT1:
+            case NUMPAD1:
+            case A:
+                setAnswerA();
+                break;
+            case DIGIT2:
+            case NUMPAD2:
+            case B:
+                setAnswerB();
+                break;
+            case DIGIT3:
+            case NUMPAD3:
+            case C:
+                setAnswerC();
+                break;
+            default:
+                break;
+        }
     }
 }
