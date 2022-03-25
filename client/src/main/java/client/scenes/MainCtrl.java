@@ -18,9 +18,13 @@ package client.scenes;
 
 import client.scenes.controllerrequirements.MainCtrlRequirements;
 import client.scenes.controllerrequirements.QuestionRequirements;
+import client.scenes.questioncontrollers.InsteadOfQuestionCtrl;
 import client.scenes.questioncontrollers.OpenQuestionCtrl;
 import client.scenes.questioncontrollers.QuestionOneImageCtrl;
-import client.utils.LongPollingUtils;
+import client.scenes.questioncontrollers.QuestionThreePicturesCtrl;
+import client.scenes.questioncontrollers.QuestionTrueFalseCtrl;
+import client.utils.GameUtils;
+import client.utils.LobbyUtils;
 import client.utils.ServerUtils;
 import client.utils.TimeUtils;
 import commons.Game;
@@ -43,7 +47,7 @@ public class MainCtrl implements MainCtrlRequirements {
     public static final int ROUND_TIME = 10;
     public static final int OVERVIEW_TIME = 5;
     public static final int LEADERBOARD_TIME = 10;
-    public static final int TOTAL_ROUNDS = 4; // should be 20
+    public static final int TOTAL_ROUNDS = 20;
 
     private LeaderboardEntry player;
     private Game game;
@@ -56,75 +60,125 @@ public class MainCtrl implements MainCtrlRequirements {
     private int timeoutRoundCheck;
     private String currentQuestionType;
 
-    private TimeUtils timeUtils;
     private ServerUtils serverUtils;
-    private LongPollingUtils longPollingUtils;
-    private Lobby lobby;
+    private GameUtils gameUtils;
+    private LobbyUtils lobbyUtils;
+    private TimeUtils timeUtils;
+
     private Stage primaryStage;
 
     private MainFrameCtrl mainFrameCtrl;
     private Scene mainFrame;
 
-    private QuestionFrameCtrl questionFrameCtrl;
-    private Scene questionFrame;
+    private LobbyCtrl lobbyCtrl;
+    private Scene lobbyFrame;
 
     private LeaderboardCtrl leaderboardCtrl;
     private Scene leaderboard;
 
+    private AdminInterfaceCtrl adminInterfaceCtrl;
+    private Scene adminInterfaceFrame;
+
+    private QuestionFrameCtrl questionFrameCtrl;
+    private Scene questionFrame;
+
+    private QuestionTrueFalseCtrl questionTrueFalseCtrl;
+    private Node questionTrueFalse;
+
     private OpenQuestionCtrl openQuestionCtrl;
     private Node openQuestion;
+
+    private QuestionThreePicturesCtrl questionThreePicturesCtrl;
+    private Node questionThreePictures;
 
     private QuestionOneImageCtrl questionOneImageCtrl;
     private Node questionOneImage;
 
+    private InsteadOfQuestionCtrl insteadOfQuestionCtrl;
+    private Node insteadOfQuestion;
+
+    private FinalScreenCtrl finalScreenCtrl;
+    private Node finalScreen;
+
     QuestionRequirements currentQuestionCtrl = null;
+
+    private boolean widthChanged = false;
 
     /**
      * Initializes this class
      *
      * @param timeUtils        Only instance of TimeUtils class
      * @param serverUtils      Only instance of ServerUtils class
-     * @param longPollingUtils Only instance of LongPollingUtils class
+     * @param gameUtils        Only instance of GameUtils class
+     * @param lobbyUtils       Only instance of LobbyUtils class
      * @param primaryStage     Only stage
      * @param mainFrame        Welcome screen FXML and controller
      * @param questionFrame    Question Frame screen FXML and controller
      * @param leaderboard      Leaderboard screen FXML and controller
+     * @param adminInterface   Admin Interface screen FXML and controller
      * @param openQuestion     Open question node FXML and controller
      * @param questionOneImage Question with one image FXML and controller
+     * @param finalScreen      Final screen FXML and controller
      */
-    public void initialize(TimeUtils timeUtils, ServerUtils serverUtils, LongPollingUtils longPollingUtils,
+    public void initialize(ServerUtils serverUtils, GameUtils gameUtils,
+                           LobbyUtils lobbyUtils, TimeUtils timeUtils,
                            Stage primaryStage,
                            Pair<MainFrameCtrl, Parent> mainFrame,
-                           Pair<QuestionFrameCtrl, Parent> questionFrame,
+                           Pair<LobbyCtrl, Parent> lobbyFrame,
                            Pair<LeaderboardCtrl, Parent> leaderboard,
+                           Pair<AdminInterfaceCtrl, Parent> adminInterface,
+                           Pair<QuestionFrameCtrl, Parent> questionFrame,
+                           Pair<QuestionTrueFalseCtrl, Parent> questionTrueFalse,
                            Pair<OpenQuestionCtrl, Parent> openQuestion,
-                           Pair<QuestionOneImageCtrl, Parent> questionOneImage) {
+                           Pair<QuestionThreePicturesCtrl, Parent> questionThreePictures,
+                           Pair<QuestionOneImageCtrl, Parent> questionOneImage,
+                           Pair<InsteadOfQuestionCtrl, Parent> insteadOfQuestion,
+                           Pair<FinalScreenCtrl, Parent> finalScreen) {
 
-        this.timeUtils = timeUtils;
         this.serverUtils = serverUtils;
-        this.longPollingUtils = longPollingUtils; // note that long polling is not active by default!
+        this.gameUtils = gameUtils;
+        this.lobbyUtils = lobbyUtils;
+        this.timeUtils = timeUtils;
+
         this.primaryStage = primaryStage;
 
-        primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
-            questionFrameCtrl.resizeTimerBar(newVal.intValue(), oldVal.intValue() - newVal.intValue());
-        });
+        primaryStage.widthProperty().addListener(
+            (obs, oldVal, newVal) -> questionFrameCtrl.resizeTimerBar(newVal.intValue(),
+                oldVal.intValue() - newVal.intValue()));
         primaryStage.setOnCloseRequest(e -> disconnect());
-
-        this.openQuestionCtrl = openQuestion.getKey();
-        this.openQuestion = openQuestion.getValue();
-
-        this.questionOneImageCtrl = questionOneImage.getKey();
-        this.questionOneImage = questionOneImage.getValue();
 
         this.mainFrameCtrl = mainFrame.getKey();
         this.mainFrame = new Scene(mainFrame.getValue());
-        this.mainFrame.setOnKeyPressed(e -> mainFrameCtrl.keyPressed(e.getCode()));
+
+        this.lobbyCtrl = lobbyFrame.getKey();
+        this.lobbyFrame = new Scene(lobbyFrame.getValue());
+
+        this.leaderboardCtrl = leaderboard.getKey();
+        this.leaderboard = new Scene(leaderboard.getValue());
+
+        this.adminInterfaceCtrl = adminInterface.getKey();
+        this.adminInterfaceFrame = new Scene(adminInterface.getValue());
 
         this.questionFrameCtrl = questionFrame.getKey();
         this.questionFrame = new Scene(questionFrame.getValue());
 
-        this.leaderboardCtrl = leaderboard.getKey();
-        this.leaderboard = new Scene(leaderboard.getValue());
+        this.questionTrueFalseCtrl = questionTrueFalse.getKey();
+        this.questionTrueFalse = questionTrueFalse.getValue();
+
+        this.openQuestionCtrl = openQuestion.getKey();
+        this.openQuestion = openQuestion.getValue();
+
+        this.questionThreePicturesCtrl = questionThreePictures.getKey();
+        this.questionThreePictures = questionThreePictures.getValue();
+
+        this.questionOneImageCtrl = questionOneImage.getKey();
+        this.questionOneImage = questionOneImage.getValue();
+
+        this.insteadOfQuestionCtrl = insteadOfQuestion.getKey();
+        this.insteadOfQuestion = insteadOfQuestion.getValue();
+
+        this.finalScreenCtrl = finalScreen.getKey();
+        this.finalScreen = finalScreen.getValue();
 
         primaryStage.setTitle("Quizzzzz!");
         showMainFrame();
@@ -132,10 +186,25 @@ public class MainCtrl implements MainCtrlRequirements {
         primaryStage.show();
     }
 
+    public ServerUtils getServerUtils() {
+        return serverUtils;
+    }
+
+    public void showAdminInterface() {
+        adminInterfaceCtrl.initialize(serverUtils.fetchActivities());
+        primaryStage.setScene(adminInterfaceFrame);
+    }
+
     public LeaderboardEntry getPlayer() {
         return this.player;
     }
 
+    /**
+     * Set player to new Player Object with given attributes
+     *
+     * @param username The name of the player
+     * @param points   The number of points the player has
+     */
     public void setPlayer(String username, int points) {
         this.player = new LeaderboardEntry(username, points);
     }
@@ -149,14 +218,11 @@ public class MainCtrl implements MainCtrlRequirements {
     }
 
     public Lobby getLobby() {
-        return lobby;
+        return lobbyCtrl.getLobby();
     }
 
     public void setLobby(Lobby lobby) {
-        this.lobby = lobby;
-    }
-
-    public void playerLeavesLobby() {
+        lobbyCtrl.setLobby(lobby);
     }
 
     /**
@@ -169,15 +235,42 @@ public class MainCtrl implements MainCtrlRequirements {
         intermediateLeaderboardShown = false;
         isMultiplayerGame = false;
         timeoutRoundCheck = 1;
-        game = serverUtils.getGame();
+        this.game = gameUtils.startSingleplayer();
         questionFrameCtrl.initializeSingleplayerGame();
         showQuestionFrame();
         nextEvent();
     }
 
+    /**
+     * Starts multiplayer game for all players in the lobby, switch to question frame
+     */
     @Override
     public void startMultiplayerGame() {
-        // TODO: enable long polling
+        intermediateLeaderboardShown = true;
+        isMultiplayerGame = true;
+        timeoutRoundCheck = 1;
+        questionFrameCtrl.initializeMultiplayerGame(this.game.getPlayers());
+        lobbyUtils.setActive(false);
+        showQuestionFrame();
+        nextEvent();
+    }
+
+    /**
+     * Add player to the lobby, display it and start long polling for the lobby
+     */
+    public void joinLobby() {
+        setLobby(lobbyUtils.joinLobby(this.player));
+        lobbyUtils.setActive(true);
+        gameUtils.setActive(true);
+        showLobbyFrame();
+    }
+
+    /**
+     * Remove player from the lobby and switch to main frame
+     */
+    public void playerLeavesLobby() {
+        lobbyUtils.leaveLobby(player);
+        showMainFrame();
     }
 
     /**
@@ -186,62 +279,79 @@ public class MainCtrl implements MainCtrlRequirements {
     private void nextEvent() {
         game.setPlayers(serverUtils.getUpdatedScores(game.getId()));
 
-        // The current event is the intermediate leaderboard
-        if (game.getRound() == TOTAL_ROUNDS / 2 && !intermediateLeaderboardShown) {
-            intermediateLeaderboardShown = true;
-            showLeaderboard(game.getPlayers(), 10, "intermediate");
+        if (isMultiplayerGame) {
+            // The current event is the intermediate leaderboard
+            if (game.getRound() == TOTAL_ROUNDS / 2 && !intermediateLeaderboardShown) {
+                intermediateLeaderboardShown = true;
+                showLeaderboard(game.getPlayers(), 10, "intermediate");
 
-            timeUtils.runAfterDelay(() -> {
-                showQuestionFrame();
-                nextEvent();
-            }, LEADERBOARD_TIME);
-            return;
-        }
+                timeUtils.runAfterDelay(() -> {
+                    showQuestionFrame();
+                    nextEvent();
+                }, LEADERBOARD_TIME);
+                return;
+            }
 
-        // The current event is the final leaderboard; the game is over
-        if (game.getRound() == TOTAL_ROUNDS) {
-            showLeaderboard(game.getPlayers(), 10, "final");
+            // The current event is the final leaderboard; the game is over
+            if (game.getRound() == TOTAL_ROUNDS) {
+                showLeaderboard(game.getPlayers(), 10, "final");
+                return;
+            }
+            questionFrameCtrl.setLeaderboardContents(game.getPlayers());
+        } else if (game.getRound() == TOTAL_ROUNDS) {
+            showFinalScreen();
             return;
         }
 
         // The current event is a question
         game.incrementRound();
-        questionFrameCtrl.incrementQuestionNumber();
-        questionFrameCtrl.setLeaderboardContents(game.getPlayers());
-        Platform.runLater(() -> questionFrameCtrl.setRemainingTime(ROUND_TIME));
+        Platform.runLater(() -> questionFrameCtrl.incrementQuestionNumber());
+        questionFrameCtrl.setRemainingTime(ROUND_TIME);
+        if (isMultiplayerGame) {
+            questionFrameCtrl.setLeaderboardContents(game.getPlayers());
+        }
         questionStartTime = timeUtils.now();
         questionEndTime = questionStartTime + ROUND_TIME * 1000.0;
         pointsGained = 0;
         doublePoints = false;
-        Question currentQuestion = game.getNextQuestion();
+        Question currentQuestion = game.nextQuestion();
         currentQuestionType = currentQuestion.getQuestionType();
 
+        Node questionNode = null;
         switch (currentQuestionType) {
             case "trueFalseQuestion":
-                // TODO
+                currentQuestionCtrl = questionTrueFalseCtrl;
+                questionNode = questionTrueFalse;
                 questionFrameCtrl.setWrongAnswerJoker(false);
                 break;
             case "openQuestion":
                 currentQuestionCtrl = openQuestionCtrl;
-                questionFrameCtrl.setCenterContent(openQuestion);
+                questionNode = openQuestion;
+                questionFrameCtrl.setWrongAnswerJoker(false);
                 break;
             case "threePicturesQuestion":
-                // TODO
+                currentQuestionCtrl = questionThreePicturesCtrl;
+                questionNode = questionThreePictures;
                 break;
             case "oneImageQuestion":
                 currentQuestionCtrl = questionOneImageCtrl;
-                questionFrameCtrl.setCenterContent(questionOneImage);
+                questionNode = questionOneImage;
                 break;
             case "insteadOfQuestion":
-                // TODO
+                currentQuestionCtrl = insteadOfQuestionCtrl;
+                questionNode = insteadOfQuestion;
                 break;
             default:
                 System.err.println("Unrecognized question type in MainCtrl");
                 break;
         }
         currentQuestionCtrl.initialize(currentQuestion);
+        questionFrameCtrl.setCenterContent(questionNode, true);
+    }
 
-        setQuestionTimeouts(ROUND_TIME);
+    private void showFinalScreen() {
+        finalScreenCtrl.setPoints(player.getScore());
+        questionFrameCtrl.setCenterContent(finalScreen, false);
     }
 
     /**
@@ -249,23 +359,27 @@ public class MainCtrl implements MainCtrlRequirements {
      *
      * @param delay The time until the end of the question
      */
-    private void setQuestionTimeouts(double delay) {
+    void setQuestionTimeouts(double delay) {
+        int expectedRound = game.getRound();
         timeUtils.runAfterDelay(() -> {
-            if (game.getRound() != timeoutRoundCheck) {
+            if (expectedRound != timeoutRoundCheck) {
                 return;
             }
 
             timeoutRoundCheck++;
+            Platform.runLater(() -> {
+                timeUtils.runAfterDelay(this::nextEvent, OVERVIEW_TIME);
+                questionFrameCtrl.setRemainingTime(OVERVIEW_TIME);
+            });
+
             currentQuestionCtrl.revealCorrectAnswer();
-            questionFrameCtrl.addPoints(pointsGained);
+            Platform.runLater(() -> questionFrameCtrl.addPoints(pointsGained));
+            player.setScore(player.getScore() + pointsGained);
             questionFrameCtrl.tempDisableJokers(OVERVIEW_TIME);
             serverUtils.sendPointsGained(game.getId(), player, pointsGained);
-            if (currentQuestionType.equals("trueFalseQuestion")) {
+            if (currentQuestionType.equals("trueFalseQuestion") || currentQuestionType.equals("openQuestion")) {
                 questionFrameCtrl.setWrongAnswerJoker(true);
             }
-
-            Platform.runLater(() -> questionFrameCtrl.setRemainingTime(OVERVIEW_TIME));
-            timeUtils.runAfterDelay(this::nextEvent, OVERVIEW_TIME);
         }, delay);
     }
 
@@ -282,6 +396,9 @@ public class MainCtrl implements MainCtrlRequirements {
             if (doublePoints) {
                 pointsGained *= 2;
             }
+        }
+        if (!isMultiplayerGame) {
+            setQuestionTimeouts(0.0);
         }
     }
 
@@ -310,7 +427,7 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     @Override
     public void eliminateWrongAnswer() {
-        // currentQuestionCtrl.eliminateWrongAnswer();
+        currentQuestionCtrl.removeIncorrectAnswer();
     }
 
     /**
@@ -320,15 +437,6 @@ public class MainCtrl implements MainCtrlRequirements {
         // TODO stop long polling
         serverUtils.disconnect(game.getId(), player);
         showMainFrame();
-    }
-
-    @Override
-    public void showGlobalLeaderboardFrame() {
-        int maxSize = 10;
-        showLeaderboard(serverUtils.getSoloLeaderboard(maxSize), maxSize, "solo");
-    }
-
-    public void showLobbyFrame() {
     }
 
     /**
@@ -343,11 +451,37 @@ public class MainCtrl implements MainCtrlRequirements {
         primaryStage.setScene(leaderboard);
     }
 
+    public String getUsername() {
+        return player.getName();
+    }
+
+    public void halveRemainingTime() {
+        questionFrameCtrl.halveRemainingTime();
+    }
+
+    /**
+     * Show global leaderboard frame
+     */
+    @Override
+    public void showGlobalLeaderboardFrame() {
+        int maxSize = 10;
+        showLeaderboard(serverUtils.getSoloLeaderboard(maxSize), maxSize, "solo");
+    }
+
     /**
      * Shows main frame (welcome/splash screen)
      */
     public void showMainFrame() {
         primaryStage.setScene(mainFrame);
+        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
+    }
+
+    /**
+     * Shows lobby frame
+     */
+    public void showLobbyFrame() {
+        primaryStage.setScene(lobbyFrame);
+
     }
 
     /**
@@ -356,6 +490,5 @@ public class MainCtrl implements MainCtrlRequirements {
     public void showQuestionFrame() {
         primaryStage.setScene(questionFrame);
         questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
-
     }
 }

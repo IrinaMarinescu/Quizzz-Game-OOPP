@@ -32,14 +32,20 @@ class ActivityControllerTest {
 
     private ActivityController sut;
 
+    private Activity activity;
+    private Activity nullActivity;
+
+
     @BeforeEach
     public void setUp() {
         sut = new ActivityController(repo, new Random());
+        activity = new Activity("00-a", "ss/ss.png", "a", 5, "b");
+        nullActivity = new Activity(null, null, null, 0, null);
     }
 
     @Test
     public void cannotAddNullTitleOrSource() {
-        var s = sut.add(new Activity(null, null, null, 0, null));
+        var s = sut.add(nullActivity);
         assertEquals(BAD_REQUEST, s.getStatusCode());
     }
 
@@ -73,7 +79,7 @@ class ActivityControllerTest {
 
     @Test
     public void testAdd() {
-        var s = sut.add(new Activity("00-a", "ss/ss.png", "a", 5, "b"));
+        var s = sut.add(activity);
         Activity activity = repo.findById("00-a");
 
         assertEquals(activity.consumptionInWh, 5);
@@ -122,7 +128,7 @@ class ActivityControllerTest {
         sut.generateTrueFalseQuestion(0, res);
         Question q = res.get(0);
 
-        assertEquals("flying a plane consumes 30 Wh per hour.", q.getQuestion());
+        assertEquals("flying a plane consumes 30Wh.", q.getQuestion());
         assertSame(1, q.getCorrectAnswer());
     }
 
@@ -159,6 +165,29 @@ class ActivityControllerTest {
     }
 
     @Test
+    public void testDeleteNotFound() {
+        var s = sut.deleteActivity(nullActivity);
+        assertEquals(BAD_REQUEST, s.getStatusCode());
+    }
+
+    @Test
+    public void testDelete() {
+        var s = sut.add(activity);
+        sut.deleteActivity(activity);
+        assertEquals(activity, s.getBody());
+    }
+
+    @Test
+    public void testUpdate() {
+        sut.add(activity);
+        activity.title = "test";
+
+        sut.updateActivity(activity);
+
+        Activity newActivity = repo.findById(activity.id);
+        assertEquals("test", newActivity.title);
+    }
+
     void generateThreePicturesQuestion() {
         sut.importActivities(List.of(
             new Activity("00-b", "ss/ss.png", "flying a plane", 10, "b"),
@@ -198,7 +227,7 @@ class ActivityControllerTest {
         sut.generateInsteadOfQuestion(4, res);
         Question q = res.get(0);
 
-        assertEquals("Instead of using a lamp you can do...", q.getQuestion());
+        assertEquals("What can you do instead of using a lamp?", q.getQuestion());
         assertEquals("flying a plane", q.getActivities().get(q.getCorrectAnswer()).title);
     }
 }

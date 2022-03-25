@@ -17,6 +17,7 @@
 package client.scenes;
 
 import client.scenes.controllerrequirements.MainFrameCtrlRequirements;
+import client.utils.LobbyUtils;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import java.net.URL;
@@ -28,18 +29,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-//import javafx.scene.control.TableColumn;
-//import javafx.scene.control.TableView;
 
 public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
 
-    private final ServerUtils server;
+    private final ServerUtils serverUtils;
+    private final LobbyUtils lobbyUtils;
+
     private final MainCtrl mainCtrl;
 
     private long lastEscapeKeyPressTime;
 
-    //@FXML
-    //private Button trophy;
     @FXML
     private TextField username;
     @FXML
@@ -51,16 +50,17 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     @FXML
     private Text serverIPError;
 
-    //@FXML
-    //private Text helpPointsGained;
-    //@FXML
-    //private Button helpMenuScore;
-    //@FXML
-    //private Button helpMenuQuestionNumber;
-
+    /**
+     * Injects mainCtrl, lobbyUtils and mainCtrl, so it's possible to call methods from there
+     *
+     * @param serverUtils The instance of ServerUtils
+     * @param lobbyUtils  The instance of LobbyUtils
+     * @param mainCtrl    The instance of MainCtrl
+     */
     @Inject
-    public MainFrameCtrl(ServerUtils server, MainCtrl mainCtrl) {
-        this.server = server;
+    public MainFrameCtrl(ServerUtils serverUtils, LobbyUtils lobbyUtils, MainCtrl mainCtrl) {
+        this.serverUtils = serverUtils;
+        this.lobbyUtils = lobbyUtils;
         this.mainCtrl = mainCtrl;
     }
 
@@ -75,9 +75,10 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
      * If the server IP entered by the user is correct redirect to the frame with the global leaderboard
      * otherwise show a server IP error
      */
+    @FXML
     public void openLeaderboard() {
-        if (server.validateIP(serverIP.getText())) {
-            server.setServerIP(serverIP.getText());
+        if (serverUtils.validateIP(serverIP.getText())) {
+            serverUtils.setServerIP(serverIP.getText());
 
             mainCtrl.showGlobalLeaderboardFrame();
         } else {
@@ -97,8 +98,9 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
      * If the server IP entered by the user is correct start a new single player Game, otherwise show a server IP error
      */
     public void startSingleplayerGame() {
-        if (server.validateIP(serverIP.getText())) {
-            server.setServerIP(serverIP.getText());
+        if (serverUtils.validateIP(serverIP.getText())) {
+            serverUtils.setServerIP(serverIP.getText());
+            mainCtrl.setPlayer(username.getText(), 0);
             mainCtrl.startSingleplayerGame();
         } else {
             displayServerIPError(true);
@@ -110,10 +112,11 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
      * join the Lobby, otherwise show a server IP error
      */
     public void joinLobby() {
-        if (server.validateIP(serverIP.getText()) && server.validateUsername(username.getText())) {
-            server.setServerIP(serverIP.getText());
-            mainCtrl.startMultiplayerGame();
-        } else if (!server.validateUsername(serverIP.getText())) {
+        if (serverUtils.validateIP(serverIP.getText()) && lobbyUtils.validateUsername(username.getText())) {
+            serverUtils.setServerIP(serverIP.getText());
+            mainCtrl.setPlayer(username.getText(), 0);
+            mainCtrl.joinLobby();
+        } else if (!lobbyUtils.validateUsername(serverIP.getText())) {
             displayServerIPError(true);
         } else {
             displayUsernameError(true);
@@ -121,9 +124,22 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     }
 
     /**
+     * If the user has entered a correct server IP, they will be redirected to the admin interface.
+     * Otherwise, they will be shown an error.
+     */
+    public void showAdmin() {
+        if (serverUtils.validateIP(serverIP.getText())) {
+            serverUtils.setServerIP(serverIP.getText());
+            mainCtrl.showAdminInterface();
+        } else {
+            System.out.println("invalid ip!");
+        }
+    }
+
+    /**
      * Display the username error
      *
-     * @param show if true displays the error otherwise hides it
+     * @param show If true displays the error otherwise hides it
      */
     @Override
     public void displayUsernameError(boolean show) {
@@ -133,7 +149,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     /**
      * Display the server IP error
      *
-     * @param show if true displays the error otherwise hides it
+     * @param show If true displays the error otherwise hides it
      */
     @Override
     public void displayServerIPError(boolean show) {
@@ -161,6 +177,9 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
                     mainCtrl.disconnect();
                 }
                 lastEscapeKeyPressTime = Clock.systemDefaultZone().millis();
+                break;
+            case CONTROL:
+                showAdmin();
                 break;
             default:
                 break;

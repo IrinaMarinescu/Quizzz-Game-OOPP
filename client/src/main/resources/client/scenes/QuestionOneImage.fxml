@@ -1,95 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0"
-      prefWidth="1156.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.questioncontrollers.QuestionOneImageCtrl">
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="1156.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.questioncontrollers.QuestionOneImageCtrl">
     <children>
-        <ImageView fx:id="imageField" fitHeight="500.0" fitWidth="480.0" layoutX="103.0" layoutY="184.0"
-                   pickOnBounds="true" preserveRatio="true">
+        <ImageView fx:id="imageField" fitHeight="500.0" fitWidth="480.0" layoutX="103.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@../temporary/scooter.png"/>
+                <Image url="@../temporary/scooter.png" />
             </image>
         </ImageView>
-        <Button fx:id="answerA" layoutX="661.0" layoutY="179.0" mnemonicParsing="false" onAction="#setAnswerA"
-                prefHeight="129.0" prefWidth="441.0"
-                style="-fx-background-color: #5CB4BF; -fx-background-radius: 10; -fx-border-color: #5CB4BF; -fx-border-width: 10; -fx-border-radius: 10;"
-                text="Answer A" textFill="WHITE">
+        <Button fx:id="answerA" layoutX="661.0" layoutY="179.0" mnemonicParsing="false" onAction="#setAnswerA" prefHeight="129.0" prefWidth="441.0" style="-fx-background-color: #5CB4BF; -fx-background-radius: 10; -fx-border-color: #5CB4BF; -fx-border-width: 10; -fx-border-radius: 10;" text="Answer A" textFill="WHITE">
             <font>
-                <Font size="25.0"/>
+                <Font size="25.0" />
             </font>
         </Button>
-        <TextField fx:id="questionText" alignment="CENTER" editable="false" layoutX="99.0" layoutY="24.0"
-                   prefHeight="123.0" prefWidth="1002.0"
-                   style="-fx-background-color: #028090; -fx-background-radius: 10; -fx-text-fill: white;"
-                   text="How much energy does this take?">
+        <TextField alignment="CENTER" editable="false" layoutX="99.0" layoutY="24.0" prefHeight="123.0" prefWidth="1002.0" style="-fx-background-color: #028090; -fx-background-radius: 10; -fx-text-fill: white;">
             <font>
-                <Font name="System Bold" size="30.0"/>
+                <Font name="System Bold" size="30.0" />
             </font>
         </TextField>
-        <Button fx:id="answerB" layoutX="664.0" layoutY="333.0" mnemonicParsing="false" onAction="#setAnswerB"
-                prefHeight="129.0" prefWidth="441.0"
-                style="-fx-background-color: #5CB4BF; -fx-background-radius: 10; -fx-border-color: #5CB4BF; -fx-border-width: 10; -fx-border-radius: 10;"
-                text="Answer B" textFill="WHITE">
+        <Button fx:id="answerB" layoutX="664.0" layoutY="333.0" mnemonicParsing="false" onAction="#setAnswerB" prefHeight="129.0" prefWidth="441.0" style="-fx-background-color: #5CB4BF; -fx-background-radius: 10; -fx-border-color: #5CB4BF; -fx-border-width: 10; -fx-border-radius: 10;" text="Answer B" textFill="WHITE">
             <font>
-                <Font size="25.0"/>
+                <Font size="25.0" />
             </font>
         </Button>
-        <Button fx:id="answerC" layoutX="666.0" layoutY="488.0" mnemonicParsing="false" onAction="#setAnswerC"
-                prefHeight="129.0" prefWidth="441.0"
-                style="-fx-background-color: #5CB4BF; -fx-background-radius: 10; -fx-border-color: #5CB4BF; -fx-border-width: 10; -fx-border-radius: 10;"
-                text="Answer C" textFill="WHITE">
+        <Button fx:id="answerC" layoutX="666.0" layoutY="488.0" mnemonicParsing="false" onAction="#setAnswerC" prefHeight="129.0" prefWidth="441.0" style="-fx-background-color: #5CB4BF; -fx-background-radius: 10; -fx-border-color: #5CB4BF; -fx-border-width: 10; -fx-border-radius: 10;" text="Answer C" textFill="WHITE">
             <font>
-                <Font size="25.0"/>
+                <Font size="25.0" />
             </font>
         </Button>
-        <ImageView fx:id="correctA" fitHeight="115.0" fitWidth="110.0" layoutX="560.0" layoutY="200.0"
-                   pickOnBounds="true" preserveRatio="true" visible="false">
+        <ImageView fx:id="correctA" fitHeight="115.0" fitWidth="110.0" layoutX="560.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" visible="false">
             <image>
-                <Image url="@../icons/correct.png"/>
+                <Image url="@../icons/correct.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="correctB" fitHeight="115.0" fitWidth="110.0" layoutX="564.0" layoutY="361.0"
-                   pickOnBounds="true" preserveRatio="true" visible="false">
+        <ImageView fx:id="correctB" fitHeight="115.0" fitWidth="110.0" layoutX="564.0" layoutY="361.0" pickOnBounds="true" preserveRatio="true" visible="false">
             <image>
-                <Image url="@../icons/correct.png"/>
+                <Image url="@../icons/correct.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="correctC" fitHeight="115.0" fitWidth="110.0" layoutX="566.0" layoutY="520.0"
-                   pickOnBounds="true" preserveRatio="true" visible="false">
+        <ImageView fx:id="correctC" fitHeight="115.0" fitWidth="110.0" layoutX="566.0" layoutY="520.0" pickOnBounds="true" preserveRatio="true" visible="false">
             <image>
-                <Image url="@../icons/correct.png"/>
+                <Image url="@../icons/correct.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="wrongA" fitHeight="115.0" fitWidth="110.0" layoutX="565.0" layoutY="202.0" pickOnBounds="true"
-                   preserveRatio="true" visible="false">
+        <ImageView fx:id="wrongA" fitHeight="115.0" fitWidth="110.0" layoutX="565.0" layoutY="202.0" pickOnBounds="true" preserveRatio="true" visible="false">
             <image>
-                <Image url="@../icons/wrong.png"/>
+                <Image url="@../icons/wrong.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="wrongB" fitHeight="115.0" fitWidth="110.0" layoutX="570.0" layoutY="362.0" pickOnBounds="true"
-                   preserveRatio="true" visible="false">
+        <ImageView fx:id="wrongB" fitHeight="115.0" fitWidth="110.0" layoutX="570.0" layoutY="362.0" pickOnBounds="true" preserveRatio="true" visible="false">
             <image>
-                <Image url="@../icons/wrong.png"/>
+                <Image url="@../icons/wrong.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="wrongC" fitHeight="115.0" fitWidth="110.0" layoutX="573.0" layoutY="524.0" pickOnBounds="true"
-                   preserveRatio="true" visible="false">
+        <ImageView fx:id="wrongC" fitHeight="115.0" fitWidth="110.0" layoutX="573.0" layoutY="524.0" pickOnBounds="true" preserveRatio="true" visible="false">
             <image>
-                <Image url="@../icons/wrong.png"/>
+                <Image url="@../icons/wrong.png" />
             </image>
         </ImageView>
-        <Text fx:id="pointsField" layoutX="406.0" layoutY="694.0" strokeType="OUTSIDE" strokeWidth="0.0"
-              textAlignment="CENTER" wrappingWidth="417.16998291015625">
+        <Text fx:id="pointsField" layoutX="406.0" layoutY="694.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="417.16998291015625">
             <font>
-                <Font size="35.0"/>
+                <Font size="35.0" />
             </font>
         </Text>
+      <Label fx:id="questionText" text="Label" />
+      <Label fx:id="questionText" alignment="CENTER" contentDisplay="CENTER" layoutX="126.0" layoutY="60.0" prefHeight="50.0" prefWidth="952.0" text="How much energy does this take?" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Label>
     </children>
 </Pane>

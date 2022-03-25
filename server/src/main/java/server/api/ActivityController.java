@@ -5,6 +5,7 @@ import commons.Question;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,6 +80,37 @@ public class ActivityController {
     }
 
     /**
+     * Used to delete an activity from the DB, by ID
+     *
+     * @param activity the activity to delete
+     * @return a bad request error, if an activity does not exist, or the deleted activity otherwise
+     */
+    @PostMapping("del")
+    @Transactional
+    public ResponseEntity<Activity> deleteActivity(@RequestBody Activity activity) {
+        Activity candidate = repo.findById(activity.id);
+        if (candidate == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        repo.deleteById(activity.id);
+        return ResponseEntity.ok(candidate);
+    }
+
+
+    /**
+     * Gets an activity object and updates in accordingly in the database.
+     *
+     * @param activity the activity object to update in the DB.
+     * @return the same object, if the operation is successful.
+     */
+    @PostMapping("update")
+    public ResponseEntity<Activity> updateActivity(@RequestBody Activity activity) {
+        repo.save(activity);
+        return ResponseEntity.ok(activity);
+    }
+
+    /**
      * This function will get a json-encoded Activity and will save it in the DB.
      * We can test this endpoint with Postman until we have a working UI.
      *
@@ -97,6 +129,12 @@ public class ActivityController {
         return ResponseEntity.ok(saved);
     }
 
+    /**
+     * This function gets a list of activities to add to the database in bulk.
+     *
+     * @param activities the list of the activities to add
+     * @return the same list, if the operation is successful.
+     */
     @PostMapping("import")
     public ResponseEntity<List<Activity>> importActivities(@RequestBody List<Activity> activities) {
         for (var activity : activities) {
@@ -197,17 +235,17 @@ public class ActivityController {
         String id = associateQuestion(typeOfQuestion);
         int numberOfActivities = rand.nextInt(2) + 1;
         List<Activity> activities = fetchRandom(numberOfActivities);
-        String question = "";
+        String question;
         int correctAnswer = 0;
 
         if (numberOfActivities == 1) {
             long correctNumber = activities.get(0).consumptionInWh;
             long wrongNumber = correctNumber * 3;
             if (wrongNumber % 2 == 0) {
-                question = activities.get(0).title + " consumes " + wrongNumber + " Wh per hour.";
+                question = activities.get(0).title + " consumes " + wrongNumber + "Wh.";
                 correctAnswer = 1;
             } else {
-                question = activities.get(0).title + " consumes " + correctNumber + " Wh per hour.";
+                question = activities.get(0).title + " consumes " + correctNumber + "Wh.";
             }
         } else {
             question = activities.get(0).title + " consumes more than " + activities.get(1).title + ".";
@@ -235,6 +273,44 @@ public class ActivityController {
     }
 
     /**
+     * Generates a random consumption value within a 15% range of the consumption of the correct answer
+     *
+     * @return returns a long with the random value, so that it can be displayed in the buttons
+     */
+    private long randomConsumption(Activity a) {
+        long actualConsumption = a.consumptionInWh;
+        int zeros = countZeros(actualConsumption);
+        double fifteenPercent = ((double) actualConsumption) / 100.00 * 15.00;
+        long max = (long) Math.ceil(actualConsumption + fifteenPercent);
+        long min = (long) Math.floor(actualConsumption - fifteenPercent);
+        long randomConsumption = (long) Math.floor(Math.random() * (max - min + 1) + min);
+        //rounding the number to the appropriate number of zeroes at the end to make it harder to guess
+        randomConsumption = (long) ((long) (randomConsumption / Math.pow(10, zeros - 1)) * Math.pow(10, zeros - 1));
+        return randomConsumption;
+    }
+
+    /**
+     * Counts the number of zeros at the end of the consumption to correctly round the options on the other two buttons
+     *
+     * @param actualConsumption The consumption of the activity for which the number of zeroes has to be counted
+     * @return The number of zeroes in the consumption
+     */
+    public static int countZeros(long actualConsumption) {
+        String number = String.valueOf(actualConsumption);
+        int counter = 0;
+        for (int i = 0; i < number.length(); i++) {
+            if (i + 1 == number.length() || number.charAt(i + 1) == '0') {
+                if (number.charAt(i) == '0') {
+                    counter++;
+                }
+            } else if (i + 1 != number.length() && number.charAt(i + 1) != '0') {
+                counter = 0;
+            }
+        }
+        return counter;
+    }
+
+    /**
      * takes 3 randomized activities from the database
      * the string of the question will be "Which activity consumes more?"
      * the correct answer is the one with the highest wh consumption
@@ -247,7 +323,7 @@ public class ActivityController {
         String id = associateQuestion(typeOfQuestion);
 
         List<Activity> activities = fetchRandom(3);
-        String question = "Which consumes more?";
+        String question = "What consumes the most?";
         int correctAnswer = 0;
         for (int i = 1; i < 3; i++) {
             if (activities.get(correctAnswer).consumptionInWh < activities.get(i).consumptionInWh) {
@@ -265,8 +341,16 @@ public class ActivityController {
      * @param questions      the list of all the questions
      */
     public void generateOneImageQuestion(int typeOfQuestion, List<Question> questions) {
-        String id = associateQuestion(typeOfQuestion);
         List<Activity> activities = fetchRandom(1);
+        long a1 = 0;
+        long a2 = 0;
+        do {
+            a1 = randomConsumption(activities.get(0));
+            a2 = randomConsumption(activities.get(0));
+        } while (a1 == a2 || a1 == activities.get(0).consumptionInWh || a2 == activities.get(0).consumptionInWh);
+        activities.add(new Activity("", "", "", a1, ""));
+        activities.add(new Activity("", "", "", a2, ""));
+        String id = associateQuestion(typeOfQuestion);
         String question = "How much energy in Wh does " + activities.get(0).title + " consume?";
         Question questionOneImage = new Question(activities, question, 0, id);
         questions.add(questionOneImage);
@@ -299,8 +383,15 @@ public class ActivityController {
                 i = j;
             }
         }
+        String title = activities.get(i).title;
+        Activity temp = activities.get(i);
+        activities.remove(i);
+        activities.add(temp);
+        String question = "What can you do instead of " + title + "?";
+        if (correctAnswer > i) {
+            correctAnswer--;
+        }
         String id = associateQuestion(typeOfQuestion);
-        String question = "Instead of " + activities.get(i).title + " you can do...";
         Question questionInsteadOf = new Question(activities, question, correctAnswer, id);
         questions.add(questionInsteadOf);
     }

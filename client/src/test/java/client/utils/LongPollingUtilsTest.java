@@ -30,7 +30,7 @@ public class LongPollingUtilsTest {
         questionFrameCtrlDOC = new QuestionFrameCtrlDOC();
         mapper = new ObjectMapper();
 
-        sut = new LongPollingUtils(null, mainCtrlDOC, questionFrameCtrlDOC);
+        sut = new LongPollingUtils(null, mainCtrlDOC, null, questionFrameCtrlDOC);
     }
 
     @Test

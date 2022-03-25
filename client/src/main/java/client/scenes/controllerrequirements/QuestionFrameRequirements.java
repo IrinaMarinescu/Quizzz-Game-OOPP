@@ -18,16 +18,16 @@ public interface QuestionFrameRequirements {
     /**
      * Resets the question frame and initializes settings for a new multiplayer game
      *
-     * @param names The names of all players involved
+     * @param players The names of all players involved
      */
-    void initializeMultiplayerGame(List<String> names);
+    void initializeMultiplayerGame(List<LeaderboardEntry> players);
 
     /**
      * Sets node containing question at the center of the frame
      *
      * @param questionNode The node to be inserted in the center of the frame
      */
-    void setCenterContent(Node questionNode);
+    void setCenterContent(Node questionNode, boolean animate);
 
     /**
      * Add points to a player's score, as seen in top left

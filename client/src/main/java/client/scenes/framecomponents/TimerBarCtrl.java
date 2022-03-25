@@ -21,7 +21,7 @@ public class TimerBarCtrl {
     public double currentAnimationStartTime;
     public double currentAnimationLength;
     public boolean animationPlaying;
-    private int displayWidth;
+    public int displayWidth;
 
     public int relativePos = -2000;
 
@@ -118,7 +118,7 @@ public class TimerBarCtrl {
         if (-change == newSize) {
             return;
         }
-        
+
         displayWidth = newSize;
         totalProgress += (now() - currentAnimationStartTime) / currentAnimationLength;
         animation.setByX(-newSize);

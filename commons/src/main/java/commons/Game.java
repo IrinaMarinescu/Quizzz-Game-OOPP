@@ -43,10 +43,11 @@ public class Game {
         return questions;
     }
 
+
     /**
      * @return The next question, based on current round
      */
-    public Question getNextQuestion() {
+    public Question nextQuestion() {
         return questions.get(round - 1);
     }
 

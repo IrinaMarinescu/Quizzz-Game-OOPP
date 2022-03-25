@@ -1,6 +1,8 @@
 package client.scenes;
 
 import client.scenes.controllerrequirements.LeaderboardCtrlRequirements;
+import client.utils.ServerUtils;
+import com.google.inject.Inject;
 import commons.LeaderboardEntry;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +21,8 @@ import javax.inject.Inject;
 
 public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
 
+    @FXML
+    private Button back;
     @FXML
     private TableView<LeaderboardEntry> leaderboard;
     @FXML
@@ -48,12 +52,14 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     public static final int TYPE_INTERMED = 2;
     public static final int TYPE_FINAL = 3;
 
+    private final MainCtrl mainCtrl;
     private int type;
     private int maxSize;
 
     private MainCtrl mainCtrl;
 
     protected boolean test = false;
+
 
     @Inject
     public LeaderboardCtrl(MainCtrl mainCtrl) {
@@ -64,11 +70,9 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      * {@inheritDoc}
      *
      * @param entries a List of instances of LeaderboardEntry.
-     *
      * @param maxSize the maximum size of the leaderboard - how many records to show.
      *                if <code>entries</code> has more elements than that, the function trims automatically.
-     *
-     * @param type the type of the leaderboard. can either be "solo", "intermediate", "final".
+     * @param type    the type of the leaderboard. can either be "solo", "intermediate", "final".
      */
     @Override
     public void initialize(List<LeaderboardEntry> entries, int maxSize, String type) {
@@ -76,7 +80,7 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
         setLeaderboardType(type);
 
         playerColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getName()));
-        scoreColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getScoreString()));
+        scoreColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().scoreToString()));
 
         fillLeaderboard(entries);
     }
@@ -207,5 +211,9 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      */
     protected void setMaxSize(int maxSize) {
         this.maxSize = maxSize;
+    }
+
+    public void backToMainFrame() {
+        mainCtrl.showMainFrame();
     }
 }

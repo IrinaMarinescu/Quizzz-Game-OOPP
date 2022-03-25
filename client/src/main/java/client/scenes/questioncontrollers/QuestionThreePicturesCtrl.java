@@ -7,8 +7,10 @@ import commons.Question;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -36,7 +38,7 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
     Button answerC;
 
     @FXML
-    TextField questionOutput;
+    Label questionOutput;
 
     @FXML
     ImageView imageA;
@@ -87,18 +89,39 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
             wrong.get(i).setVisible(false);
             answers.get(i).setOpacity(1);
             answers.get(i).setStyle("-fx-border-color:  #5CB4BF");
+            answers.get(i).setDisable(false);
         });
     }
 
     public void setAnswers(Question question) {
-        for (int i = 0; i < question.getActivities().size(); i++) {
-            String title = question.getActivities().get(i).title;
-            String imagePath = question.getActivities().get(i).imagePath;
-            Image image = new Image(imagePath, 200, 186, true, false);
-            images.get(i).setImage(image);
-            answers.get(i).setText(title);
+        Platform.runLater(() -> {
+            for (int i = 0; i < question.getActivities().size(); i++) {
+                String title = question.getActivities().get(i).title;
+                placeImage(i);
+                answers.get(i).setText(title);
+            }
+        });
+    }
+
+    private void placeImage(int i) {
+        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
+                + question.getActivities().get(i).imagePath;
+        Image image = new Image(imagePath, 480, 500, true, false);
+        switch (i) {
+            case 0:
+                imageA.setImage(image);
+                break;
+            case 1:
+                imageB.setImage(image);
+                break;
+            case 2:
+                imageC.setImage(image);
+                break;
+            default:
+                break;
         }
     }
+
 
     @FXML
     void answerASelected() {
@@ -121,10 +144,16 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
     private void setChosenAnswer() {
         answers.get(selectedAnswerButton).setStyle("-fx-border-color: #028090");
         for (int i = 0; i < 3; i++) {
-            answers.get(i).setOnAction(null);
+            answers.get(i).setDisable(true);
             if (i != selectedAnswerButton) {
                 answers.get(i).setOpacity(0.5);
             }
+        }
+
+        if (selectedAnswerButton == positionCorrectAnswer) {
+            mainCtrl.addPoints(100);
+        } else {
+            mainCtrl.addPoints(0);
         }
     }
 
@@ -135,15 +164,10 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
     public void revealCorrectAnswer() {
         correct.get(positionCorrectAnswer).setVisible(true);
         for (int i = 0; i < 3; i++) {
+            answers.get(i).setDisable(true);
             if (i != positionCorrectAnswer) {
                 wrong.get(i).setVisible(true);
             }
-        }
-
-        if (selectedAnswerButton == positionCorrectAnswer) {
-            mainCtrl.addPoints(100);
-        } else {
-            mainCtrl.addPoints(0);
         }
     }
 
@@ -203,7 +227,7 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
         return answerC;
     }
 
-    public TextField getQuestionOutput() {
+    public Label getQuestionOutput() {
         return questionOutput;
     }
 
