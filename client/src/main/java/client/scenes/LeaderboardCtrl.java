@@ -9,6 +9,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -20,8 +22,6 @@ import javafx.util.Pair;
 public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
 
     @FXML
-    private Button back;
-    @FXML
     private TableView<LeaderboardEntry> leaderboard;
     @FXML
     private TableColumn<LeaderboardEntry, String> playerColumn;
@@ -30,9 +30,11 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     @FXML
     private Text pageTitle;
     @FXML
-    private Button leaderboardTitle;
+    private Button back;
     @FXML
     private GridPane buttonGrid;
+    @FXML
+    private BarChart<String, Integer> barChart;
 
     /**
      * Field <code>type</code> in <code>LeaderboardCtrl</code>
@@ -53,7 +55,6 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     private int maxSize;
 
     protected boolean test = false;
-
 
     @Inject
     public LeaderboardCtrl(MainCtrl mainCtrl) {
@@ -76,7 +77,7 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
         playerColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getName()));
         scoreColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().scoreToString()));
 
-        fillLeaderboard(entries);
+        fillLeaderboard(sortEntries(entries));
     }
 
     /**
@@ -95,11 +96,64 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      * @param entries the entries to be put in the leaderboard, in any order. The method will sort the entries by score.
      */
     private void fillLeaderboard(List<LeaderboardEntry> entries) {
-        ObservableList<LeaderboardEntry> data = FXCollections.observableList(
-            sortEntries(entries).stream().map(
-                p -> p.equals(mainCtrl.getPlayer()) ? new LeaderboardEntry("You (" + p.getName() + ")", p.getScore()) :
-                    p).collect(Collectors.toList()));
-        leaderboard.setItems(data);
+        barChart.setLegendVisible(false);
+
+        for (int i = 1; i <= 3; i++) {
+            if (entries.size() >= i) {
+                generateSerie(entries.get(i - 1), getMedal(i));
+            }
+        }
+
+        if (entries.size() >= 3) {
+            ObservableList<LeaderboardEntry> data = FXCollections.observableList(
+                entries.subList(3, entries.size()).stream().map(
+                    p -> p.equals(mainCtrl.getPlayer())
+                        ? new LeaderboardEntry("You (" + p.getName() + ")", p.getScore()) :
+                        p).collect(Collectors.toList()));
+            leaderboard.setItems(data);
+        }
+    }
+
+    /**
+     * Generate a new series on the bar chart with data from a leaderboard entry.
+     * Also sets the colour of the bar according to the number of points the player got:
+     * <ul>
+     *     <li>gold for 1st place</li>
+     *     <li>silver for 2nd place</li>
+     *     <li>bronze for 3rd place</li>
+     * </ul>
+     *
+     * @param entry a LeaderboardEntry instance, with the player to add on the bar chart.
+     * @param colour the colour of the bar
+     */
+    private void generateSerie(LeaderboardEntry entry, String colour) {
+        XYChart.Series<String, Integer> serie = new XYChart.Series<>();
+        serie.getData().add(new XYChart.Data<>(entry.getName(), entry.getScore()));
+
+        barChart.getData().add(serie);
+
+        for (XYChart.Data<String, Integer> data : serie.getData())  {
+            data.getNode().setStyle("-fx-bar-fill: " + colour + ";");
+        }
+    }
+
+    /**
+     * Returns a colour based on the place the player got.
+     *
+     * @param place an integer from 1, 2, or 3.
+     * @return a HEX colour based on the place in the leaderboard.
+     * <ul>
+     *     <li>gold for 1st place</li>
+     *     <li>silver for 2nd place</li>
+     *     <li>bronze for 3rd place</li>
+     * </ul>
+     */
+    protected String getMedal(int place) {
+        switch (place) {
+            case 1: return "#d4af37";
+            case 2: return "#c0c0c0";
+            default: return "#cd7f32";
+        }
     }
 
     /**
@@ -147,14 +201,12 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     protected void formatLabels(Pair<String, String> texts) {
         if (!test) {
             pageTitle.setText(texts.getKey());
-            leaderboardTitle.setText(texts.getValue());
         }
     }
 
-    public void showMainFrame() {
-        mainCtrl.showMainFrame();
-    }
-
+    /**
+     * Redirects the player to play a game of the same type again.
+     */
     public void playAgain() {
         // TODO: implement logic for starting another game
     }
