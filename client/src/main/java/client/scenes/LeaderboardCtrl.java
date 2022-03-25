@@ -96,6 +96,7 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      * @param entries the entries to be put in the leaderboard, in any order. The method will sort the entries by score.
      */
     private void fillLeaderboard(List<LeaderboardEntry> entries) {
+        barChart.getData().clear();
         barChart.setLegendVisible(false);
 
         for (int i = 1; i <= 3; i++) {
