@@ -106,7 +106,7 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
      * Disables all buttons now that an answer has been chosen, makes the button of the chosen answer white and pales
      * the other answers
      */
-    private void setChosenAnswer() {
+    protected void setChosenAnswer() {
         buttons.get(selectedAnswerButton).setStyle("-fx-border-color: #028090");
         for (int i = 0; i < 3; i++) {
             buttons.get(i).setDisable(true);
@@ -199,5 +199,51 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
 
         buttons.get(removedAnswer).setOpacity(0.5);
         buttons.get(removedAnswer).setDisable(true);
+    }
+
+    /**
+     * Returns the main controller of the question
+     *
+     * @return the main front-end controller
+     */
+    public MainCtrl getMainCtrl() {
+        return mainCtrl;
+    }
+
+    /**
+     * Returns the selected answer button
+     *
+     * @return the number of the button the user selected, where 0 is button A, 1 is button B and 2 is button C
+     */
+    public int getSelectedAnswerButton() {
+        return selectedAnswerButton;
+    }
+
+    /**
+     * Returns the position of the correct answer
+     *
+     * @return the number of the button with the answer, where 0 is button A, 1 is button B and 2 is button C
+     */
+    public int getPositionCorrectAnswer() {
+        return positionCorrectAnswer;
+    }
+
+    /**
+     * Sets the position of the correct answer
+     *
+     * @param positionCorrectAnswer the button with the correct answer, where 0 is button A,
+     * 1 is button B and 2 is button C
+     */
+    public void setPositionCorrectAnswer(int positionCorrectAnswer) {
+        this.positionCorrectAnswer = positionCorrectAnswer;
+    }
+
+    /**
+     * Sets the question displayed in the controller
+     *
+     * @param question the Question that should be shown in the screen
+     */
+    public void setQuestion(Question question) {
+        this.question = question;
     }
 }
