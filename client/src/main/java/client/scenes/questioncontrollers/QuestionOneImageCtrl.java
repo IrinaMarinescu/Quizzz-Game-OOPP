@@ -120,15 +120,13 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
      * Disables all buttons now that an answer has been chosen, makes the button of the chosen answer white and pales
      * the other answers
      */
-<<<<<<< client/src/main/java/client/scenes/questioncontrollers/QuestionOneImageCtrl.java
-    protected void setChosenAnswer() {
-        buttons.get(selectedAnswerButton).setStyle("-fx-border-color: #028090");
-=======
     private void setChosenAnswer() {
         if (boxes.get(selectedAnswerButton).isDisabled()) {
             return;
         }
->>>>>>> client/src/main/java/client/scenes/questioncontrollers/QuestionOneImageCtrl.java
+
+        buttons.get(selectedAnswerButton).setStyle("-fx-border-color: #028090");
+
         for (int i = 0; i < 3; i++) {
             boxes.get(i).setDisable(true);
             if (i != selectedAnswerButton) {
