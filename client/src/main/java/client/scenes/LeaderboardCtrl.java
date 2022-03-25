@@ -12,11 +12,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
-import javafx.scene.input.KeyCode;
 
 public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
 
@@ -32,8 +31,6 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     private Text pageTitle;
     @FXML
     private Button leaderboardTitle;
-    @FXML
-    private ImageView backBtn;
     @FXML
     private GridPane buttonGrid;
 
@@ -134,7 +131,7 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      */
     protected void setButtonAndGrid(boolean buttonVisibility, boolean gridVisibility) {
         if (!test) {
-            backBtn.setVisible(buttonVisibility);
+            back.setVisible(buttonVisibility);
             buttonGrid.setVisible(gridVisibility);
         }
     }
@@ -151,9 +148,6 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
         }
     }
 
-    /**
-     * Redirects the user to the main frame.
-     */
     public void showMainFrame() {
         mainCtrl.showMainFrame();
     }
@@ -210,6 +204,9 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
         this.maxSize = maxSize;
     }
 
+    /**
+     * Redirects the user to the main frame.
+     */
     public void backToMainFrame() {
         mainCtrl.showMainFrame();
     }
