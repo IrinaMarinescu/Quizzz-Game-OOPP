@@ -17,8 +17,8 @@ public class MainCtrlDOC extends MainCtrl implements SupportsLogging {
     }
 
     @Override
-    public void disconnect() {
-        log("disc");
+    public void toggleModalVisibility() {
+        log("modal");
     }
 
     @Override

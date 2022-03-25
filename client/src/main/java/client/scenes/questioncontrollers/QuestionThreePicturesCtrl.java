@@ -9,11 +9,13 @@ import java.util.Random;
 import java.util.stream.IntStream;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javax.inject.Inject;
 
 public class QuestionThreePicturesCtrl implements QuestionRequirements {
@@ -21,21 +23,22 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
     private MainCtrl mainCtrl;
     private QuestionFrameCtrl questionFrameCtrl;
     private Question question;
-    private List<Button> answers;
+    private List<Text> answers;
     private List<ImageView> images;
     private List<ImageView> wrong;
     private List<ImageView> correct;
+    private List<VBox> boxes;
     private int positionCorrectAnswer;
     private int selectedAnswerButton;
 
     @FXML
-    Button answerA;
+    Text answerA;
 
     @FXML
-    Button answerB;
+    Text answerB;
 
     @FXML
-    Button answerC;
+    Text answerC;
 
     @FXML
     Label questionOutput;
@@ -67,6 +70,15 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
     @FXML
     ImageView wrongC;
 
+    @FXML
+    VBox boxA;
+
+    @FXML
+    VBox boxB;
+
+    @FXML
+    VBox boxC;
+
     @Inject
     public QuestionThreePicturesCtrl(MainCtrl mainCtrl, QuestionFrameCtrl questionFrameCtrl) {
         this.mainCtrl = mainCtrl;
@@ -80,6 +92,7 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
         this.images = List.of(imageA, imageB, imageC);
         this.correct = List.of(correctA, correctB, correctC);
         this.wrong = List.of(wrongA, wrongB, wrongC);
+        this.boxes = List.of(boxA, boxB, boxC);
 
         this.positionCorrectAnswer = question.getCorrectAnswer();
         this.questionOutput.setText(question.getQuestion());
@@ -87,9 +100,8 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
         IntStream.range(0, correct.size()).forEach(i -> {
             correct.get(i).setVisible(false);
             wrong.get(i).setVisible(false);
-            answers.get(i).setOpacity(1);
-            answers.get(i).setStyle("-fx-border-color:  #5CB4BF");
-            answers.get(i).setDisable(false);
+            boxes.get(i).setOpacity(1);
+            boxes.get(i).setDisable(false);
         });
     }
 
@@ -142,11 +154,13 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
     }
 
     private void setChosenAnswer() {
-        answers.get(selectedAnswerButton).setStyle("-fx-border-color: #028090");
+        if (boxes.get(selectedAnswerButton).isDisabled()) {
+            return;
+        }
         for (int i = 0; i < 3; i++) {
-            answers.get(i).setDisable(true);
+            boxes.get(i).setDisable(true);
             if (i != selectedAnswerButton) {
-                answers.get(i).setOpacity(0.5);
+                boxes.get(i).setOpacity(0.5);
             }
         }
 
@@ -164,7 +178,7 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
     public void revealCorrectAnswer() {
         correct.get(positionCorrectAnswer).setVisible(true);
         for (int i = 0; i < 3; i++) {
-            answers.get(i).setDisable(true);
+            boxes.get(i).setDisable(true);
             if (i != positionCorrectAnswer) {
                 wrong.get(i).setVisible(true);
             }
@@ -191,56 +205,33 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
                     break;
             }
         }
-        answers.get(removedAnswer).setOpacity(0.5);
-        images.get(removedAnswer).setOpacity(0.5);
+        boxes.get(removedAnswer).setOpacity(0.5);
     }
 
     public Question getQuestion() {
         return question;
     }
 
-    public List<Button> getAnswers() {
-        return answers;
-    }
-
-    public List<ImageView> getImages() {
-        return images;
-    }
-
-    public int getPositionCorrectAnswer() {
-        return positionCorrectAnswer;
-    }
-
-    public int getSelectedAnswerButton() {
-        return selectedAnswerButton;
-    }
-
-    public Button getAnswerA() {
-        return answerA;
-    }
-
-    public Button getAnswerB() {
-        return answerB;
-    }
-
-    public Button getAnswerC() {
-        return answerC;
-    }
-
-    public Label getQuestionOutput() {
-        return questionOutput;
-    }
-
-    public ImageView getImageA() {
-        return imageA;
-    }
-
-    public ImageView getImageB() {
-        return imageB;
-    }
-
-    public ImageView getImageC() {
-        return imageC;
+    public void keyPressed(KeyCode e) {
+        switch (e) {
+            case DIGIT1:
+            case NUMPAD1:
+            case A:
+                answerASelected();
+                break;
+            case DIGIT2:
+            case NUMPAD2:
+            case B:
+                answerBSelected();
+                break;
+            case DIGIT3:
+            case NUMPAD3:
+            case C:
+                answerCSelected();
+                break;
+            default:
+                break;
+        }
     }
 
 }

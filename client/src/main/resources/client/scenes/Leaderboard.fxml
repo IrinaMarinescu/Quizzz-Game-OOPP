@@ -5,6 +5,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -29,6 +30,7 @@
                             <left>
                                 <HBox prefHeight="80.0" prefWidth="300.0" BorderPane.alignment="CENTER">
                                     <children>
+<<<<<<< client/src/main/resources/client/scenes/Leaderboard.fxml
                                         <ImageView fx:id="backBtn" fitHeight="60.0" pickOnBounds="true" onMouseClicked="#showMainFrame" preserveRatio="true" styleClass="clickable">
                                             <HBox.margin>
                                                 <Insets left="20.0" top="10.0" />
@@ -40,7 +42,24 @@
                                                 <Cursor fx:constant="HAND" />
                                             </cursor>
                                         </ImageView>
+=======
+                                        <Button fx:id="back" minHeight="80.0" minWidth="70.0" mnemonicParsing="false" onAction="#backToMainFrame" prefHeight="70.0" prefWidth="50.0" style="-fx-background-color: transparent;">
+                                            <graphic>
+                                                <ImageView id="back" fx:id="trophy" fitHeight="60.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" styleClass="clickableGreen" x="10.0" y="10.0">
+                                                    <image>
+                                                        <Image url="@../icons/angle-left-solid.png" />
+                                                    </image>
+                                                </ImageView>
+                                            </graphic>
+                                 <tooltip>
+                                    <Tooltip id="tooltip" text="Return to splash screen [ESC]" />
+                                 </tooltip>
+                                        </Button>
+>>>>>>> client/src/main/resources/client/scenes/Leaderboard.fxml
                                     </children>
+                           <BorderPane.margin>
+                              <Insets left="10.0" />
+                           </BorderPane.margin>
                                 </HBox>
                             </left>
                             <center>
@@ -53,7 +72,7 @@
                             <right>
                                 <HBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="80.0" prefWidth="280.0" BorderPane.alignment="CENTER">
                                     <BorderPane.margin>
-                                        <Insets right="20.0" />
+                                        <Insets right="30.0" />
                                     </BorderPane.margin>
                                 </HBox>
                             </right>

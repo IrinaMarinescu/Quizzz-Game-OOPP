@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
+import javafx.scene.input.KeyCode;
 
 public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
 
@@ -211,5 +212,24 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
 
     public void backToMainFrame() {
         mainCtrl.showMainFrame();
+    }
+
+    public void keyPressed(KeyCode e) {
+        switch (e) {
+            case ESCAPE:
+                if (type == TYPE_SOLO || type == TYPE_FINAL) {
+                    backToMainFrame();
+                } else {
+                    mainCtrl.disconnect();
+                }
+                break;
+            case M:
+                if (type == TYPE_FINAL) {
+                    // TODO rejoin lobby
+                }
+                break;
+            default:
+                break;
+        }
     }
 }

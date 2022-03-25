@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.KeyCode;
 import javax.inject.Inject;
 
 /**
@@ -90,5 +91,18 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
         list = FXCollections.observableArrayList(lobby.getPlayers().stream().map(LeaderboardEntry::getName).collect(
             Collectors.toList()));
         table.setItems(list);
+    }
+
+    public void keyPressed(KeyCode e) {
+        switch (e) {
+            case ESCAPE:
+                goBack();
+                break;
+            case ENTER:
+                initializeMultiplayerGame();
+                break;
+            default:
+                break;
+        }
     }
 }

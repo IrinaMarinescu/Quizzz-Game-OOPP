@@ -19,12 +19,16 @@
 
 .table-view .table-column {
     -fx-alignment: CENTER;
+    -fx-border-width: 0;
 }
 
-.table-view .column-header-background {
-    -fx-max-height: 0;
-    -fx-pref-height: 0;
-    -fx-min-height: 0;
+.table-view .column-header {
+    -fx-background-color: -buttonColorHoverDark;
+    -fx-font-weight: none;
+}
+
+.table-view .arrow {
+    -fx-background-color: white;
 }
 
 .table-view:focused {
@@ -43,15 +47,13 @@
     -fx-min-height: 0;
     -fx-pref-height: 0;
     -fx-max-height: 0;
+
+    -fx-min-width: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
 }
 
 .table-view .table-row-cell {
     -fx-cell-size: 40;
     -fx-font-size: 20;
-
-    -fx-font-weight: bold;
-}
-
-#scoreColumn {
-    -fx-border-width: 0;
 }
