@@ -6,10 +6,10 @@ import client.scenes.controllerrequirements.QuestionRequirements;
 import commons.Question;
 import java.util.List;
 import java.util.stream.IntStream;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javax.inject.Inject;
@@ -64,16 +64,23 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
         this.wrong = List.of(wrongTrue, wrongFalse);
 
         this.positionCorrectAnswer = question.getCorrectAnswer();
-        this.questionOutput.setText(question.getQuestion());
-        //this.imageOutput.setImage(new Image(question.getActivities().get(0).imagePath, 200, 186, true, false));
-        trueButton.setText("True");
-        falseButton.setText("False");
-        IntStream.range(0, correct.size()).forEach(i -> {
-            correct.get(i).setVisible(false);
-            wrong.get(i).setVisible(false);
-            answers.get(i).setOpacity(1);
-            answers.get(i).setStyle("-fx-border-color:  #5CB4BF");
-            answers.get(i).setDisable(false);
+
+        Platform.runLater(() -> {
+            this.questionOutput.setText(question.getQuestion());
+            String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
+                    + question.getActivities().get(0).imagePath;
+            Image image = new Image(imagePath, 200, 186, true, false);
+            imageOutput.setImage(image);
+            trueButton.setText("True");
+            falseButton.setText("False");
+
+            IntStream.range(0, correct.size()).forEach(i -> {
+                correct.get(i).setVisible(false);
+                wrong.get(i).setVisible(false);
+                answers.get(i).setOpacity(1);
+                answers.get(i).setStyle("-fx-border-color:  #5CB4BF");
+                answers.get(i).setDisable(false);
+            });
         });
     }
 
@@ -109,6 +116,7 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
     public void revealCorrectAnswer() {
         correct.get(positionCorrectAnswer).setVisible(true);
         for (int i = 0; i < 2; i++) {
+            answers.get(i).setDisable(true);
             if (i != positionCorrectAnswer) {
                 wrong.get(i).setVisible(true);
             }

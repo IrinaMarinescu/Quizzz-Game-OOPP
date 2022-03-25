@@ -1,5 +1,7 @@
 package client.scenes;
 
+import static client.scenes.MainCtrl.ROUND_TIME;
+
 import client.scenes.controllerrequirements.QuestionFrameRequirements;
 import client.scenes.framecomponents.EmoteCtrl;
 import client.scenes.framecomponents.TimerBarCtrl;
@@ -170,6 +172,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         emote.setVisible(isMultiplayerGame);
         back.setManaged(!isMultiplayerGame);
         back.setVisible(!isMultiplayerGame);
+        scoreField.setText("0");
 
         for (Button joker : jokers) {
             if (joker.getStyleClass().contains("usedJoker")) {
@@ -189,10 +192,17 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     /**
      * Sets node containing question at the center of the frame
      *
-     * @param questionNode The node to be inserted in the center of the frame
+     * @param node The node to be inserted in the center of the frame
      */
-    public void setCenterContent(Node questionNode) {
-        Platform.runLater(() -> borderPane.setCenter(questionNode));
+    public void setCenterContent(Node node, boolean animate) {
+        Platform.runLater(() -> {
+            borderPane.setCenter(node);
+            if (animate) {
+                setRemainingTime(ROUND_TIME);
+                mainCtrl.setQuestionTimeouts(ROUND_TIME);
+                resizeTimerBar(timerBarCtrl.displayWidth, 0);
+            }
+        });
     }
 
     /**
@@ -346,7 +356,9 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         Platform.runLater(() -> {
             if (enable) {
                 joker.getStyleClass().remove("usedJoker");
-                joker.getStyleClass().add("clickable");
+                if (!joker.getStyleClass().contains("usedJoker")) {
+                    joker.getStyleClass().add("clickable");
+                }
             } else {
                 joker.getStyleClass().add("usedJoker");
                 joker.getStyleClass().remove("clickable");
@@ -393,7 +405,6 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     public void tempDisableJokers(double duration) {
         for (Button joker : jokers) {
             setJokerEnabled(joker, false);
-            timeUtils.runAfterDelay(() -> setJokerEnabled(joker, true), duration);
         }
 
         timeUtils.runAfterDelay(() -> {

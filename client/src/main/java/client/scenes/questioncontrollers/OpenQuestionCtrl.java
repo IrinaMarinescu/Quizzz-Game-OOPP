@@ -9,6 +9,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javax.inject.Inject;
 
@@ -17,7 +19,7 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     private MainCtrl mainCtrl;
     private QuestionFrameCtrl questionFrameCtrl;
     private Question question;
-    private int answer;
+    private long answer;
 
     @FXML
     Button submitButton;
@@ -33,6 +35,9 @@ public class OpenQuestionCtrl implements QuestionRequirements {
 
     @FXML
     Text errorMessage;
+
+    @FXML
+    ImageView imageField;
 
     /**
      * Injects necessary dependencies
@@ -55,22 +60,21 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     public void submit() {
         String ans = entryField.getText();
         Scanner scanner = new Scanner(ans);
-        if (scanner.hasNextInt()) {
-            this.answer = scanner.nextInt();
+        if (scanner.hasNextLong()) {
+            this.answer = scanner.nextLong();
             errorMessage.setVisible(false);
             submitButton.setText("Submitted!");
             submitButton.setDisable(true);
+            long correctAnswer = this.question.getActivities().get(0).consumptionInWh;
+            long percentageOff = ((Math.abs(correctAnswer - this.answer)) / correctAnswer) * 100;
+            long baseScore = 100 - percentageOff / 2;
+            if (baseScore < 0) {
+                baseScore = 0;
+            }
+            mainCtrl.addPoints(baseScore);
         } else {
             errorMessage.setVisible(true);
         }
-
-        long correctAnswer = this.question.getActivities().get(0).consumptionInWh;
-        long percentageOff = ((Math.abs(correctAnswer - this.answer)) / correctAnswer) * 100;
-        long baseScore = 100 - percentageOff / 2;
-        if (baseScore < 0) {
-            baseScore = 0;
-        }
-        mainCtrl.addPoints(baseScore);
     }
 
     /**
@@ -87,11 +91,13 @@ public class OpenQuestionCtrl implements QuestionRequirements {
             submitButton.setText("Submit");
             submitButton.setDisable(false);
             entryField.setText("");
+            errorMessage.setVisible(false);
         });
 
-        //String imagePath = question.getActivities().get(0).imagePath;
-        //Image image = new Image(imagePath, 480, 500, false, true);
-        //imageField.setImage(image);
+        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
+                + question.getActivities().get(0).imagePath;
+        Image image = new Image(imagePath, 480, 500, true, false);
+        imageField.setImage(image);
     }
 
     /**
@@ -101,6 +107,7 @@ public class OpenQuestionCtrl implements QuestionRequirements {
      */
     @Override
     public void revealCorrectAnswer() {
+        submitButton.setDisable(true);
         long correctAnswer = this.question.getActivities().get(0).consumptionInWh;
         answerText.setText("It takes " + correctAnswer + "Wh!");
     }
