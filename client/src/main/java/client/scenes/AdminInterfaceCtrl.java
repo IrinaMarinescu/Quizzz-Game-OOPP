@@ -89,7 +89,7 @@ public class AdminInterfaceCtrl implements AdminInterfaceCtrlRequirements {
     public void updateSelectedActivity() {
         Activity currentActivity = activityTable.getSelectionModel().getSelectedItem();
         currentActivity.title = activityTitleField.getText();
-        currentActivity.consumptionInWh = Integer.parseInt(activityConsumptionField.getText());
+        currentActivity.consumptionInWh = Long.parseLong(activityConsumptionField.getText());
         currentActivity.source = activitySourceField.getText();
 
         serverUtils.sendActivityUpdate(currentActivity);

@@ -10,6 +10,8 @@ import java.util.stream.IntStream;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
@@ -107,13 +109,31 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
         Platform.runLater(() -> {
             for (int i = 0; i < question.getActivities().size(); i++) {
                 String title = question.getActivities().get(i).title;
-                //String imagePath = question.getActivities().get(i).imagePath;
-                //Image image = new Image(imagePath, 200, 186, true, false);
-                //images.get(i).setImage(image);
+                placeImage(i);
                 answers.get(i).setText(title);
             }
         });
     }
+
+    private void placeImage(int i) {
+        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
+                + question.getActivities().get(i).imagePath;
+        Image image = new Image(imagePath, 480, 500, true, false);
+        switch (i) {
+            case 0:
+                imageA.setImage(image);
+                break;
+            case 1:
+                imageB.setImage(image);
+                break;
+            case 2:
+                imageC.setImage(image);
+                break;
+            default:
+                break;
+        }
+    }
+
 
     @FXML
     void answerASelected() {

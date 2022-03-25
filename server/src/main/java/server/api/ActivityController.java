@@ -383,12 +383,15 @@ public class ActivityController {
                 i = j;
             }
         }
-        String id = associateQuestion(typeOfQuestion);
-        String question = "What can you do instead of " + activities.get(i).title + "?";
+        String title = activities.get(i).title;
+        Activity temp = activities.get(i);
         activities.remove(i);
+        activities.add(temp);
+        String question = "What can you do instead of " + title + "?";
         if (correctAnswer > i) {
             correctAnswer--;
         }
+        String id = associateQuestion(typeOfQuestion);
         Question questionInsteadOf = new Question(activities, question, correctAnswer, id);
         questions.add(questionInsteadOf);
     }

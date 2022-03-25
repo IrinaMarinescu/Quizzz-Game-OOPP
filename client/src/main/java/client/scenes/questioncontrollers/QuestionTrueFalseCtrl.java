@@ -9,6 +9,8 @@ import java.util.stream.IntStream;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
@@ -67,7 +69,10 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
 
         Platform.runLater(() -> {
             this.questionOutput.setText(question.getQuestion());
-            //this.imageOutput.setImage(new Image(question.getActivities().get(0).imagePath, 200, 186, true, false));
+            String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
+                    + question.getActivities().get(0).imagePath;
+            Image image = new Image(imagePath, 200, 186, true, false);
+            imageOutput.setImage(image);
             trueButton.setText("True");
             falseButton.setText("False");
 
