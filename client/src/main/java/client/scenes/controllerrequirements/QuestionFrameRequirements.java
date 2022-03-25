@@ -27,7 +27,7 @@ public interface QuestionFrameRequirements {
      *
      * @param questionNode The node to be inserted in the center of the frame
      */
-    void setCenterContent(Node questionNode);
+    void setCenterContent(Node questionNode, boolean animate);
 
     /**
      * Add points to a player's score, as seen in top left

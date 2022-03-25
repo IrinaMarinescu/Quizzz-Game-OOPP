@@ -103,18 +103,19 @@ public class Main extends Application {
         var questionTrueFalse = FXML.load(QuestionTrueFalseCtrl.class, "client/scenes/QuestionTrueFalse.fxml",
             "client/css/questionTrueFalse.css");
 
-        var openQuestion = FXML.load(OpenQuestionCtrl.class, "client/scenes/OpenQuestion.fxml", null);
+        var openQuestion =
+            FXML.load(OpenQuestionCtrl.class, "client/scenes/OpenQuestion.fxml", "client/css/openQuestion.css");
 
         var questionThreePictures =
             FXML.load(QuestionThreePicturesCtrl.class, "client/scenes/QuestionThreePictures.fxml",
-                "questionsThreePictures.css");
+                "client/css/questionsThreePictures.css");
 
         var questionOneImage = FXML.load(QuestionOneImageCtrl.class, "client/scenes/QuestionOneImage.fxml",
             "client/css/questionOneImage.css");
 
         var insteadOfQuestion =
             FXML.load(InsteadOfQuestionCtrl.class, "client/scenes/InsteadOfQuestion.fxml",
-                "client/css/insteadOfQuestion.css");
+                "client/css/questionOneImage.css");
 
         var finalScreen = FXML.load(FinalScreenCtrl.class,
             "client/scenes/FinalSingleplayerScreen.fxml", null);

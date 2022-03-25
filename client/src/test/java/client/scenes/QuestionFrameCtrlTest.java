@@ -11,7 +11,6 @@ import client.dependedoncomponents.MainCtrlDOC;
 import client.dependedoncomponents.TimeUtilsDOC;
 import client.dependedoncomponents.TimerBarCtrlDOC;
 import commons.LeaderboardEntry;
-import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
@@ -94,28 +93,6 @@ class QuestionFrameCtrlTest {
         sut.setLeaderboardContents(entries);
 
         assertEquals(List.of(new LeaderboardEntry("James", 1)), entries);
-    }
-
-    @Test
-    public void setLeaderboardContentsEdge() {
-        List<LeaderboardEntry> entries = new ArrayList<>();
-        for (int i = 0; i < QuestionFrameCtrl.LEADERBOARD_SIZE_MAX; i++) {
-            entries.add(new LeaderboardEntry("James", 1));
-        }
-        sut.setLeaderboardContents(entries);
-
-        assertSame(QuestionFrameCtrl.LEADERBOARD_SIZE_MAX, entries.size());
-    }
-
-    @Test
-    public void setLeaderboardContentsDelete() {
-        List<LeaderboardEntry> entries = new ArrayList<>();
-        for (int i = 0; i < QuestionFrameCtrl.LEADERBOARD_SIZE_MAX + 10; i++) {
-            entries.add(new LeaderboardEntry("James", 1));
-        }
-        entries = sut.setLeaderboardContents(entries);
-
-        assertSame(QuestionFrameCtrl.LEADERBOARD_SIZE_MAX, entries.size());
     }
 
     @Test
@@ -215,24 +192,5 @@ class QuestionFrameCtrlTest {
         assertFalse(sut.sideLeaderboard.isVisible());
         sut.keyPressed(KeyCode.L);
         assertTrue(sut.sideLeaderboard.isVisible());
-    }
-
-    @Test
-    public void twoEscapeTrue() {
-        sut.keyPressed(KeyCode.ESCAPE);
-        sut.keyPressed(KeyCode.ESCAPE);
-
-        assertSame(1, mainCtrlDOC.countLogs("disc"));
-    }
-
-    @Test
-    public void escapeFalse() {
-        sut.timeUtils = new TimeUtilsDOC(201);
-        for (int i = 0; i < 10; i++) {
-            sut.keyPressed(KeyCode.ESCAPE);
-        }
-
-        assertSame(0, mainCtrlDOC.countLogs("disc"));
-        assertSame(10, mainCtrlDOC.countLogs("now"));
     }
 }
