@@ -27,21 +27,12 @@ public class ExitPopUpCtrl {
     @Inject
     public ExitPopUpCtrl(MainCtrl mainCtrl) {
         this.mainCtrl = mainCtrl;
-        this.type = 0;
+        this.type = 1;
     }
 
     public void buttonClick(ActionEvent e) {
         String buttonID = ((Button) e.getSource()).getId();
-        if (buttonID.equals("yesButton")) {
-            if (this.type == 0) {
-                mainCtrl.disconnect();
-                return;
-            }
-            System.exit(0);
-        }
-        if (buttonID.equals("noButton")) {
-            mainCtrl.deniedExit();
-        }
+        mainCtrl.disconnect(this.type, buttonID);
     }
 
     public void setType(int type) {

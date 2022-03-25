@@ -174,7 +174,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
                 break;
             case ESCAPE:
                 if (Clock.systemDefaultZone().millis() - lastEscapeKeyPressTime < 200) {
-                    mainCtrl.disconnect();
+                    mainCtrl.exitGameChecker(0);
                 }
                 lastEscapeKeyPressTime = Clock.systemDefaultZone().millis();
                 break;

@@ -17,7 +17,7 @@ public class MainCtrlDOC extends MainCtrl implements SupportsLogging {
     }
 
     @Override
-    public void disconnect() {
+    public void disconnect(int type, String buttonID) {
         log("disc");
     }
 

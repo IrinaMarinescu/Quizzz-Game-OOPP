@@ -153,7 +153,7 @@ public class MainCtrl implements MainCtrlRequirements, WindowListener {
         primaryStage.widthProperty().addListener(
             (obs, oldVal, newVal) -> questionFrameCtrl.resizeTimerBar(newVal.intValue(),
                 oldVal.intValue() - newVal.intValue()));
-        primaryStage.setOnCloseRequest(e -> disconnect());
+        primaryStage.setOnCloseRequest(e -> exitGameChecker(1));
 
         this.mainFrameCtrl = mainFrame.getKey();
         this.mainFrame = new Scene(mainFrame.getValue());
@@ -437,15 +437,6 @@ public class MainCtrl implements MainCtrlRequirements, WindowListener {
         currentQuestionCtrl.removeIncorrectAnswer();
     }
 
-    /**
-     * Disconnects the player from a game
-     */
-    public void disconnect() {
-        // TODO stop long polling
-        serverUtils.disconnect(game.getId(), player);
-        exitCheck.close();
-        showMainFrame();
-    }
 
     /**
      * Shows leaderboard
@@ -489,7 +480,6 @@ public class MainCtrl implements MainCtrlRequirements, WindowListener {
      */
     public void showLobbyFrame() {
         primaryStage.setScene(lobbyFrame);
-
     }
 
     /**
@@ -506,9 +496,29 @@ public class MainCtrl implements MainCtrlRequirements, WindowListener {
         exitCheck.showAndWait();
     }
 
-    public void deniedExit() {
-        exitCheck.close();
-        showQuestionFrame();
+    /**
+     * Disconnects the player from a game
+     */
+    public void disconnect(int type, String buttonID) {
+        // TODO stop long polling
+        if (type == 0 && buttonID.equals("yesButton")) {
+            serverUtils.disconnect(game.getId(), player);
+            exitCheck.close();
+            showMainFrame();
+        }
+        if (type == 0 && buttonID.equals("noButton")) {
+            exitCheck.close();
+            showQuestionFrame();
+        }
+        if (type == 1 && buttonID.equals("yesButton")) {
+            exitCheck.close();
+            primaryStage.close();
+        }
+        if (type == 1 && buttonID.equals("noButton")) {
+            exitCheck.close();
+            showMainFrame();
+        }
+
     }
 
     @Override
