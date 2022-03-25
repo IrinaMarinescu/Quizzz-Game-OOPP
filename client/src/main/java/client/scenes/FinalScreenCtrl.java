@@ -6,8 +6,8 @@ import javax.inject.Inject;
 
 public class FinalScreenCtrl {
 
-    private MainCtrl mainCtrl;
-    private QuestionFrameCtrl questionFrameCtrl;
+    private final MainCtrl mainCtrl;
+    private final QuestionFrameCtrl questionFrameCtrl;
 
     @FXML
     Text scoreField;
