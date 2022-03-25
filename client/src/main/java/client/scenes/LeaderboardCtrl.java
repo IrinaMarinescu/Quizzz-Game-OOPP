@@ -1,7 +1,6 @@
 package client.scenes;
 
 import client.scenes.controllerrequirements.LeaderboardCtrlRequirements;
-import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.LeaderboardEntry;
 import java.util.List;
@@ -17,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
-import javax.inject.Inject;
 
 public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
 
@@ -55,8 +53,6 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     private final MainCtrl mainCtrl;
     private int type;
     private int maxSize;
-
-    private MainCtrl mainCtrl;
 
     protected boolean test = false;
 
