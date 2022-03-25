@@ -114,4 +114,28 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     }
 
     ;
+
+    public MainCtrl getMainCtrl() {
+        return mainCtrl;
+    }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public int getAnswer() {
+        return answer;
+    }
+
+    public Text getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setAnswer(int answer) {
+        this.answer = answer;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
 }
