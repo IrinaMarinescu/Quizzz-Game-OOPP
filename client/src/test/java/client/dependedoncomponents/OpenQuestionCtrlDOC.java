@@ -1,8 +1,8 @@
 package client.dependedoncomponents;
 
 import client.scenes.MainCtrl;
-import client.scenes.questioncontrollers.OpenQuestionCtrl;
 import client.scenes.QuestionFrameCtrl;
+import client.scenes.questioncontrollers.OpenQuestionCtrl;
 import commons.Question;
 import java.util.Scanner;
 

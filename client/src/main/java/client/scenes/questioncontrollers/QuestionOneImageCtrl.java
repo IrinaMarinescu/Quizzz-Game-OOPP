@@ -107,7 +107,7 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
      * Disables all buttons now that an answer has been chosen, makes the button of the chosen answer white and pales
      * the other answers
      */
-    private void setChosenAnswer() {
+    protected void setChosenAnswer() {
         buttons.get(selectedAnswerButton).setStyle("-fx-border-color: #028090");
         for (int i = 0; i < 3; i++) {
             buttons.get(i).setDisable(true);
@@ -249,4 +249,86 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
     }
 
     ;
+
+    /**
+     * Sets the question displayed in the scene
+     *
+     * @param question the question displayed in the scene
+     */
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
+    /**
+     * Sets the position of the correct answer on the buttons
+     *
+     * @param positionCorrectAnswer the position of the correct answer, where 0 is button A, 1 is button B and 2
+     *                              is button C
+     */
+    public void setPositionCorrectAnswer(int positionCorrectAnswer) {
+        this.positionCorrectAnswer = positionCorrectAnswer;
+    }
+
+    /**
+     * Returns the position of the correct answer on the buttons
+     *
+     * @return the position of the correct answer, where 0 is button A, 1 is button B and 2 is button C
+     */
+    public int getPositionCorrectAnswer() {
+        return positionCorrectAnswer;
+    }
+
+    /**
+     * Gets the button that the user selected
+     *
+     * @return the button that the user selected, where 0 is button A, 1 is button B and 2 is button C
+     */
+    public int getSelectedAnswerButton() {
+        return selectedAnswerButton;
+    }
+
+    /**
+     * Sets the answer when the user chooses A
+     *
+     * @param answerA the button that the user selected
+     */
+    public void setAnswerA(Button answerA) {
+        this.answerA = answerA;
+    }
+
+    /**
+     * Sets the answer when the user chooses B
+     *
+     * @param answerB the button that the user selected
+     */
+    public void setAnswerB(Button answerB) {
+        this.answerB = answerB;
+    }
+
+    /**
+     * Sets the answer when the user chooses C
+     *
+     * @param answerC the button that the user selected
+     */
+    public void setAnswerC(Button answerC) {
+        this.answerC = answerC;
+    }
+
+    /**
+     * Returns the question
+     *
+     * @return the Question displayed in the screen
+     */
+    public Question getQuestion() {
+        return question;
+    }
+
+    /**
+     * Returns the main controller of the question
+     *
+     * @return the main front-end controller
+     */
+    public MainCtrl getMainCtrl() {
+        return mainCtrl;
+    }
 }
