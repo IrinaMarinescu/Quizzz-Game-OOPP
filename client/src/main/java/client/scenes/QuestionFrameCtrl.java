@@ -203,10 +203,10 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
             if (isQuestionNode) {
                 setRemainingTime(ROUND_TIME);
                 mainCtrl.setQuestionTimeouts(ROUND_TIME);
-                Platform.runLater(() -> resizeTimerBar(timerBarCtrl.displayWidth, 0));
                 mainCtrl.questionStartTime = timeUtils.now();
                 mainCtrl.questionEndTime = mainCtrl.questionStartTime + ROUND_TIME * 1000.0;
             }
+            Platform.runLater(() -> resizeTimerBar(timerBarCtrl.displayWidth, 0));
         });
     }
 
@@ -431,7 +431,11 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      */
     @FXML
     private void disconnect() {
-        mainCtrl.toggleModalVisibility();
+        if (mainCtrl.gameOngoing) {
+            mainCtrl.toggleModalVisibility();
+        } else {
+            mainCtrl.showMainFrame();
+        }
     }
 
     /**

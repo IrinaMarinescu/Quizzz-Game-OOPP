@@ -9,9 +9,9 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import javax.inject.Inject;
 
@@ -97,7 +97,7 @@ public class OpenQuestionCtrl implements QuestionRequirements {
         });
 
         String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
-                + question.getActivities().get(0).imagePath;
+            + question.getActivities().get(0).imagePath;
         Image image = new Image(imagePath, 480, 500, true, false);
         imageField.setImage(image);
     }

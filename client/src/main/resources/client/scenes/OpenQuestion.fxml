@@ -15,11 +15,6 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1156.0" style="-fx-background-color: white;" stylesheets="@../css/openQuestion.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.questioncontrollers.OpenQuestionCtrl">
     <children>
         <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#028090" height="650.0" layoutX="555.0" layoutY="40.0" stroke="#028090" strokeType="INSIDE" width="550.0" />
-        <ImageView fitHeight="478.0" fitWidth="468.0" layoutX="55.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../temporary/scooter.png" />
-            </image>
-        </ImageView>
         <Button fx:id="submitButton" layoutX="669.0" layoutY="600.0" mnemonicParsing="false" onAction="#submit" prefHeight="80.0" prefWidth="324.0" styleClass="clickableGreen" text="Submit" textFill="WHITE">
             <font>
                 <Font size="40.0" />
@@ -56,6 +51,15 @@
                       <Font size="28.0" />
                   </font>
               </Text>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" layoutX="29.0" layoutY="40.0" prefHeight="650.0" prefWidth="480.0">
+         <children>
+              <ImageView fx:id="imageField" fitHeight="478.0" fitWidth="468.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                      <Image url="@../temporary/scooter.png" />
+                  </image>
+              </ImageView>
          </children>
       </VBox>
     </children>

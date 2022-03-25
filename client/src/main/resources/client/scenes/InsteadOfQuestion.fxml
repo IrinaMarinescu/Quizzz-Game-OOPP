@@ -13,11 +13,6 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1156.0" style="-fx-background-color: white;" stylesheets="@../css/questionOneImage.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.questioncontrollers.InsteadOfQuestionCtrl">
     <children>
-        <ImageView fx:id="imageField" fitHeight="500.0" fitWidth="480.0" layoutX="629.0" layoutY="180.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../temporary/scooter.png" />
-            </image>
-        </ImageView>
         <ImageView fx:id="correctA" fitHeight="115.0" fitWidth="110.0" layoutX="487.0" layoutY="224.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../icons/correct.png" />
@@ -117,5 +112,14 @@
             <Tooltip id="tooltip" text="Submit answer C [C] [3]" />
          </tooltip>
       </ScrollPane>
+      <VBox alignment="CENTER" layoutX="629.0" layoutY="180.0" prefHeight="494.0" prefWidth="477.0">
+         <children>
+              <ImageView fx:id="imageField" fitHeight="500.0" fitWidth="480.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                      <Image url="@../temporary/scooter.png" />
+                  </image>
+              </ImageView>
+         </children>
+      </VBox>
     </children>
 </Pane>

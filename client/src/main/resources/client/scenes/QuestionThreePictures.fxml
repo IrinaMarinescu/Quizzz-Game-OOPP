@@ -62,7 +62,7 @@
          <content>
             <VBox fx:id="boxA" alignment="CENTER" onMouseClicked="#answerASelected" prefHeight="200.0" prefWidth="100.0" styleClass="clickableBlue">
                <children>
-                  <Text fx:id="answerA" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="a" textAlignment="CENTER" wrappingWidth="290.0">
+                  <Text fx:id="answerA" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="afdsf ds afdsf dsafdsf dsafdsf dsafdsf dsafdsf dsafdsf dsafdsf dsafds dsafds" textAlignment="CENTER" wrappingWidth="290.0">
                      <font>
                         <Font size="24.0" />
                      </font>

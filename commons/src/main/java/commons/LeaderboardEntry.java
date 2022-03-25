@@ -95,6 +95,10 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
      * @param oldEntries The list of previous values
      */
     public void setDifference(List<LeaderboardEntry> oldEntries) {
+        if (oldEntries == null) {
+            gain = 0;
+            return;
+        }
         for (LeaderboardEntry e : oldEntries) {
             if (e.getName().equals(name)) {
                 gain = score - e.getScore();

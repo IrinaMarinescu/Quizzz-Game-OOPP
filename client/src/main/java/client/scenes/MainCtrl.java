@@ -60,6 +60,7 @@ public class MainCtrl implements MainCtrlRequirements {
     double questionEndTime;
     private int timeoutRoundCheck;
     private String currentQuestionType;
+    boolean gameOngoing = false;
 
     private ServerUtils serverUtils;
     private GameUtils gameUtils;
@@ -102,8 +103,6 @@ public class MainCtrl implements MainCtrlRequirements {
     private Node finalScreen;
 
     QuestionRequirements currentQuestionCtrl = null;
-
-    private boolean widthChanged = false;
 
     /**
      * Initializes this class
@@ -241,6 +240,7 @@ public class MainCtrl implements MainCtrlRequirements {
         intermediateLeaderboardShown = false;
         isMultiplayerGame = false;
         timeoutRoundCheck = 1;
+        gameOngoing = true;
         this.game = gameUtils.startSingleplayer();
         questionFrameCtrl.initializeSingleplayerGame();
         showQuestionFrame();
@@ -255,6 +255,7 @@ public class MainCtrl implements MainCtrlRequirements {
         intermediateLeaderboardShown = true;
         isMultiplayerGame = true;
         timeoutRoundCheck = 1;
+        gameOngoing = true;
         questionFrameCtrl.initializeMultiplayerGame(this.game.getPlayers());
         lobbyUtils.setActive(false);
         showQuestionFrame();
@@ -300,11 +301,13 @@ public class MainCtrl implements MainCtrlRequirements {
 
             // The current event is the final leaderboard; the game is over
             if (game.getRound() == TOTAL_ROUNDS) {
+                gameOngoing = false;
                 showLeaderboard(game.getPlayers(), 10, "final");
                 return;
             }
             questionFrameCtrl.setLeaderboardContents(game.getPlayers());
         } else if (game.getRound() == TOTAL_ROUNDS) {
+            gameOngoing = false;
             showFinalScreen();
             return;
         }
