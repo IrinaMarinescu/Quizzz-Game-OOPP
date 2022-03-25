@@ -21,7 +21,6 @@ import client.utils.LobbyUtils;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import java.net.URL;
-import java.time.Clock;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -166,20 +165,20 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
      */
     public void keyPressed(KeyCode e) {
         switch (e) {
-            case H:
-                toggleHelpMenuVisibility();
-                break;
             case L:
                 openLeaderboard();
                 break;
             case ESCAPE:
-                if (Clock.systemDefaultZone().millis() - lastEscapeKeyPressTime < 200) {
-                    mainCtrl.disconnect();
-                }
-                lastEscapeKeyPressTime = Clock.systemDefaultZone().millis();
+                mainCtrl.toggleModalVisibility();
                 break;
             case CONTROL:
                 showAdmin();
+                break;
+            case S:
+                startSingleplayerGame();
+                break;
+            case M:
+                joinLobby();
                 break;
             default:
                 break;

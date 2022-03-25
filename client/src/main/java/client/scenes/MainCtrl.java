@@ -32,6 +32,7 @@ import commons.LeaderboardEntry;
 import commons.Lobby;
 import commons.Question;
 import java.util.List;
+import java.util.UUID;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -54,11 +55,12 @@ public class MainCtrl implements MainCtrlRequirements {
     private boolean isMultiplayerGame;
     private boolean intermediateLeaderboardShown;
     private int pointsGained;
-    private long questionStartTime;
+    long questionStartTime;
     private boolean doublePoints;
-    private double questionEndTime;
+    double questionEndTime;
     private int timeoutRoundCheck;
     private String currentQuestionType;
+    boolean gameOngoing = false;
 
     private ServerUtils serverUtils;
     private GameUtils gameUtils;
@@ -101,8 +103,6 @@ public class MainCtrl implements MainCtrlRequirements {
     private Node finalScreen;
 
     QuestionRequirements currentQuestionCtrl = null;
-
-    private boolean widthChanged = false;
 
     /**
      * Initializes this class
@@ -149,18 +149,23 @@ public class MainCtrl implements MainCtrlRequirements {
 
         this.mainFrameCtrl = mainFrame.getKey();
         this.mainFrame = new Scene(mainFrame.getValue());
+        this.mainFrame.setOnKeyPressed(e -> mainFrameCtrl.keyPressed(e.getCode()));
 
         this.lobbyCtrl = lobbyFrame.getKey();
         this.lobbyFrame = new Scene(lobbyFrame.getValue());
+        this.lobbyFrame.setOnKeyPressed(e -> lobbyCtrl.keyPressed(e.getCode()));
 
         this.leaderboardCtrl = leaderboard.getKey();
         this.leaderboard = new Scene(leaderboard.getValue());
+        this.leaderboard.setOnKeyPressed(e -> leaderboardCtrl.keyPressed(e.getCode()));
 
         this.adminInterfaceCtrl = adminInterface.getKey();
         this.adminInterfaceFrame = new Scene(adminInterface.getValue());
+        this.adminInterfaceFrame.setOnKeyPressed(e -> adminInterfaceCtrl.keyPressed(e.getCode()));
 
         this.questionFrameCtrl = questionFrame.getKey();
         this.questionFrame = new Scene(questionFrame.getValue());
+        this.questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
 
         this.questionTrueFalseCtrl = questionTrueFalse.getKey();
         this.questionTrueFalse = questionTrueFalse.getValue();
@@ -176,6 +181,9 @@ public class MainCtrl implements MainCtrlRequirements {
 
         this.insteadOfQuestionCtrl = insteadOfQuestion.getKey();
         this.insteadOfQuestion = insteadOfQuestion.getValue();
+
+        this.finalScreenCtrl = finalScreen.getKey();
+        this.finalScreen = finalScreen.getValue();
 
         primaryStage.setTitle("Quizzzzz!");
         showMainFrame();
@@ -232,6 +240,7 @@ public class MainCtrl implements MainCtrlRequirements {
         intermediateLeaderboardShown = false;
         isMultiplayerGame = false;
         timeoutRoundCheck = 1;
+        gameOngoing = true;
         this.game = gameUtils.startSingleplayer();
         questionFrameCtrl.initializeSingleplayerGame();
         showQuestionFrame();
@@ -246,6 +255,7 @@ public class MainCtrl implements MainCtrlRequirements {
         intermediateLeaderboardShown = true;
         isMultiplayerGame = true;
         timeoutRoundCheck = 1;
+        gameOngoing = true;
         questionFrameCtrl.initializeMultiplayerGame(this.game.getPlayers());
         lobbyUtils.setActive(false);
         showQuestionFrame();
@@ -291,11 +301,13 @@ public class MainCtrl implements MainCtrlRequirements {
 
             // The current event is the final leaderboard; the game is over
             if (game.getRound() == TOTAL_ROUNDS) {
+                gameOngoing = false;
                 showLeaderboard(game.getPlayers(), 10, "final");
                 return;
             }
             questionFrameCtrl.setLeaderboardContents(game.getPlayers());
         } else if (game.getRound() == TOTAL_ROUNDS) {
+            gameOngoing = false;
             showFinalScreen();
             return;
         }
@@ -304,52 +316,47 @@ public class MainCtrl implements MainCtrlRequirements {
         game.incrementRound();
         Platform.runLater(() -> questionFrameCtrl.incrementQuestionNumber());
         questionFrameCtrl.setRemainingTime(ROUND_TIME);
-        if (isMultiplayerGame) {
-            questionFrameCtrl.setLeaderboardContents(game.getPlayers());
-        }
-        questionStartTime = timeUtils.now();
-        questionEndTime = questionStartTime + ROUND_TIME * 1000.0;
         pointsGained = 0;
         doublePoints = false;
         Question currentQuestion = game.nextQuestion();
         currentQuestionType = currentQuestion.getQuestionType();
 
+        Node questionNode = null;
         switch (currentQuestionType) {
             case "trueFalseQuestion":
                 currentQuestionCtrl = questionTrueFalseCtrl;
-                questionFrameCtrl.setCenterContent(questionTrueFalse);
+                questionNode = questionTrueFalse;
+                this.questionTrueFalse.setOnKeyPressed(e -> questionTrueFalseCtrl.keyPressed(e.getCode()));
                 questionFrameCtrl.setWrongAnswerJoker(false);
                 break;
             case "openQuestion":
                 currentQuestionCtrl = openQuestionCtrl;
-                questionFrameCtrl.setCenterContent(openQuestion);
+                questionNode = openQuestion;
                 questionFrameCtrl.setWrongAnswerJoker(false);
                 break;
             case "threePicturesQuestion":
                 currentQuestionCtrl = questionThreePicturesCtrl;
-                questionFrameCtrl.setCenterContent(questionThreePictures);
+                questionNode = questionThreePictures;
                 break;
             case "oneImageQuestion":
                 currentQuestionCtrl = questionOneImageCtrl;
-                questionFrameCtrl.setCenterContent(questionOneImage);
+                questionNode = questionOneImage;
                 break;
             case "insteadOfQuestion":
                 currentQuestionCtrl = insteadOfQuestionCtrl;
-                questionFrameCtrl.setCenterContent(insteadOfQuestion);
+                questionNode = insteadOfQuestion;
                 break;
             default:
                 System.err.println("Unrecognized question type in MainCtrl");
                 break;
         }
         currentQuestionCtrl.initialize(currentQuestion);
-        Platform.runLater(() -> questionFrameCtrl.setRemainingTime(ROUND_TIME));
-
-        setQuestionTimeouts(ROUND_TIME);
+        questionFrameCtrl.setCenterContent(questionNode, true);
     }
 
     private void showFinalScreen() {
-        finalScreenCtrl.setPoints(getPlayer().getScore());
-        questionFrameCtrl.setCenterContent(finalScreen);
+        finalScreenCtrl.setPoints(player.getScore());
+        questionFrameCtrl.setCenterContent(finalScreen, false);
     }
 
     /**
@@ -357,24 +364,28 @@ public class MainCtrl implements MainCtrlRequirements {
      *
      * @param delay The time until the end of the question
      */
-    private void setQuestionTimeouts(double delay) {
+    void setQuestionTimeouts(double delay) {
+        int expectedRound = game.getRound();
+        UUID expectedGame = game.getId();
         timeUtils.runAfterDelay(() -> {
-            if (game.getRound() != timeoutRoundCheck) {
+            if (expectedRound != timeoutRoundCheck || !expectedGame.equals(game.getId())) {
                 return;
             }
 
             timeoutRoundCheck++;
             currentQuestionCtrl.revealCorrectAnswer();
             Platform.runLater(() -> questionFrameCtrl.addPoints(pointsGained));
+            player.setScore(player.getScore() + pointsGained);
             questionFrameCtrl.tempDisableJokers(OVERVIEW_TIME);
             serverUtils.sendPointsGained(game.getId(), player, pointsGained);
             if (currentQuestionType.equals("trueFalseQuestion") || currentQuestionType.equals("openQuestion")) {
                 questionFrameCtrl.setWrongAnswerJoker(true);
             }
 
-            Platform.runLater(() -> questionFrameCtrl.setRemainingTime(OVERVIEW_TIME));
-            timeUtils.runAfterDelay(this::nextEvent, OVERVIEW_TIME);
-            //Platform.runLater(() -> nextEvent());
+            Platform.runLater(() -> {
+                questionFrameCtrl.setRemainingTime(OVERVIEW_TIME);
+                timeUtils.runAfterDelay(this::nextEvent, OVERVIEW_TIME);
+            });
         }, delay);
     }
 
@@ -391,6 +402,9 @@ public class MainCtrl implements MainCtrlRequirements {
             if (doublePoints) {
                 pointsGained *= 2;
             }
+        }
+        if (!isMultiplayerGame) {
+            setQuestionTimeouts(0.0);
         }
     }
 
@@ -465,7 +479,6 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     public void showMainFrame() {
         primaryStage.setScene(mainFrame);
-        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
     }
 
     /**
@@ -481,6 +494,10 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     public void showQuestionFrame() {
         primaryStage.setScene(questionFrame);
-        questionFrame.setOnKeyPressed(e -> questionFrameCtrl.keyPressed(e.getCode()));
+    }
+
+    public void toggleModalVisibility() {
+        // TODO toggle visibility of modal ("do you really want to disconnect?")
+        // TODO inform player that they are runing game for others
     }
 }

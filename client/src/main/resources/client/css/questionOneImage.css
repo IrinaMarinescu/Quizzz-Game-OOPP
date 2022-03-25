@@ -1,28 +1,22 @@
 @import 'global.css';
 
-Button {
-    -fx-background-color: -lightishBlue;
+.answerButton {
     -fx-background-radius: 20;
     -fx-pref-height: 129;
     -fx-pref-width: 441;
-    -fx-padding: 0 60 0 60;
+    -fx-padding: 10;
 
     -fx-focus-color: transparent;
+    -fx-font-size: 28;
 }
 
 .Button:hover {
     -fx-opacity: 0.7;
 }
 
-TextField {
+#questionContainer {
     -fx-background-color: -darkCyan;
     -fx-background-radius: 10;
     -fx-pref-height: 123;
-    -fx-pref-width: 1002;
-    -fx-padding: 0 60 0 60;
-    -fx-text-fill: white;
-}
-
-TextArea {
-    -fx-background-color: -lightishBlue;
+    -fx-padding: 10;
 }

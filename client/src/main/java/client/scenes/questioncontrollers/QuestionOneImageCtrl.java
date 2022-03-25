@@ -12,8 +12,11 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javax.inject.Inject;
 
 public class QuestionOneImageCtrl implements QuestionRequirements {
@@ -21,23 +24,24 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
     private MainCtrl mainCtrl;
     private QuestionFrameCtrl questionFrameCtrl;
     private Question question;
-    private List<Button> buttons;
+    private List<Text> buttons;
     private List<ImageView> correct;
     private List<ImageView> wrong;
+    private List<VBox> boxes;
     private int positionCorrectAnswer;
     private int selectedAnswerButton;
 
     @FXML
-    Button answerA;
+    Text answerA;
 
     @FXML
-    Button answerB;
+    Text answerB;
 
     @FXML
-    Button answerC;
+    Text answerC;
 
     @FXML
-    Label questionText;
+    Text questionText;
 
     @FXML
     ImageView imageField;
@@ -59,6 +63,15 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
 
     @FXML
     ImageView wrongC;
+
+    @FXML
+    VBox boxA;
+
+    @FXML
+    VBox boxB;
+
+    @FXML
+    VBox boxC;
 
     /**
      * Injects necessary dependencies
@@ -107,12 +120,19 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
      * Disables all buttons now that an answer has been chosen, makes the button of the chosen answer white and pales
      * the other answers
      */
+<<<<<<< client/src/main/java/client/scenes/questioncontrollers/QuestionOneImageCtrl.java
     protected void setChosenAnswer() {
         buttons.get(selectedAnswerButton).setStyle("-fx-border-color: #028090");
+=======
+    private void setChosenAnswer() {
+        if (boxes.get(selectedAnswerButton).isDisabled()) {
+            return;
+        }
+>>>>>>> client/src/main/java/client/scenes/questioncontrollers/QuestionOneImageCtrl.java
         for (int i = 0; i < 3; i++) {
-            buttons.get(i).setDisable(true);
+            boxes.get(i).setDisable(true);
             if (i != selectedAnswerButton) {
-                buttons.get(i).setOpacity(0.5);
+                boxes.get(i).setOpacity(0.5);
             }
         }
 
@@ -131,13 +151,16 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
     @Override
     public void initialize(Question question) {
         this.question = question;
-        this.questionText.setText("How much does " + question.getActivities().get(0).title + " consume in Wh?");
+        Platform.runLater(() -> {
+            this.questionText.setText("How much does " + question.getActivities().get(0).title + " consume in Wh?");
+        });
         long actualConsumption = question.getActivities().get(0).consumptionInWh;
         this.positionCorrectAnswer = (new Random()).nextInt(3);
 
-        //String imagePath = question.getActivities().get(0).imagePath;
-        //Image image = new Image(imagePath, 480, 500, false, true);
-        //imageField.setImage(image);
+        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
+                + question.getActivities().get(0).imagePath;
+        Image image = new Image(imagePath, 480, 500, true, false);
+        imageField.setImage(image);
 
         this.buttons = new ArrayList<>();
         Collections.addAll(buttons, answerA, answerB, answerC);
@@ -148,21 +171,26 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
         this.wrong = new ArrayList<>();
         Collections.addAll(wrong, wrongA, wrongB, wrongC);
 
+        this.boxes = new ArrayList<>();
+        Collections.addAll(boxes, boxA, boxB, boxC);
+
         for (int i = 0; i < 3; i++) {
             correct.get(i).setVisible(false);
             wrong.get(i).setVisible(false);
-            buttons.get(i).setOpacity(1);
-            buttons.get(i).setStyle("-fx-border-color:  #5CB4BF");
-            buttons.get(i).setDisable(false);
+            boxes.get(i).setOpacity(1);
+            boxes.get(i).setDisable(false);
         }
 
         String[] values = new String[3];
-        do {
-            for (int i = 0; i < 3; i++) {
-                values[i] = randomConsumption();
+        values[positionCorrectAnswer] = String.valueOf(question.getActivities().get(0).consumptionInWh);
+
+        int j = 1;
+        for (int i = 0; i < 3; i++) {
+            if (i != positionCorrectAnswer) {
+                values[i] = String.valueOf(question.getActivities().get(j).consumptionInWh);
+                j++;
             }
-            values[positionCorrectAnswer] = String.valueOf(actualConsumption);
-        } while (values[0].equals(values[1]) || values[1].equals(values[2]) || values[2].equals(values[0]));
+        }
 
         Platform.runLater(() -> {
             for (int i = 0; i < 3; i++) {
@@ -172,50 +200,13 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
     }
 
     /**
-     * Generates a random consumption value within a 15% range of the consumption of the correct answer
-     *
-     * @return returns a String with the random value, so that it can be displayed in the buttons
-     */
-    private String randomConsumption() {
-        long actualConsumption = this.question.getActivities().get(0).consumptionInWh;
-        int zeros = countZeros(actualConsumption);
-        double fifteenPercent = ((double) actualConsumption) / 100.00 * 15.00;
-        int max = (int) Math.ceil(actualConsumption + fifteenPercent);
-        int min = (int) Math.floor(actualConsumption - fifteenPercent);
-        int randomConsumption = (int) Math.floor(Math.random() * (max - min + 1) + min);
-        //rounding the number to the appropriate number of zeroes at the end to make it harder to guess
-        randomConsumption = (int) ((int) (randomConsumption / Math.pow(10, zeros - 1)) * Math.pow(10, zeros - 1));
-        return String.valueOf(randomConsumption);
-    }
-
-    /**
-     * Counts the number of zeros at the end of the consumption to correctly round the options on the other two buttons
-     *
-     * @param actualConsumption The consumption of the activity for which the number of zeroes has to be counted
-     * @return The number of zeroes in the consumption
-     */
-    public static int countZeros(long actualConsumption) {
-        String number = String.valueOf(actualConsumption);
-        int counter = 0;
-        for (int i = 0; i < number.length(); i++) {
-            if (i + 1 == number.length() || number.charAt(i + 1) == '0') {
-                if (number.charAt(i) == '0') {
-                    counter++;
-                }
-            } else if (i + 1 != number.length() && number.charAt(i + 1) != '0') {
-                counter = 0;
-            }
-        }
-        return counter;
-    }
-
-    /**
      * Reveals ticks and crosses to indicate correct and wrong answers and displays points gained
      */
     @Override
     public void revealCorrectAnswer() {
         correct.get(positionCorrectAnswer).setVisible(true);
         for (int i = 0; i < 3; i++) {
+            boxes.get(i).setDisable(true);
             if (i != positionCorrectAnswer) {
                 wrong.get(i).setVisible(true);
             }
@@ -244,8 +235,8 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
             }
         }
 
-        buttons.get(removedAnswer).setOpacity(0.5);
-        buttons.get(removedAnswer).setDisable(true);
+        boxes.get(removedAnswer).setOpacity(0.5);
+        boxes.get(removedAnswer).setDisable(true);
     }
 
     ;
@@ -303,5 +294,27 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
      */
     public MainCtrl getMainCtrl() {
         return mainCtrl;
+    }
+
+    public void keyPressed(KeyCode e) {
+        switch (e) {
+            case DIGIT1:
+            case NUMPAD1:
+            case A:
+                setAnswerA();
+                break;
+            case DIGIT2:
+            case NUMPAD2:
+            case B:
+                setAnswerB();
+                break;
+            case DIGIT3:
+            case NUMPAD3:
+            case C:
+                setAnswerC();
+                break;
+            default:
+                break;
+        }
     }
 }

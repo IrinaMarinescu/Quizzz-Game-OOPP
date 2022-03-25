@@ -33,7 +33,7 @@
                         <Button fx:id="doublePoints" mnemonicParsing="false" onAction="#useJoker" BorderPane.alignment="CENTER">
                             <styleClass>
                                 <String fx:value="circle" />
-                                <String fx:value="clickable" />
+                                <String fx:value="clickableGreen" />
                             </styleClass>
                             <cursor>
                                 <Cursor fx:constant="DEFAULT" />
@@ -47,7 +47,7 @@
                         <Button fx:id="halveTime" mnemonicParsing="false" onAction="#useJoker" BorderPane.alignment="CENTER">
                             <styleClass>
                                 <String fx:value="circle" />
-                                <String fx:value="clickable" />
+                                <String fx:value="clickableGreen" />
                             </styleClass>
                             <opaqueInsets>
                                 <Insets />
@@ -67,7 +67,7 @@
                         <Button fx:id="eliminateWrongAnswer" mnemonicParsing="false" onAction="#useJoker" BorderPane.alignment="CENTER">
                             <styleClass>
                                 <String fx:value="circle" />
-                                <String fx:value="clickable" />
+                                <String fx:value="clickableGreen" />
                             </styleClass>
                             <BorderPane.margin>
                                 <Insets right="20.0" />
@@ -91,7 +91,7 @@
                                     <styleClass>
                                         <String fx:value="circle" />
                                         <String fx:value="smallCircle" />
-                                        <String fx:value="clickable" />
+                                        <String fx:value="clickableGreen" />
                                     </styleClass>
                                     <cursor>
                                         <Cursor fx:constant="DEFAULT" />
@@ -107,7 +107,7 @@
                                     <styleClass>
                                         <String fx:value="circle" />
                                         <String fx:value="smallCircle" />
-                                        <String fx:value="clickable" />
+                                        <String fx:value="clickableGreen" />
                                     </styleClass>
                                     <cursor>
                                         <Cursor fx:constant="DEFAULT" />
@@ -123,7 +123,7 @@
                                     <styleClass>
                                         <String fx:value="circle" />
                                         <String fx:value="smallCircle" />
-                                        <String fx:value="clickable" />
+                                        <String fx:value="clickableGreen" />
                                     </styleClass>
                                     <cursor>
                                         <Cursor fx:constant="DEFAULT" />
@@ -139,7 +139,7 @@
                                     <styleClass>
                                         <String fx:value="circle" />
                                         <String fx:value="smallCircle" />
-                                        <String fx:value="clickable" />
+                                        <String fx:value="clickableGreen" />
                                     </styleClass>
                                     <cursor>
                                         <Cursor fx:constant="DEFAULT" />
@@ -173,13 +173,13 @@
                         <Button fx:id="help" mnemonicParsing="false" onAction="#toggleHelpMenuVisibility">
                             <styleClass>
                                 <String fx:value="circle" />
-                                <String fx:value="clickable" />
+                                <String fx:value="clickableGreen" />
                             </styleClass>
                             <cursor>
                                 <Cursor fx:constant="DEFAULT" />
                             </cursor>
                             <HBox.margin>
-                                <Insets bottom="10.0" left="20.0" />
+                                <Insets left="20.0" />
                             </HBox.margin>
                             <tooltip>
                                 <Tooltip id="tooltip" text="Toggle help menu visibility" />
@@ -202,8 +202,9 @@
                         </Button>
                         <TableView fx:id="leaderboard" cacheShape="false" centerShape="false" fixedCellSize="0.0" focusTraversable="false" minHeight="-Infinity" pickOnBounds="false" prefHeight="200.0" prefWidth="200.0" scaleShape="false">
                             <columns>
-                                <TableColumn fx:id="scoreColumn" editable="false" prefWidth="77.0" sortable="false" text="Score" />
-                                <TableColumn fx:id="playerColumn" editable="false" prefWidth="122.0" sortable="false" text="Player" />
+                                <TableColumn fx:id="scoreColumn" editable="false" prefWidth="60.0" text="Score" />
+                        <TableColumn fx:id="gainColumn" prefWidth="50.0" text="Gain" />
+                                <TableColumn fx:id="playerColumn" editable="false" prefWidth="90.0" text="Player" />
                             </columns>
                             <VBox.margin>
                                 <Insets />
@@ -211,6 +212,9 @@
                             <opaqueInsets>
                                 <Insets />
                             </opaqueInsets>
+                     <tooltip>
+                        <Tooltip id="tooltip" text="Scroll with [MOUSEWHEEL] to view other players" />
+                     </tooltip>
                         </TableView>
                         <Button id="leaderboardBottom" minHeight="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="200.0">
                             <VBox.margin>
@@ -223,7 +227,7 @@
                     </VBox.margin>
                 </VBox>
                 <Region prefHeight="0.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                <VBox fx:id="helpMenuContainer" alignment="BOTTOM_CENTER" maxHeight="-Infinity" prefHeight="434.0" prefWidth="200.0" visible="false" VBox.vgrow="ALWAYS">
+                <VBox fx:id="helpMenuContainer" alignment="BOTTOM_CENTER" maxHeight="-Infinity" prefHeight="434.0" prefWidth="200.0" stylesheets="@../css/smallLeaderboard.css" visible="false" VBox.vgrow="ALWAYS">
                     <children>
                         <Button id="leaderboardTitle" minHeight="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="200.0" text="Help">
                             <VBox.margin>
@@ -232,13 +236,13 @@
                         </Button>
                         <GridPane id="helpMenu" alignment="CENTER" minHeight="-Infinity" prefHeight="360.0" prefWidth="200.0">
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="54.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="146.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="48.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="166.0" minWidth="10.0" prefWidth="152.0" />
                             </columnConstraints>
                             <rowConstraints>
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -255,12 +259,12 @@
                                         <Insets />
                                     </GridPane.margin>
                                 </ImageView>
-                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Halve time remaining for ALL players this question (once this game) [H]" textAlignment="CENTER" wrappingWidth="140.638671875" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Halve time remaining for ALL players this question (once this game) [H]" textAlignment="CENTER" wrappingWidth="146.638671875" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                                     <GridPane.margin>
                                         <Insets />
                                     </GridPane.margin>
                                     <font>
-                                        <Font name="System Bold" size="10.0" />
+                                        <Font size="10.0" />
                                     </font>
                                 </Text>
                                 <ImageView fitHeight="35.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
@@ -273,14 +277,14 @@
                                         <Image url="@../icons/double-points.png" />
                                     </image>
                                 </ImageView>
-                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Double your point gain this round (once this game) [D]" textAlignment="CENTER" wrappingWidth="150.638671875" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Double your point gain this round (once this game) [D]" textAlignment="CENTER" wrappingWidth="150.638671875" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                                     <font>
-                                        <Font name="System Bold" size="10.0" />
+                                        <Font size="10.0" />
                                     </font>
                                 </Text>
-                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Toggle leaderboard visibility [L]" textAlignment="CENTER" wrappingWidth="138.638671875" GridPane.columnIndex="1">
+                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Toggle leaderboard visibility [L]" textAlignment="CENTER" wrappingWidth="135.638671875" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                                     <font>
-                                        <Font name="System Bold" size="10.0" />
+                                        <Font size="10.0" />
                                     </font>
                                 </Text>
                                 <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
@@ -288,9 +292,9 @@
                                         <Image url="@../icons/lightbulb-regular.png" />
                                     </image>
                                 </ImageView>
-                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Eliminate one wrong answer this round (once this game) [E]" textAlignment="CENTER" wrappingWidth="145.638671875" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Eliminate one wrong answer this round (once this game) [E]" textAlignment="CENTER" wrappingWidth="148.638671875" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                                     <font>
-                                        <Font name="System Bold" size="10.0" />
+                                        <Font size="10.0" />
                                     </font>
                                 </Text>
                                 <ImageView fitHeight="30.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
@@ -298,9 +302,9 @@
                                         <Image url="@../emoticons/face-smile-solid.png" />
                                     </image>
                                 </ImageView>
-                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Hover over this icon to show menu to send emojis" textAlignment="CENTER" wrappingWidth="140.638671875" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Hover over this icon to show menu to send emojis" textAlignment="CENTER" wrappingWidth="140.638671875" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5">
                                     <font>
-                                        <Font name="System Bold" size="10.0" />
+                                        <Font size="10.0" />
                                     </font>
                                 </Text>
                                 <Text fx:id="helpPointsGained" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="+0" textAlignment="CENTER" wrappingWidth="50.638671875" GridPane.rowIndex="1">
@@ -308,34 +312,34 @@
                                         <Font name="System Bold" size="15.0" />
                                     </font>
                                 </Text>
-                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Your points gained last round" textAlignment="CENTER" wrappingWidth="133.638671875" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Your points gained last round" textAlignment="CENTER" wrappingWidth="133.638671875" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                                     <font>
-                                        <Font name="System Bold" size="10.0" />
+                                        <Font size="10.0" />
                                     </font>
                                 </Text>
-                                <Button fx:id="helpMenuScore" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="44.0" prefWidth="46.0" text="0" GridPane.rowIndex="6">
+                                <Button fx:id="helpMenuScore" maxWidth="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="44.0" prefWidth="57.0" text="0" GridPane.rowIndex="6">
                                     <GridPane.margin>
                                         <Insets left="5.0" />
                                     </GridPane.margin>
                                 </Button>
-                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Your total score this game" textAlignment="CENTER" wrappingWidth="140.638671875" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Your total score this game" textAlignment="CENTER" wrappingWidth="140.638671875" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6">
                                     <font>
-                                        <Font name="System Bold" size="10.0" />
+                                        <Font size="10.0" />
                                     </font>
                                 </Text>
-                                <Button fx:id="helpMenuQuestionNumber" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="44.0" prefWidth="46.0" text="0/20" GridPane.rowIndex="7">
+                                <Button fx:id="helpMenuQuestionNumber" maxWidth="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="44.0" prefWidth="46.0" text="0/20" GridPane.rowIndex="7">
                                     <GridPane.margin>
                                         <Insets left="5.0" />
                                     </GridPane.margin>
                                 </Button>
-                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="The number of the current question out of 20" textAlignment="CENTER" wrappingWidth="140.638671875" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="The number of the current question out of 20" textAlignment="CENTER" wrappingWidth="140.638671875" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7">
                                     <font>
-                                        <Font name="System Bold" size="10.0" />
+                                        <Font size="10.0" />
                                     </font>
                                 </Text>
-                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Disconnect and return to welcome screen [ESC x2]" textAlignment="CENTER" wrappingWidth="147.638671875" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Disconnect and return to welcome screen [ESC]" textAlignment="CENTER" wrappingWidth="147.638671875" GridPane.columnIndex="1" GridPane.rowIndex="8" GridPane.valignment="CENTER">
                                     <font>
-                                        <Font name="System Bold" size="10.0" />
+                                        <Font size="10.0" />
                                     </font>
                                 </Text>
                                 <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER">
@@ -353,7 +357,7 @@
                         </GridPane>
                     </children>
                     <VBox.margin>
-                        <Insets left="20.0" />
+                        <Insets />
                     </VBox.margin>
                     <opaqueInsets>
                         <Insets />
@@ -371,7 +375,7 @@
                 <HBox prefHeight="80.0" prefWidth="675.0" BorderPane.alignment="CENTER_LEFT">
                     <children>
                         <Rectangle fx:id="topBar" arcHeight="5.0" arcWidth="5.0" height="80.0" stroke="BLACK" strokeWidth="0.0" width="3600.0" />
-                        <Button fx:id="trophy" mnemonicParsing="false" onAction="#toggleLeaderboardVisibility" styleClass="clickable">
+                        <Button fx:id="trophy" mnemonicParsing="false" onAction="#toggleLeaderboardVisibility" styleClass="clickableGreen">
                             <HBox.margin>
                                 <Insets left="10.0" />
                             </HBox.margin>
@@ -379,9 +383,9 @@
                                 <Tooltip id="tooltip" text="Toggle leaderboard visibility [L]" />
                             </tooltip>
                         </Button>
-                        <Button fx:id="back" mnemonicParsing="false" onAction="#disconnect" styleClass="clickable">
+                        <Button fx:id="back" mnemonicParsing="false" onAction="#disconnect" styleClass="clickableGreen">
                             <tooltip>
-                                <Tooltip id="tooltip" text="Return to main menu [ESC x2]" />
+                                <Tooltip id="tooltip" text="Return to main menu [ESC]" />
                             </tooltip>
                         </Button>
                         <Button fx:id="scoreField" alignment="CENTER" mnemonicParsing="false" text="0">
