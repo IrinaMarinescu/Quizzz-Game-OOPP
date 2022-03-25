@@ -12,15 +12,16 @@ public class LeaderboardCtrlDOC extends LeaderboardCtrl {
     public List<LeaderboardEntry> entries;
 
     public LeaderboardCtrlDOC(MainCtrl mainCtrl) {
-        super(null);
+        super(mainCtrl);
+        test = true;
     }
-
 
     @Override
     public void initialize(List<LeaderboardEntry> entries, int maxSize, String type) {
         setMaxSize(maxSize);
         setLeaderboardType(type);
         setEntries(entries);
+
     }
 
     public void setEntries(List<LeaderboardEntry> entries) {
