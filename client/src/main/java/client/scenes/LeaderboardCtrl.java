@@ -95,7 +95,10 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      * @param entries the entries to be put in the leaderboard, in any order. The method will sort the entries by score.
      */
     private void fillLeaderboard(List<LeaderboardEntry> entries) {
-        ObservableList<LeaderboardEntry> data = FXCollections.observableList(sortEntries(entries));
+        ObservableList<LeaderboardEntry> data = FXCollections.observableList(
+            sortEntries(entries).stream().map(
+                p -> p.equals(mainCtrl.getPlayer()) ? new LeaderboardEntry("You (" + p.getName() + ")", p.getScore()) :
+                    p).collect(Collectors.toList()));
         leaderboard.setItems(data);
     }
 
