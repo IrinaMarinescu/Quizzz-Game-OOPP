@@ -288,33 +288,6 @@ public class QuestionOneImageCtrl implements QuestionRequirements {
     }
 
     /**
-     * Sets the answer when the user chooses A
-     *
-     * @param answerA the button that the user selected
-     */
-    public void setAnswerA(Button answerA) {
-        this.answerA = answerA;
-    }
-
-    /**
-     * Sets the answer when the user chooses B
-     *
-     * @param answerB the button that the user selected
-     */
-    public void setAnswerB(Button answerB) {
-        this.answerB = answerB;
-    }
-
-    /**
-     * Sets the answer when the user chooses C
-     *
-     * @param answerC the button that the user selected
-     */
-    public void setAnswerC(Button answerC) {
-        this.answerC = answerC;
-    }
-
-    /**
      * Returns the question
      *
      * @return the Question displayed in the screen
