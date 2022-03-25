@@ -196,8 +196,7 @@ public class ActivityController {
                     break;
             }
         }
-        activityFilter.runningFilter(questions);
-        return questions;
+        return activityFilter.runningFilter(questions);
     }
 
     /**
