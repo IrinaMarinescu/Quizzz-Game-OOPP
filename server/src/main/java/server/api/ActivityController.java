@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import server.ActivityFilter;
 import server.database.ActivityRepository;
 
 /**
@@ -27,11 +28,13 @@ public class ActivityController {
 
     private final ActivityRepository repo;
     private final Random rand;
+    private final ActivityFilter activityFilter;
 
-    public ActivityController(ActivityRepository repo, Random random) {
+    public ActivityController(ActivityRepository repo, Random random, ActivityFilter activityFilter) {
         this.repo = repo;
         this.rand = random;
         this.totalRecords = this.repo.count();
+        this.activityFilter = activityFilter;
     }
 
     private static boolean nullOrEmpty(String s) {
@@ -193,6 +196,7 @@ public class ActivityController {
                     break;
             }
         }
+        activityFilter.runningFilter(questions);
         return questions;
     }
 
