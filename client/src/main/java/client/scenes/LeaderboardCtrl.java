@@ -50,10 +50,18 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     public static final int TYPE_INTERMED = 2;
     public static final int TYPE_FINAL = 3;
 
+    public static final String gold = "#d4af37";
+    public static final String silver = "#c0c0c0";
+    public static final String bronze = "#cd7f32";
+
+
     private final MainCtrl mainCtrl;
     private int type;
     private int maxSize;
 
+    protected Pair<String, String> texts;
+    protected boolean backButtonVisible;
+    protected boolean buttonGridVisible;
     protected boolean test = false;
 
     @Inject
@@ -151,9 +159,9 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      */
     protected String getMedal(int place) {
         switch (place) {
-            case 1: return "#d4af37";
-            case 2: return "#c0c0c0";
-            default: return "#cd7f32";
+            case 1: return gold;
+            case 2: return silver;
+            default: return bronze;
         }
     }
 
@@ -164,21 +172,21 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      *             If something else is put, the method automatically sets the type to solo as placeholder.
      */
     protected void setLeaderboardType(String type) {
-        Pair<String, String> texts;
         if (type.equals("intermediate")) {
-            this.type = TYPE_INTERMED;
+            setType(TYPE_INTERMED);
             texts = new Pair<>("Intermediate Leaderboard", "Scores after 10 rounds - go get 'em!");
             setButtonAndGrid(false, false);
         } else if (type.equals("final")) {
+            setType(TYPE_FINAL);
             this.type = TYPE_FINAL;
             texts = new Pair<>("Final Leaderboard", "Final scores");
             setButtonAndGrid(false, true);
         } else {
-            this.type = TYPE_SOLO;
+            setType(TYPE_SOLO);
             texts = new Pair<>("Global Leaderboard", "All-time top players in singleplayer");
             setButtonAndGrid(true, false);
         }
-        formatLabels(texts);
+        formatLabels();
     }
 
     /**
@@ -188,6 +196,8 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      * @param gridVisibility a boolean value, representing whether the bottom button grid should be visible or not.
      */
     protected void setButtonAndGrid(boolean buttonVisibility, boolean gridVisibility) {
+        backButtonVisible = buttonVisibility;
+        buttonGridVisible = gridVisibility;
         if (!test) {
             back.setVisible(buttonVisibility);
             buttonGrid.setVisible(gridVisibility);
@@ -197,9 +207,8 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     /**
      * Sets both the labels for the page and table title to the values needed for the specific leaderboard type.
      *
-     * @param texts a Pair of two strings, containing the titles to be set.
      */
-    protected void formatLabels(Pair<String, String> texts) {
+    protected void formatLabels() {
         if (!test) {
             pageTitle.setText(texts.getKey());
         }
@@ -225,6 +234,7 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     public int getType() {
         return type;
     }
+
 
     /**
      * Returns the maximum size of the leaderboard (how many entries to show at max)
