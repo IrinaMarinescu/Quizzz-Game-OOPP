@@ -1,0 +1,5 @@
+@import 'global.css';
+
+TextField, Button {
+    -fx-font-size: 28;
+}

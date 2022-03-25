@@ -9,9 +9,10 @@ import java.util.stream.IntStream;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.text.Text;
 import javax.inject.Inject;
 
 
@@ -33,7 +34,7 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
     Button falseButton;
 
     @FXML
-    Label questionOutput;
+    Text questionOutput;
 
     @FXML
     ImageView imageOutput;
@@ -68,8 +69,8 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
         Platform.runLater(() -> {
             this.questionOutput.setText(question.getQuestion());
             String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
-                    + question.getActivities().get(0).imagePath;
-            Image image = new Image(imagePath, 200, 186, true, false);
+                + question.getActivities().get(0).imagePath;
+            Image image = new Image(imagePath, 400, 400, true, false);
             imageOutput.setImage(image);
             trueButton.setText("True");
             falseButton.setText("False");
@@ -78,7 +79,6 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
                 correct.get(i).setVisible(false);
                 wrong.get(i).setVisible(false);
                 answers.get(i).setOpacity(1);
-                answers.get(i).setStyle("-fx-border-color:  #5CB4BF");
                 answers.get(i).setDisable(false);
             });
         });
@@ -97,7 +97,6 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
     }
 
     private void setChosenAnswer() {
-        answers.get(selectedAnswerButton).setStyle("-fx-border-color: #028090");
         for (int i = 0; i < 2; i++) {
             answers.get(i).setDisable(true);
             if (i != selectedAnswerButton) {
@@ -131,32 +130,20 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
         return question;
     }
 
-    public List<Button> getAnswers() {
-        return answers;
+    public void keyPressed(KeyCode e) {
+        switch (e) {
+            case DIGIT1:
+            case NUMPAD1:
+            case T:
+                trueSelected();
+                break;
+            case DIGIT2:
+            case NUMPAD2:
+            case F:
+                falseSelected();
+                break;
+            default:
+                break;
+        }
     }
-
-    public int getPositionCorrectAnswer() {
-        return positionCorrectAnswer;
-    }
-
-    public int getSelectedAnswerButton() {
-        return selectedAnswerButton;
-    }
-
-    public Button getTrueAnswer() {
-        return trueButton;
-    }
-
-    public Button getFalseAnswer() {
-        return falseButton;
-    }
-
-    public Label getQuestionOutput() {
-        return questionOutput;
-    }
-
-    public ImageView getImageOutput() {
-        return imageOutput;
-    }
-
 }
