@@ -20,14 +20,12 @@ import client.scenes.controllerrequirements.MainFrameCtrlRequirements;
 import client.utils.LobbyUtils;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Scanner;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
@@ -44,7 +42,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
 
     private long lastEscapeKeyPressTime;
 
-    private final File USERINFO = new File("client/src/main/resources/client/user-info/user-info.txt");
+    private final File userInfo = new File("client/src/main/resources/client/user-info/user-info.txt");
 
     @FXML
     private TextField username;
@@ -76,7 +74,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
         displayUsernameError(false);
         displayServerIPError(false);
         try {
-            Scanner scanner = new Scanner(USERINFO);
+            Scanner scanner = new Scanner(userInfo);
             scanner.useDelimiter(",");
             while (scanner.hasNext()) {
                 serverIP.setText(scanner.next());
@@ -144,7 +142,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     private void writeToFile() {
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter(USERINFO);
+            writer = new PrintWriter(userInfo);
             if (serverIP.getText().equals("")) {
                 writer.print("http://localhost:8080/");
             } else {
