@@ -59,6 +59,7 @@ public class MainCtrl implements MainCtrlRequirements {
     private boolean doublePoints;
     double questionEndTime;
     private int timeoutRoundCheck;
+    private double halvedRoundTime;
     private String currentQuestionType;
     boolean gameOngoing = false;
 
@@ -381,9 +382,13 @@ public class MainCtrl implements MainCtrlRequirements {
             }
 
             Platform.runLater(() -> {
-                questionFrameCtrl.setRemainingTime(OVERVIEW_TIME);
-                timeUtils.runAfterDelay(this::nextEvent, OVERVIEW_TIME);
-            });
+                    questionFrameCtrl.setRemainingTime(OVERVIEW_TIME + (halvedRoundTime / 1000));
+                    timeUtils.runAfterDelay(this::nextEvent, OVERVIEW_TIME + (halvedRoundTime / 1000));
+                    timeUtils.runAfterDelay(() -> {
+                        halvedRoundTime = 0;
+                    }, OVERVIEW_TIME + (halvedRoundTime / 1000));
+                }
+            );
         }, delay);
     }
 
@@ -420,10 +425,10 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     @Override
     public void halveTime() {
-        double timeUntilRoundEnd = (questionEndTime - timeUtils.now()) / 2.0;
-        questionEndTime -= timeUntilRoundEnd;
+        halvedRoundTime = (questionEndTime - timeUtils.now()) / 2.0;
+        questionEndTime -= halvedRoundTime;
         questionFrameCtrl.halveRemainingTime();
-        setQuestionTimeouts(timeUntilRoundEnd / 1000.0);
+        setQuestionTimeouts(halvedRoundTime / 1000.0);
     }
 
     public void displayNewEmoji(String name, String reaction) {
