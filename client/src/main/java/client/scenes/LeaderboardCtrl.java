@@ -50,9 +50,9 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     public static final int TYPE_INTERMED = 2;
     public static final int TYPE_FINAL = 3;
 
-    public static final String gold = "#d4af37";
-    public static final String silver = "#c0c0c0";
-    public static final String bronze = "#cd7f32";
+    public static final String gold = "gold";
+    public static final String silver = "silver";
+    public static final String bronze = "chocolate";
 
 
     private final MainCtrl mainCtrl;
