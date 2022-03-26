@@ -36,7 +36,8 @@ class OpenQuestionCtrlTest {
         emoteCtrlDOC = new EmoteCtrlDOC();
         timerBarCtrlDOC = new TimerBarCtrlDOC();
 
-        questionFrame = new QuestionFrameCtrl(mainCtrlDOC, timerBarCtrlDOC, emoteCtrlDOC, timeUtilsDOC, null);
+        questionFrame = new QuestionFrameCtrl(null, timeUtilsDOC, null, mainCtrlDOC,
+                timerBarCtrlDOC, emoteCtrlDOC);;
 
         sut = new OpenQuestionCtrlDOC(mainCtrlDOC, questionFrame);
         question = new Question(List.of(new Activity("a", null, "using your phone",
