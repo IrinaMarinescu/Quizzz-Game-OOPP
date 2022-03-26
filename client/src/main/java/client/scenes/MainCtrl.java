@@ -153,7 +153,10 @@ public class MainCtrl implements MainCtrlRequirements, WindowListener {
         primaryStage.widthProperty().addListener(
             (obs, oldVal, newVal) -> questionFrameCtrl.resizeTimerBar(newVal.intValue(),
                 oldVal.intValue() - newVal.intValue()));
-        primaryStage.setOnCloseRequest(e -> exitGameChecker(1));
+        primaryStage.setOnCloseRequest(e -> {
+            e.consume();
+            exitGameChecker(1);
+        });
 
         this.mainFrameCtrl = mainFrame.getKey();
         this.mainFrame = new Scene(mainFrame.getValue());
@@ -191,6 +194,7 @@ public class MainCtrl implements MainCtrlRequirements, WindowListener {
         exitCheck = new Stage();
         exitCheck.setScene(exitPopUp.getValue().getScene());
         exitCheck.initOwner(primaryStage);
+        exitCheck.initModality(Modality.WINDOW_MODAL);
 
         primaryStage.setTitle("Quizzzzz!");
         showMainFrame();
@@ -492,7 +496,6 @@ public class MainCtrl implements MainCtrlRequirements, WindowListener {
 
     public void exitGameChecker(int type) {
         exitPopUpCtrl.setType(type);
-        exitCheck.initModality(Modality.WINDOW_MODAL);
         exitCheck.showAndWait();
     }
 
