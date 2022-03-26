@@ -2,6 +2,8 @@ package client.scenes.controllerrequirements;
 
 import javafx.scene.input.KeyCode;
 
+import java.io.FileNotFoundException;
+
 public interface MainFrameCtrlRequirements {
 
     void displayUsernameError(boolean show);
@@ -15,5 +17,5 @@ public interface MainFrameCtrlRequirements {
      *          <p>
      *          This should only be called by the MainCtrl showQuestionFrame method
      */
-    void keyPressed(KeyCode e);
+    void keyPressed(KeyCode e) throws FileNotFoundException;
 }
