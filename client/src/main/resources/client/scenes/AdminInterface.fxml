@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -19,6 +20,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+
 <AnchorPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@../css/adminPage.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminInterfaceCtrl">
     <children>
         <BorderPane layoutX="-1.0" layoutY="-1.0" prefHeight="900.0" prefWidth="1600.0">
@@ -30,17 +32,11 @@
                             <left>
                                 <HBox prefHeight="80.0" prefWidth="300.0" BorderPane.alignment="CENTER">
                                     <children>
-                                        <ImageView fitHeight="60.0" pickOnBounds="true" onMouseClicked="#showMainFrame" preserveRatio="true" styleClass="clickable">
-                                            <HBox.margin>
-                                                <Insets left="20.0" top="10.0" />
-                                            </HBox.margin>
-                                            <image>
-                                                <Image url="@../icons/angle-left-solid.png" />
-                                            </image>
-                                            <cursor>
-                                                <Cursor fx:constant="HAND" />
-                                            </cursor>
-                                        </ImageView>
+                              <Button id="back" mnemonicParsing="false" onAction="#showMainFrame" styleClass="clickableGreen">
+                                 <tooltip>
+                                    <Tooltip id="tooltip" text="Return to welcome screen [ESC]" />
+                                 </tooltip>
+                              </Button>
                                     </children>
                                 </HBox>
                             </left>
@@ -78,82 +74,106 @@
                             <VBox.margin>
                                 <Insets left="20.0" />
                             </VBox.margin>
+                     <tooltip>
+                        <Tooltip id="tooltip" text="Click on this activity to update or delete it" />
+                     </tooltip>
                         </TableView>
                     </children>
                 </VBox>
 
             </center>
-         <right>
-            <GridPane fx:id="activityGrid" prefHeight="717.0" prefWidth="821.0" BorderPane.alignment="CENTER">
-              <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="268.999985192076" minWidth="10.0" prefWidth="84.24540755535725" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="469.15080306316975" minWidth="10.0" prefWidth="462.81120345379475" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                  <RowConstraints maxHeight="200.26413362583858" minHeight="8.471688730091245" prefHeight="21.150948507160336" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="396.67927141688676" minHeight="9.96225788772415" prefHeight="217.60378868616388" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="396.67927141688676" minHeight="10.0" prefHeight="56.58489586085608" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="396.67927141688676" minHeight="10.0" prefHeight="14.113235207459581" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="396.67927141688676" minHeight="10.0" prefHeight="53.49054377696069" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="396.67927141688676" minHeight="1.0000049975386105" prefHeight="16.396220722246028" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="396.67927141688676" minHeight="10.0" prefHeight="56.49059356765508" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="396.67927141688676" minHeight="10.0" prefHeight="18.981105338640248" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="396.67927141688676" minHeight="10.0" prefHeight="46.339581824656136" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="590.4906018027302" minHeight="10.0" prefHeight="357.88684839267034" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <GridPane GridPane.columnIndex="1" GridPane.rowIndex="9">
+            <right>
+                <GridPane fx:id="activityGrid" prefHeight="717.0" prefWidth="821.0" BorderPane.alignment="CENTER">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="132.99998519207597" minWidth="10.0" prefWidth="15.30187602126335" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="239.90568040485894" minWidth="10.0" prefWidth="239.90568040485894" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="213.60374877239823" minWidth="10.0" prefWidth="19.35862729217547" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="268.999985192076" minWidth="10.0" prefWidth="84.24540755535725" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="469.15080306316975" minWidth="10.0" prefWidth="462.81120345379475" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints maxHeight="370.1132394607995" minHeight="0.0" prefHeight="66.45288800327499" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="456.981139919435" minHeight="10.0" prefHeight="50.15089020978614" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="466.37740860175484" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="450.6226922806237" minHeight="10.0" prefHeight="51.58497207332002" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="450.6226922806237" minHeight="9.83022518300561" prefHeight="194.8112635329" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="200.26413362583858" minHeight="8.471688730091245" prefHeight="21.150948507160336" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="396.67927141688676" minHeight="9.96225788772415" prefHeight="217.60378868616388" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="396.67927141688676" minHeight="10.0" prefHeight="56.58489586085608" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="396.67927141688676" minHeight="10.0" prefHeight="14.113235207459581" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="396.67927141688676" minHeight="10.0" prefHeight="53.49054377696069" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="396.67927141688676" minHeight="1.0000049975386105" prefHeight="16.396220722246028" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="396.67927141688676" minHeight="10.0" prefHeight="56.49059356765508" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="396.67927141688676" minHeight="10.0" prefHeight="18.981105338640248" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="396.67927141688676" minHeight="10.0" prefHeight="46.339581824656136" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="590.4906018027302" minHeight="10.0" prefHeight="357.88684839267034" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
-                     <children>
-                        <Button layoutX="25.0" layoutY="49.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="240.0" onAction="#updateSelectedActivity" text="update selected" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                           <font>
-                              <Font size="1.0" />
-                           </font>
-                        </Button>
-                        <Button layoutX="25.0" layoutY="111.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="240.0" onAction="#deleteSelectedActivity" text="delete selected" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                           <font>
-                              <Font size="1.0" />
-                           </font>
-                        </Button>
-                     </children>
-                  </GridPane>
-                  <TextField fx:id="activityIdField" editable="false" prefHeight="40.0" prefWidth="274.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <TextField fx:id="activityTitleField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <TextField fx:id="activityConsumptionField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                  <TextField fx:id="activitySourceField" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                  <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="151.99998519207597" minWidth="10.0" prefWidth="91.66033656336576" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="336.0000103644609" minWidth="10.0" prefWidth="301.7736397156222" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="124.00001570965412" minWidth="10.0" prefWidth="74.67924919413616" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <ImageView fx:id="activityImage" fitHeight="200" fitWidth="285.0" pickOnBounds="true" GridPane.columnIndex="1">
-                           <image>
-                              <Image url="http://localhost:8080/images/26/aquarium.jpeg" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </GridPane>
-               </children>
-            </GridPane>
-         </right>
+                    <children>
+                        <GridPane GridPane.columnIndex="1" GridPane.rowIndex="9">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="132.99998519207597" minWidth="10.0" prefWidth="15.30187602126335" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="239.90568040485894" minWidth="10.0" prefWidth="239.90568040485894" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="213.60374877239823" minWidth="10.0" prefWidth="19.35862729217547" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints maxHeight="370.1132394607995" minHeight="0.0" prefHeight="66.45288800327499" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="456.981139919435" minHeight="10.0" prefHeight="50.15089020978614" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="466.37740860175484" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="450.6226922806237" minHeight="10.0" prefHeight="51.58497207332002" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="450.6226922806237" minHeight="9.83022518300561" prefHeight="194.8112635329" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <Button layoutX="25.0" layoutY="49.0" mnemonicParsing="false" onAction="#updateSelectedActivity" prefHeight="47.0" prefWidth="240.0" styleClass="clickableGreen" text="update selected" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <font>
+                                        <Font size="1.0" />
+                                    </font>
+                           <tooltip>
+                              <Tooltip id="tooltip" text="Update this activity" />
+                           </tooltip>
+                                </Button>
+                                <Button layoutX="25.0" layoutY="111.0" mnemonicParsing="false" onAction="#deleteSelectedActivity" prefHeight="31.0" prefWidth="240.0" styleClass="clickableGreen" text="delete selected" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                    <font>
+                                        <Font size="1.0" />
+                                    </font>
+                           <tooltip>
+                              <Tooltip id="tooltip" text="Delete this activity" />
+                           </tooltip>
+                                </Button>
+                            </children>
+                        </GridPane>
+                        <TextField fx:id="activityIdField" editable="false" prefHeight="40.0" prefWidth="274.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                     <tooltip>
+                        <Tooltip id="tooltip" text="ID of activity" />
+                     </tooltip></TextField>
+                        <TextField fx:id="activityTitleField" styleClass="clickableGreen" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <tooltip>
+                        <Tooltip id="tooltip" text="Title of activity" />
+                     </tooltip></TextField>
+                        <TextField fx:id="activityConsumptionField" styleClass="clickableGreen" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                     <tooltip>
+                        <Tooltip id="tooltip" text="Consumption of activity in Wh" />
+                     </tooltip></TextField>
+                        <TextField fx:id="activitySourceField" styleClass="clickableGreen" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                     <tooltip>
+                        <Tooltip id="tooltip" text="Source of activity" />
+                     </tooltip></TextField>
+                        <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="151.99998519207597" minWidth="10.0" prefWidth="91.66033656336576" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="336.0000103644609" minWidth="10.0" prefWidth="301.7736397156222" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="124.00001570965412" minWidth="10.0" prefWidth="74.67924919413616" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <ImageView fx:id="activityImage" fitHeight="200" fitWidth="285.0" pickOnBounds="true" GridPane.columnIndex="1">
+                                    <image>
+                                        <Image url="http://localhost:8080/images/26/aquarium.jpeg" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </GridPane>
+                    </children>
+                </GridPane>
+            </right>
         </BorderPane>
     </children>
 </AnchorPane>

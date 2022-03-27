@@ -1,8 +1,11 @@
 package client.scenes;
 
+import static client.scenes.MainCtrl.ROUND_TIME;
+
 import client.scenes.controllerrequirements.QuestionFrameRequirements;
 import client.scenes.framecomponents.EmoteCtrl;
 import client.scenes.framecomponents.TimerBarCtrl;
+import client.utils.GameUtils;
 import client.utils.ServerUtils;
 import client.utils.TimeUtils;
 import commons.LeaderboardEntry;
@@ -38,11 +41,13 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
 
     public static final int LEADERBOARD_SIZE_MAX = 5;
 
+    final ServerUtils serverUtils;
+    TimeUtils timeUtils;
+    private final GameUtils gameUtils;
     final MainCtrl mainCtrl;
     private final TimerBarCtrl timerBarCtrl;
     private final EmoteCtrl emoteCtrl;
-    TimeUtils timeUtils;
-    ServerUtils serverUtils;
+
 
     @FXML
     public Rectangle topBar;
@@ -87,6 +92,8 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     private TableColumn<LeaderboardEntry, String> playerColumn;
     @FXML
     private TableColumn<LeaderboardEntry, String> scoreColumn;
+    @FXML
+    private TableColumn<LeaderboardEntry, String> gainColumn;
 
     private List<Button> jokers;
 
@@ -94,7 +101,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     private int gameScore;
     private int questionNumber;
     long lastEscapeKeyPressTime;
-
+    private List<LeaderboardEntry> previousEntries;
 
     /**
      * Injects mainCtrl, lobbyUtils and mainCtrl, so it's possible to call methods from there
@@ -105,13 +112,16 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      * @param emoteCtrl    The instance of EmoteCtrl
      */
     @Inject
-    public QuestionFrameCtrl(MainCtrl mainCtrl, TimerBarCtrl timerBarCtrl, EmoteCtrl emoteCtrl, TimeUtils timeUtils,
-                             ServerUtils serverUtils) {
+    public QuestionFrameCtrl(ServerUtils serverUtils, TimeUtils timeUtils, GameUtils gameUtils, MainCtrl mainCtrl,
+                             TimerBarCtrl timerBarCtrl, EmoteCtrl emoteCtrl) {
+
+        this.serverUtils = serverUtils;
+        this.timeUtils = timeUtils;
+        this.gameUtils = gameUtils;
+
         this.mainCtrl = mainCtrl;
         this.timerBarCtrl = timerBarCtrl;
         this.emoteCtrl = emoteCtrl;
-        this.timeUtils = timeUtils;
-        this.serverUtils = serverUtils;
     }
 
     /**
@@ -131,6 +141,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
 
         playerColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getName()));
         scoreColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().scoreToString()));
+        gainColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().gainToString()));
 
         lastEscapeKeyPressTime = 0;
     }
@@ -148,6 +159,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      * @param players The list of all players involved
      */
     public void initializeMultiplayerGame(List<LeaderboardEntry> players) {
+        previousEntries = players;
         startNewGame(true, players);
     }
 
@@ -170,6 +182,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         emote.setVisible(isMultiplayerGame);
         back.setManaged(!isMultiplayerGame);
         back.setVisible(!isMultiplayerGame);
+        scoreField.setText("0");
 
         for (Button joker : jokers) {
             if (joker.getStyleClass().contains("usedJoker")) {
@@ -189,10 +202,20 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     /**
      * Sets node containing question at the center of the frame
      *
-     * @param questionNode The node to be inserted in the center of the frame
+     * @param node           The node to be inserted in the center of the frame
+     * @param isQuestionNode Whether to play the timer bar animation
      */
-    public void setCenterContent(Node questionNode) {
-        Platform.runLater(() -> borderPane.setCenter(questionNode));
+    public void setCenterContent(Node node, boolean isQuestionNode) {
+        Platform.runLater(() -> {
+            borderPane.setCenter(node);
+            if (isQuestionNode) {
+                setRemainingTime(ROUND_TIME);
+                mainCtrl.setQuestionTimeouts(ROUND_TIME);
+                mainCtrl.questionStartTime = timeUtils.now();
+                mainCtrl.questionEndTime = mainCtrl.questionStartTime + ROUND_TIME * 1000.0;
+            }
+            Platform.runLater(() -> resizeTimerBar(timerBarCtrl.displayWidth, 0));
+        });
     }
 
     /**
@@ -230,10 +253,9 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      * @param entries A list of LeaderboardEntry objects representing leaderboard fields
      */
     public List<LeaderboardEntry> setLeaderboardContents(List<LeaderboardEntry> entries) {
-        entries = entries.stream()
-            .sorted()
-            .limit(LEADERBOARD_SIZE_MAX)
-            .collect(Collectors.toList());
+        entries = entries.stream().sorted().collect(Collectors.toList());
+        entries.forEach(entry -> entry.setDifference(previousEntries));
+        previousEntries = entries;
 
         if (!test) {
             ObservableList<LeaderboardEntry> data = FXCollections.observableList(entries);
@@ -296,7 +318,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      */
     @FXML
     private void addReaction(ActionEvent e) {
-        serverUtils.sendNewEmoji(mainCtrl.getUsername(), ((Node) e.getSource()).getId());
+        gameUtils.sendFeature("EMOJI", mainCtrl.getUsername(), ((Node) e.getSource()).getId());
     }
 
     /**
@@ -323,7 +345,6 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      */
     public void halveRemainingTime() {
         timerBarCtrl.halveRemainingTime();
-        serverUtils.halveTime(mainCtrl.getGame().getId());
     }
 
     /**
@@ -346,10 +367,12 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         Platform.runLater(() -> {
             if (enable) {
                 joker.getStyleClass().remove("usedJoker");
-                joker.getStyleClass().add("clickable");
+                if (!joker.getStyleClass().contains("usedJoker")) {
+                    joker.getStyleClass().add("clickableGreen");
+                }
             } else {
                 joker.getStyleClass().add("usedJoker");
-                joker.getStyleClass().remove("clickable");
+                joker.getStyleClass().remove("clickableGreen");
             }
         });
     }
@@ -365,7 +388,6 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         if (joker.getStyleClass().contains("usedJoker")) {
             return;
         }
-
         setJokerEnabled(joker, false);
 
         switch (joker.getId()) {
@@ -376,7 +398,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
                 mainCtrl.eliminateWrongAnswer();
                 break;
             case "halveTime":
-                // TODO: fill in this joker's function
+                gameUtils.sendFeature("JOKER", mainCtrl.getUsername(), "HALVE_TIME");
                 break;
             default:
                 System.err.println("Unrecognized joker id in QuestionFrameCtrl");
@@ -393,7 +415,6 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     public void tempDisableJokers(double duration) {
         for (Button joker : jokers) {
             setJokerEnabled(joker, false);
-            timeUtils.runAfterDelay(() -> setJokerEnabled(joker, true), duration);
         }
 
         timeUtils.runAfterDelay(() -> {
@@ -417,11 +438,11 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      */
     @FXML
     private void disconnect() {
-        long now = timeUtils.now();
-        if (now - lastEscapeKeyPressTime < 200) {
-            mainCtrl.exitGameChecker(0);
+        if (mainCtrl.gameOngoing) {
+            mainCtrl.toggleModalVisibility();
+        } else {
+            mainCtrl.showMainFrame();
         }
-        lastEscapeKeyPressTime = now;
     }
 
     /**
@@ -429,7 +450,8 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      *
      * @param e Information about a keypress performed by the user
      *          <p>
-     *          This should only be called by the MainCtrl showQuestionFrame method
+     *          This should only be called when initializing the scene
+     *          The keypress is passed to the current question controller if no was found
      */
     public void keyPressed(KeyCode e) {
         switch (e) {
@@ -449,6 +471,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
                 disconnect();
                 break;
             default:
+                mainCtrl.currentQuestionCtrl.keyPressed(e);
                 break;
         }
     }

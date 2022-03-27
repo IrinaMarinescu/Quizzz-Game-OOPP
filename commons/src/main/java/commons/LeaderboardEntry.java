@@ -1,5 +1,6 @@
 package commons;
 
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +20,7 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
 
     private String name;
     private Integer score;
-
+    private Integer gain;
 
     /**
      * Constructor
@@ -30,6 +31,7 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     public LeaderboardEntry(String name, int score) {
         this.name = name;
         this.score = score;
+        this.gain = 0;
     }
 
     @SuppressWarnings("unused")
@@ -56,12 +58,33 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     }
 
     /**
+     * Setter of the score field
+     *
+     * @param score Number of points a player has
+     */
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    /**
      * Getter of score field (as a string)
      *
      * @return Value of score field (cast to a string)
      */
     public String scoreToString() {
         return score.toString();
+    }
+
+    /**
+     * Getter of gain field (as a string)
+     *
+     * @return The gain as a string (no + sign if no gain was made)
+     */
+    public String gainToString() {
+        if (gain == 0) {
+            return gain.toString();
+        }
+        return "+" + gain;
     }
 
     /**
@@ -73,6 +96,34 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     @Override
     public int compareTo(LeaderboardEntry other) {
         return Integer.compare(other.getScore(), score);
+    }
+
+    /**
+     * Compare names of two LeaderboardEntry objects
+     *
+     * @param other The LeaderboardEntry which name is compared with
+     * @return Whether two objects has the equal name
+     */
+    public boolean hasSameName(LeaderboardEntry other) {
+        return this.name.equals(other.getName());
+    }
+
+    /**
+     * Generates resultant gain based on it's difference from previous value
+     *
+     * @param oldEntries The list of previous values
+     */
+    public void setDifference(List<LeaderboardEntry> oldEntries) {
+        if (oldEntries == null) {
+            gain = 0;
+            return;
+        }
+        for (LeaderboardEntry e : oldEntries) {
+            if (e.getName().equals(name)) {
+                gain = score - e.getScore();
+                return;
+            }
+        }
     }
 
     /**
