@@ -31,8 +31,6 @@ import commons.Game;
 import commons.LeaderboardEntry;
 import commons.Lobby;
 import commons.Question;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.List;
 import java.util.UUID;
 import javafx.application.Platform;
@@ -46,7 +44,7 @@ import javafx.util.Pair;
 /**
  * Coordinates actions between different screens
  */
-public class MainCtrl implements MainCtrlRequirements, WindowListener {
+public class MainCtrl implements MainCtrlRequirements {
 
     public static final int ROUND_TIME = 10;
     public static final int OVERVIEW_TIME = 5;
@@ -506,8 +504,12 @@ public class MainCtrl implements MainCtrlRequirements, WindowListener {
     }
 
     public void toggleModalVisibility() {
-        // TODO toggle visibility of modal ("do you really want to disconnect?")
-        // TODO inform player that they are running game for others
+
+        if (exitCheck.isFocused()) {
+            exitCheck.close();
+        } else {
+            exitCheck.showAndWait();
+        }
     }
 
     /**
@@ -520,7 +522,7 @@ public class MainCtrl implements MainCtrlRequirements, WindowListener {
 
     public void exitGameChecker(int type) {
         exitPopUpCtrl.setType(type);
-        exitCheck.showAndWait();
+        toggleModalVisibility();
     }
 
     /**
@@ -530,56 +532,21 @@ public class MainCtrl implements MainCtrlRequirements, WindowListener {
         // TODO stop long polling
         if (type == 0 && buttonID.equals("yesButton")) {
             serverUtils.disconnect(game.getId(), player);
-            exitCheck.close();
+            toggleModalVisibility();
             showMainFrame();
         }
         if (type == 0 && buttonID.equals("noButton")) {
-            exitCheck.close();
+            toggleModalVisibility();
             showQuestionFrame();
         }
         if (type == 1 && buttonID.equals("yesButton")) {
-            exitCheck.close();
+            toggleModalVisibility();
             primaryStage.close();
         }
         if (type == 1 && buttonID.equals("noButton")) {
-            exitCheck.close();
+            toggleModalVisibility();
             showMainFrame();
         }
-
-    }
-
-    @Override
-    public void windowOpened(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowClosing(WindowEvent e) {
-        this.exitGameChecker(1);
-    }
-
-    @Override
-    public void windowClosed(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowIconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e) {
 
     }
 }
