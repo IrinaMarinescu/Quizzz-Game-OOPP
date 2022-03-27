@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import server.ActivityFilter;
 import server.database.ActivityRepository;
 import server.dependedoncomponents.RandomDOC;
 
@@ -38,7 +39,7 @@ class ActivityControllerTest {
 
     @BeforeEach
     public void setUp() {
-        sut = new ActivityController(repo, new Random());
+        sut = new ActivityController(repo, new Random(), new ActivityFilter());
         activity = new Activity("00-a", "ss/ss.png", "a", 5, "b");
         nullActivity = new Activity(null, null, null, 0, null);
     }
@@ -122,7 +123,7 @@ class ActivityControllerTest {
 
     @Test
     void trueFalseQuestionType1() {
-        sut = new ActivityController(repo, new RandomDOC(0));
+        sut = new ActivityController(repo, new RandomDOC(0), new ActivityFilter());
         sut.importActivities(List.of(new Activity("00-b", "ss/ss.png", "flying a plane", 10, "b")));
         List<Question> res = new ArrayList<>();
         sut.generateTrueFalseQuestion(0, res);
@@ -134,7 +135,7 @@ class ActivityControllerTest {
 
     @Test
     void trueFalseQuestionType2() {
-        sut = new ActivityController(repo, new RandomDOC(1));
+        sut = new ActivityController(repo, new RandomDOC(1), new ActivityFilter());
         sut.importActivities(List.of(
             new Activity("00-b", "ss/ss.png", "flying a plane", 10, "b"),
             new Activity("054-b", "ss/sds.png", "TITLE", 15, "google.com"))
