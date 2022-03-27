@@ -43,19 +43,20 @@ public class Game {
         return questions;
     }
 
-
-    /**
-     * @return The next question, based on current round
-     */
-    public Question nextQuestion() {
-        return questions.get(round - 1);
-    }
-
     /**
      * @return A list of all players (corresponding LeaderboardEntries)
      */
     public List<LeaderboardEntry> getPlayers() {
         return players;
+    }
+
+    /**
+     * Sets players
+     *
+     * @param players A list of players (corresponding LeaderboardEntries)
+     */
+    public void setPlayers(List<LeaderboardEntry> players) {
+        this.players = players;
     }
 
     /**
@@ -80,12 +81,24 @@ public class Game {
     }
 
     /**
-     * Sets players
-     *
-     * @param players A list of players (corresponding LeaderboardEntries)
+     * @return The next question, based on current round
      */
-    public void setPlayers(List<LeaderboardEntry> players) {
-        this.players = players;
+    public Question nextQuestion() {
+        return questions.get(round - 1);
     }
 
+    /**
+     * Update score of the given player
+     *
+     * @param player The player that score should be updated
+     * @return The updated list of players
+     */
+    public void updateScores(LeaderboardEntry player) {
+        for (LeaderboardEntry p : this.players) {
+            if (p.hasSameName(player)) {
+                p.setScore(player.getScore());
+            }
+            return;
+        }
+    }
 }

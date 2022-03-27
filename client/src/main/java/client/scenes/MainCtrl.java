@@ -258,6 +258,9 @@ public class MainCtrl implements MainCtrlRequirements {
         gameOngoing = true;
         questionFrameCtrl.initializeMultiplayerGame(this.game.getPlayers());
         lobbyUtils.setActive(false);
+        gameUtils.setActive("game", false);
+        gameUtils.setActive("features", true);
+
         showQuestionFrame();
         nextEvent();
     }
@@ -268,7 +271,7 @@ public class MainCtrl implements MainCtrlRequirements {
     public void joinLobby() {
         setLobby(lobbyUtils.joinLobby(this.player));
         lobbyUtils.setActive(true);
-        gameUtils.setActive(true);
+        gameUtils.setActive("game", true);
         showLobbyFrame();
     }
 
@@ -354,11 +357,6 @@ public class MainCtrl implements MainCtrlRequirements {
         questionFrameCtrl.setCenterContent(questionNode, true);
     }
 
-    private void showFinalScreen() {
-        finalScreenCtrl.setPoints(player.getScore());
-        questionFrameCtrl.setCenterContent(finalScreen, false);
-    }
-
     /**
      * Initializes timeouts until events that will happen after question and overview
      *
@@ -426,6 +424,10 @@ public class MainCtrl implements MainCtrlRequirements {
         questionEndTime -= timeUntilRoundEnd;
         questionFrameCtrl.halveRemainingTime();
         setQuestionTimeouts(timeUntilRoundEnd / 1000.0);
+    }
+
+    public void displayNewEmoji(String name, String reaction) {
+        questionFrameCtrl.displayNewEmoji(name, reaction);
     }
 
     /**
@@ -498,6 +500,14 @@ public class MainCtrl implements MainCtrlRequirements {
 
     public void toggleModalVisibility() {
         // TODO toggle visibility of modal ("do you really want to disconnect?")
-        // TODO inform player that they are runing game for others
+        // TODO inform player that they are running game for others
+    }
+
+    /**
+     * Shows final screen frame (after playing the game)
+     */
+    private void showFinalScreen() {
+        finalScreenCtrl.setPoints(player.getScore());
+        questionFrameCtrl.setCenterContent(finalScreen, false);
     }
 }

@@ -58,6 +58,15 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     }
 
     /**
+     * Setter of the score field
+     *
+     * @param score Number of points a player has
+     */
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    /**
      * Getter of score field (as a string)
      *
      * @return Value of score field (cast to a string)
@@ -87,6 +96,16 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     @Override
     public int compareTo(LeaderboardEntry other) {
         return Integer.compare(other.getScore(), score);
+    }
+
+    /**
+     * Compare names of two LeaderboardEntry objects
+     *
+     * @param other The LeaderboardEntry which name is compared with
+     * @return Whether two objects has the equal name
+     */
+    public boolean hasSameName(LeaderboardEntry other) {
+        return this.name.equals(other.getName());
     }
 
     /**
@@ -132,14 +151,4 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     public int hashCode() {
         return Objects.hash(getName(), getScore());
     }
-
-    /**
-     * Setter of the score field
-     *
-     * @param score Number of points a player has
-     */
-    public void setScore(Integer score) {
-        this.score = score;
-    }
-
 }

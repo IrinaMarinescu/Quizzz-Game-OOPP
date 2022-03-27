@@ -5,6 +5,7 @@ import static client.scenes.MainCtrl.ROUND_TIME;
 import client.scenes.controllerrequirements.QuestionFrameRequirements;
 import client.scenes.framecomponents.EmoteCtrl;
 import client.scenes.framecomponents.TimerBarCtrl;
+import client.utils.GameUtils;
 import client.utils.ServerUtils;
 import client.utils.TimeUtils;
 import commons.LeaderboardEntry;
@@ -38,11 +39,15 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
 
     public boolean test = false;
 
+    public static final int LEADERBOARD_SIZE_MAX = 5;
+
+    final ServerUtils serverUtils;
+    TimeUtils timeUtils;
+    private final GameUtils gameUtils;
     final MainCtrl mainCtrl;
     private final TimerBarCtrl timerBarCtrl;
     private final EmoteCtrl emoteCtrl;
-    TimeUtils timeUtils;
-    ServerUtils serverUtils;
+
 
     @FXML
     public Rectangle topBar;
@@ -107,13 +112,16 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      * @param emoteCtrl    The instance of EmoteCtrl
      */
     @Inject
-    public QuestionFrameCtrl(MainCtrl mainCtrl, TimerBarCtrl timerBarCtrl, EmoteCtrl emoteCtrl, TimeUtils timeUtils,
-                             ServerUtils serverUtils) {
+    public QuestionFrameCtrl(ServerUtils serverUtils, TimeUtils timeUtils, GameUtils gameUtils, MainCtrl mainCtrl,
+                             TimerBarCtrl timerBarCtrl, EmoteCtrl emoteCtrl) {
+
+        this.serverUtils = serverUtils;
+        this.timeUtils = timeUtils;
+        this.gameUtils = gameUtils;
+
         this.mainCtrl = mainCtrl;
         this.timerBarCtrl = timerBarCtrl;
         this.emoteCtrl = emoteCtrl;
-        this.timeUtils = timeUtils;
-        this.serverUtils = serverUtils;
     }
 
     /**
@@ -310,7 +318,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      */
     @FXML
     private void addReaction(ActionEvent e) {
-        serverUtils.sendNewEmoji(mainCtrl.getUsername(), ((Node) e.getSource()).getId());
+        gameUtils.sendFeature("EMOJI", mainCtrl.getUsername(), ((Node) e.getSource()).getId());
     }
 
     /**
@@ -337,7 +345,6 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      */
     public void halveRemainingTime() {
         timerBarCtrl.halveRemainingTime();
-        serverUtils.halveTime(mainCtrl.getGame().getId());
     }
 
     /**
@@ -391,7 +398,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
                 mainCtrl.eliminateWrongAnswer();
                 break;
             case "halveTime":
-                // TODO: fill in this joker's function
+                gameUtils.sendFeature("JOKER", mainCtrl.getUsername(), "HALVE_TIME");
                 break;
             default:
                 System.err.println("Unrecognized joker id in QuestionFrameCtrl");

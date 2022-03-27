@@ -53,7 +53,7 @@ class QuestionFrameCtrlTest {
         emoteCtrlDOC = new EmoteCtrlDOC();
         timerBarCtrlDOC = new TimerBarCtrlDOC();
 
-        sut = new QuestionFrameCtrl(mainCtrlDOC, timerBarCtrlDOC, emoteCtrlDOC, timeUtilsDOC, null);
+        sut = new QuestionFrameCtrl(null, timeUtilsDOC, null, mainCtrlDOC, timerBarCtrlDOC, emoteCtrlDOC);
 
         sut.test = true;
         sut.sideLeaderboard = new VBox();
