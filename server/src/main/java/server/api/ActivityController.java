@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import server.ActivityFilter;
 import server.database.ActivityRepository;
 
 /**
@@ -27,11 +28,13 @@ public class ActivityController {
 
     private final ActivityRepository repo;
     private final Random rand;
+    private final ActivityFilter activityFilter;
 
-    public ActivityController(ActivityRepository repo, Random random) {
+    public ActivityController(ActivityRepository repo, Random random, ActivityFilter activityFilter) {
         this.repo = repo;
         this.rand = random;
         this.totalRecords = this.repo.count();
+        this.activityFilter = activityFilter;
     }
 
     private static boolean nullOrEmpty(String s) {
@@ -106,6 +109,7 @@ public class ActivityController {
      */
     @PostMapping("update")
     public ResponseEntity<Activity> updateActivity(@RequestBody Activity activity) {
+        activityFilter.runningActivityFilter(activity);
         repo.save(activity);
         return ResponseEntity.ok(activity);
     }
@@ -124,6 +128,7 @@ public class ActivityController {
             return ResponseEntity.badRequest().build();
         }
 
+        activityFilter.runningActivityFilter(activity);
         totalRecords++;
         Activity saved = repo.save(activity);
         return ResponseEntity.ok(saved);
@@ -146,6 +151,7 @@ public class ActivityController {
 
         List<Activity> saved = new ArrayList<>();
         for (var activity : activities) {
+            activityFilter.runningActivityFilter(activity);
             saved.add(repo.save(activity));
         }
 
@@ -193,7 +199,7 @@ public class ActivityController {
                     break;
             }
         }
-        return questions;
+        return activityFilter.runningQuestionFilter(questions);
     }
 
     /**
@@ -273,6 +279,44 @@ public class ActivityController {
     }
 
     /**
+     * Generates a random consumption value within a 15% range of the consumption of the correct answer
+     *
+     * @return returns a long with the random value, so that it can be displayed in the buttons
+     */
+    private long randomConsumption(Activity a) {
+        long actualConsumption = a.consumptionInWh;
+        int zeros = countZeros(actualConsumption);
+        double fifteenPercent = ((double) actualConsumption) / 100.00 * 15.00;
+        long max = (long) Math.ceil(actualConsumption + fifteenPercent);
+        long min = (long) Math.floor(actualConsumption - fifteenPercent);
+        long randomConsumption = (long) Math.floor(Math.random() * (max - min + 1) + min);
+        //rounding the number to the appropriate number of zeroes at the end to make it harder to guess
+        randomConsumption = (long) ((long) (randomConsumption / Math.pow(10, zeros - 1)) * Math.pow(10, zeros - 1));
+        return randomConsumption;
+    }
+
+    /**
+     * Counts the number of zeros at the end of the consumption to correctly round the options on the other two buttons
+     *
+     * @param actualConsumption The consumption of the activity for which the number of zeroes has to be counted
+     * @return The number of zeroes in the consumption
+     */
+    public static int countZeros(long actualConsumption) {
+        String number = String.valueOf(actualConsumption);
+        int counter = 0;
+        for (int i = 0; i < number.length(); i++) {
+            if (i + 1 == number.length() || number.charAt(i + 1) == '0') {
+                if (number.charAt(i) == '0') {
+                    counter++;
+                }
+            } else if (i + 1 != number.length() && number.charAt(i + 1) != '0') {
+                counter = 0;
+            }
+        }
+        return counter;
+    }
+
+    /**
      * takes 3 randomized activities from the database
      * the string of the question will be "Which activity consumes more?"
      * the correct answer is the one with the highest wh consumption
@@ -303,8 +347,16 @@ public class ActivityController {
      * @param questions      the list of all the questions
      */
     public void generateOneImageQuestion(int typeOfQuestion, List<Question> questions) {
-        String id = associateQuestion(typeOfQuestion);
         List<Activity> activities = fetchRandom(1);
+        long a1 = 0;
+        long a2 = 0;
+        do {
+            a1 = randomConsumption(activities.get(0));
+            a2 = randomConsumption(activities.get(0));
+        } while (a1 == a2 || a1 == activities.get(0).consumptionInWh || a2 == activities.get(0).consumptionInWh);
+        activities.add(new Activity("", "", "", a1, ""));
+        activities.add(new Activity("", "", "", a2, ""));
+        String id = associateQuestion(typeOfQuestion);
         String question = "How much energy in Wh does " + activities.get(0).title + " consume?";
         Question questionOneImage = new Question(activities, question, 0, id);
         questions.add(questionOneImage);
@@ -337,12 +389,15 @@ public class ActivityController {
                 i = j;
             }
         }
-        String id = associateQuestion(typeOfQuestion);
-        String question = "What can you do instead of " + activities.get(i).title + "?";
+        String title = activities.get(i).title;
+        Activity temp = activities.get(i);
         activities.remove(i);
+        activities.add(temp);
+        String question = "What can you do instead of " + title + "?";
         if (correctAnswer > i) {
             correctAnswer--;
         }
+        String id = associateQuestion(typeOfQuestion);
         Question questionInsteadOf = new Question(activities, question, correctAnswer, id);
         questions.add(questionInsteadOf);
     }

@@ -14,6 +14,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javax.inject.Inject;
 
@@ -71,7 +72,7 @@ public class AdminInterfaceCtrl implements AdminInterfaceCtrlRequirements {
         activityGrid.setVisible(true);
         activityImage.setImage(
             new Image(serverUtils.getServerIP() + "images/" + newActivity.imagePath,
-            270, 200, false, false)
+                270, 200, false, false)
         );
         activityIdField.setText(newActivity.id);
         activityTitleField.setText(newActivity.title);
@@ -88,7 +89,7 @@ public class AdminInterfaceCtrl implements AdminInterfaceCtrlRequirements {
     public void updateSelectedActivity() {
         Activity currentActivity = activityTable.getSelectionModel().getSelectedItem();
         currentActivity.title = activityTitleField.getText();
-        currentActivity.consumptionInWh = Integer.parseInt(activityConsumptionField.getText());
+        currentActivity.consumptionInWh = Long.parseLong(activityConsumptionField.getText());
         currentActivity.source = activitySourceField.getText();
 
         serverUtils.sendActivityUpdate(currentActivity);
@@ -101,5 +102,15 @@ public class AdminInterfaceCtrl implements AdminInterfaceCtrlRequirements {
         serverUtils.deleteActivity(currentActivity);
         activityTable.getItems().remove(currentActivity);
         activityGrid.setVisible(false);
+    }
+
+    public void keyPressed(KeyCode e) {
+        switch (e) {
+            case ESCAPE:
+                showMainFrame();
+                break;
+            default:
+                break;
+        }
     }
 }
