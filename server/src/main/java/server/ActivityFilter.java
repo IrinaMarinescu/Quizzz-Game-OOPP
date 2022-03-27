@@ -8,7 +8,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ActivityFilter {
 
-    public List<Question> runningFilter(List<Question> questions) {
+    public void runningActivityFilter(Activity activity) {
+        handlingHowQuestions(activity);
+        handlingPunctuation(activity);
+        handlingDailyActivities(activity);
+        handlingMonthlyActivities(activity);
+    }
+
+    public List<Question> runningQuestionFilter(List<Question> questions) {
 
         for (Question currentQuestion : questions) {
             List<Activity> currentActivities = currentQuestion.getActivities();
@@ -29,17 +36,8 @@ public class ActivityFilter {
                     changingToUpperCase(currentActivities.get(1));
                     changingToUpperCase(currentActivities.get(2));
                     break;
-                case "insteadOfQuestion":
-                    break;
                 default:
                     break;
-            }
-
-            for (Activity currentActivity : currentActivities) {
-                handlingHowQuestions(currentActivity);
-                handlingPunctuation(currentActivity);
-                handlingDailyActivities(currentActivity);
-                handlingMonthlyActivities(currentActivity);
             }
         }
 

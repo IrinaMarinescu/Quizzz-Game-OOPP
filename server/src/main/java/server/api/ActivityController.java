@@ -109,6 +109,7 @@ public class ActivityController {
      */
     @PostMapping("update")
     public ResponseEntity<Activity> updateActivity(@RequestBody Activity activity) {
+        activityFilter.runningActivityFilter(activity);
         repo.save(activity);
         return ResponseEntity.ok(activity);
     }
@@ -127,6 +128,7 @@ public class ActivityController {
             return ResponseEntity.badRequest().build();
         }
 
+        activityFilter.runningActivityFilter(activity);
         totalRecords++;
         Activity saved = repo.save(activity);
         return ResponseEntity.ok(saved);
@@ -149,6 +151,7 @@ public class ActivityController {
 
         List<Activity> saved = new ArrayList<>();
         for (var activity : activities) {
+            activityFilter.runningActivityFilter(activity);
             saved.add(repo.save(activity));
         }
 
@@ -196,7 +199,7 @@ public class ActivityController {
                     break;
             }
         }
-        return activityFilter.runningFilter(questions);
+        return activityFilter.runningQuestionFilter(questions);
     }
 
     /**
