@@ -2,8 +2,17 @@
 @import 'smallLeaderboard.css';
 @import 'helpMenu.css';
 
-#timerBar.fast {
-    -fx-fill: crimson;
+.progress-bar .bar {
+    -fx-background-color: -topBarColor;
+    -fx-background-insets: 0;
+}
+
+.progress-bar.fast .bar {
+    -fx-background-color: crimson;
+}
+
+.progress-bar .track {
+    -fx-background-color: -topBarBackgroundColor;
 }
 
 .circle {

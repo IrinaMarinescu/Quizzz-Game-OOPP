@@ -42,7 +42,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
 
     private long lastEscapeKeyPressTime;
 
-    private final File userInfo = new File("client/src/main/resources/client/user-info/user-info.txt");
+    private final File userInfo = new File("src/main/resources/client/user-info/user-info.txt");
 
     @FXML
     private TextField username;
@@ -111,7 +111,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     /**
      * If the server IP entered by the user is correct start a new single player Game, otherwise show a server IP error
      */
-    public void startSingleplayerGame()  {
+    public void startSingleplayerGame() {
         if (serverUtils.validateIP(serverIP.getText())) {
             serverUtils.setServerIP(serverIP.getText());
             mainCtrl.setPlayer(username.getText(), 0);

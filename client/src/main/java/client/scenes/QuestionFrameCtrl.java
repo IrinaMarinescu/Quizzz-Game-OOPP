@@ -22,13 +22,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javax.inject.Inject;
 
@@ -39,8 +39,6 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
 
     public boolean test = false;
 
-    public static final int LEADERBOARD_SIZE_MAX = 5;
-
     final ServerUtils serverUtils;
     TimeUtils timeUtils;
     private final GameUtils gameUtils;
@@ -48,9 +46,8 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     private final TimerBarCtrl timerBarCtrl;
     private final EmoteCtrl emoteCtrl;
 
-
     @FXML
-    public Rectangle topBar;
+    public ProgressBar topBar;
     @FXML
     VBox sideLeaderboard;
     @FXML
@@ -134,8 +131,6 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     public void initialize(URL location, ResourceBundle resources) {
         jokers = List.of(halveTime, eliminateWrongAnswer, doublePoints);
 
-        topBar.setManaged(false);
-
         timerBarCtrl.initialize(topBar, timeUtils);
         emoteCtrl.initialize(reactionContainer, timeUtils);
 
@@ -214,7 +209,6 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
                 mainCtrl.questionStartTime = timeUtils.now();
                 mainCtrl.questionEndTime = mainCtrl.questionStartTime + ROUND_TIME * 1000.0;
             }
-            Platform.runLater(() -> resizeTimerBar(timerBarCtrl.displayWidth, 0));
         });
     }
 
@@ -351,10 +345,9 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      * Changes width of timerBar in response to a change in window's size
      *
      * @param newVal New width of window in px
-     * @param change Change of width of window in px
      */
-    public void resizeTimerBar(int newVal, int change) {
-        timerBarCtrl.resize(newVal, change);
+    public void resizeTimerBar(double newVal) {
+        timerBarCtrl.resize(newVal);
     }
 
     /**

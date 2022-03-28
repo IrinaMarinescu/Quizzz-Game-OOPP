@@ -47,11 +47,6 @@ TextField {
     -fx-focus-color: transparent;
 }
 
-#timerBar {
-    -fx-background-color: -topBarBackgroundColor;
-    -fx-height: 80;
-}
-
 Button {
     -fx-background-color: -greenish;
     -fx-background-radius: 40;

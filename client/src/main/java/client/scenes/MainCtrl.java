@@ -144,8 +144,7 @@ public class MainCtrl implements MainCtrlRequirements {
         this.primaryStage = primaryStage;
 
         primaryStage.widthProperty().addListener(
-            (obs, oldVal, newVal) -> questionFrameCtrl.resizeTimerBar(newVal.intValue(),
-                oldVal.intValue() - newVal.intValue()));
+            (obs, oldVal, newVal) -> questionFrameCtrl.resizeTimerBar(newVal.doubleValue()));
         primaryStage.setOnCloseRequest(e -> disconnect());
 
         this.mainFrameCtrl = mainFrame.getKey();
@@ -170,18 +169,23 @@ public class MainCtrl implements MainCtrlRequirements {
 
         this.questionTrueFalseCtrl = questionTrueFalse.getKey();
         this.questionTrueFalse = questionTrueFalse.getValue();
+        this.questionTrueFalse.setCache(true);
 
         this.openQuestionCtrl = openQuestion.getKey();
         this.openQuestion = openQuestion.getValue();
+        this.openQuestion.setCache(true);
 
         this.questionThreePicturesCtrl = questionThreePictures.getKey();
         this.questionThreePictures = questionThreePictures.getValue();
+        this.questionThreePictures.setCache(true);
 
         this.questionOneImageCtrl = questionOneImage.getKey();
         this.questionOneImage = questionOneImage.getValue();
+        this.questionOneImage.setCache(true);
 
         this.insteadOfQuestionCtrl = insteadOfQuestion.getKey();
         this.insteadOfQuestion = insteadOfQuestion.getValue();
+        this.insteadOfQuestion.setCache(true);
 
         this.finalScreenCtrl = finalScreen.getKey();
         this.finalScreen = finalScreen.getValue();
