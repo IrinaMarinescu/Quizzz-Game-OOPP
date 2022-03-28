@@ -35,13 +35,12 @@ class QuestionOneImageCtrlTest {
         emoteCtrlDOC = new EmoteCtrlDOC();
         timerBarCtrlDOC = new TimerBarCtrlDOC();
 
-        questionFrame = new QuestionFrameCtrl(null, timeUtilsDOC, null, mainCtrlDOC,
-                timerBarCtrlDOC, emoteCtrlDOC);
+        questionFrame = new QuestionFrameCtrl(null, timeUtilsDOC, null, mainCtrlDOC, timerBarCtrlDOC, emoteCtrlDOC);
 
         sut = new QuestionOneImageCtrlDOC(mainCtrlDOC, questionFrame);
         question = new Question(List.of(new Activity("a", null, "using your phone",
-                1500, "Mirella")), "How many Wh does using your phone take?",
-                0, "one image question");
+            1500, "Mirella")), "How many Wh does using your phone take?",
+            0, "one image question");
 
         sut.initialize(question);
     }
@@ -73,7 +72,7 @@ class QuestionOneImageCtrlTest {
     @Test
     void initialize() {
         assertEquals("How much does using your phone consume in Wh?",
-                ((QuestionOneImageCtrlDOC) sut).getQuestionText());
+            ((QuestionOneImageCtrlDOC) sut).getQuestionText());
     }
 
 }

@@ -36,13 +36,12 @@ class OpenQuestionCtrlTest {
         emoteCtrlDOC = new EmoteCtrlDOC();
         timerBarCtrlDOC = new TimerBarCtrlDOC();
 
-        questionFrame = new QuestionFrameCtrl(null, timeUtilsDOC, null, mainCtrlDOC,
-                timerBarCtrlDOC, emoteCtrlDOC);;
+        questionFrame = new QuestionFrameCtrl(null, timeUtilsDOC, null, mainCtrlDOC, timerBarCtrlDOC, emoteCtrlDOC);
 
         sut = new OpenQuestionCtrlDOC(mainCtrlDOC, questionFrame);
         question = new Question(List.of(new Activity("a", null, "using your phone",
-                15, "Mirella")), "How many Wh does using your phone take?",
-                0, "open question");
+            15, "Mirella")), "How many Wh does using your phone take?",
+            0, "open question");
         sut.initialize(question);
     }
 
