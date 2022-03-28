@@ -123,6 +123,62 @@ public class OpenQuestionCtrl implements QuestionRequirements {
         //Disable joker for this question
     }
 
+    ;
+
+    /**
+     * Returns the main controller of the screen
+     *
+     * @return the main front-end controller
+     */
+    public MainCtrl getMainCtrl() {
+        return mainCtrl;
+    }
+
+    /**
+     * Returns the question of the screen
+     *
+     * @return the Question that is shown in the screen
+     */
+    public Question getQuestion() {
+        return question;
+    }
+
+    /**
+     * Returns the answer to the question
+     *
+     * @return the correct consumption value as a long
+     */
+    public long getAnswer() {
+        return answer;
+    }
+
+    /**
+     * Returns the error message text
+     *
+     * @return the error message that is displayed when wrong input is entered
+     */
+    public Text getErrorMessage() {
+        return errorMessage;
+    }
+
+    /**
+     * Sets the answer
+     *
+     * @param answer the correct consumption value
+     */
+    public void setAnswer(long answer) {
+        this.answer = answer;
+    }
+
+    /**
+     * Sets the question to be displayed in the screen
+     *
+     * @param question the Question that is shown in the screen
+     */
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
     public void keyPressed(KeyCode e) {
         if (e == KeyCode.ENTER) {
             submit();

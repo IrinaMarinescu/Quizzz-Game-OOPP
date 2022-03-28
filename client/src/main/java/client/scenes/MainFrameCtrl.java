@@ -20,8 +20,12 @@ import client.scenes.controllerrequirements.MainFrameCtrlRequirements;
 import client.utils.LobbyUtils;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
@@ -37,6 +41,8 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     private final MainCtrl mainCtrl;
 
     private long lastEscapeKeyPressTime;
+
+    private final File userInfo = new File("client/src/main/resources/client/user-info/user-info.txt");
 
     @FXML
     private TextField username;
@@ -67,6 +73,16 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     public void initialize(URL location, ResourceBundle resources) {
         displayUsernameError(false);
         displayServerIPError(false);
+        try {
+            Scanner scanner = new Scanner(userInfo);
+            scanner.useDelimiter(",");
+            while (scanner.hasNext()) {
+                serverIP.setText(scanner.next());
+                username.setText(scanner.next());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         this.lastEscapeKeyPressTime = 0;
     }
 
@@ -78,7 +94,6 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     public void openLeaderboard() {
         if (serverUtils.validateIP(serverIP.getText())) {
             serverUtils.setServerIP(serverIP.getText());
-
             mainCtrl.showGlobalLeaderboardFrame();
         } else {
             displayServerIPError(true);
@@ -96,10 +111,11 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     /**
      * If the server IP entered by the user is correct start a new single player Game, otherwise show a server IP error
      */
-    public void startSingleplayerGame() {
+    public void startSingleplayerGame()  {
         if (serverUtils.validateIP(serverIP.getText())) {
             serverUtils.setServerIP(serverIP.getText());
             mainCtrl.setPlayer(username.getText(), 0);
+            writeToFile();
             mainCtrl.startSingleplayerGame();
         } else {
             displayServerIPError(true);
@@ -114,11 +130,28 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
         if (serverUtils.validateIP(serverIP.getText()) && lobbyUtils.validateUsername(username.getText())) {
             serverUtils.setServerIP(serverIP.getText());
             mainCtrl.setPlayer(username.getText(), 0);
+            writeToFile();
             mainCtrl.joinLobby();
         } else if (!lobbyUtils.validateUsername(serverIP.getText())) {
             displayServerIPError(true);
         } else {
             displayUsernameError(true);
+        }
+    }
+
+    private void writeToFile() {
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(userInfo);
+            if (serverIP.getText().equals("")) {
+                writer.print("http://localhost:8080/");
+            } else {
+                writer.print(serverIP.getText());
+            }
+            writer.print("," + username.getText());
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

@@ -78,6 +78,7 @@ public class LobbyUtils {
      */
     public void setActive(boolean pollingActive) {
         if (!active && pollingActive) {
+            active = true;
             new Thread(() -> {
                 while (active) {
                     updateLobby();
