@@ -59,6 +59,7 @@ public class MainCtrl implements MainCtrlRequirements {
     private boolean doublePoints;
     double questionEndTime;
     private int timeoutRoundCheck;
+    private double halvedRoundTime;
     private String currentQuestionType;
     boolean gameOngoing = false;
 
@@ -258,6 +259,9 @@ public class MainCtrl implements MainCtrlRequirements {
         gameOngoing = true;
         questionFrameCtrl.initializeMultiplayerGame(this.game.getPlayers());
         lobbyUtils.setActive(false);
+        gameUtils.setActive("game", false);
+        gameUtils.setActive("features", true);
+
         showQuestionFrame();
         nextEvent();
     }
@@ -268,7 +272,7 @@ public class MainCtrl implements MainCtrlRequirements {
     public void joinLobby() {
         setLobby(lobbyUtils.joinLobby(this.player));
         lobbyUtils.setActive(true);
-        gameUtils.setActive(true);
+        gameUtils.setActive("game", true);
         showLobbyFrame();
     }
 
@@ -354,11 +358,6 @@ public class MainCtrl implements MainCtrlRequirements {
         questionFrameCtrl.setCenterContent(questionNode, true);
     }
 
-    private void showFinalScreen() {
-        finalScreenCtrl.setPoints(player.getScore());
-        questionFrameCtrl.setCenterContent(finalScreen, false);
-    }
-
     /**
      * Initializes timeouts until events that will happen after question and overview
      *
@@ -383,9 +382,13 @@ public class MainCtrl implements MainCtrlRequirements {
             }
 
             Platform.runLater(() -> {
-                questionFrameCtrl.setRemainingTime(OVERVIEW_TIME);
-                timeUtils.runAfterDelay(this::nextEvent, OVERVIEW_TIME);
-            });
+                    questionFrameCtrl.setRemainingTime(OVERVIEW_TIME + (halvedRoundTime / 1000));
+                    timeUtils.runAfterDelay(this::nextEvent, OVERVIEW_TIME + (halvedRoundTime / 1000));
+                    timeUtils.runAfterDelay(() -> {
+                        halvedRoundTime = 0;
+                    }, OVERVIEW_TIME + (halvedRoundTime / 1000));
+                }
+            );
         }, delay);
     }
 
@@ -422,10 +425,14 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     @Override
     public void halveTime() {
-        double timeUntilRoundEnd = (questionEndTime - timeUtils.now()) / 2.0;
-        questionEndTime -= timeUntilRoundEnd;
+        halvedRoundTime = (questionEndTime - timeUtils.now()) / 2.0;
+        questionEndTime -= halvedRoundTime;
         questionFrameCtrl.halveRemainingTime();
-        setQuestionTimeouts(timeUntilRoundEnd / 1000.0);
+        setQuestionTimeouts(halvedRoundTime / 1000.0);
+    }
+
+    public void displayNewEmoji(String name, String reaction) {
+        questionFrameCtrl.displayNewEmoji(name, reaction);
     }
 
     /**
@@ -498,6 +505,14 @@ public class MainCtrl implements MainCtrlRequirements {
 
     public void toggleModalVisibility() {
         // TODO toggle visibility of modal ("do you really want to disconnect?")
-        // TODO inform player that they are runing game for others
+        // TODO inform player that they are running game for others
+    }
+
+    /**
+     * Shows final screen frame (after playing the game)
+     */
+    private void showFinalScreen() {
+        finalScreenCtrl.setPoints(player.getScore());
+        questionFrameCtrl.setCenterContent(finalScreen, false);
     }
 }
