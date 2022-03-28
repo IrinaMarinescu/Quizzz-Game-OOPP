@@ -30,7 +30,7 @@ public class ActivityFilter {
                 case "openQuestion":
                     changingToLowerCase(currentActivities.get(0));
                     break;
-                case "oneImageQuestion":
+                //case "oneImageQuestion":
                 case "threePicturesQuestion":
                     changingToUpperCase(currentActivities.get(0));
                     changingToUpperCase(currentActivities.get(1));

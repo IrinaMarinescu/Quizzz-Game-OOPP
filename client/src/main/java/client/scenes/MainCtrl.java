@@ -537,7 +537,7 @@ public class MainCtrl implements MainCtrlRequirements {
         }
         if (type == 0 && buttonID.equals("noButton")) {
             toggleModalVisibility();
-            showQuestionFrame();
+            showMainFrame();
         }
         if (type == 1 && buttonID.equals("yesButton")) {
             toggleModalVisibility();
@@ -547,6 +547,14 @@ public class MainCtrl implements MainCtrlRequirements {
             toggleModalVisibility();
             showMainFrame();
         }
-
+        if (type == 2 && buttonID.equals("yesButton")) {
+            serverUtils.disconnect(game.getId(), player);
+            toggleModalVisibility();
+            showMainFrame();
+        }
+        if (type == 2 && buttonID.equals("noButton")) {
+            toggleModalVisibility();
+            showQuestionFrame();
+        }
     }
 }
