@@ -61,7 +61,7 @@ public class MainCtrl implements MainCtrlRequirements {
     double questionEndTime;
     double timeLost;
     private int timeoutRoundCheck;
-    private double halvedRoundTime;
+    private boolean questionAnswered;
     private String currentQuestionType;
     boolean gameOngoing = false;
 
@@ -252,6 +252,7 @@ public class MainCtrl implements MainCtrlRequirements {
     @Override
     public void startGame(boolean isMultiplayerGame) {
         timeUtils.runAfterDelay(this::nextEvent, WAITING_TIME);
+        questionFrameCtrl.tempDisableJokers(WAITING_TIME);
 
         if (isMultiplayerGame) {
             lobbyUtils.setActive(false);
@@ -333,6 +334,7 @@ public class MainCtrl implements MainCtrlRequirements {
         questionFrameCtrl.setRemainingTime(ROUND_TIME);
         pointsGained = 0;
         timeLost = 0;
+        questionAnswered = false;
         doublePoints = false;
         Question currentQuestion = game.nextQuestion();
         currentQuestionType = currentQuestion.getQuestionType();
@@ -342,7 +344,6 @@ public class MainCtrl implements MainCtrlRequirements {
             case "trueFalseQuestion":
                 currentQuestionCtrl = questionTrueFalseCtrl;
                 questionNode = questionTrueFalse;
-                this.questionTrueFalse.setOnKeyPressed(e -> questionTrueFalseCtrl.keyPressed(e.getCode()));
                 questionFrameCtrl.setWrongAnswerJoker(false);
                 break;
             case "openQuestion":
@@ -398,6 +399,9 @@ public class MainCtrl implements MainCtrlRequirements {
             if (currentQuestionType.equals("trueFalseQuestion") || currentQuestionType.equals("openQuestion")) {
                 questionFrameCtrl.setWrongAnswerJoker(true);
             }
+            if (questionAnswered) {
+                questionFrameCtrl.setWrongAnswerJoker(true);
+            }
         }, delay);
     }
 
@@ -408,6 +412,7 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     @Override
     public void addPoints(long baseScore) {
+        questionAnswered = true;
         if (baseScore != 0) {
             double progress = ((double) (timeUtils.now() - questionStartTime)) / (questionEndTime - questionStartTime);
             pointsGained = (int) (50.0 + 0.5 * (1.0 - progress) * (double) baseScore);
@@ -415,7 +420,10 @@ public class MainCtrl implements MainCtrlRequirements {
                 pointsGained *= 2;
             }
         }
-        if (!isMultiplayerGame) {
+
+        if (isMultiplayerGame) {
+            questionFrameCtrl.setWrongAnswerJoker(false);
+        } else {
             setQuestionTimeouts(0.0);
         }
     }
@@ -434,7 +442,7 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     @Override
     public void halveTime() {
-        halvedRoundTime = (questionEndTime - timeUtils.now()) / 2.0;
+        double halvedRoundTime = (questionEndTime - timeUtils.now()) / 2.0;
         timeLost += halvedRoundTime;
         questionEndTime -= halvedRoundTime;
         questionFrameCtrl.halveRemainingTime();
