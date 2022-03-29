@@ -16,6 +16,7 @@
 
 package client;
 
+import client.scenes.AddActivityDialogCtrl;
 import client.scenes.AdminInterfaceCtrl;
 import client.scenes.LeaderboardCtrl;
 import client.scenes.MainCtrl;
@@ -55,6 +56,7 @@ public class MyModule implements Module {
         binder.bind(QuestionOneImageCtrl.class).in(Scopes.SINGLETON);
         binder.bind(QuestionThreePicturesCtrl.class).in(Scopes.SINGLETON);
         binder.bind(QuestionTrueFalseCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(AddActivityDialogCtrl.class).in(Scopes.SINGLETON);
         /**
          * bind utilies below
          * **/

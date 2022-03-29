@@ -37,7 +37,9 @@ import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Pair;
 
 /**
@@ -102,6 +104,9 @@ public class MainCtrl implements MainCtrlRequirements {
     private FinalScreenCtrl finalScreenCtrl;
     private Node finalScreen;
 
+    private AddActivityDialogCtrl activityDialogCtrl;
+    private Scene activityDialog;
+
     QuestionRequirements currentQuestionCtrl = null;
 
     /**
@@ -133,7 +138,8 @@ public class MainCtrl implements MainCtrlRequirements {
                            Pair<QuestionThreePicturesCtrl, Parent> questionThreePictures,
                            Pair<QuestionOneImageCtrl, Parent> questionOneImage,
                            Pair<InsteadOfQuestionCtrl, Parent> insteadOfQuestion,
-                           Pair<FinalScreenCtrl, Parent> finalScreen) {
+                           Pair<FinalScreenCtrl, Parent> finalScreen,
+                           Pair<AddActivityDialogCtrl, Parent> addActivityDialog) {
 
         this.serverUtils = serverUtils;
         this.gameUtils = gameUtils;
@@ -185,10 +191,23 @@ public class MainCtrl implements MainCtrlRequirements {
         this.finalScreenCtrl = finalScreen.getKey();
         this.finalScreen = finalScreen.getValue();
 
+        this.activityDialogCtrl = addActivityDialog.getKey();
+        this.activityDialog = new Scene(addActivityDialog.getValue());
+
         primaryStage.setTitle("Quizzzzz!");
         showMainFrame();
 
         primaryStage.show();
+    }
+
+    public void showAddActivityDialog(Stage stage) {
+        activityDialogCtrl.reset(stage);
+        stage.setScene(activityDialog);
+        stage.setFullScreen(false);
+        stage.initOwner(primaryStage);
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
     }
 
     public ServerUtils getServerUtils() {

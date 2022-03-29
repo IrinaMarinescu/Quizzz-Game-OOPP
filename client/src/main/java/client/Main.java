@@ -18,6 +18,7 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
+import client.scenes.AddActivityDialogCtrl;
 import client.scenes.AdminInterfaceCtrl;
 import client.scenes.FinalScreenCtrl;
 import client.scenes.LeaderboardCtrl;
@@ -120,6 +121,9 @@ public class Main extends Application {
         var finalScreen = FXML.load(FinalScreenCtrl.class,
             "client/scenes/FinalSingleplayerScreen.fxml", null);
 
+        var addActivityDialog = FXML.load(AddActivityDialogCtrl.class, "client/scenes/AddActivityDialog.fxml",
+                       "client/css/adminPage.css");
+
         mainCtrl.initialize(serverUtils, gameUtils,
             lobbyUtils, timeUtils,
             primaryStage, mainFrame,
@@ -127,6 +131,7 @@ public class Main extends Application {
             adminInterface, questionFrame,
             questionTrueFalse, openQuestion,
             questionThreePictures, questionOneImage,
-            insteadOfQuestion, finalScreen);
+            insteadOfQuestion, finalScreen,
+            addActivityDialog);
     }
 }

@@ -12,10 +12,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import javax.inject.Inject;
 
 
@@ -39,9 +42,12 @@ public class AdminInterfaceCtrl implements AdminInterfaceCtrlRequirements {
     private TextField activitySourceField;
     @FXML
     private GridPane activityGrid;
+    @FXML
+    private AnchorPane root;
 
-    private MainCtrl mainCtrl;
-    private ServerUtils serverUtils;
+    private final MainCtrl mainCtrl;
+    private final ServerUtils serverUtils;
+
 
     @Inject
     public AdminInterfaceCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {
@@ -49,6 +55,11 @@ public class AdminInterfaceCtrl implements AdminInterfaceCtrlRequirements {
         this.serverUtils = serverUtils;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param activities the list of activities to populate the table with.
+     */
     public void initialize(List<Activity> activities) {
         activityId.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().id));
         activityTitle.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().title));
@@ -68,6 +79,11 @@ public class AdminInterfaceCtrl implements AdminInterfaceCtrlRequirements {
         activityGrid.setVisible(false);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param newActivity the new activity to show on the left hand side of the page.
+     */
     public void updateActivityData(Activity newActivity) {
         activityGrid.setVisible(true);
         activityImage.setImage(
@@ -80,11 +96,17 @@ public class AdminInterfaceCtrl implements AdminInterfaceCtrlRequirements {
         activitySourceField.setText(newActivity.source);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @FXML
     public void showMainFrame() {
         mainCtrl.showMainFrame();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @FXML
     public void updateSelectedActivity() {
         Activity currentActivity = activityTable.getSelectionModel().getSelectedItem();
@@ -96,12 +118,40 @@ public class AdminInterfaceCtrl implements AdminInterfaceCtrlRequirements {
         activityTable.refresh();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @FXML
     public void deleteSelectedActivity() {
         Activity currentActivity = activityTable.getSelectionModel().getSelectedItem();
         serverUtils.deleteActivity(currentActivity);
         activityTable.getItems().remove(currentActivity);
         activityGrid.setVisible(false);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @FXML
+    public void showAddDialog() {
+        Stage dialog = new Stage();
+        root.setEffect(new GaussianBlur(15));
+        mainCtrl.showAddActivityDialog(dialog);
+
+        root.setEffect(null);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param activity the activity instance to add to the table
+     */
+    public void addActivityToTable(Activity activity) {
+        activityTable.getItems().add(activity);
+    }
+
+    public ObservableList<Activity> getActivities() {
+        return activityTable.getItems();
     }
 
     public void keyPressed(KeyCode e) {
