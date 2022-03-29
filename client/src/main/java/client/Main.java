@@ -25,6 +25,7 @@ import client.scenes.LobbyCtrl;
 import client.scenes.MainCtrl;
 import client.scenes.MainFrameCtrl;
 import client.scenes.QuestionFrameCtrl;
+import client.scenes.WaitingScreenCtrl;
 import client.scenes.questioncontrollers.InsteadOfQuestionCtrl;
 import client.scenes.questioncontrollers.OpenQuestionCtrl;
 import client.scenes.questioncontrollers.QuestionOneImageCtrl;
@@ -120,6 +121,8 @@ public class Main extends Application {
         var finalScreen = FXML.load(FinalScreenCtrl.class,
             "client/scenes/FinalSingleplayerScreen.fxml");
 
+        var waitingScreen = FXML.load(WaitingScreenCtrl.class, "client/scenes/WaitingScreen.fxml");
+
         mainCtrl.initialize(serverUtils, gameUtils,
             lobbyUtils, timeUtils,
             primaryStage, mainFrame,
@@ -127,6 +130,6 @@ public class Main extends Application {
             adminInterface, questionFrame,
             questionTrueFalse, openQuestion,
             questionThreePictures, questionOneImage,
-            insteadOfQuestion, finalScreen);
+            insteadOfQuestion, finalScreen, waitingScreen);
     }
 }

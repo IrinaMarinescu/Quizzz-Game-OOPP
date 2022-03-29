@@ -204,10 +204,8 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         Platform.runLater(() -> {
             borderPane.setCenter(node);
             if (isQuestionNode) {
-                setRemainingTime(ROUND_TIME);
-                mainCtrl.setQuestionTimeouts(ROUND_TIME);
+                setRemainingTime(ROUND_TIME - (timeUtils.now() - mainCtrl.questionStartTime) / 1000.0);
                 mainCtrl.questionStartTime = timeUtils.now();
-                mainCtrl.questionEndTime = mainCtrl.questionStartTime + ROUND_TIME * 1000.0;
             }
         });
     }

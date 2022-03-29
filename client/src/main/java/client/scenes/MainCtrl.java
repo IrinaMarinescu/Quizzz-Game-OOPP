@@ -47,6 +47,7 @@ public class MainCtrl implements MainCtrlRequirements {
 
     public static final int ROUND_TIME = 10;
     public static final int OVERVIEW_TIME = 5;
+    public static final int WAITING_TIME = 5;
     public static final int LEADERBOARD_TIME = 10;
     public static final int TOTAL_ROUNDS = 20;
 
@@ -58,6 +59,7 @@ public class MainCtrl implements MainCtrlRequirements {
     long questionStartTime;
     private boolean doublePoints;
     double questionEndTime;
+    double timeLost;
     private int timeoutRoundCheck;
     private double halvedRoundTime;
     private String currentQuestionType;
@@ -103,6 +105,9 @@ public class MainCtrl implements MainCtrlRequirements {
     private FinalScreenCtrl finalScreenCtrl;
     private Node finalScreen;
 
+    private WaitingScreenCtrl waitingScreenCtrl;
+    private Node waitingScreen;
+
     QuestionRequirements currentQuestionCtrl = null;
 
     /**
@@ -134,7 +139,8 @@ public class MainCtrl implements MainCtrlRequirements {
                            Pair<QuestionThreePicturesCtrl, Parent> questionThreePictures,
                            Pair<QuestionOneImageCtrl, Parent> questionOneImage,
                            Pair<InsteadOfQuestionCtrl, Parent> insteadOfQuestion,
-                           Pair<FinalScreenCtrl, Parent> finalScreen) {
+                           Pair<FinalScreenCtrl, Parent> finalScreen,
+                           Pair<WaitingScreenCtrl, Parent> waitingScreen) {
 
         this.serverUtils = serverUtils;
         this.gameUtils = gameUtils;
@@ -190,6 +196,9 @@ public class MainCtrl implements MainCtrlRequirements {
         this.finalScreenCtrl = finalScreen.getKey();
         this.finalScreen = finalScreen.getValue();
 
+        this.waitingScreenCtrl = waitingScreen.getKey();
+        this.waitingScreen = waitingScreen.getValue();
+
         primaryStage.setTitle("Quizzzzz!");
         showMainFrame();
 
@@ -241,33 +250,30 @@ public class MainCtrl implements MainCtrlRequirements {
      * To be run when a person chooses solo play in the welcome screen (main frame)
      */
     @Override
-    public void startSingleplayerGame() {
+    public void startGame(boolean isMultiplayerGame) {
+        timeUtils.runAfterDelay(this::nextEvent, WAITING_TIME);
+
+        if (isMultiplayerGame) {
+            lobbyUtils.setActive(false);
+            gameUtils.setActive("game", false);
+            gameUtils.setActive("features", true);
+            questionFrameCtrl.initializeMultiplayerGame(this.game.getPlayers());
+        } else {
+            this.game = gameUtils.startSingleplayer();
+            questionFrameCtrl.initializeSingleplayerGame();
+        }
+
+        questionFrameCtrl.setCenterContent(waitingScreen, false);
         intermediateLeaderboardShown = false;
-        isMultiplayerGame = false;
+        this.isMultiplayerGame = isMultiplayerGame;
         timeoutRoundCheck = 1;
         gameOngoing = true;
-        this.game = gameUtils.startSingleplayer();
-        questionFrameCtrl.initializeSingleplayerGame();
+        questionStartTime = timeUtils.now();
         showQuestionFrame();
-        nextEvent();
-    }
 
-    /**
-     * Starts multiplayer game for all players in the lobby, switch to question frame
-     */
-    @Override
-    public void startMultiplayerGame() {
-        intermediateLeaderboardShown = true;
-        isMultiplayerGame = true;
-        timeoutRoundCheck = 1;
-        gameOngoing = true;
-        questionFrameCtrl.initializeMultiplayerGame(this.game.getPlayers());
-        lobbyUtils.setActive(false);
-        gameUtils.setActive("game", false);
-        gameUtils.setActive("features", true);
-
-        showQuestionFrame();
-        nextEvent();
+        Platform.runLater(() -> {
+            questionFrameCtrl.setRemainingTime(WAITING_TIME - (timeUtils.now() - questionStartTime) / 1000.0);
+        });
     }
 
     /**
@@ -292,8 +298,6 @@ public class MainCtrl implements MainCtrlRequirements {
      * Executes the next event (question, leaderboard, game over)
      */
     private void nextEvent() {
-        game.setPlayers(serverUtils.getUpdatedScores(game.getId()));
-
         if (isMultiplayerGame) {
             // The current event is the intermediate leaderboard
             if (game.getRound() == TOTAL_ROUNDS / 2 && !intermediateLeaderboardShown) {
@@ -321,10 +325,14 @@ public class MainCtrl implements MainCtrlRequirements {
         }
 
         // The current event is a question
+        questionStartTime = timeUtils.now();
+        questionEndTime = questionStartTime + ROUND_TIME * 1000.0;
         game.incrementRound();
+        setQuestionTimeouts(ROUND_TIME);
         Platform.runLater(() -> questionFrameCtrl.incrementQuestionNumber());
         questionFrameCtrl.setRemainingTime(ROUND_TIME);
         pointsGained = 0;
+        timeLost = 0;
         doublePoints = false;
         Question currentQuestion = game.nextQuestion();
         currentQuestionType = currentQuestion.getQuestionType();
@@ -375,6 +383,12 @@ public class MainCtrl implements MainCtrlRequirements {
                 return;
             }
 
+            Platform.runLater(() -> {
+                double timeLeft = OVERVIEW_TIME + timeLost / 1000.0;
+                questionFrameCtrl.setRemainingTime(timeLeft);
+                timeUtils.runAfterDelay(this::nextEvent, timeLeft);
+            });
+
             timeoutRoundCheck++;
             currentQuestionCtrl.revealCorrectAnswer();
             Platform.runLater(() -> questionFrameCtrl.addPoints(pointsGained));
@@ -384,15 +398,6 @@ public class MainCtrl implements MainCtrlRequirements {
             if (currentQuestionType.equals("trueFalseQuestion") || currentQuestionType.equals("openQuestion")) {
                 questionFrameCtrl.setWrongAnswerJoker(true);
             }
-
-            Platform.runLater(() -> {
-                    questionFrameCtrl.setRemainingTime(OVERVIEW_TIME + (halvedRoundTime / 1000));
-                    timeUtils.runAfterDelay(this::nextEvent, OVERVIEW_TIME + (halvedRoundTime / 1000));
-                    timeUtils.runAfterDelay(() -> {
-                        halvedRoundTime = 0;
-                    }, OVERVIEW_TIME + (halvedRoundTime / 1000));
-                }
-            );
         }, delay);
     }
 
@@ -430,6 +435,7 @@ public class MainCtrl implements MainCtrlRequirements {
     @Override
     public void halveTime() {
         halvedRoundTime = (questionEndTime - timeUtils.now()) / 2.0;
+        timeLost += halvedRoundTime;
         questionEndTime -= halvedRoundTime;
         questionFrameCtrl.halveRemainingTime();
         setQuestionTimeouts(halvedRoundTime / 1000.0);

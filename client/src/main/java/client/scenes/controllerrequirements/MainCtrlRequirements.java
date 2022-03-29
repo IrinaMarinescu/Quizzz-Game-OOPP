@@ -10,15 +10,7 @@ public interface MainCtrlRequirements {
      */
     void disconnect();
 
-    /**
-     *
-     */
-    void startSingleplayerGame();
-
-    /**
-     * Called by LobbyCtrl
-     */
-    void startMultiplayerGame();
+    void startGame(boolean isMultiplayerGame);
 
     /**
      * The score that the user would get if they answer INSTANTLY
