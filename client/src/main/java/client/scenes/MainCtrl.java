@@ -251,6 +251,7 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     @Override
     public void startGame(boolean isMultiplayerGame) {
+        questionStartTime = timeUtils.now();
         timeUtils.runAfterDelay(this::nextEvent, WAITING_TIME);
         questionFrameCtrl.tempDisableJokers(WAITING_TIME);
 
@@ -269,7 +270,6 @@ public class MainCtrl implements MainCtrlRequirements {
         this.isMultiplayerGame = isMultiplayerGame;
         timeoutRoundCheck = 1;
         gameOngoing = true;
-        questionStartTime = timeUtils.now();
         showQuestionFrame();
 
         Platform.runLater(() -> {
@@ -399,7 +399,7 @@ public class MainCtrl implements MainCtrlRequirements {
             if (currentQuestionType.equals("trueFalseQuestion") || currentQuestionType.equals("openQuestion")) {
                 questionFrameCtrl.setWrongAnswerJoker(true);
             }
-            if (questionAnswered) {
+            if (isMultiplayerGame && questionAnswered) {
                 questionFrameCtrl.setWrongAnswerJoker(true);
             }
         }, delay);
