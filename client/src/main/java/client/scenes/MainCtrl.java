@@ -37,6 +37,7 @@ import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -103,6 +104,10 @@ public class MainCtrl implements MainCtrlRequirements {
     private FinalScreenCtrl finalScreenCtrl;
     private Node finalScreen;
 
+    private ExitPopUpCtrl exitPopUpCtrl;
+    private Scene exitPopUp;
+    private Stage exitCheck;
+
     QuestionRequirements currentQuestionCtrl = null;
 
     /**
@@ -134,7 +139,8 @@ public class MainCtrl implements MainCtrlRequirements {
                            Pair<QuestionThreePicturesCtrl, Parent> questionThreePictures,
                            Pair<QuestionOneImageCtrl, Parent> questionOneImage,
                            Pair<InsteadOfQuestionCtrl, Parent> insteadOfQuestion,
-                           Pair<FinalScreenCtrl, Parent> finalScreen) {
+                           Pair<FinalScreenCtrl, Parent> finalScreen,
+                           Pair<ExitPopUpCtrl, Parent> exitPopUp) {
 
         this.serverUtils = serverUtils;
         this.gameUtils = gameUtils;
@@ -146,7 +152,10 @@ public class MainCtrl implements MainCtrlRequirements {
         primaryStage.widthProperty().addListener(
             (obs, oldVal, newVal) -> questionFrameCtrl.resizeTimerBar(newVal.intValue(),
                 oldVal.intValue() - newVal.intValue()));
-        primaryStage.setOnCloseRequest(e -> disconnect());
+        primaryStage.setOnCloseRequest(e -> {
+            e.consume();
+            exitGameChecker(1);
+        });
 
         this.mainFrameCtrl = mainFrame.getKey();
         this.mainFrame = new Scene(mainFrame.getValue());
@@ -183,8 +192,13 @@ public class MainCtrl implements MainCtrlRequirements {
         this.insteadOfQuestionCtrl = insteadOfQuestion.getKey();
         this.insteadOfQuestion = insteadOfQuestion.getValue();
 
-        this.finalScreenCtrl = finalScreen.getKey();
-        this.finalScreen = finalScreen.getValue();
+        this.exitPopUpCtrl = exitPopUp.getKey();
+        this.exitPopUp = new Scene(exitPopUp.getValue());
+
+        exitCheck = new Stage();
+        exitCheck.setScene(exitPopUp.getValue().getScene());
+        exitCheck.initOwner(primaryStage);
+        exitCheck.initModality(Modality.WINDOW_MODAL);
 
         primaryStage.setTitle("Quizzzzz!");
         showMainFrame();
@@ -443,14 +457,6 @@ public class MainCtrl implements MainCtrlRequirements {
         currentQuestionCtrl.removeIncorrectAnswer();
     }
 
-    /**
-     * Disconnects the player from a game
-     */
-    public void disconnect() {
-        // TODO stop long polling
-        serverUtils.disconnect(game.getId(), player);
-        showMainFrame();
-    }
 
     /**
      * Shows leaderboard
@@ -493,7 +499,6 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     public void showLobbyFrame() {
         primaryStage.setScene(lobbyFrame);
-
     }
 
     /**
@@ -504,8 +509,12 @@ public class MainCtrl implements MainCtrlRequirements {
     }
 
     public void toggleModalVisibility() {
-        // TODO toggle visibility of modal ("do you really want to disconnect?")
-        // TODO inform player that they are running game for others
+
+        if (exitCheck.isFocused()) {
+            exitCheck.close();
+        } else {
+            exitCheck.showAndWait();
+        }
     }
 
     /**
@@ -514,5 +523,43 @@ public class MainCtrl implements MainCtrlRequirements {
     private void showFinalScreen() {
         finalScreenCtrl.setPoints(player.getScore());
         questionFrameCtrl.setCenterContent(finalScreen, false);
+    }
+
+    public void exitGameChecker(int type) {
+        exitPopUpCtrl.setType(type);
+        toggleModalVisibility();
+    }
+
+    /**
+     * Disconnects the player from a game
+     */
+    public void disconnect(int type, String buttonID) {
+        // TODO stop long polling
+        if (type == 0 && buttonID.equals("yesButton")) {
+            serverUtils.disconnect(game.getId(), player);
+            toggleModalVisibility();
+            showMainFrame();
+        }
+        if (type == 0 && buttonID.equals("noButton")) {
+            toggleModalVisibility();
+            showMainFrame();
+        }
+        if (type == 1 && buttonID.equals("yesButton")) {
+            toggleModalVisibility();
+            primaryStage.close();
+        }
+        if (type == 1 && buttonID.equals("noButton")) {
+            toggleModalVisibility();
+            showMainFrame();
+        }
+        if (type == 2 && buttonID.equals("yesButton")) {
+            serverUtils.disconnect(game.getId(), player);
+            toggleModalVisibility();
+            showMainFrame();
+        }
+        if (type == 2 && buttonID.equals("noButton")) {
+            toggleModalVisibility();
+            showQuestionFrame();
+        }
     }
 }

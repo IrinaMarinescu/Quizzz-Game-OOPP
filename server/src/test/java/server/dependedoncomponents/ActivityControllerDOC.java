@@ -11,7 +11,7 @@ public class ActivityControllerDOC extends ActivityController {
     private final Question question;
 
     public ActivityControllerDOC(ActivityRepository repo, Random random, Question question) {
-        super(repo, random);
+        super(repo, random, null);
         this.question = question;
     }
 

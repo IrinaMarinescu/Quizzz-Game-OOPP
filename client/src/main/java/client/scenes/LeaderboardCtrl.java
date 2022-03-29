@@ -193,7 +193,7 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      * Sets the visibility of the button and the button grid at the bottom of the page.
      *
      * @param buttonVisibility a boolean value, representing whether the back button should be visible or not.
-     * @param gridVisibility a boolean value, representing whether the bottom button grid should be visible or not.
+     * @param gridVisibility   a boolean value, representing whether the bottom button grid should be visible or not.
      */
     protected void setButtonAndGrid(boolean buttonVisibility, boolean gridVisibility) {
         backButtonVisible = buttonVisibility;
@@ -250,11 +250,11 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      * Sets the type of the leaderboard.
      *
      * @param type an integer, one of the following:
-     *        <ul>
-     *            <li><code>LeaderboardCtrl.TYPE_SOLO</code> = 1</li>
-     *            <li><code>LeaderboardCtrl.TYPE_INTERMED</code> = 2</li>
-     *            <li><code>LeaderboardCtrl.TYPE_FINAL</code> = 3</li>
-     *        </ul>
+     *             <ul>
+     *                 <li><code>LeaderboardCtrl.TYPE_SOLO</code> = 1</li>
+     *                 <li><code>LeaderboardCtrl.TYPE_INTERMED</code> = 2</li>
+     *                 <li><code>LeaderboardCtrl.TYPE_FINAL</code> = 3</li>
+     *             </ul>
      */
     protected void setType(int type) {
         this.type = type;
@@ -283,7 +283,7 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
                 if (type == TYPE_SOLO || type == TYPE_FINAL) {
                     backToMainFrame();
                 } else {
-                    mainCtrl.disconnect();
+                    mainCtrl.exitGameChecker(1);
                 }
                 break;
             case M:

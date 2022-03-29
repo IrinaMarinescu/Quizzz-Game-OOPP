@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import server.ActivityFilter;
 import server.database.ActivityRepository;
 
 /**
@@ -27,11 +28,13 @@ public class ActivityController {
 
     private final ActivityRepository repo;
     private final Random rand;
+    private final ActivityFilter activityFilter;
 
-    public ActivityController(ActivityRepository repo, Random random) {
+    public ActivityController(ActivityRepository repo, Random random, ActivityFilter activityFilter) {
         this.repo = repo;
         this.rand = random;
         this.totalRecords = this.repo.count();
+        this.activityFilter = activityFilter;
     }
 
     private static boolean nullOrEmpty(String s) {
@@ -106,6 +109,7 @@ public class ActivityController {
      */
     @PostMapping("update")
     public ResponseEntity<Activity> updateActivity(@RequestBody Activity activity) {
+        activityFilter.runningActivityFilter(activity);
         repo.save(activity);
         return ResponseEntity.ok(activity);
     }
@@ -124,6 +128,7 @@ public class ActivityController {
             return ResponseEntity.badRequest().build();
         }
 
+        activityFilter.runningActivityFilter(activity);
         totalRecords++;
         Activity saved = repo.save(activity);
         return ResponseEntity.ok(saved);
@@ -146,6 +151,7 @@ public class ActivityController {
 
         List<Activity> saved = new ArrayList<>();
         for (var activity : activities) {
+            activityFilter.runningActivityFilter(activity);
             saved.add(repo.save(activity));
         }
 
@@ -193,7 +199,7 @@ public class ActivityController {
                     break;
             }
         }
-        return questions;
+        return activityFilter.runningQuestionFilter(questions);
     }
 
     /**

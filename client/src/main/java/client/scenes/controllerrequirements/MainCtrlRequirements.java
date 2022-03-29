@@ -8,7 +8,7 @@ public interface MainCtrlRequirements {
     /**
      * Is called when a player chooses disconnects from the game
      */
-    void disconnect();
+    void disconnect(int type, String buttonID);
 
     /**
      *
