@@ -399,18 +399,12 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      * Temporarily disabled all jokers
      * Meant to be used during overview phase
      *
-     * @param duration How long the jokers should remain disabled for
+     * @param enabled Whether the jokers are to be made enabled
      */
-    public void tempDisableJokers(double duration) {
+    public void toggleJokerUsability(boolean enabled) {
         for (Button joker : jokers) {
-            setJokerEnabled(joker, false);
+            setJokerEnabled(joker, enabled);
         }
-
-        timeUtils.runAfterDelay(() -> {
-            for (Button joker : jokers) {
-                setJokerEnabled(joker, true);
-            }
-        }, duration);
     }
 
     /**
