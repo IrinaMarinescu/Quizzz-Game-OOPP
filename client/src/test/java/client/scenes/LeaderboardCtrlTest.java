@@ -1,6 +1,8 @@
 package client.scenes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import client.dependedoncomponents.LeaderboardCtrlDOC;
 import client.dependedoncomponents.MainCtrlDOC;
@@ -53,5 +55,53 @@ class LeaderboardCtrlTest {
         );
         leaderboardCtrl.setEntries(moreEntries);
         assertEquals(leaderboardCtrl.entries.size(), 4);
+    }
+
+    @Test
+    void testMedalGold() {
+        assertEquals(LeaderboardCtrl.gold, leaderboardCtrl.getMedal(1));
+    }
+
+    @Test
+    void testMedalSilver() {
+        assertEquals(LeaderboardCtrl.silver, leaderboardCtrl.getMedal(2));
+    }
+
+    @Test
+    void testMedalBronze() {
+        assertEquals(LeaderboardCtrl.bronze, leaderboardCtrl.getMedal(3));
+    }
+
+    @Test
+    void testTypeSet() {
+        leaderboardCtrl.setLeaderboardType("solo");
+        assertEquals("Global Leaderboard", leaderboardCtrl.texts.getKey());
+    }
+
+    @Test
+    void testShowBack() {
+        leaderboardCtrl.setLeaderboardType("solo");
+        assertTrue(leaderboardCtrl.backButtonVisible);
+        assertFalse(leaderboardCtrl.buttonGridVisible);
+    }
+
+    @Test
+    void testShowGrid() {
+        leaderboardCtrl.setLeaderboardType("final");
+        assertFalse(leaderboardCtrl.backButtonVisible);
+        assertTrue(leaderboardCtrl.buttonGridVisible);
+    }
+
+    @Test
+    void testHideAll() {
+        leaderboardCtrl.setLeaderboardType("intermediate");
+        assertFalse(leaderboardCtrl.backButtonVisible);
+        assertFalse(leaderboardCtrl.buttonGridVisible);
+    }
+
+    @Test
+    void testGetType() {
+        leaderboardCtrl.setType(LeaderboardCtrl.TYPE_INTERMED);
+        assertEquals(LeaderboardCtrl.TYPE_INTERMED, leaderboardCtrl.getType());
     }
 }

@@ -19,6 +19,7 @@ package client;
 import static com.google.inject.Guice.createInjector;
 
 import client.scenes.AdminInterfaceCtrl;
+import client.scenes.ExitPopUpCtrl;
 import client.scenes.FinalScreenCtrl;
 import client.scenes.LeaderboardCtrl;
 import client.scenes.LobbyCtrl;
@@ -121,7 +122,7 @@ public class Main extends Application {
         var finalScreen = FXML.load(FinalScreenCtrl.class,
             "client/scenes/FinalSingleplayerScreen.fxml");
 
-        var waitingScreen = FXML.load(WaitingScreenCtrl.class, "client/scenes/WaitingScreen.fxml");
+        var exitPopUp = FXML.load(ExitPopUpCtrl.class, "client/scenes/ExitPopUp.fxml");
 
         mainCtrl.initialize(serverUtils, gameUtils,
             lobbyUtils, timeUtils,
@@ -130,6 +131,6 @@ public class Main extends Application {
             adminInterface, questionFrame,
             questionTrueFalse, openQuestion,
             questionThreePictures, questionOneImage,
-            insteadOfQuestion, finalScreen, waitingScreen);
+            insteadOfQuestion, finalScreen, waitingScreen, exitPopUp);
     }
 }

@@ -430,7 +430,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     @FXML
     private void disconnect() {
         if (mainCtrl.gameOngoing) {
-            mainCtrl.toggleModalVisibility();
+            mainCtrl.exitGameChecker(2);
         } else {
             mainCtrl.showMainFrame();
         }
