@@ -122,6 +122,8 @@ public class Main extends Application {
         var finalScreen = FXML.load(FinalScreenCtrl.class,
             "client/scenes/FinalSingleplayerScreen.fxml");
 
+        var waitingScreen = FXML.load(WaitingScreenCtrl.class, "client/scenes/WaitingScreen.fxml");
+
         var exitPopUp = FXML.load(ExitPopUpCtrl.class, "client/scenes/ExitPopUp.fxml");
 
         mainCtrl.initialize(serverUtils, gameUtils,

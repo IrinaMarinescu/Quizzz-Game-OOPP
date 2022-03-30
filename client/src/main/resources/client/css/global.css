@@ -15,7 +15,10 @@
 
     -fx-text-fill: white;
     -fx-font-family: 'Roboto Regular', sans-serif;
+}
 
+#popUpContainer {
+    -fx-effect: -dropshadow;
 }
 
 #tooltip {

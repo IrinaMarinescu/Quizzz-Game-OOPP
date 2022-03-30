@@ -37,8 +37,11 @@ import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Pair;
 
 /**
@@ -60,7 +63,7 @@ public class MainCtrl implements MainCtrlRequirements {
     long questionStartTime;
     private boolean doublePoints;
     double questionEndTime;
-    double timeLost;
+    double timeSkipped;
     private int timeoutRoundCheck;
     private boolean questionAnswered;
     private String currentQuestionType;
@@ -145,7 +148,7 @@ public class MainCtrl implements MainCtrlRequirements {
                            Pair<QuestionOneImageCtrl, Parent> questionOneImage,
                            Pair<InsteadOfQuestionCtrl, Parent> insteadOfQuestion,
                            Pair<FinalScreenCtrl, Parent> finalScreen,
-                           Pair<WaitingScreenCtrl, Parent> waitingScreen, {
+                           Pair<WaitingScreenCtrl, Parent> waitingScreen,
                            Pair<ExitPopUpCtrl, Parent> exitPopUp) {
 
         this.serverUtils = serverUtils;
@@ -154,10 +157,11 @@ public class MainCtrl implements MainCtrlRequirements {
         this.timeUtils = timeUtils;
 
         this.primaryStage = primaryStage;
+        this.primaryStage.getIcons().add(new Image("client/icons/trophy-solid.png"));
 
         primaryStage.widthProperty().addListener(
             (obs, oldVal, newVal) -> questionFrameCtrl.resizeTimerBar(newVal.doubleValue()));
-            
+
         primaryStage.setOnCloseRequest(e -> {
             e.consume();
             exitGameChecker(1);
@@ -203,6 +207,9 @@ public class MainCtrl implements MainCtrlRequirements {
         this.insteadOfQuestion = insteadOfQuestion.getValue();
         this.insteadOfQuestion.setCache(true);
 
+        this.finalScreenCtrl = finalScreen.getKey();
+        this.finalScreen = finalScreen.getValue();
+
         this.exitPopUpCtrl = exitPopUp.getKey();
         this.exitPopUp = new Scene(exitPopUp.getValue());
 
@@ -213,6 +220,10 @@ public class MainCtrl implements MainCtrlRequirements {
         exitCheck.setScene(exitPopUp.getValue().getScene());
         exitCheck.initOwner(primaryStage);
         exitCheck.initModality(Modality.WINDOW_MODAL);
+        exitCheck.getScene().setOnKeyPressed(e -> exitPopUpCtrl.keyPressed(e.getCode()));
+        exitCheck.getScene().setFill(Color.TRANSPARENT);
+        exitCheck.initStyle(StageStyle.UNDECORATED);
+        exitCheck.initStyle(StageStyle.TRANSPARENT);
 
         primaryStage.setTitle("Quizzzzz!");
         showMainFrame();
@@ -280,6 +291,7 @@ public class MainCtrl implements MainCtrlRequirements {
             questionFrameCtrl.initializeSingleplayerGame();
         }
 
+        waitingScreenCtrl.reset();
         questionFrameCtrl.setCenterContent(waitingScreen, false);
         intermediateLeaderboardShown = false;
         this.isMultiplayerGame = isMultiplayerGame;
@@ -348,7 +360,7 @@ public class MainCtrl implements MainCtrlRequirements {
         Platform.runLater(() -> questionFrameCtrl.incrementQuestionNumber());
         questionFrameCtrl.setRemainingTime(ROUND_TIME);
         pointsGained = 0;
-        timeLost = 0;
+        timeSkipped = 0;
         questionAnswered = false;
         doublePoints = false;
         Question currentQuestion = game.nextQuestion();
@@ -400,7 +412,7 @@ public class MainCtrl implements MainCtrlRequirements {
             }
 
             Platform.runLater(() -> {
-                double timeLeft = OVERVIEW_TIME + timeLost / 1000.0;
+                double timeLeft = OVERVIEW_TIME + timeSkipped / 1000.0;
                 questionFrameCtrl.setRemainingTime(timeLeft);
                 timeUtils.runAfterDelay(this::nextEvent, timeLeft);
             });
@@ -458,7 +470,7 @@ public class MainCtrl implements MainCtrlRequirements {
     @Override
     public void halveTime() {
         double halvedRoundTime = (questionEndTime - timeUtils.now()) / 2.0;
-        timeLost += halvedRoundTime;
+        timeSkipped += halvedRoundTime;
         questionEndTime -= halvedRoundTime;
         questionFrameCtrl.halveRemainingTime();
         setQuestionTimeouts(halvedRoundTime / 1000.0);
