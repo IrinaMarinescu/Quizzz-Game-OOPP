@@ -97,7 +97,6 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     boolean isMultiplayerGame;
     private int gameScore;
     private int questionNumber;
-    long lastEscapeKeyPressTime;
     private List<LeaderboardEntry> previousEntries;
 
     /**
@@ -137,8 +136,6 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         playerColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getName()));
         scoreColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().scoreToString()));
         gainColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().gainToString()));
-
-        lastEscapeKeyPressTime = 0;
     }
 
     /**
@@ -168,7 +165,6 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         this.isMultiplayerGame = isMultiplayerGame;
         this.gameScore = 0;
         this.questionNumber = -1;
-        this.lastEscapeKeyPressTime = 0;
 
         incrementQuestionNumber();
 
@@ -178,6 +174,8 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         back.setManaged(!isMultiplayerGame);
         back.setVisible(!isMultiplayerGame);
         scoreField.setText("0");
+        helpMenuScore.setText("0");
+        helpPointsGained.setText("+0");
 
         for (Button joker : jokers) {
             if (joker.getStyleClass().contains("usedJoker")) {

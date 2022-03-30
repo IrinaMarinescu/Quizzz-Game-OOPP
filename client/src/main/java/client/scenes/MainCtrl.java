@@ -113,7 +113,6 @@ public class MainCtrl implements MainCtrlRequirements {
     private Node waitingScreen;
 
     private ExitPopUpCtrl exitPopUpCtrl;
-    private Scene exitPopUp;
     private Stage exitCheck;
 
     QuestionRequirements currentQuestionCtrl = null;
@@ -211,13 +210,12 @@ public class MainCtrl implements MainCtrlRequirements {
         this.finalScreen = finalScreen.getValue();
 
         this.exitPopUpCtrl = exitPopUp.getKey();
-        this.exitPopUp = new Scene(exitPopUp.getValue());
 
         this.waitingScreenCtrl = waitingScreen.getKey();
         this.waitingScreen = waitingScreen.getValue();
 
         exitCheck = new Stage();
-        exitCheck.setScene(exitPopUp.getValue().getScene());
+        exitCheck.setScene(new Scene(exitPopUp.getValue()));
         exitCheck.initOwner(primaryStage);
         exitCheck.initModality(Modality.WINDOW_MODAL);
         exitCheck.getScene().setOnKeyPressed(e -> exitPopUpCtrl.keyPressed(e.getCode()));
@@ -278,7 +276,16 @@ public class MainCtrl implements MainCtrlRequirements {
     @Override
     public void startGame(boolean isMultiplayerGame) {
         questionStartTime = timeUtils.now();
-        timeUtils.runAfterDelay(this::nextEvent, WAITING_TIME);
+        if (!isMultiplayerGame) {
+            this.game = gameUtils.startSingleplayer();
+        }
+
+        UUID expectedGameId = game.getId();
+        timeUtils.runAfterDelay(() -> {
+            if (expectedGameId.equals(game.getId())) {
+                nextEvent();
+            }
+        }, WAITING_TIME);
         questionFrameCtrl.tempDisableJokers(WAITING_TIME);
 
         if (isMultiplayerGame) {
@@ -287,7 +294,6 @@ public class MainCtrl implements MainCtrlRequirements {
             gameUtils.setActive("features", true);
             questionFrameCtrl.initializeMultiplayerGame(this.game.getPlayers());
         } else {
-            this.game = gameUtils.startSingleplayer();
             questionFrameCtrl.initializeSingleplayerGame();
         }
 
@@ -567,30 +573,30 @@ public class MainCtrl implements MainCtrlRequirements {
     public void disconnect(int type, String buttonID) {
         // TODO stop long polling
         if (type == 0 && buttonID.equals("yesButton")) {
+            gameOngoing = false;
             serverUtils.disconnect(game.getId(), player);
             toggleModalVisibility();
             showMainFrame();
         }
         if (type == 0 && buttonID.equals("noButton")) {
             toggleModalVisibility();
-            showMainFrame();
         }
         if (type == 1 && buttonID.equals("yesButton")) {
+            gameOngoing = false;
             toggleModalVisibility();
             primaryStage.close();
         }
         if (type == 1 && buttonID.equals("noButton")) {
             toggleModalVisibility();
-            showMainFrame();
         }
         if (type == 2 && buttonID.equals("yesButton")) {
+            gameOngoing = false;
             serverUtils.disconnect(game.getId(), player);
             toggleModalVisibility();
             showMainFrame();
         }
         if (type == 2 && buttonID.equals("noButton")) {
             toggleModalVisibility();
-            showQuestionFrame();
         }
     }
 }

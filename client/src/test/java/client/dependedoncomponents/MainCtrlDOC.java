@@ -22,7 +22,7 @@ public class MainCtrlDOC extends MainCtrl implements SupportsLogging {
     }
 
     @Override
-    public void startMultiplayerGame() {
+    public void startGame(boolean isMultiplayerGame) {
         log("game");
     }
 }

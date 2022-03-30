@@ -17,6 +17,10 @@
     -fx-font-family: 'Roboto Regular', sans-serif;
 }
 
+.root {
+    -fx-background-color: white;
+}
+
 #popUpContainer {
     -fx-effect: -dropshadow;
 }

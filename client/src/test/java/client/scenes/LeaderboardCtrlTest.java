@@ -25,9 +25,9 @@ class LeaderboardCtrlTest {
     void setUp() {
         leaderboardCtrl = new LeaderboardCtrlDOC(new MainCtrlDOC());
         placeHolderEntries = List.of(
-                new LeaderboardEntry("Someone", 100),
-                new LeaderboardEntry("test", 500),
-                new LeaderboardEntry("Noobmaster69", 20)
+            new LeaderboardEntry("Someone", 100),
+            new LeaderboardEntry("test", 500),
+            new LeaderboardEntry("Noobmaster69", 20)
         );
         leaderboardCtrl.initialize(placeHolderEntries, 4, "final");
     }
@@ -46,30 +46,15 @@ class LeaderboardCtrlTest {
     @Test
     void testEntryLimit() {
         var moreEntries = List.of(
-                new LeaderboardEntry("Someone", 100),
-                new LeaderboardEntry("test", 500),
-                new LeaderboardEntry("Noobmaster69", 20),
-                new LeaderboardEntry("Noobmaster69", 20),
-                new LeaderboardEntry("Noobmaster69", 20),
-                new LeaderboardEntry("Someone", 100)
+            new LeaderboardEntry("Someone", 100),
+            new LeaderboardEntry("test", 500),
+            new LeaderboardEntry("Noobmaster69", 20),
+            new LeaderboardEntry("Noobmaster69", 20),
+            new LeaderboardEntry("Noobmaster69", 20),
+            new LeaderboardEntry("Someone", 100)
         );
         leaderboardCtrl.setEntries(moreEntries);
         assertEquals(leaderboardCtrl.entries.size(), 4);
-    }
-
-    @Test
-    void testMedalGold() {
-        assertEquals(LeaderboardCtrl.gold, leaderboardCtrl.getMedal(1));
-    }
-
-    @Test
-    void testMedalSilver() {
-        assertEquals(LeaderboardCtrl.silver, leaderboardCtrl.getMedal(2));
-    }
-
-    @Test
-    void testMedalBronze() {
-        assertEquals(LeaderboardCtrl.bronze, leaderboardCtrl.getMedal(3));
     }
 
     @Test
