@@ -53,7 +53,7 @@ public class MainCtrl implements MainCtrlRequirements {
     public static final int OVERVIEW_TIME = 5;
     public static final int WAITING_TIME = 5;
     public static final int LEADERBOARD_TIME = 10;
-    public static final int TOTAL_ROUNDS = 20;
+    public static final int TOTAL_ROUNDS = 2;
 
     private LeaderboardEntry player;
     private Game game;
@@ -348,12 +348,14 @@ public class MainCtrl implements MainCtrlRequirements {
             // The current event is the final leaderboard; the game is over
             if (game.getRound() == TOTAL_ROUNDS) {
                 gameOngoing = false;
+                questionFrameCtrl.tempDisableJokers(1000000);
                 showLeaderboard(game.getPlayers(), 10, "final");
                 return;
             }
             questionFrameCtrl.setLeaderboardContents(game.getPlayers());
         } else if (game.getRound() == TOTAL_ROUNDS) {
             gameOngoing = false;
+            questionFrameCtrl.tempDisableJokers(1000000);
             showFinalScreen();
             return;
         }
