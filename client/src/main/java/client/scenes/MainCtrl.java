@@ -302,8 +302,6 @@ public class MainCtrl implements MainCtrlRequirements {
      * Executes the next event (question, leaderboard, game over)
      */
     private void nextEvent() {
-        game.setPlayers(serverUtils.getUpdatedScores(game.getId()));
-
         if (isMultiplayerGame) {
             // The current event is the intermediate leaderboard
             if (game.getRound() == TOTAL_ROUNDS / 2 && !intermediateLeaderboardShown) {
@@ -323,7 +321,8 @@ public class MainCtrl implements MainCtrlRequirements {
                 showLeaderboard(game.getPlayers(), 10, "final");
                 return;
             }
-            questionFrameCtrl.setLeaderboardContents(game.getPlayers());
+
+            updateSmallLeaderboard();
         } else if (game.getRound() == TOTAL_ROUNDS) {
             gameOngoing = false;
             showFinalScreen();
@@ -476,6 +475,10 @@ public class MainCtrl implements MainCtrlRequirements {
 
     public void halveRemainingTime() {
         questionFrameCtrl.halveRemainingTime();
+    }
+
+    public void updateSmallLeaderboard() {
+        questionFrameCtrl.setLeaderboardContents(game.getPlayers());
     }
 
     /**

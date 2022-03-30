@@ -234,6 +234,10 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         helpMenuScore.setText(((Integer) gameScore).toString());
 
         timeUtils.runAfterDelay(() -> newPoints.setVisible(false), 3);
+
+        if (points != 0) {
+            gameUtils.sendFeature("SCORE", mainCtrl.getUsername(), Integer.toString(gameScore));
+        }
     }
 
     /**
@@ -254,14 +258,13 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      */
     public List<LeaderboardEntry> setLeaderboardContents(List<LeaderboardEntry> entries) {
         entries = entries.stream().sorted().collect(Collectors.toList());
-        entries.forEach(entry -> entry.setDifference(previousEntries));
         previousEntries = entries;
 
         if (!test) {
             ObservableList<LeaderboardEntry> data = FXCollections.observableList(entries);
             leaderboard.setItems(data);
+            leaderboard.refresh();
         }
-
         return entries;
     }
 

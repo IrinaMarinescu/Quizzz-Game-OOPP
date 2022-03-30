@@ -97,8 +97,8 @@ public class Game {
         for (LeaderboardEntry p : this.players) {
             if (p.hasSameName(player)) {
                 p.setScore(player.getScore());
+                return;
             }
-            return;
         }
     }
 }
