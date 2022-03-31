@@ -204,7 +204,7 @@
               BorderPane.alignment="CENTER">
             <children>
                 <VBox fx:id="sideLeaderboard" alignment="TOP_CENTER" minHeight="-Infinity" prefHeight="262.0"
-                      prefWidth="200.0" style="-fx-opacity: 2;" visible="false">
+                      prefWidth="205.0" style="-fx-opacity: 2;" visible="false">
                     <children>
                         <Button id="leaderboardTitle" minHeight="-Infinity" mnemonicParsing="false" prefHeight="20.0"
                                 prefWidth="200.0" text="Leaderboard">
@@ -214,10 +214,10 @@
                         </Button>
                         <TableView fx:id="leaderboard" cacheShape="false" centerShape="false" fixedCellSize="0.0"
                                    focusTraversable="false" minHeight="-Infinity" pickOnBounds="false"
-                                   prefHeight="200.0" prefWidth="200.0" scaleShape="false">
+                                   prefHeight="200.0" prefWidth="205.0" scaleShape="false">
                             <columns>
                                 <TableColumn fx:id="scoreColumn" editable="false" prefWidth="60.0" text="Score"/>
-                                <TableColumn fx:id="gainColumn" editable="false" prefWidth="50.0" text="Gain"/>
+                                <TableColumn fx:id="gainColumn" editable="false" prefWidth="55.0" text="Gain"/>
                                 <TableColumn fx:id="playerColumn" editable="false" prefWidth="90.0" text="Player"/>
                             </columns>
                             <VBox.margin>
