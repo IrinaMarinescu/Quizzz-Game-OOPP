@@ -6,14 +6,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import server.database.ActivityRepository;
+import server.services.FileStorageService;
 
 /**
  * This controller creates API endpoints for activities.
@@ -28,10 +37,15 @@ public class ActivityController {
     private final ActivityRepository repo;
     private final Random rand;
 
-    public ActivityController(ActivityRepository repo, Random random) {
+    @Autowired
+    private final FileStorageService fileStorageService;
+
+    public ActivityController(ActivityRepository repo, Random random, FileStorageService fileStorageService) {
         this.repo = repo;
         this.rand = random;
         this.totalRecords = this.repo.count();
+        this.fileStorageService = fileStorageService;
+        fileStorageService.init();
     }
 
     private static boolean nullOrEmpty(String s) {
@@ -93,7 +107,10 @@ public class ActivityController {
             return ResponseEntity.badRequest().build();
         }
 
+        totalRecords--;
         repo.deleteById(activity.id);
+
+
         return ResponseEntity.ok(candidate);
     }
 
@@ -151,6 +168,33 @@ public class ActivityController {
 
         totalRecords = repo.count();
         return ResponseEntity.ok(saved);
+    }
+
+    @SuppressWarnings("checkstyle:ParameterName")
+    @PostMapping(path = {"/contribute"}, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<String> addImage(
+            @RequestParam String id,
+            @RequestParam(name = "image_path") String imagePath,
+            @RequestParam String title,
+            @RequestParam(name = "consumption_in_wh") String consumptionInWh,
+            @RequestParam String source,
+            @RequestPart MultipartFile file) {
+
+        Activity activity = new Activity(id, imagePath, title, Long.parseLong(consumptionInWh), source);
+
+        totalRecords++;
+        repo.save(activity);
+        fileStorageService.save(file, imagePath);
+        return ResponseEntity.ok("test");
+    }
+
+    @GetMapping("/image/{id}")
+    @ResponseBody
+    public ResponseEntity<Resource> getFile(@PathVariable String id) {
+        Activity activity = repo.findById(id);
+        Resource file = fileStorageService.load(activity.imagePath);
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
 

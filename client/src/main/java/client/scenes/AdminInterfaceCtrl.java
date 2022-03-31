@@ -87,7 +87,7 @@ public class AdminInterfaceCtrl implements AdminInterfaceCtrlRequirements {
     public void updateActivityData(Activity newActivity) {
         activityGrid.setVisible(true);
         activityImage.setImage(
-            new Image(serverUtils.getServerIP() + "images/" + newActivity.imagePath,
+            new Image(serverUtils.getServerIP() + "api/activities/image/" + newActivity.id,
                 270, 200, false, false)
         );
         activityIdField.setText(newActivity.id);

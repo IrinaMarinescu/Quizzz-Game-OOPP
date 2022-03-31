@@ -6,7 +6,6 @@ import java.beans.ConstructorProperties;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -22,26 +21,14 @@ public class Activity {
      * @see <a href="https://gitlab.ewi.tudelft.nl/cse1105/2021-2022/activity-bank">OOPP Activity Bank</a>
      */
     @Id
-    @NotNull(message = "Activity ID should not be nll!")
     public String id;
 
-    /**
-     * TODO: add - implementation 'org.springframework.boot:spring-boot-starter-validation:2.4.0'
-     *   - in build.gradle if you haven't already.
-     * The @NotNull annotation does not let this values be initialised as null.
-     */
-    @NotNull(message = "Activity title should not be null!")
     public String title;
 
-    @NotNull(message = "Activity image path should not be null!")
     public String imagePath;
 
     public long consumptionInWh;
 
-    /**
-     * @Lob Allows String in the Database to be longer than 255 characters
-     */
-    @NotNull(message = "Activity source should not be null!")
     @Lob
     public String source;
 

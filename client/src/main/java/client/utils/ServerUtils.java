@@ -18,12 +18,21 @@ package client.utils;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import com.google.common.base.Strings;
 import commons.Activity;
 import commons.Game;
 import commons.LeaderboardEntry;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -36,6 +45,7 @@ import org.glassfish.jersey.client.ClientConfig;
  */
 public class ServerUtils {
 
+    private static final String CRLF = "\r\n";
     private String serverIP = "http://localhost:8080/";
 
     /**
@@ -195,5 +205,112 @@ public class ServerUtils {
             .post(Entity.entity(activity, APPLICATION_JSON), Activity.class);
     }
 
+    public boolean addActivity(Activity activity, File image) {
+        return (httpUpload(activity, image.getName(), getBytesFromFile(image)) == 200);
+    }
 
+    protected static byte[] getBytesFromFile(File file) {
+        try {
+            FileInputStream fl = new FileInputStream(file);
+            byte[] arr = new byte[(int) file.length()];
+            fl.read(arr);
+            fl.close();
+            return arr;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Adds an activity to the database, with a photo.
+     *
+     * @param activity the activity to add
+     * @param filename the name of the file
+     * @param byteStream the photo, as a byte stream
+     * @return an integer, representing the response code of the request.
+     */
+    public int httpUpload(Activity activity, String filename, byte[] byteStream) {
+        try {
+            HttpURLConnection connection = (HttpURLConnection)
+                new URL(serverIP + "api/activities/add").openConnection();
+            final String boundary = Strings.repeat("-", 15) + Long.toHexString(System.currentTimeMillis());
+
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            connection.setUseCaches(false);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Connection", "Keep-Alive");
+            connection.setRequestProperty("Cache-Control", "no-cache");
+            connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+
+            OutputStream directOutput = connection.getOutputStream();
+            PrintWriter body = new PrintWriter(new OutputStreamWriter(directOutput, StandardCharsets.UTF_8), true);
+
+            body.append(CRLF);
+            addSimpleFormData("id", activity.id, body, boundary);
+            addSimpleFormData("image_path", activity.imagePath, body, boundary);
+            addSimpleFormData("title", activity.title, body, boundary);
+            addSimpleFormData("consumption_in_wh", Long.toString(activity.consumptionInWh), body, boundary);
+            addSimpleFormData("source", activity.source, body, boundary);
+            addFileData("file", filename, byteStream, body, directOutput, boundary);
+
+            body.append("--").append(boundary).append("--").append(CRLF);
+            body.flush();
+
+
+            int responseCode = connection.getResponseCode();
+            return responseCode;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    /**
+     * Adds key-value pairs to the request.
+     *
+     * @param paramName the parameter name
+     * @param value the parameter value
+     * @param body the body of the request
+     * @param boundary the string boundary
+     */
+    private static void addSimpleFormData(String paramName, String value, PrintWriter body, final String boundary) {
+        body.append("--").append(boundary).append(CRLF);
+        body.append("Content-Disposition: form-data; name=\"" + paramName + "\"").append(CRLF);
+        body.append("Content-Type: text/plain; charset=" + "UTF-8").append(CRLF);
+        body.append(CRLF);
+        body.append(value).append(CRLF);
+        body.flush();
+    }
+
+    /**
+     * Adds a file to the request.
+     *
+     * @param paramName the parameter name to be taken from the request in the server
+     * @param filename the name of the file
+     * @param byteStream the byte stream
+     * @param body body of the request
+     * @param directOutput the direct output stream
+     * @param boundary the boundary string
+     */
+    private static void addFileData(String paramName,
+            String filename, byte[] byteStream, PrintWriter body,
+            OutputStream directOutput, final String boundary) {
+        body.append("--").append(boundary).append(CRLF);
+        body.append("Content-Disposition: form-data; name=\"" + paramName
+            + "\"; filename=\"" + filename + "\"").append(CRLF);
+        body.append("Content-Type: application/octed-stream").append(CRLF);
+        body.append("Content-Transfer-Encoding: binary").append(CRLF);
+        body.append(CRLF);
+        body.flush();
+        try {
+            directOutput.write(byteStream);
+            directOutput.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        body.append(CRLF);
+        body.flush();
+    }
 }

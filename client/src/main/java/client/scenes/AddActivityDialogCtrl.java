@@ -95,6 +95,7 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
                     new Image(upload.toURI().toString(),
                         270, 200, false, false)
                 );
+                uploadedImage = upload;
             }
         } catch (Exception e) {
             showErrorText(e.getMessage());
@@ -161,7 +162,13 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
                     activityTitle.getText(), Long.parseLong(activityConsumption.getText()),
                     activitySource.getText()
                 );
-        } catch (InvalidDataException e) {
+
+            boolean success = serverUtils.addActivity(newActivity, uploadedImage);
+            if (success) {
+                adminInterfaceCtrl.addActivityToTable(newActivity);
+                showErrorText("Activity was added successfully!");
+            }
+        } catch (Exception e) {
             showErrorText(e.getMessage());
         }
     }
@@ -173,6 +180,10 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
      * (either an already existing ID was written, or no image was uploaded)
      */
     public void validateFormData() throws InvalidDataException {
+        if (!activityId.getText().matches("^[a-zA-Z0-9]*$")) {
+            throw new InvalidDataException("Only alphanumerical characters are accepted as activity IDs!");
+        }
+
         for (Activity a : adminInterfaceCtrl.getActivities()) {
             if (a.id.equals(activityId.getText())) {
                 throw new InvalidDataException("An activity with the same ID already exists in the database!");
@@ -190,7 +201,7 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
      * @return the appropriate path for the image.
      */
     private String createPath(String id) {
-        return "to-be-implemented";
+        return id + getExtension(uploadedImage.getName()).get();
     }
 
 }

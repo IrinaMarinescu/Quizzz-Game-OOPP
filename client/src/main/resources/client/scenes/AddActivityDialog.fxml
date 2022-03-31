@@ -64,7 +64,7 @@
                <children>
                   <ImageView fx:id="activityImage" fitHeight="200" fitWidth="270"  pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <image>
-                        <Image url="@../../../../../../server/src/main/resources/static/images/05/hairdryer.jpg" />
+                        <Image url="" />
                      </image>
                   </ImageView>
                   <Button onAction="#openFileChooser" mnemonicParsing="false" prefHeight="31.0" prefWidth="213.0" text="upload image" GridPane.columnIndex="1" GridPane.rowIndex="2" />
