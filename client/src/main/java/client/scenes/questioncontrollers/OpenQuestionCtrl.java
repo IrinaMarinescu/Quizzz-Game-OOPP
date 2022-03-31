@@ -66,10 +66,12 @@ public class OpenQuestionCtrl implements QuestionRequirements {
             submitButton.setText("Submitted!");
             submitButton.setDisable(true);
             long correctAnswer = this.question.getActivities().get(0).consumptionInWh;
-            long percentageOff = ((Math.abs(correctAnswer - this.answer)) / correctAnswer) * 100;
-            long baseScore = 100 - percentageOff / 2;
+            int baseScore = (int) ((int) Math.abs(this.answer - correctAnswer) / correctAnswer);
             if (baseScore < 0) {
                 baseScore = 0;
+            }
+            else if (baseScore > 100) {
+                baseScore = 100;
             }
             mainCtrl.addPoints(baseScore);
         } else {
