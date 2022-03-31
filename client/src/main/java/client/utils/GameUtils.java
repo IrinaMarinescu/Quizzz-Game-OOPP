@@ -34,7 +34,6 @@ public class GameUtils {
     public GameUtils(ServerUtils serverUtils, MainCtrl mainCtrl) {
         this.serverUtils = serverUtils;
         this.mainCtrl = mainCtrl;
-
         this.activeGame = false;
         this.activeFeatures = false;
     }
@@ -173,6 +172,8 @@ public class GameUtils {
                 // TODO other jokers
                 break;
             case "SCORE":
+                mainCtrl.getGame().updateScores(new LeaderboardEntry(name, Integer.parseInt(value)));
+                Platform.runLater(mainCtrl::updateSmallLeaderboard);
                 break;
             default:
                 System.err.println("Unknown long polling response type");

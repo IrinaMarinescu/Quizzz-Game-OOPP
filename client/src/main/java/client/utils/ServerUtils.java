@@ -24,7 +24,6 @@ import commons.LeaderboardEntry;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.glassfish.jersey.client.ClientConfig;
@@ -123,11 +122,6 @@ public class ServerUtils {
 
     public void sendPointsGained(UUID gameId, LeaderboardEntry player, int pointsGained) {
         // TODO send to server the number of points that have been gained
-    }
-
-    public List<LeaderboardEntry> getUpdatedScores(UUID gameId) {
-        // TODO retrieve updated scores for this game from the server
-        return new ArrayList<>();
     }
 
     public void disconnect(UUID gameId, LeaderboardEntry player) {

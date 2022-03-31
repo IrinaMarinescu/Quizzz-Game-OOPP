@@ -353,7 +353,8 @@ public class MainCtrl implements MainCtrlRequirements {
                 showLeaderboard(game.getPlayers(), 10, "final");
                 return;
             }
-            questionFrameCtrl.setLeaderboardContents(game.getPlayers());
+
+            updateSmallLeaderboard();
         } else if (game.getRound() == TOTAL_ROUNDS) {
             gameOngoing = false;
             questionFrameCtrl.toggleJokerUsability(false);
@@ -519,6 +520,10 @@ public class MainCtrl implements MainCtrlRequirements {
 
     public void halveRemainingTime() {
         questionFrameCtrl.halveRemainingTime();
+    }
+
+    public void updateSmallLeaderboard() {
+        questionFrameCtrl.setLeaderboardContents(game.getPlayers());
     }
 
     /**

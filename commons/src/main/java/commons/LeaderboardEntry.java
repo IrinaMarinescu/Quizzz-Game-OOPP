@@ -1,6 +1,5 @@
 package commons;
 
-import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,8 +18,8 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     private long id;
 
     private String name;
-    private Integer score;
-    private Integer gain;
+    private int score;
+    private int gain;
 
     /**
      * Constructor
@@ -62,8 +61,16 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
      *
      * @param score Number of points a player has
      */
-    public void setScore(Integer score) {
+    public void setScore(int score) {
+        this.gain = score - this.score;
         this.score = score;
+    }
+
+    /**
+     * Reset the gain
+     */
+    public void resetGain() {
+        gain = 0;
     }
 
     /**
@@ -72,7 +79,7 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
      * @return Value of score field (cast to a string)
      */
     public String scoreToString() {
-        return score.toString();
+        return Integer.toString(score);
     }
 
     /**
@@ -82,7 +89,7 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
      */
     public String gainToString() {
         if (gain == 0) {
-            return gain.toString();
+            return "";
         }
         return "+" + gain;
     }
@@ -106,24 +113,6 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
      */
     public boolean hasSameName(LeaderboardEntry other) {
         return this.name.equals(other.getName());
-    }
-
-    /**
-     * Generates resultant gain based on it's difference from previous value
-     *
-     * @param oldEntries The list of previous values
-     */
-    public void setDifference(List<LeaderboardEntry> oldEntries) {
-        if (oldEntries == null) {
-            gain = 0;
-            return;
-        }
-        for (LeaderboardEntry e : oldEntries) {
-            if (e.getName().equals(name)) {
-                gain = score - e.getScore();
-                return;
-            }
-        }
     }
 
     /**
