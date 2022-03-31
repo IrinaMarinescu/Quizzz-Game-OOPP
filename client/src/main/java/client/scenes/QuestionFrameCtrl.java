@@ -265,6 +265,14 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
             leaderboard.setItems(data);
             leaderboard.refresh();
         }
+
+        timeUtils.runAfterDelay(() -> {
+            if (!test) {
+                previousEntries.forEach(LeaderboardEntry::resetGain);
+                leaderboard.setItems(FXCollections.observableList(previousEntries));
+                leaderboard.refresh();
+            }
+        }, MainCtrl.OVERVIEW_TIME);
         return entries;
     }
 

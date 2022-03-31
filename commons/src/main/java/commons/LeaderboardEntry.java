@@ -67,6 +67,13 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     }
 
     /**
+     * Reset the gain
+     */
+    public void resetGain() {
+        gain = 0;
+    }
+
+    /**
      * Getter of score field (as a string)
      *
      * @return Value of score field (cast to a string)
@@ -82,7 +89,7 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
      */
     public String gainToString() {
         if (gain == 0) {
-            return Integer.toString(gain);
+            return "";
         }
         return "+" + gain;
     }
