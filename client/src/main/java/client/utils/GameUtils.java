@@ -128,7 +128,7 @@ public class GameUtils {
 
         if (activeGame) {
             mainCtrl.setGame(game);
-            Platform.runLater(mainCtrl::startMultiplayerGame);
+            Platform.runLater(() -> mainCtrl.startGame(true));
         }
     }
 

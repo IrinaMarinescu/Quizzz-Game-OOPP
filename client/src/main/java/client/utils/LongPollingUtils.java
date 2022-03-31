@@ -95,7 +95,7 @@ public class LongPollingUtils {
                 try {
                     Game game = new ObjectMapper().readValue(response.get("game").asText(), Game.class);
                     mainCtrl.setGame(game);
-                    mainCtrl.startMultiplayerGame();
+                    mainCtrl.startGame(true);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }

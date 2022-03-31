@@ -20,6 +20,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+
 <AnchorPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@../css/leaderboardPage.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.LeaderboardCtrl">
     <children>
         <BorderPane layoutX="-1.0" layoutY="-1.0" prefHeight="900.0" prefWidth="1600.0">
@@ -75,9 +76,9 @@
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="375.9999851920759" minWidth="10.0" prefWidth="314.4150242545759" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints maxHeight="352.01884859165887" minHeight="10.0" prefHeight="306.39625434698985" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="388.5283561426794" minHeight="10.0" prefHeight="382.18867598601923" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="268.35849397740105" minHeight="10.0" prefHeight="127.4905381927548" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="369.0" minHeight="10.0" prefHeight="335.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="422.0" minHeight="10.0" prefHeight="342.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="268.35849397740105" minHeight="10.0" prefHeight="143.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <GridPane fx:id="buttonGrid" GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -96,19 +97,22 @@
                         <Button layoutX="10.0" layoutY="61.0" mnemonicParsing="false" onMouseClicked="#playAgain" prefHeight="31.0" prefWidth="274.0" text="play again" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
-                  <TableView fx:id="leaderboard" prefHeight="384.0" prefWidth="888.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TableView fx:id="leaderboard" prefHeight="385.0" prefWidth="995.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                       <columns>
                           <TableColumn fx:id="scoreColumn" editable="false" prefWidth="300.0" sortable="false" text="Score" />
                           <TableColumn fx:id="playerColumn" editable="false" prefWidth="850.0" sortable="false" text="Player" />
                       </columns>
                   </TableView>
-                  <BarChart fx:id="barChart" GridPane.columnIndex="1">
+                  <BarChart fx:id="barChart" alternativeRowFillVisible="false" animated="false" barGap="0.0" categoryGap="80.0" style="-fx-alternative-row-fill-visible: false;" verticalGridLinesVisible="false" GridPane.columnIndex="1">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
                     <yAxis>
-                      <NumberAxis side="LEFT" />
+                      <NumberAxis animated="false" minorTickCount="0" side="LEFT" />
                     </yAxis>
+                     <GridPane.margin>
+                        <Insets bottom="25.0" top="25.0" />
+                     </GridPane.margin>
                   </BarChart>
                </children>
             </GridPane>

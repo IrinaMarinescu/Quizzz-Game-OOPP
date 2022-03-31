@@ -3,6 +3,7 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.Tooltip?>
@@ -16,8 +17,8 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <BorderPane fx:id="borderPane" layoutX="-1.0" layoutY="-1.0" maxHeight="1080.0" maxWidth="1920.0" minHeight="-Infinity"
@@ -241,9 +242,8 @@
                         <Insets left="20.0" top="20.0"/>
                     </VBox.margin>
                 </VBox>
-                <Region prefHeight="0.0" prefWidth="200.0" VBox.vgrow="ALWAYS"/>
-                <VBox fx:id="helpMenuContainer" alignment="BOTTOM_CENTER" maxHeight="-Infinity" prefHeight="434.0"
-                      prefWidth="200.0" stylesheets="@../css/smallLeaderboard.css" visible="false" VBox.vgrow="ALWAYS">
+                <Region prefHeight="0.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                <VBox fx:id="helpMenuContainer" alignment="BOTTOM_CENTER" maxHeight="-Infinity" prefHeight="434.0" prefWidth="200.0" visible="false" VBox.vgrow="ALWAYS">
                     <children>
                         <Button id="leaderboardTitle" minHeight="-Infinity" mnemonicParsing="false" prefHeight="39.0"
                                 prefWidth="200.0" text="Help">
@@ -433,78 +433,79 @@
         <VBox fx:id="reactionContainer" alignment="TOP_CENTER" maxWidth="-Infinity" minHeight="-Infinity"
               minWidth="-Infinity" prefHeight="730.0" prefWidth="220.0" BorderPane.alignment="CENTER"/>
     </right>
-    <top>
-        <BorderPane id="timerBar" prefWidth="1600.0" BorderPane.alignment="CENTER">
-            <left>
-                <HBox prefHeight="80.0" prefWidth="675.0" BorderPane.alignment="CENTER_LEFT">
-                    <children>
-                        <Rectangle fx:id="topBar" arcHeight="5.0" arcWidth="5.0" height="80.0" stroke="BLACK"
-                                   strokeWidth="0.0" width="3600.0"/>
-                        <Button fx:id="trophy" mnemonicParsing="false" onAction="#toggleLeaderboardVisibility"
-                                styleClass="clickableGreen">
-                            <HBox.margin>
-                                <Insets left="10.0"/>
-                            </HBox.margin>
-                            <tooltip>
-                                <Tooltip id="tooltip" text="Toggle leaderboard visibility [L]"/>
-                            </tooltip>
-                        </Button>
-                        <Button fx:id="back" mnemonicParsing="false" onAction="#disconnect" styleClass="clickableGreen">
-                            <tooltip>
-                                <Tooltip id="tooltip" text="Return to main menu [ESC]"/>
-                            </tooltip>
-                        </Button>
-                        <Button fx:id="scoreField" alignment="CENTER" mnemonicParsing="false" text="0">
-                            <HBox.margin>
-                                <Insets left="20.0" top="10.0"/>
-                            </HBox.margin>
-                            <tooltip>
-                                <Tooltip id="tooltip" text="Your score this game"/>
-                            </tooltip>
-                        </Button>
-                        <Pane prefHeight="80.0" prefWidth="80.0">
-                            <children>
-                                <Text fx:id="newPoints" fill="WHITE" layoutX="6.0" layoutY="50.0" strokeType="OUTSIDE"
-                                      strokeWidth="0.0" text="+100" visible="false" wrappingWidth="67.13671875">
-                                    <font>
-                                        <Font name="System Bold" size="25.0"/>
-                                    </font>
-                                </Text>
-                            </children>
-                            <HBox.margin>
-                                <Insets left="10.0"/>
-                            </HBox.margin>
-                        </Pane>
-                    </children>
-                </HBox>
-            </left>
-            <center>
-                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Quizzzzz!" wrappingWidth="220.283203125"
-                      BorderPane.alignment="CENTER">
-                    <font>
-                        <Font name="System Bold" size="48.0"/>
-                    </font>
-                </Text>
-            </center>
-            <right>
-                <HBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="80.0" prefWidth="655.0"
-                      BorderPane.alignment="CENTER_RIGHT">
-                    <children>
-                        <Button fx:id="turnIndicator" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
-                                text="0/20">
-                            <HBox.margin>
-                                <Insets right="60.0" top="10.0"/>
-                            </HBox.margin>
-                            <tooltip>
-                                <Tooltip id="tooltip" text="Total rounds passed"/>
-                            </tooltip>
-                        </Button>
-                    </children>
-                    <BorderPane.margin>
-                        <Insets right="20.0"/>
-                    </BorderPane.margin>
-                </HBox>
-            </right>
-        </BorderPane>
-    </top>
+   <top>
+      <StackPane prefHeight="80.0" prefWidth="1600.0" BorderPane.alignment="CENTER">
+         <children>
+            <ProgressBar fx:id="topBar" minWidth="-Infinity" prefWidth="1600.0" progress="0.0" />
+              <BorderPane prefWidth="1600.0" style="-fx-background-color: transparent;">
+                  <left>
+                      <HBox prefHeight="80.0" prefWidth="675.0" BorderPane.alignment="CENTER_LEFT">
+                          <children>
+                              <Button fx:id="trophy" mnemonicParsing="false" onAction="#toggleLeaderboardVisibility" styleClass="clickableGreen">
+                                  <HBox.margin>
+                                      <Insets left="10.0" />
+                                  </HBox.margin>
+                                  <tooltip>
+                                      <Tooltip id="tooltip" text="Toggle leaderboard visibility [L]" />
+                                  </tooltip>
+                              </Button>
+                              <Button fx:id="back" mnemonicParsing="false" onAction="#disconnect" styleClass="clickableGreen">
+                                  <tooltip>
+                                      <Tooltip id="tooltip" text="Return to main menu [ESC]" />
+                                  </tooltip>
+                              </Button>
+                              <Button fx:id="scoreField" alignment="CENTER" mnemonicParsing="false" text="0">
+                                  <HBox.margin>
+                                      <Insets left="20.0" top="10.0" />
+                                  </HBox.margin>
+                                  <tooltip>
+                                      <Tooltip id="tooltip" text="Your score this game" />
+                                  </tooltip>
+                              </Button>
+                              <Pane prefHeight="80.0" prefWidth="80.0">
+                                  <children>
+                                      <Text fx:id="newPoints" fill="WHITE" layoutX="6.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="+100" visible="false" wrappingWidth="67.13671875">
+                                          <font>
+                                              <Font name="System Bold" size="25.0" />
+                                          </font>
+                                      </Text>
+                                  </children>
+                                  <HBox.margin>
+                                      <Insets left="10.0" />
+                                  </HBox.margin>
+                              </Pane>
+                          </children>
+                      </HBox>
+                  </left>
+                  <center>
+                      <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Quizzzzz!" wrappingWidth="220.283203125" BorderPane.alignment="CENTER">
+                          <font>
+                              <Font name="System Bold" size="48.0" />
+                          </font>
+                      </Text>
+                  </center>
+                  <right>
+                      <HBox nodeOrientation="RIGHT_TO_LEFT" prefHeight="80.0" prefWidth="655.0" BorderPane.alignment="CENTER_RIGHT">
+                          <children>
+                              <Button fx:id="turnIndicator" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="0/20">
+                                  <HBox.margin>
+                                      <Insets right="60.0" top="10.0" />
+                                  </HBox.margin>
+                                  <tooltip>
+                                      <Tooltip id="tooltip" text="Total rounds passed" />
+                                  </tooltip>
+                              </Button>
+                          </children>
+                          <BorderPane.margin>
+                              <Insets right="20.0" />
+                          </BorderPane.margin>
+                      </HBox>
+                  </right>
+              </BorderPane>
+         </children>
+      </StackPane>
+   </top>
+   <center>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </center>
 </BorderPane>

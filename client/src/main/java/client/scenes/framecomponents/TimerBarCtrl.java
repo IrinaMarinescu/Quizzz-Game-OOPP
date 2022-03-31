@@ -1,9 +1,10 @@
 package client.scenes.framecomponents;
 
 import client.utils.TimeUtils;
-import javafx.animation.TranslateTransition;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.transform.Translate;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.scene.control.ProgressBar;
 import javafx.util.Duration;
 
 /**
@@ -13,17 +14,14 @@ public class TimerBarCtrl {
 
     public boolean test = false;
 
-    public Rectangle timerBar;
-    public TranslateTransition animation;
+    public ProgressBar timerBar;
+    public Timeline animation;
     public TimeUtils timeUtils;
 
     public double totalProgress;
     public double currentAnimationStartTime;
     public double currentAnimationLength;
     public boolean animationPlaying;
-    public int displayWidth;
-
-    public int relativePos = -2000;
 
     /**
      * Gives the time of now
@@ -39,25 +37,21 @@ public class TimerBarCtrl {
      *
      * @param timerBar The component which serves as the timerBar
      */
-    public void initialize(Rectangle timerBar, TimeUtils timeUtils) {
+    public void initialize(ProgressBar timerBar, TimeUtils timeUtils) {
         this.timerBar = timerBar;
         this.timeUtils = timeUtils;
-        timerBar.getTransforms().add(new Translate(relativePos, 0));
 
-        animation = new TranslateTransition(Duration.ZERO, timerBar);
-        animation.setOnFinished(event -> {
-            timerBar.getTransforms().clear();
-            relativePos += displayWidth;
-            timerBar.getTransforms().add(new Translate(displayWidth, 0));
-            animationPlaying = false;
-        });
-
-        currentAnimationStartTime = Double.MAX_VALUE;
-        currentAnimationLength = 0.0;
-        totalProgress = 0.0;
-        displayWidth = 1600;
-        animation.setByX(-displayWidth);
-        animationPlaying = false;
+        animation = new Timeline(
+            new KeyFrame(
+                Duration.ZERO,
+                new KeyValue(timerBar.progressProperty(), 0)
+            ),
+            new KeyFrame(
+                Duration.ZERO,
+                new KeyValue(timerBar.progressProperty(), 1)
+            )
+        );
+        animation.setOnFinished(event -> animationPlaying = false);
     }
 
     /**
@@ -67,8 +61,13 @@ public class TimerBarCtrl {
      */
     public void setRemainingTime(double seconds) {
         timerBar.getStyleClass().remove("fast");
-        animationPlaying = true;
 
+        animation.getKeyFrames().set(0, new KeyFrame(
+            Duration.seconds(seconds),
+            new KeyValue(timerBar.progressProperty(), 0)
+        ));
+
+        animationPlaying = true;
         totalProgress = 0.0;
         currentAnimationLength = seconds * 1000;
         playAnimation();
@@ -79,13 +78,10 @@ public class TimerBarCtrl {
      */
     public void playAnimation() {
         currentAnimationStartTime = now();
-        animation.jumpTo(Duration.ZERO);
         animation.stop();
 
-        animation.setDuration(new Duration(currentAnimationLength));
-        animation.jumpTo(new Duration(currentAnimationLength * totalProgress));
         if (!test) {
-            animation.play();
+            animation.playFrom(new Duration(currentAnimationLength * totalProgress));
         }
     }
 
@@ -105,28 +101,23 @@ public class TimerBarCtrl {
 
         totalProgress += (now() - currentAnimationStartTime) / currentAnimationLength;
         currentAnimationLength /= 2.0;
+
+        animation.getKeyFrames().set(0, new KeyFrame(
+            Duration.millis(currentAnimationLength),
+            new KeyValue(timerBar.progressProperty(), 0)
+        ));
+
         playAnimation();
     }
 
     /**
      * Changes width of timerBar in response to a change in window's size
      *
-     * @param newSize New width of window in px
-     * @param change  Change of width of window in px
+     * @param newWidth New width of window in px
      */
-    public void resize(int newSize, int change) {
-        if (-change == newSize) {
-            return;
-        }
-
-        displayWidth = newSize;
-        totalProgress += (now() - currentAnimationStartTime) / currentAnimationLength;
-        animation.setByX(-newSize);
-        relativePos -= change;
-        timerBar.getTransforms().clear();
-        timerBar.getTransforms().add(new Translate(relativePos, 0));
-        if (animationPlaying) {
-            playAnimation();
+    public void resize(double newWidth) {
+        if (newWidth >= 1600.0) {
+            timerBar.setPrefWidth(newWidth);
         }
     }
 }

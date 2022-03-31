@@ -50,11 +50,6 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     public static final int TYPE_INTERMED = 2;
     public static final int TYPE_FINAL = 3;
 
-    public static final String gold = "gold";
-    public static final String silver = "silver";
-    public static final String bronze = "chocolate";
-
-
     private final MainCtrl mainCtrl;
     private int type;
     private int maxSize;
@@ -107,11 +102,7 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
         barChart.getData().clear();
         barChart.setLegendVisible(false);
 
-        for (int i = 1; i <= 3; i++) {
-            if (entries.size() >= i) {
-                generateSerie(entries.get(i - 1), getMedal(i));
-            }
-        }
+        generateSerie(entries);
 
         if (entries.size() >= 3) {
             ObservableList<LeaderboardEntry> data = FXCollections.observableList(
@@ -132,37 +123,17 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      *     <li>bronze for 3rd place</li>
      * </ul>
      *
-     * @param entry a LeaderboardEntry instance, with the player to add on the bar chart.
-     * @param colour the colour of the bar
+     * @param entries - The entries from which to select 3 and form bar chart
      */
-    private void generateSerie(LeaderboardEntry entry, String colour) {
+    private void generateSerie(List<LeaderboardEntry> entries) {
+        entries = entries.stream().limit(3).collect(Collectors.toList());
+
         XYChart.Series<String, Integer> serie = new XYChart.Series<>();
-        serie.getData().add(new XYChart.Data<>(entry.getName(), entry.getScore()));
+        for (LeaderboardEntry entry : entries) {
+            serie.getData().add(new XYChart.Data<>(entry.getName(), entry.getScore()));
+        }
 
         barChart.getData().add(serie);
-
-        for (XYChart.Data<String, Integer> data : serie.getData())  {
-            data.getNode().setStyle("-fx-bar-fill: " + colour + ";");
-        }
-    }
-
-    /**
-     * Returns a colour based on the place the player got.
-     *
-     * @param place an integer from 1, 2, or 3.
-     * @return a HEX colour based on the place in the leaderboard.
-     * <ul>
-     *     <li>gold for 1st place</li>
-     *     <li>silver for 2nd place</li>
-     *     <li>bronze for 3rd place</li>
-     * </ul>
-     */
-    protected String getMedal(int place) {
-        switch (place) {
-            case 1: return gold;
-            case 2: return silver;
-            default: return bronze;
-        }
     }
 
     /**
@@ -206,7 +177,6 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
 
     /**
      * Sets both the labels for the page and table title to the values needed for the specific leaderboard type.
-     *
      */
     protected void formatLabels() {
         if (!test) {
