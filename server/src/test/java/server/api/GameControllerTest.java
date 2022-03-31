@@ -32,7 +32,8 @@ public class GameControllerTest {
     void setup() {
         Activity activity = new Activity("id", "abc/abc.png", "Hello world?", 123, "www.google.com");
         Question question = new Question(List.of(activity), "world", 0, "TrueFalse");
-        ActivityControllerDOC activityControllerDOC = new ActivityControllerDOC(repo, new RandomDOC(0), fileStorageService, question);
+        ActivityControllerDOC activityControllerDOC =
+            new ActivityControllerDOC(repo, new RandomDOC(0), fileStorageService, question);
 
         sut = new GameController(activityControllerDOC, null, null);
     }

@@ -11,7 +11,8 @@ public class ActivityControllerDOC extends ActivityController {
 
     private final Question question;
 
-    public ActivityControllerDOC(ActivityRepository repo, Random random, FileStorageService fileStorageService, Question question) {
+    public ActivityControllerDOC(ActivityRepository repo, Random random,
+             FileStorageService fileStorageService, Question question) {
         super(repo, random, fileStorageService);
         this.question = question;
     }
