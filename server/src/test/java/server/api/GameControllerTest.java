@@ -11,9 +11,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import server.database.ActivityRepository;
 import server.dependedoncomponents.ActivityControllerDOC;
 import server.dependedoncomponents.RandomDOC;
+import server.services.FileStorageService;
 
 @DataJpaTest
 public class GameControllerTest {
@@ -21,13 +23,16 @@ public class GameControllerTest {
     @Autowired
     private ActivityRepository repo;
 
+    @MockBean
+    private FileStorageService fileStorageService;
+
     private GameController sut;
 
     @BeforeEach
     void setup() {
         Activity activity = new Activity("id", "abc/abc.png", "Hello world?", 123, "www.google.com");
         Question question = new Question(List.of(activity), "world", 0, "TrueFalse");
-        ActivityControllerDOC activityControllerDOC = new ActivityControllerDOC(repo, new RandomDOC(0), question);
+        ActivityControllerDOC activityControllerDOC = new ActivityControllerDOC(repo, new RandomDOC(0), fileStorageService, question);
 
         sut = new GameController(activityControllerDOC, null, null);
     }

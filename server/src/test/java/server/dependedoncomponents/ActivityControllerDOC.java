@@ -5,13 +5,14 @@ import java.util.List;
 import java.util.Random;
 import server.api.ActivityController;
 import server.database.ActivityRepository;
+import server.services.FileStorageService;
 
 public class ActivityControllerDOC extends ActivityController {
 
     private final Question question;
 
-    public ActivityControllerDOC(ActivityRepository repo, Random random, Question question) {
-        super(repo, random);
+    public ActivityControllerDOC(ActivityRepository repo, Random random, FileStorageService fileStorageService, Question question) {
+        super(repo, random, fileStorageService);
         this.question = question;
     }
 

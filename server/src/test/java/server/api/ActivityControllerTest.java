@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import server.database.ActivityRepository;
 import server.dependedoncomponents.RandomDOC;
 import server.services.FileStorageService;
@@ -31,7 +32,7 @@ class ActivityControllerTest {
     @Autowired
     private ActivityRepository repo;
 
-    @Autowired
+    @MockBean
     private FileStorageService fileStorageService;
 
     private ActivityController sut;
