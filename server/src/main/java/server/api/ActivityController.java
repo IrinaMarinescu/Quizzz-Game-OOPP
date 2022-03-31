@@ -170,7 +170,7 @@ public class ActivityController {
         return ResponseEntity.ok(saved);
     }
 
-    @SuppressWarnings("checkstyle:ParameterName")
+
     @PostMapping(path = {"/contribute"}, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<String> addImage(
             @RequestParam String id,

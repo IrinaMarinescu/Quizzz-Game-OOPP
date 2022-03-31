@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.OK;
 
 import commons.Activity;
 import commons.Question;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockMultipartFile;
 import server.database.ActivityRepository;
 import server.dependedoncomponents.RandomDOC;
 import server.services.FileStorageService;
@@ -39,6 +41,7 @@ class ActivityControllerTest {
 
     private Activity activity;
     private Activity nullActivity;
+
 
 
     @BeforeEach
@@ -88,6 +91,14 @@ class ActivityControllerTest {
         Activity activity = repo.findById("00-a");
 
         assertEquals(activity.consumptionInWh, 5);
+    }
+
+    @Test
+    public void testAddPutImage() {
+        MockMultipartFile file = new MockMultipartFile("test", "test.txt", "text/plain", "some test ".getBytes());
+        var s = sut.addImage("A", "ss/ss.png", "flying a plane", "10", "b", file);
+
+        assertEquals(OK, s.getStatusCode());
     }
 
     @Test
