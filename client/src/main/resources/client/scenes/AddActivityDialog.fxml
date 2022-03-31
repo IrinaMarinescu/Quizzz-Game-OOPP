@@ -64,7 +64,7 @@
                <children>
                   <ImageView fx:id="activityImage" fitHeight="200" fitWidth="270"  pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <image>
-                        <Image url="" />
+                        <Image url="https://png.pngtree.com/png-vector/20210604/ourmid/pngtree-gray-network-placeholder-png-image_3416659.jpg"/>
                      </image>
                   </ImageView>
                   <Button onAction="#openFileChooser" mnemonicParsing="false" prefHeight="31.0" prefWidth="213.0" text="upload image" GridPane.columnIndex="1" GridPane.rowIndex="2" />

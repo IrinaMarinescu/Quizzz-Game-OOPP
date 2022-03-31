@@ -205,10 +205,23 @@ public class ServerUtils {
             .post(Entity.entity(activity, APPLICATION_JSON), Activity.class);
     }
 
+    /**
+     * Adds a new activity, with the corresponding image.
+     *
+     * @param activity the activity to add to the DB
+     * @param image the image to bind to the activity
+     * @return a boolean, representing whether the request was successful or not.
+     */
     public boolean addActivity(Activity activity, File image) {
         return (httpUpload(activity, image.getName(), getBytesFromFile(image)) == 200);
     }
 
+    /**
+     * Turns a file into a byte array.
+     *
+     * @param file the file to get the byte array from
+     * @return an array of bytes, representing the contents of the file.
+     */
     protected static byte[] getBytesFromFile(File file) {
         try {
             FileInputStream fl = new FileInputStream(file);

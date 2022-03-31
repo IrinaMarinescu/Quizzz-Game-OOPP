@@ -45,7 +45,7 @@ public class ActivityController {
         this.rand = random;
         this.totalRecords = this.repo.count();
         this.fileStorageService = fileStorageService;
-        fileStorageService.init();
+        fileStorageService.init("images");
     }
 
     private static boolean nullOrEmpty(String s) {
@@ -109,7 +109,7 @@ public class ActivityController {
 
         totalRecords--;
         repo.deleteById(activity.id);
-
+        fileStorageService.delete(activity.imagePath);
 
         return ResponseEntity.ok(candidate);
     }
@@ -185,7 +185,7 @@ public class ActivityController {
         totalRecords++;
         repo.save(activity);
         fileStorageService.save(file, imagePath);
-        return ResponseEntity.ok("test");
+        return ResponseEntity.ok("success");
     }
 
     @GetMapping("/image/{id}")
