@@ -275,40 +275,40 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     @Override
     public void startGame(boolean isMultiplayerGame) {
-        questionStartTime = timeUtils.now();
-        if (!isMultiplayerGame) {
-            this.game = gameUtils.startSingleplayer();
-        }
-
-        UUID expectedGameId = game.getId();
-        timeUtils.runAfterDelay(() -> {
-            if (expectedGameId.equals(game.getId())) {
-                nextEvent();
-                questionFrameCtrl.toggleJokerUsability(true);
-            }
-        }, WAITING_TIME);
-
         if (isMultiplayerGame) {
+            questionStartTime = timeUtils.now();
+
+            UUID expectedGameId = game.getId();
+            timeUtils.runAfterDelay(() -> {
+                if (expectedGameId.equals(game.getId())) {
+                    nextEvent();
+                    questionFrameCtrl.toggleJokerUsability(true);
+                }
+            }, WAITING_TIME);
+
             lobbyUtils.setActive(false);
             gameUtils.setActive("game", false);
             gameUtils.setActive("features", true);
+            questionFrameCtrl.toggleJokerUsability(false);
+            waitingScreenCtrl.reset();
+            questionFrameCtrl.setCenterContent(waitingScreen, false);
             questionFrameCtrl.initializeMultiplayerGame(this.game.getPlayers());
+            showQuestionFrame();
+
+            Platform.runLater(() -> {
+                questionFrameCtrl.setRemainingTime(WAITING_TIME - (timeUtils.now() - questionStartTime) / 1000.0);
+            });
         } else {
+            this.game = gameUtils.startSingleplayer();
             questionFrameCtrl.initializeSingleplayerGame();
+            showQuestionFrame();
+            nextEvent();
         }
 
-        questionFrameCtrl.toggleJokerUsability(false);
-        waitingScreenCtrl.reset();
-        questionFrameCtrl.setCenterContent(waitingScreen, false);
         intermediateLeaderboardShown = false;
         this.isMultiplayerGame = isMultiplayerGame;
         timeoutRoundCheck = 1;
         gameOngoing = true;
-        showQuestionFrame();
-
-        Platform.runLater(() -> {
-            questionFrameCtrl.setRemainingTime(WAITING_TIME - (timeUtils.now() - questionStartTime) / 1000.0);
-        });
     }
 
     /**
@@ -333,6 +333,9 @@ public class MainCtrl implements MainCtrlRequirements {
      * Executes the next event (question, leaderboard, game over)
      */
     private void nextEvent() {
+        questionStartTime = timeUtils.now();
+        questionEndTime = questionStartTime + ROUND_TIME * 1000.0;
+
         if (isMultiplayerGame) {
             // The current event is the intermediate leaderboard
             if (game.getRound() == TOTAL_ROUNDS / 2 && !intermediateLeaderboardShown) {
@@ -363,8 +366,6 @@ public class MainCtrl implements MainCtrlRequirements {
         }
 
         // The current event is a question
-        questionStartTime = timeUtils.now();
-        questionEndTime = questionStartTime + ROUND_TIME * 1000.0;
         game.incrementRound();
         setQuestionTimeouts(ROUND_TIME);
         Platform.runLater(() -> questionFrameCtrl.incrementQuestionNumber());
