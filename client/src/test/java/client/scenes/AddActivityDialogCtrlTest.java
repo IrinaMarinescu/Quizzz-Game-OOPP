@@ -12,7 +12,8 @@ import org.junit.jupiter.api.Test;
 
 class AddActivityDialogCtrlTest {
 
-    AddActivityDialogCtrl activityDialogCtrl = new AddActivityDialogCtrlDOC(new AdminInterfaceCtrl(new MainCtrl(), new ServerUtils()), new ServerUtils());
+    AddActivityDialogCtrl activityDialogCtrl =
+        new AddActivityDialogCtrlDOC(new AdminInterfaceCtrl(new MainCtrl(), new ServerUtils()), new ServerUtils());
 
     @Test
     void testSetGetImage() {
