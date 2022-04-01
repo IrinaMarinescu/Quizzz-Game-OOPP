@@ -48,7 +48,6 @@ public class AdminInterfaceCtrl implements AdminInterfaceCtrlRequirements {
     private final MainCtrl mainCtrl;
     private final ServerUtils serverUtils;
 
-
     @Inject
     public AdminInterfaceCtrl(MainCtrl mainCtrl, ServerUtils serverUtils) {
         this.mainCtrl = mainCtrl;

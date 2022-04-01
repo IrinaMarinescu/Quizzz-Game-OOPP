@@ -44,6 +44,8 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
 
     private final String[] acceptedExtensions = {".png", ".jpg", ".jpeg", ".gif"};
 
+    protected boolean test = false;
+
     @Inject
     public AddActivityDialogCtrl(AdminInterfaceCtrl adminInterfaceCtrl, ServerUtils serverUtils) {
         this.adminInterfaceCtrl = adminInterfaceCtrl;
@@ -95,11 +97,19 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
                     new Image(upload.toURI().toString(),
                         270, 200, false, false)
                 );
-                uploadedImage = upload;
+                setUploadedImage(upload);
             }
         } catch (Exception e) {
             showErrorText(e.getMessage());
         }
+    }
+
+    protected void setUploadedImage(File file) {
+        uploadedImage = file;
+    }
+
+    protected File getUploadedImage() {
+        return uploadedImage;
     }
 
     /**
@@ -110,6 +120,9 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
      * @throws IOException exception thrown if there were problems reading the file
      */
     public void validateFileProperties(File file) throws InvalidDataException, IOException {
+        if (file == null) {
+            throw new InvalidDataException("Invalid file!");
+        }
         boolean equalsOne = false;
         Optional<String> extension = getExtension(file.getName());
         if (extension.isEmpty()) {
@@ -143,7 +156,7 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
      * @return an Optional containing a String, that might or might not be present
      * depending on whether the file name has an extension or not.
      */
-    private Optional<String> getExtension(String filename) {
+    protected Optional<String> getExtension(String filename) {
         return Optional.ofNullable(filename)
             .filter(f -> f.contains("."))
             .map(f -> f.substring(filename.lastIndexOf(".")));
@@ -173,24 +186,30 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
         }
     }
 
+    public void validateFormData() throws InvalidDataException {
+        validateFormDataHelper(activityId.getText());
+    }
+
     /**
      * {@inheritDoc}
      *
      * @throws InvalidDataException exception thrown if any of the fields are not valid
      * (either an already existing ID was written, or no image was uploaded)
      */
-    public void validateFormData() throws InvalidDataException {
-        if (!activityId.getText().matches("^[a-zA-Z0-9]*$")) {
+    public void validateFormDataHelper(String id) throws InvalidDataException {
+        if (!id.matches("^[a-zA-Z0-9]*$")) {
             throw new InvalidDataException("Only alphanumerical characters are accepted as activity IDs!");
         }
 
-        for (Activity a : adminInterfaceCtrl.getActivities()) {
-            if (a.id.equals(activityId.getText())) {
-                throw new InvalidDataException("An activity with the same ID already exists in the database!");
+        if (!test) {
+            for (Activity a : adminInterfaceCtrl.getActivities()) {
+                if (a.id.equals(id)) {
+                    throw new InvalidDataException("An activity with the same ID already exists in the database!");
+                }
             }
-        }
-        if (uploadedImage == null) {
-            throw new InvalidDataException("You have to upload an image!");
+            if (uploadedImage == null) {
+                throw new InvalidDataException("You have to upload an image!");
+            }
         }
     }
 
