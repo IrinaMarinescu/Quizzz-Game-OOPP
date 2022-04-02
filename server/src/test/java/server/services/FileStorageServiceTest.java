@@ -43,7 +43,7 @@ class FileStorageServiceTest {
         Mockito.doThrow(new RuntimeException()).when(fileStorageService).save(isNull(), isNull());
 
         assertThrows(RuntimeException.class, () -> {
-            fileStorageService .save(null, null);
+            fileStorageService.save(null, null);
         });
     }
 
@@ -67,7 +67,8 @@ class FileStorageServiceTest {
 
     @Test
     public void testLoad() throws IOException {
-        Mockito.when(fileStorageService.load(Mockito.any(String.class))).thenReturn(new InputStreamResource(file.getInputStream()));
+        Mockito.when(fileStorageService.load(Mockito.any(String.class)))
+            .thenReturn(new InputStreamResource(file.getInputStream()));
 
         fileStorageService.load("test");
         Mockito.verify(fileStorageService, times(1)).load("test");
