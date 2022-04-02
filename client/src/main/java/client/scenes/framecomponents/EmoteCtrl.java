@@ -79,6 +79,41 @@ public class EmoteCtrl {
     }
 
     /**
+     * Displays a joker chosen by a player
+     *
+     * @param name the name of player who used a joker
+     * @param joker the joker that is chosen
+     */
+    public void addJoker(String name, String joker) {
+        String pathToImage = "";
+        switch (joker) {
+            case "HALVE_TIME":
+                pathToImage = "client/icons/hourglass-empty-solid.png";
+                break;
+            case "DOUBLE_POINTS":
+                pathToImage = "client/icons/double-points.png";
+                break;
+            case "ELIMINATE_ANSWER":
+                pathToImage = "client/icons/lightbulb-regular.png";
+                break;
+            default:
+        }
+
+        var emoteContainer = loader.load(EmoteContainerCtrl.class, "client/scenes/EmoteContainer.fxml");
+        emoteContainer.getKey().initialize(name, pathToImage);
+
+        Platform.runLater(() -> {
+            reactionContainer.getChildren().add(0, emoteContainer.getValue());
+            if (visibleEmotes == MAX_EMOTES) {
+                reactionContainer.getChildren().remove(MAX_EMOTES);
+            } else {
+                visibleEmotes++;
+            }
+            timeUtils.runAfterDelay(() -> animate(emoteContainer.getValue()), 5.0);
+        });
+    }
+
+    /**
      * Animates a provided node with a fade after an initial delay
      *
      * @param emoteField The node to be animated

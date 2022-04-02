@@ -490,8 +490,24 @@ public class MainCtrl implements MainCtrlRequirements {
         setQuestionTimeouts(halvedRoundTime / 1000.0);
     }
 
+    /**
+     * Calls questionFrameCtrl to display an emoji chosen by a player
+     *
+     * @param name the name of the player who clicked an emoji
+     * @param reaction the chosen emoji
+     */
     public void displayNewEmoji(String name, String reaction) {
         questionFrameCtrl.displayNewEmoji(name, reaction);
+    }
+
+    /**
+     * Calls questionFrameCtrl to display a joker chosen by a player
+     *
+     * @param name the name of the player who used a joker
+     * @param joker the chosen joker
+     */
+    public void displayNewJoker(String name, String joker) {
+        questionFrameCtrl.displayNewJoker(name, joker);
     }
 
     /**
