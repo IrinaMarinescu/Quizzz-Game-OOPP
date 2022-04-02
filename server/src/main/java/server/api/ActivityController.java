@@ -42,7 +42,8 @@ public class ActivityController {
     @Autowired
     private final FileStorageService fileStorageService;
 
-    public ActivityController(ActivityRepository repo, Random random, FileStorageService fileStorageService, ActivityFilter activityFilter) {
+    public ActivityController(ActivityRepository repo, Random random,
+            FileStorageService fileStorageService, ActivityFilter activityFilter) {
         this.repo = repo;
         this.rand = random;
         this.totalRecords = this.repo.count();
