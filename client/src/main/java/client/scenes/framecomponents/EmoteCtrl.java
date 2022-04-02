@@ -78,6 +78,12 @@ public class EmoteCtrl {
         });
     }
 
+    /**
+     * Displays a joker chosen by a player
+     *
+     * @param name the name of player who used a joker
+     * @param joker the joker that is chosen
+     */
     public void addJoker(String name, String joker) {
         String pathToImage = "";
         switch (joker) {
