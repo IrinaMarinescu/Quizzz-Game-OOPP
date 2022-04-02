@@ -315,7 +315,6 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     /**
      * Method to be run when a user chooses to send an emoticon
      * <p>
-     * TODO: make this send a request to the server, delete placeholders
      */
     @FXML
     private void addReaction(ActionEvent e) {
@@ -330,6 +329,10 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      */
     public void displayNewEmoji(String name, String reaction) {
         emoteCtrl.addReaction(name, reaction);
+    }
+
+    public void displayNewJoker(String name, String reaction) {
+        emoteCtrl.addJoker(name, reaction);
     }
 
     /**
@@ -393,9 +396,11 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         switch (joker.getId()) {
             case "doublePoints":
                 mainCtrl.doublePoints();
+                gameUtils.sendFeature("JOKER", mainCtrl.getUsername(), "DOUBLE_POINTS");
                 break;
             case "eliminateWrongAnswer":
                 mainCtrl.eliminateWrongAnswer();
+                gameUtils.sendFeature("JOKER", mainCtrl.getUsername(), "ELIMINATE_ANSWER");
                 break;
             case "halveTime":
                 gameUtils.sendFeature("JOKER", mainCtrl.getUsername(), "HALVE_TIME");

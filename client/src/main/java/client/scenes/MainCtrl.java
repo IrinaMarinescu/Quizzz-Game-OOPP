@@ -494,6 +494,10 @@ public class MainCtrl implements MainCtrlRequirements {
         questionFrameCtrl.displayNewEmoji(name, reaction);
     }
 
+    public void displayNewJoker(String name, String joker) {
+        questionFrameCtrl.displayNewJoker(name, joker);
+    }
+
     /**
      * Eliminates incorrect answer
      */
