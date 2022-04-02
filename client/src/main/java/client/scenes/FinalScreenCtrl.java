@@ -3,6 +3,7 @@ package client.scenes;
 import client.utils.ServerUtils;
 import commons.LeaderboardEntry;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javax.inject.Inject;
 
@@ -14,6 +15,9 @@ public class FinalScreenCtrl {
 
     @FXML
     Text scoreField;
+
+    @FXML
+    Button playAgain;
 
     /**
      * Injects necessary dependencies
@@ -32,5 +36,10 @@ public class FinalScreenCtrl {
     public void setPoints(int points) {
         serverUtils.addLeaderboardEntry(new LeaderboardEntry(mainCtrl.getUsername(), points));
         scoreField.setText(String.valueOf(points));
+    }
+
+    @FXML
+    public void playAgain() {
+        mainCtrl.startGame(false);
     }
 }
