@@ -150,6 +150,7 @@ class ActivityControllerTest {
     @Test
     void trueFalseQuestionType2() {
         sut = new ActivityController(repo, new RandomDOC(1), fileStorageService, new ActivityFilter());
+        sut.importActivities(List.of(
             new Activity("00-b", "ss/ss.png", "flying a plane", 10, "b"),
             new Activity("054-b", "ss/sds.png", "TITLE", 15, "google.com"))
         );
