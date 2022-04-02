@@ -113,10 +113,18 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
      */
     public void startSingleplayerGame() {
         if (serverUtils.validateIP(serverIP.getText())) {
-            serverUtils.setServerIP(serverIP.getText());
-            mainCtrl.setPlayer(username.getText(), 0);
-            writeToFile();
-            mainCtrl.startGame(false);
+            if (username.getText().equals("")) {
+                usernameError.setText("Your name cannot be empty. Try again.");
+                displayUsernameError(true);
+            } else if (username.getText().contains(",")) {
+                usernameError.setText("Your name cannot contain a comma. Try again.");
+                displayUsernameError(true);
+            } else {
+                serverUtils.setServerIP(serverIP.getText());
+                mainCtrl.setPlayer(username.getText(), 0);
+                writeToFile();
+                mainCtrl.startGame(false);
+            }
         } else {
             displayServerIPError(true);
         }
@@ -129,10 +137,18 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     public void joinLobby() {
         if (serverUtils.validateIP(serverIP.getText()) && lobbyUtils.validateUsername(username.getText())) {
             serverUtils.setServerIP(serverIP.getText());
+            if (username.getText().equals("")) {
+                usernameError.setText("Your name cannot be empty. Try again.");
+                displayUsernameError(true);
+            } else if (username.getText().contains(",")) {
+                usernameError.setText("Your name cannot contain a comma. Try again.");
+                displayUsernameError(true);
+            }
             mainCtrl.setPlayer(username.getText(), 0);
             writeToFile();
             mainCtrl.joinLobby();
         } else if (!lobbyUtils.validateUsername(serverIP.getText())) {
+            usernameError.setText("The username is already taken. Try again.");
             displayServerIPError(true);
         } else {
             displayUsernameError(true);
