@@ -42,7 +42,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
 
     private long lastEscapeKeyPressTime;
 
-    private final File userInfo = new File("src/main/resources/client/user-info/user-info.txt");
+    private final File userInfo = new File("user-info/user-info.txt");
 
     @FXML
     private TextField username;
