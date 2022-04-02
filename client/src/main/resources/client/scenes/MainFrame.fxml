@@ -17,15 +17,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
-<BorderPane prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MainFrameCtrl">
+<BorderPane prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MainFrameCtrl">
     <top>
         <BorderPane fx:id="topBar" prefHeight="75" prefWidth="1600" BorderPane.alignment="CENTER">
             <left>
                 <HBox fx:id="trophyBox" BorderPane.alignment="CENTER">
-                    <Button fx:id="trophy" mnemonicParsing="false" onAction="#openLeaderboard" styleClass="clickableGreen">
+                    <Button fx:id="trophy" mnemonicParsing="false" onAction="#openLeaderboard"
+                            styleClass="clickableGreen">
                         <tooltip>
-                            <Tooltip id="tooltip" text="Show singleplayer leaderboard screen [L]" />
+                            <Tooltip id="tooltip" text="Show singleplayer leaderboard screen [L]"/>
                         </tooltip>
                     </Button>
                 </HBox>
@@ -35,37 +36,49 @@
     <center>
         <VBox fx:id="mainPart" prefHeight="600" prefWidth="400" BorderPane.alignment="CENTER">
             <VBox alignment="CENTER" prefHeight="250" prefWidth="400">
-                <Text fx:id="title" text="Quizzzzz!" BorderPane.alignment="CENTER" />
+                <Text fx:id="title" text="Quizzzzz!" BorderPane.alignment="CENTER"/>
             </VBox>
             <VBox alignment="CENTER" prefHeight="384.0" prefWidth="1200.0">
-                <TextField fx:id="username" alignment="CENTER_LEFT" prefColumnCount="1" promptText="Username" styleClass="clickableGreen">
-               <tooltip>
-                  <Tooltip id="tooltip" text="Enter your username here" />
-               </tooltip></TextField>
-                <Text fx:id="usernameError" styleClass="error" text="The username is already taken. Try again." visible="false" BorderPane.alignment="CENTER" />
-                <Region VBox.vgrow="ALWAYS" />
-                <TextField fx:id="serverIP" alignment="CENTER_LEFT" prefColumnCount="1" promptText="Server's IP" styleClass="clickableGreen">
-               <tooltip>
-                  <Tooltip id="tooltip" text="Enter the server IP here (blank for localhost:8080)" />
-               </tooltip></TextField>
-                <Text fx:id="serverIPError" styleClass="error" text="The provided server IP is incorrect. Try again." visible="false" BorderPane.alignment="CENTER" />
-                <Region VBox.vgrow="ALWAYS" />
-                <Button fx:id="singleplayer" mnemonicParsing="false" onAction="#startSingleplayerGame" styleClass="clickableDark" text="Play Solo">
-               <tooltip>
-                  <Tooltip id="tooltip" text="Play a singleplayer game [S]" />
-               </tooltip></Button>
-                <Text styleClass="error" text="" visible="false" BorderPane.alignment="CENTER" />
-                <Region VBox.vgrow="ALWAYS" />
-                <Button fx:id="multiplayer" mnemonicParsing="false" onAction="#joinLobby" styleClass="clickableDark" text="Play with friends">
-               <tooltip>
-                  <Tooltip id="tooltip" text="Play a multiplayer game [M]" />
-               </tooltip></Button>
-                <Text styleClass="error" text="" visible="false" BorderPane.alignment="CENTER" />
-                <Region VBox.vgrow="ALWAYS" />
-                <Button fx:id="admin" layoutX="425.0" layoutY="283.0" mnemonicParsing="false" onAction="#showAdmin" prefHeight="64.0" styleClass="clickableGreen" text="Admin">
-               <tooltip>
-                  <Tooltip id="tooltip" text="Show admin screen [CTRL]" />
-               </tooltip></Button>
+                <TextField fx:id="username" alignment="CENTER_LEFT" prefColumnCount="1" promptText="Username"
+                           styleClass="clickableGreen">
+                    <tooltip>
+                        <Tooltip id="tooltip" text="Enter your username here"/>
+                    </tooltip>
+                </TextField>
+                <Text fx:id="usernameError" styleClass="error" text="The username is already taken. Try again."
+                      visible="false" BorderPane.alignment="CENTER"/>
+                <Region VBox.vgrow="ALWAYS"/>
+                <TextField fx:id="serverIP" alignment="CENTER_LEFT" prefColumnCount="1" promptText="Server's IP"
+                           styleClass="clickableGreen">
+                    <tooltip>
+                        <Tooltip id="tooltip" text="Enter the server IP here (blank for localhost:8080)"/>
+                    </tooltip>
+                </TextField>
+                <Text fx:id="serverIPError" styleClass="error" text="The provided server IP is incorrect. Try again."
+                      visible="false" BorderPane.alignment="CENTER"/>
+                <Region VBox.vgrow="ALWAYS"/>
+                <Button fx:id="singleplayer" mnemonicParsing="false" onAction="#startSingleplayerGame"
+                        styleClass="clickableDark" text="Play Solo">
+                    <tooltip>
+                        <Tooltip id="tooltip" text="Play a singleplayer game [S]"/>
+                    </tooltip>
+                </Button>
+                <Text styleClass="error" text="" visible="false" BorderPane.alignment="CENTER"/>
+                <Region VBox.vgrow="ALWAYS"/>
+                <Button fx:id="multiplayer" mnemonicParsing="false" onAction="#joinLobby" styleClass="clickableDark"
+                        text="Play with friends">
+                    <tooltip>
+                        <Tooltip id="tooltip" text="Play a multiplayer game [M]"/>
+                    </tooltip>
+                </Button>
+                <Text styleClass="error" text="" visible="false" BorderPane.alignment="CENTER"/>
+                <Region VBox.vgrow="ALWAYS"/>
+                <Button fx:id="admin" layoutX="425.0" layoutY="283.0" mnemonicParsing="false" onAction="#showAdmin"
+                        prefHeight="64.0" styleClass="clickableGreen" text="Admin">
+                    <tooltip>
+                        <Tooltip id="tooltip" text="Show admin screen [CTRL]"/>
+                    </tooltip>
+                </Button>
             </VBox>
         </VBox>
     </center>
@@ -73,9 +86,10 @@
         <BorderPane fx:id="footBar" prefHeight="75" prefWidth="1600" BorderPane.alignment="CENTER">
             <left>
                 <HBox fx:id="helpBox" BorderPane.alignment="CENTER">
-                    <Button fx:id="help" mnemonicParsing="false" onAction="#toggleHelpMenuVisibility" styleClass="circle, clickableGreen">
+                    <Button fx:id="help" mnemonicParsing="false" onAction="#toggleHelpMenuVisibility"
+                            styleClass="circle, clickableGreen">
                         <tooltip>
-                            <Tooltip id="tooltip" text="Toggle help menu visibility" />
+                            <Tooltip id="tooltip" text="Toggle help menu visibility"/>
                         </tooltip>
                     </Button>
                 </HBox>
@@ -84,84 +98,110 @@
     </bottom>
     <left>
         <VBox>
-            <Region VBox.vgrow="ALWAYS" />
-            <VBox fx:id="helpMenuContainer" alignment="CENTER" maxHeight="-Infinity" prefHeight="452.0" prefWidth="220.0" visible="false">
+            <Region VBox.vgrow="ALWAYS"/>
+            <VBox fx:id="helpMenuContainer" alignment="CENTER" maxHeight="-Infinity" prefHeight="452.0"
+                  prefWidth="220.0" visible="false">
                 <FlowPane fx:id="helpMenuTitle" alignment="CENTER" prefHeight="40.0" prefWidth="200.0">
                     <Text text="Help">
-                  <FlowPane.margin>
-                     <Insets />
-                  </FlowPane.margin></Text>
+                        <FlowPane.margin>
+                            <Insets/>
+                        </FlowPane.margin>
+                    </Text>
                 </FlowPane>
                 <GridPane fx:id="helpMenu" alignment="CENTER" prefHeight="373.0" prefWidth="200.0">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" prefWidth="54.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="146.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" prefWidth="54.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="146.0"/>
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints vgrow="SOMETIMES" />
-                        <RowConstraints vgrow="SOMETIMES" />
-                        <RowConstraints vgrow="SOMETIMES" />
-                        <RowConstraints vgrow="SOMETIMES" />
-                        <RowConstraints vgrow="SOMETIMES" />
-                        <RowConstraints vgrow="SOMETIMES" />
-                        <RowConstraints vgrow="SOMETIMES" />
-                        <RowConstraints vgrow="SOMETIMES" />
-                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
+                        <RowConstraints vgrow="SOMETIMES"/>
                     </rowConstraints>
-                    <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
-                        <Image url="@../icons/trophy-solid.png" />
+                    <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true"
+                               GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0"
+                               GridPane.valignment="CENTER">
+                        <Image url="@../icons/trophy-solid.png"/>
                     </ImageView>
-                    <Text id="helpPointsGained" text="+0" wrappingWidth="50.638671875" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                  <font>
-                     <Font size="28.0" />
-                  </font></Text>
-                    <ImageView fitHeight="35.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                        <Image url="@../icons/hourglass-empty-solid.png" />
-                    </ImageView>
-                    <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-                        <Image url="@../icons/double-points.png" />
-                    </ImageView>
-                    <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-                        <Image url="@../icons/lightbulb-regular.png" />
-                    </ImageView>
-                    <ImageView fitHeight="30.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
-                        <Image url="@../emoticons/face-smile-solid.png" />
-                    </ImageView>
-                    <Text text="Your total score this game" wrappingWidth="122.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
-                    <Text text="The number of the current question" wrappingWidth="136.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
-                    <Text text="Toggles leaderboard visibility" wrappingWidth="138.638671875" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                    <Text text="Your points gained last round" wrappingWidth="133.638671875" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                    <Text text="Halves time remaining for ALL players this question (once this game)" wrappingWidth="140.638671875" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                    <Text text="Doubles points you will gain this round (once this game)" wrappingWidth="140.638671875" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <Text id="helpPointsGained" text="+0" wrappingWidth="50.638671875" GridPane.columnIndex="0"
+                          GridPane.rowIndex="1">
+                        <font>
+                            <Font size="28.0"/>
+                        </font>
                     </Text>
-                    <Text text="Disables one wrong answer this round (once this game)" wrappingWidth="140.638671875" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                  <font>
-                     <Font size="10.0" />
-                  </font></Text>
-                    <Text text="Hovering over this icon shows menu to send emojis" wrappingWidth="140.638671875" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    <ImageView fitHeight="35.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true"
+                               GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="2"
+                               GridPane.valignment="CENTER">
+                        <Image url="@../icons/hourglass-empty-solid.png"/>
+                    </ImageView>
+                    <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true"
+                               GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="3"
+                               GridPane.valignment="CENTER">
+                        <Image url="@../icons/double-points.png"/>
+                    </ImageView>
+                    <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true"
+                               GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="4"
+                               GridPane.valignment="CENTER">
+                        <Image url="@../icons/lightbulb-regular.png"/>
+                    </ImageView>
+                    <ImageView fitHeight="30.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true"
+                               GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="5"
+                               GridPane.valignment="CENTER">
+                        <Image url="@../emoticons/face-smile-solid.png"/>
+                    </ImageView>
+                    <Text text="Your total score this game" wrappingWidth="122.0" GridPane.columnIndex="1"
+                          GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER"/>
+                    <Text text="The number of the current question" wrappingWidth="136.0" GridPane.columnIndex="1"
+                          GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER"/>
+                    <Text text="Toggles leaderboard visibility" wrappingWidth="138.638671875" GridPane.columnIndex="1"
+                          GridPane.rowIndex="0"/>
+                    <Text text="Your points gained last round" wrappingWidth="133.638671875" GridPane.columnIndex="1"
+                          GridPane.rowIndex="1"/>
+                    <Text text="Halves time remaining for ALL players this question (once this game)"
+                          wrappingWidth="140.638671875" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                    <Text text="Doubles points you will gain this round (once this game)" wrappingWidth="140.638671875"
+                          GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    </Text>
+                    <Text text="Disables one wrong answer this round (once this game)" wrappingWidth="140.638671875"
+                          GridPane.columnIndex="1" GridPane.rowIndex="4">
+                        <font>
+                            <Font size="10.0"/>
+                        </font>
+                    </Text>
+                    <Text text="Hovering over this icon shows menu to send emojis" wrappingWidth="140.638671875"
+                          GridPane.columnIndex="1" GridPane.rowIndex="5"/>
                     <Button mnemonicParsing="false" text="0" GridPane.halignment="CENTER" GridPane.rowIndex="6">
-                  <GridPane.margin>
-                     <Insets left="5.0" />
-                  </GridPane.margin></Button>
+                        <GridPane.margin>
+                            <Insets left="5.0"/>
+                        </GridPane.margin>
+                    </Button>
                     <Button mnemonicParsing="false" text="0/20" GridPane.halignment="CENTER" GridPane.rowIndex="7">
-                  <GridPane.margin>
-                     <Insets left="5.0" />
-                  </GridPane.margin></Button>
-                    <Text text="Return to this screen" wrappingWidth="147.638671875" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-               <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER">
-                  <image>
-                     <Image url="@../icons/angle-left-solid.png" />
-                  </image>
-               </ImageView>
+                        <GridPane.margin>
+                            <Insets left="5.0"/>
+                        </GridPane.margin>
+                    </Button>
+                    <Text text="Return to this screen" wrappingWidth="147.638671875" GridPane.columnIndex="1"
+                          GridPane.rowIndex="8"/>
+                    <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true"
+                               GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+                        <image>
+                            <Image url="@../icons/angle-left-solid.png"/>
+                        </image>
+                    </ImageView>
                 </GridPane>
             </VBox>
         </VBox>
     </left>
     <right>
-        <VBox prefWidth="220.0" />
+        <VBox prefWidth="220.0"/>
     </right>
-   <stylesheets>
-      <URL value="@../css/mainFrame.css" />
-      <URL value="@../css/helpMenu.css" />
-   </stylesheets>
+    <stylesheets>
+        <URL value="@../css/mainFrame.css"/>
+    </stylesheets>
 </BorderPane>

@@ -36,7 +36,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import javafx.util.Pair;
 import org.glassfish.jersey.client.ClientConfig;
 
 /**
@@ -136,32 +135,9 @@ public class ServerUtils {
         // TODO send to server the number of points that have been gained
     }
 
-    public List<LeaderboardEntry> getUpdatedScores(UUID gameId) {
-        // TODO retrieve updated scores for this game from the server
-        return new ArrayList<>();
-    }
-
-    public void sendNewEmoji(String username, String reaction) {
-        Pair<String, String> details = new Pair<>(username, reaction);
-        ClientBuilder.newClient(new ClientConfig()) //
-            .target(serverIP).path("api/sendEmote/{gameId}") //
-            .request(APPLICATION_JSON) //
-            .accept(APPLICATION_JSON) //
-            .post(Entity.entity(details, APPLICATION_JSON));
-    }
-
-    public void halveTime(UUID gameId) {
-        ClientBuilder.newClient(new ClientConfig()) //
-            .target(serverIP).path("api/halveTime/{gameId}") //
-            .request(APPLICATION_JSON) //
-            .accept(APPLICATION_JSON) //
-            .post(Entity.entity(true, APPLICATION_JSON));
-    }
-
     public void disconnect(UUID gameId, LeaderboardEntry player) {
         // TODO send data to server that the player disconnected
     }
-
 
     /**
      * Fetch the list of all the activities stored in the database
@@ -246,7 +222,7 @@ public class ServerUtils {
     public int httpUpload(Activity activity, String filename, byte[] byteStream) {
         try {
             HttpURLConnection connection = (HttpURLConnection)
-                new URL(serverIP + "api/activities/add").openConnection();
+                new URL(serverIP + "api/activities/contribute").openConnection();
             final String boundary = Strings.repeat("-", 15) + Long.toHexString(System.currentTimeMillis());
 
             connection.setDoOutput(true);

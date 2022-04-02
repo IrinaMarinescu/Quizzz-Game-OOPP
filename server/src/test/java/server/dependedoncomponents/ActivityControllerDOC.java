@@ -13,7 +13,7 @@ public class ActivityControllerDOC extends ActivityController {
 
     public ActivityControllerDOC(ActivityRepository repo, Random random,
              FileStorageService fileStorageService, Question question) {
-        super(repo, random, fileStorageService);
+        super(repo, random, fileStorageService, null);
         this.question = question;
     }
 

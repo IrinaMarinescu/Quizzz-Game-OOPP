@@ -35,19 +35,19 @@ class InsteadOfQuestionCtrlTest {
         emoteCtrlDOC = new EmoteCtrlDOC();
         timerBarCtrlDOC = new TimerBarCtrlDOC();
 
-        questionFrame = new QuestionFrameCtrl(mainCtrlDOC, timerBarCtrlDOC, emoteCtrlDOC, timeUtilsDOC, null);
+        questionFrame = new QuestionFrameCtrl(null, timeUtilsDOC, null, mainCtrlDOC, timerBarCtrlDOC, emoteCtrlDOC);
 
         sut = new InsteadOfQuestionCtrlDOC(mainCtrlDOC, questionFrame);
         Activity a1 = new Activity("a", null, "using your phone",
-                1500, "Mirella");
+            1500, "Mirella");
         Activity a2 = new Activity("b", null, "showering",
-                1200, "Mirella");
+            1200, "Mirella");
         Activity a3 = new Activity("c", null, "playing Wii",
-                1300, "Mirella");
+            1300, "Mirella");
         Activity a4 = new Activity("d", null, "heating your living room",
-                1800, "Mirella");
+            1800, "Mirella");
         question = new Question(List.of(a1, a2, a3, a4), "Instead of using your phone, what could you do?", 1,
-                "instead of question");
+            "instead of question");
         sut.initialize(question);
     }
 
@@ -78,6 +78,6 @@ class InsteadOfQuestionCtrlTest {
     @Test
     void initialize() {
         assertEquals("Instead of using your phone, what could you do?",
-                ((InsteadOfQuestionCtrlDOC) sut).getQuestionText());
+            ((InsteadOfQuestionCtrlDOC) sut).getQuestionText());
     }
 }

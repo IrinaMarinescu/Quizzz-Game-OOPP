@@ -20,7 +20,7 @@ public class EmoteContainerCtrlTest {
      */
     @BeforeEach
     public void setup() {
-        sut = new EmoteContainerCtrl();
+        sut = new EmoteContainerCtrl(null);
 
         sut.emoticon = new ImageView();
         sut.person = new Text();

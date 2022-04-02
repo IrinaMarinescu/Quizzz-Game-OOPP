@@ -9,6 +9,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -20,8 +22,6 @@ import javafx.util.Pair;
 public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
 
     @FXML
-    private Button back;
-    @FXML
     private TableView<LeaderboardEntry> leaderboard;
     @FXML
     private TableColumn<LeaderboardEntry, String> playerColumn;
@@ -30,9 +30,11 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     @FXML
     private Text pageTitle;
     @FXML
-    private Button leaderboardTitle;
+    private Button back;
     @FXML
     private GridPane buttonGrid;
+    @FXML
+    private BarChart<String, Integer> barChart;
 
     /**
      * Field <code>type</code> in <code>LeaderboardCtrl</code>
@@ -52,8 +54,10 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     private int type;
     private int maxSize;
 
+    protected Pair<String, String> texts;
+    protected boolean backButtonVisible;
+    protected boolean buttonGridVisible;
     protected boolean test = false;
-
 
     @Inject
     public LeaderboardCtrl(MainCtrl mainCtrl) {
@@ -76,7 +80,7 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
         playerColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getName()));
         scoreColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().scoreToString()));
 
-        fillLeaderboard(entries);
+        fillLeaderboard(sortEntries(entries));
     }
 
     /**
@@ -95,11 +99,41 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      * @param entries the entries to be put in the leaderboard, in any order. The method will sort the entries by score.
      */
     private void fillLeaderboard(List<LeaderboardEntry> entries) {
-        ObservableList<LeaderboardEntry> data = FXCollections.observableList(
-            sortEntries(entries).stream().map(
-                p -> p.equals(mainCtrl.getPlayer()) ? new LeaderboardEntry("You (" + p.getName() + ")", p.getScore()) :
-                    p).collect(Collectors.toList()));
-        leaderboard.setItems(data);
+        barChart.getData().clear();
+        barChart.setLegendVisible(false);
+
+        generateSerie(entries);
+
+        if (entries.size() >= 3) {
+            ObservableList<LeaderboardEntry> data = FXCollections.observableList(
+                entries.subList(3, entries.size()).stream().map(
+                    p -> p.equals(mainCtrl.getPlayer())
+                        ? new LeaderboardEntry("You (" + p.getName() + ")", p.getScore()) :
+                        p).collect(Collectors.toList()));
+            leaderboard.setItems(data);
+        }
+    }
+
+    /**
+     * Generate a new series on the bar chart with data from a leaderboard entry.
+     * Also sets the colour of the bar according to the number of points the player got:
+     * <ul>
+     *     <li>gold for 1st place</li>
+     *     <li>silver for 2nd place</li>
+     *     <li>bronze for 3rd place</li>
+     * </ul>
+     *
+     * @param entries - The entries from which to select 3 and form bar chart
+     */
+    private void generateSerie(List<LeaderboardEntry> entries) {
+        entries = entries.stream().limit(3).collect(Collectors.toList());
+
+        XYChart.Series<String, Integer> serie = new XYChart.Series<>();
+        for (LeaderboardEntry entry : entries) {
+            serie.getData().add(new XYChart.Data<>(entry.getName(), entry.getScore()));
+        }
+
+        barChart.getData().add(serie);
     }
 
     /**
@@ -109,30 +143,32 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      *             If something else is put, the method automatically sets the type to solo as placeholder.
      */
     protected void setLeaderboardType(String type) {
-        Pair<String, String> texts;
         if (type.equals("intermediate")) {
-            this.type = TYPE_INTERMED;
+            setType(TYPE_INTERMED);
             texts = new Pair<>("Intermediate Leaderboard", "Scores after 10 rounds - go get 'em!");
             setButtonAndGrid(false, false);
         } else if (type.equals("final")) {
+            setType(TYPE_FINAL);
             this.type = TYPE_FINAL;
             texts = new Pair<>("Final Leaderboard", "Final scores");
             setButtonAndGrid(false, true);
         } else {
-            this.type = TYPE_SOLO;
+            setType(TYPE_SOLO);
             texts = new Pair<>("Global Leaderboard", "All-time top players in singleplayer");
             setButtonAndGrid(true, false);
         }
-        formatLabels(texts);
+        formatLabels();
     }
 
     /**
      * Sets the visibility of the button and the button grid at the bottom of the page.
      *
      * @param buttonVisibility a boolean value, representing whether the back button should be visible or not.
-     * @param gridVisibility a boolean value, representing whether the bottom button grid should be visible or not.
+     * @param gridVisibility   a boolean value, representing whether the bottom button grid should be visible or not.
      */
     protected void setButtonAndGrid(boolean buttonVisibility, boolean gridVisibility) {
+        backButtonVisible = buttonVisibility;
+        buttonGridVisible = gridVisibility;
         if (!test) {
             back.setVisible(buttonVisibility);
             buttonGrid.setVisible(gridVisibility);
@@ -141,20 +177,16 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
 
     /**
      * Sets both the labels for the page and table title to the values needed for the specific leaderboard type.
-     *
-     * @param texts a Pair of two strings, containing the titles to be set.
      */
-    protected void formatLabels(Pair<String, String> texts) {
+    protected void formatLabels() {
         if (!test) {
             pageTitle.setText(texts.getKey());
-            leaderboardTitle.setText(texts.getValue());
         }
     }
 
-    public void showMainFrame() {
-        mainCtrl.showMainFrame();
-    }
-
+    /**
+     * Redirects the player to play a game of the same type again.
+     */
     public void playAgain() {
         // TODO: implement logic for starting another game
     }
@@ -173,6 +205,7 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
         return type;
     }
 
+
     /**
      * Returns the maximum size of the leaderboard (how many entries to show at max)
      *
@@ -187,11 +220,11 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      * Sets the type of the leaderboard.
      *
      * @param type an integer, one of the following:
-     *        <ul>
-     *            <li><code>LeaderboardCtrl.TYPE_SOLO</code> = 1</li>
-     *            <li><code>LeaderboardCtrl.TYPE_INTERMED</code> = 2</li>
-     *            <li><code>LeaderboardCtrl.TYPE_FINAL</code> = 3</li>
-     *        </ul>
+     *             <ul>
+     *                 <li><code>LeaderboardCtrl.TYPE_SOLO</code> = 1</li>
+     *                 <li><code>LeaderboardCtrl.TYPE_INTERMED</code> = 2</li>
+     *                 <li><code>LeaderboardCtrl.TYPE_FINAL</code> = 3</li>
+     *             </ul>
      */
     protected void setType(int type) {
         this.type = type;
@@ -220,7 +253,7 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
                 if (type == TYPE_SOLO || type == TYPE_FINAL) {
                     backToMainFrame();
                 } else {
-                    mainCtrl.disconnect();
+                    mainCtrl.exitGameChecker(1);
                 }
                 break;
             case M:

@@ -51,6 +51,7 @@ public class LongPollingUtils {
      */
     public void setActive(boolean pollingActive) {
         if (!active && pollingActive) {
+            active = true;
             new Thread(() -> {
                 while (active) {
                     sendPoll();
@@ -94,7 +95,7 @@ public class LongPollingUtils {
                 try {
                     Game game = new ObjectMapper().readValue(response.get("game").asText(), Game.class);
                     mainCtrl.setGame(game);
-                    mainCtrl.startMultiplayerGame();
+                    mainCtrl.startGame(true);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }

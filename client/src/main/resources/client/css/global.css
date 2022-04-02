@@ -15,7 +15,14 @@
 
     -fx-text-fill: white;
     -fx-font-family: 'Roboto Regular', sans-serif;
+}
 
+.root {
+    -fx-background-color: white;
+}
+
+#popUpContainer {
+    -fx-effect: -dropshadow;
 }
 
 #tooltip {
@@ -45,11 +52,6 @@ TextField {
 
     -fx-font-size: 28;
     -fx-focus-color: transparent;
-}
-
-#timerBar {
-    -fx-background-color: -topBarBackgroundColor;
-    -fx-height: 80;
 }
 
 Button {

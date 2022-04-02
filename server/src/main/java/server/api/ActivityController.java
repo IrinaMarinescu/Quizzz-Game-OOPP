@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import server.ActivityFilter;
 import server.database.ActivityRepository;
 import server.services.FileStorageService;
 
@@ -36,17 +37,20 @@ public class ActivityController {
 
     private final ActivityRepository repo;
     private final Random rand;
+    private final ActivityFilter activityFilter;
 
     @Autowired
     private final FileStorageService fileStorageService;
 
-    public ActivityController(ActivityRepository repo, Random random, FileStorageService fileStorageService) {
+    public ActivityController(ActivityRepository repo, Random random, FileStorageService fileStorageService, ActivityFilter activityFilter) {
         this.repo = repo;
         this.rand = random;
         this.totalRecords = this.repo.count();
         this.fileStorageService = fileStorageService;
         fileStorageService.init("images");
+        this.activityFilter = activityFilter;
     }
+
 
     private static boolean nullOrEmpty(String s) {
         return s == null || s.isEmpty();
@@ -123,6 +127,7 @@ public class ActivityController {
      */
     @PostMapping("update")
     public ResponseEntity<Activity> updateActivity(@RequestBody Activity activity) {
+        activityFilter.runningActivityFilter(activity);
         repo.save(activity);
         return ResponseEntity.ok(activity);
     }
@@ -141,6 +146,7 @@ public class ActivityController {
             return ResponseEntity.badRequest().build();
         }
 
+        activityFilter.runningActivityFilter(activity);
         totalRecords++;
         Activity saved = repo.save(activity);
         return ResponseEntity.ok(saved);
@@ -163,6 +169,7 @@ public class ActivityController {
 
         List<Activity> saved = new ArrayList<>();
         for (var activity : activities) {
+            activityFilter.runningActivityFilter(activity);
             saved.add(repo.save(activity));
         }
 
@@ -237,7 +244,7 @@ public class ActivityController {
                     break;
             }
         }
-        return questions;
+        return activityFilter.runningQuestionFilter(questions);
     }
 
     /**

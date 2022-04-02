@@ -46,7 +46,6 @@ public class MyModule implements Module {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(MainFrameCtrl.class).in(Scopes.SINGLETON);
         binder.bind(LeaderboardCtrl.class).in(Scopes.SINGLETON);
-        // TODO: bind lobbyCtrl, countdown screen (?)
         binder.bind(AdminInterfaceCtrl.class).in(Scopes.SINGLETON);
         binder.bind(QuestionFrameCtrl.class).in(Scopes.SINGLETON);
         binder.bind(TimerBarCtrl.class).in(Scopes.SINGLETON);

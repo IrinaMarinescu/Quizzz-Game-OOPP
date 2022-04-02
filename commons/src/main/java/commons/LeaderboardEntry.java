@@ -1,6 +1,5 @@
 package commons;
 
-import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,8 +18,8 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     private long id;
 
     private String name;
-    private Integer score;
-    private Integer gain;
+    private int score;
+    private int gain;
 
     /**
      * Constructor
@@ -58,12 +57,29 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     }
 
     /**
+     * Setter of the score field
+     *
+     * @param score Number of points a player has
+     */
+    public void setScore(int score) {
+        this.gain = score - this.score;
+        this.score = score;
+    }
+
+    /**
+     * Reset the gain
+     */
+    public void resetGain() {
+        gain = 0;
+    }
+
+    /**
      * Getter of score field (as a string)
      *
      * @return Value of score field (cast to a string)
      */
     public String scoreToString() {
-        return score.toString();
+        return Integer.toString(score);
     }
 
     /**
@@ -73,7 +89,7 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
      */
     public String gainToString() {
         if (gain == 0) {
-            return gain.toString();
+            return "";
         }
         return "+" + gain;
     }
@@ -90,21 +106,13 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     }
 
     /**
-     * Generates resultant gain based on it's difference from previous value
+     * Compare names of two LeaderboardEntry objects
      *
-     * @param oldEntries The list of previous values
+     * @param other The LeaderboardEntry which name is compared with
+     * @return Whether two objects has the equal name
      */
-    public void setDifference(List<LeaderboardEntry> oldEntries) {
-        if (oldEntries == null) {
-            gain = 0;
-            return;
-        }
-        for (LeaderboardEntry e : oldEntries) {
-            if (e.getName().equals(name)) {
-                gain = score - e.getScore();
-                return;
-            }
-        }
+    public boolean hasSameName(LeaderboardEntry other) {
+        return this.name.equals(other.getName());
     }
 
     /**
@@ -132,14 +140,4 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     public int hashCode() {
         return Objects.hash(getName(), getScore());
     }
-
-    /**
-     * Setter of the score field
-     *
-     * @param score Number of points a player has
-     */
-    public void setScore(Integer score) {
-        this.score = score;
-    }
-
 }

@@ -1,6 +1,8 @@
 package client.scenes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import client.dependedoncomponents.LeaderboardCtrlDOC;
 import client.dependedoncomponents.MainCtrlDOC;
@@ -23,9 +25,9 @@ class LeaderboardCtrlTest {
     void setUp() {
         leaderboardCtrl = new LeaderboardCtrlDOC(new MainCtrlDOC());
         placeHolderEntries = List.of(
-                new LeaderboardEntry("Someone", 100),
-                new LeaderboardEntry("test", 500),
-                new LeaderboardEntry("Noobmaster69", 20)
+            new LeaderboardEntry("Someone", 100),
+            new LeaderboardEntry("test", 500),
+            new LeaderboardEntry("Noobmaster69", 20)
         );
         leaderboardCtrl.initialize(placeHolderEntries, 4, "final");
     }
@@ -44,14 +46,47 @@ class LeaderboardCtrlTest {
     @Test
     void testEntryLimit() {
         var moreEntries = List.of(
-                new LeaderboardEntry("Someone", 100),
-                new LeaderboardEntry("test", 500),
-                new LeaderboardEntry("Noobmaster69", 20),
-                new LeaderboardEntry("Noobmaster69", 20),
-                new LeaderboardEntry("Noobmaster69", 20),
-                new LeaderboardEntry("Someone", 100)
+            new LeaderboardEntry("Someone", 100),
+            new LeaderboardEntry("test", 500),
+            new LeaderboardEntry("Noobmaster69", 20),
+            new LeaderboardEntry("Noobmaster69", 20),
+            new LeaderboardEntry("Noobmaster69", 20),
+            new LeaderboardEntry("Someone", 100)
         );
         leaderboardCtrl.setEntries(moreEntries);
         assertEquals(leaderboardCtrl.entries.size(), 4);
+    }
+
+    @Test
+    void testTypeSet() {
+        leaderboardCtrl.setLeaderboardType("solo");
+        assertEquals("Global Leaderboard", leaderboardCtrl.texts.getKey());
+    }
+
+    @Test
+    void testShowBack() {
+        leaderboardCtrl.setLeaderboardType("solo");
+        assertTrue(leaderboardCtrl.backButtonVisible);
+        assertFalse(leaderboardCtrl.buttonGridVisible);
+    }
+
+    @Test
+    void testShowGrid() {
+        leaderboardCtrl.setLeaderboardType("final");
+        assertFalse(leaderboardCtrl.backButtonVisible);
+        assertTrue(leaderboardCtrl.buttonGridVisible);
+    }
+
+    @Test
+    void testHideAll() {
+        leaderboardCtrl.setLeaderboardType("intermediate");
+        assertFalse(leaderboardCtrl.backButtonVisible);
+        assertFalse(leaderboardCtrl.buttonGridVisible);
+    }
+
+    @Test
+    void testGetType() {
+        leaderboardCtrl.setType(LeaderboardCtrl.TYPE_INTERMED);
+        assertEquals(LeaderboardCtrl.TYPE_INTERMED, leaderboardCtrl.getType());
     }
 }

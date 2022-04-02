@@ -37,6 +37,8 @@ import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -49,6 +51,7 @@ public class MainCtrl implements MainCtrlRequirements {
 
     public static final int ROUND_TIME = 10;
     public static final int OVERVIEW_TIME = 5;
+    public static final int WAITING_TIME = 5;
     public static final int LEADERBOARD_TIME = 10;
     public static final int TOTAL_ROUNDS = 20;
 
@@ -60,7 +63,9 @@ public class MainCtrl implements MainCtrlRequirements {
     long questionStartTime;
     private boolean doublePoints;
     double questionEndTime;
+    double timeSkipped;
     private int timeoutRoundCheck;
+    private boolean questionAnswered;
     private String currentQuestionType;
     boolean gameOngoing = false;
 
@@ -107,6 +112,12 @@ public class MainCtrl implements MainCtrlRequirements {
     private AddActivityDialogCtrl activityDialogCtrl;
     private Scene activityDialog;
 
+    private WaitingScreenCtrl waitingScreenCtrl;
+    private Node waitingScreen;
+
+    private ExitPopUpCtrl exitPopUpCtrl;
+    private Stage exitCheck;
+
     QuestionRequirements currentQuestionCtrl = null;
 
     /**
@@ -139,7 +150,9 @@ public class MainCtrl implements MainCtrlRequirements {
                            Pair<QuestionOneImageCtrl, Parent> questionOneImage,
                            Pair<InsteadOfQuestionCtrl, Parent> insteadOfQuestion,
                            Pair<FinalScreenCtrl, Parent> finalScreen,
-                           Pair<AddActivityDialogCtrl, Parent> addActivityDialog) {
+                           Pair<AddActivityDialogCtrl, Parent> addActivityDialog,
+                           Pair<WaitingScreenCtrl, Parent> waitingScreen,
+                           Pair<ExitPopUpCtrl, Parent> exitPopUp) {
 
         this.serverUtils = serverUtils;
         this.gameUtils = gameUtils;
@@ -147,11 +160,15 @@ public class MainCtrl implements MainCtrlRequirements {
         this.timeUtils = timeUtils;
 
         this.primaryStage = primaryStage;
+        this.primaryStage.getIcons().add(new Image("client/icons/trophy-solid.png"));
 
         primaryStage.widthProperty().addListener(
-            (obs, oldVal, newVal) -> questionFrameCtrl.resizeTimerBar(newVal.intValue(),
-                oldVal.intValue() - newVal.intValue()));
-        primaryStage.setOnCloseRequest(e -> disconnect());
+            (obs, oldVal, newVal) -> questionFrameCtrl.resizeTimerBar(newVal.doubleValue()));
+
+        primaryStage.setOnCloseRequest(e -> {
+            e.consume();
+            exitGameChecker(1);
+        });
 
         this.mainFrameCtrl = mainFrame.getKey();
         this.mainFrame = new Scene(mainFrame.getValue());
@@ -175,24 +192,43 @@ public class MainCtrl implements MainCtrlRequirements {
 
         this.questionTrueFalseCtrl = questionTrueFalse.getKey();
         this.questionTrueFalse = questionTrueFalse.getValue();
+        this.questionTrueFalse.setCache(true);
 
         this.openQuestionCtrl = openQuestion.getKey();
         this.openQuestion = openQuestion.getValue();
+        this.openQuestion.setCache(true);
 
         this.questionThreePicturesCtrl = questionThreePictures.getKey();
         this.questionThreePictures = questionThreePictures.getValue();
+        this.questionThreePictures.setCache(true);
 
         this.questionOneImageCtrl = questionOneImage.getKey();
         this.questionOneImage = questionOneImage.getValue();
+        this.questionOneImage.setCache(true);
 
         this.insteadOfQuestionCtrl = insteadOfQuestion.getKey();
         this.insteadOfQuestion = insteadOfQuestion.getValue();
+        this.insteadOfQuestion.setCache(true);
 
         this.finalScreenCtrl = finalScreen.getKey();
         this.finalScreen = finalScreen.getValue();
 
         this.activityDialogCtrl = addActivityDialog.getKey();
         this.activityDialog = new Scene(addActivityDialog.getValue());
+
+        this.exitPopUpCtrl = exitPopUp.getKey();
+
+        this.waitingScreenCtrl = waitingScreen.getKey();
+        this.waitingScreen = waitingScreen.getValue();
+
+        exitCheck = new Stage();
+        exitCheck.setScene(new Scene(exitPopUp.getValue()));
+        exitCheck.initOwner(primaryStage);
+        exitCheck.initModality(Modality.WINDOW_MODAL);
+        exitCheck.getScene().setOnKeyPressed(e -> exitPopUpCtrl.keyPressed(e.getCode()));
+        exitCheck.getScene().setFill(Color.TRANSPARENT);
+        exitCheck.initStyle(StageStyle.UNDECORATED);
+        exitCheck.initStyle(StageStyle.TRANSPARENT);
 
         primaryStage.setTitle("Quizzzzz!");
         showMainFrame();
@@ -255,30 +291,41 @@ public class MainCtrl implements MainCtrlRequirements {
      * To be run when a person chooses solo play in the welcome screen (main frame)
      */
     @Override
-    public void startSingleplayerGame() {
-        intermediateLeaderboardShown = false;
-        isMultiplayerGame = false;
-        timeoutRoundCheck = 1;
-        gameOngoing = true;
-        this.game = gameUtils.startSingleplayer();
-        questionFrameCtrl.initializeSingleplayerGame();
-        showQuestionFrame();
-        nextEvent();
-    }
+    public void startGame(boolean isMultiplayerGame) {
+        if (isMultiplayerGame) {
+            questionStartTime = timeUtils.now();
 
-    /**
-     * Starts multiplayer game for all players in the lobby, switch to question frame
-     */
-    @Override
-    public void startMultiplayerGame() {
-        intermediateLeaderboardShown = true;
-        isMultiplayerGame = true;
+            UUID expectedGameId = game.getId();
+            timeUtils.runAfterDelay(() -> {
+                if (expectedGameId.equals(game.getId())) {
+                    nextEvent();
+                    questionFrameCtrl.toggleJokerUsability(true);
+                }
+            }, WAITING_TIME);
+
+            lobbyUtils.setActive(false);
+            gameUtils.setActive("game", false);
+            gameUtils.setActive("features", true);
+            questionFrameCtrl.toggleJokerUsability(false);
+            waitingScreenCtrl.reset();
+            questionFrameCtrl.setCenterContent(waitingScreen, false);
+            questionFrameCtrl.initializeMultiplayerGame(this.game.getPlayers());
+            showQuestionFrame();
+
+            Platform.runLater(() -> {
+                questionFrameCtrl.setRemainingTime(WAITING_TIME - (timeUtils.now() - questionStartTime) / 1000.0);
+            });
+        } else {
+            this.game = gameUtils.startSingleplayer();
+            questionFrameCtrl.initializeSingleplayerGame();
+            showQuestionFrame();
+            nextEvent();
+        }
+
+        intermediateLeaderboardShown = false;
+        this.isMultiplayerGame = isMultiplayerGame;
         timeoutRoundCheck = 1;
         gameOngoing = true;
-        questionFrameCtrl.initializeMultiplayerGame(this.game.getPlayers());
-        lobbyUtils.setActive(false);
-        showQuestionFrame();
-        nextEvent();
     }
 
     /**
@@ -287,7 +334,7 @@ public class MainCtrl implements MainCtrlRequirements {
     public void joinLobby() {
         setLobby(lobbyUtils.joinLobby(this.player));
         lobbyUtils.setActive(true);
-        gameUtils.setActive(true);
+        gameUtils.setActive("game", true);
         showLobbyFrame();
     }
 
@@ -303,7 +350,8 @@ public class MainCtrl implements MainCtrlRequirements {
      * Executes the next event (question, leaderboard, game over)
      */
     private void nextEvent() {
-        game.setPlayers(serverUtils.getUpdatedScores(game.getId()));
+        questionStartTime = timeUtils.now();
+        questionEndTime = questionStartTime + ROUND_TIME * 1000.0;
 
         if (isMultiplayerGame) {
             // The current event is the intermediate leaderboard
@@ -321,21 +369,27 @@ public class MainCtrl implements MainCtrlRequirements {
             // The current event is the final leaderboard; the game is over
             if (game.getRound() == TOTAL_ROUNDS) {
                 gameOngoing = false;
+                questionFrameCtrl.toggleJokerUsability(false);
                 showLeaderboard(game.getPlayers(), 10, "final");
                 return;
             }
-            questionFrameCtrl.setLeaderboardContents(game.getPlayers());
+
+            updateSmallLeaderboard();
         } else if (game.getRound() == TOTAL_ROUNDS) {
             gameOngoing = false;
+            questionFrameCtrl.toggleJokerUsability(false);
             showFinalScreen();
             return;
         }
 
         // The current event is a question
         game.incrementRound();
+        setQuestionTimeouts(ROUND_TIME);
         Platform.runLater(() -> questionFrameCtrl.incrementQuestionNumber());
         questionFrameCtrl.setRemainingTime(ROUND_TIME);
         pointsGained = 0;
+        timeSkipped = 0;
+        questionAnswered = false;
         doublePoints = false;
         Question currentQuestion = game.nextQuestion();
         currentQuestionType = currentQuestion.getQuestionType();
@@ -345,7 +399,6 @@ public class MainCtrl implements MainCtrlRequirements {
             case "trueFalseQuestion":
                 currentQuestionCtrl = questionTrueFalseCtrl;
                 questionNode = questionTrueFalse;
-                this.questionTrueFalse.setOnKeyPressed(e -> questionTrueFalseCtrl.keyPressed(e.getCode()));
                 questionFrameCtrl.setWrongAnswerJoker(false);
                 break;
             case "openQuestion":
@@ -373,11 +426,6 @@ public class MainCtrl implements MainCtrlRequirements {
         questionFrameCtrl.setCenterContent(questionNode, true);
     }
 
-    private void showFinalScreen() {
-        finalScreenCtrl.setPoints(player.getScore());
-        questionFrameCtrl.setCenterContent(finalScreen, false);
-    }
-
     /**
      * Initializes timeouts until events that will happen after question and overview
      *
@@ -391,20 +439,27 @@ public class MainCtrl implements MainCtrlRequirements {
                 return;
             }
 
+            Platform.runLater(() -> {
+                double timeLeft = OVERVIEW_TIME + timeSkipped / 1000.0;
+                questionFrameCtrl.setRemainingTime(timeLeft);
+                timeUtils.runAfterDelay(() -> {
+                    nextEvent();
+                    questionFrameCtrl.toggleJokerUsability(true);
+                }, timeLeft);
+            });
+
             timeoutRoundCheck++;
             currentQuestionCtrl.revealCorrectAnswer();
             Platform.runLater(() -> questionFrameCtrl.addPoints(pointsGained));
             player.setScore(player.getScore() + pointsGained);
-            questionFrameCtrl.tempDisableJokers(OVERVIEW_TIME);
+            questionFrameCtrl.toggleJokerUsability(false);
             serverUtils.sendPointsGained(game.getId(), player, pointsGained);
             if (currentQuestionType.equals("trueFalseQuestion") || currentQuestionType.equals("openQuestion")) {
                 questionFrameCtrl.setWrongAnswerJoker(true);
             }
-
-            Platform.runLater(() -> {
-                questionFrameCtrl.setRemainingTime(OVERVIEW_TIME);
-                timeUtils.runAfterDelay(this::nextEvent, OVERVIEW_TIME);
-            });
+            if (isMultiplayerGame && questionAnswered) {
+                questionFrameCtrl.setWrongAnswerJoker(true);
+            }
         }, delay);
     }
 
@@ -415,6 +470,7 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     @Override
     public void addPoints(long baseScore) {
+        questionAnswered = true;
         if (baseScore != 0) {
             double progress = ((double) (timeUtils.now() - questionStartTime)) / (questionEndTime - questionStartTime);
             pointsGained = (int) (50.0 + 0.5 * (1.0 - progress) * (double) baseScore);
@@ -422,7 +478,10 @@ public class MainCtrl implements MainCtrlRequirements {
                 pointsGained *= 2;
             }
         }
-        if (!isMultiplayerGame) {
+
+        if (isMultiplayerGame) {
+            questionFrameCtrl.setWrongAnswerJoker(false);
+        } else {
             setQuestionTimeouts(0.0);
         }
     }
@@ -441,10 +500,15 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     @Override
     public void halveTime() {
-        double timeUntilRoundEnd = (questionEndTime - timeUtils.now()) / 2.0;
-        questionEndTime -= timeUntilRoundEnd;
+        double halvedRoundTime = (questionEndTime - timeUtils.now()) / 2.0;
+        timeSkipped += halvedRoundTime;
+        questionEndTime -= halvedRoundTime;
         questionFrameCtrl.halveRemainingTime();
-        setQuestionTimeouts(timeUntilRoundEnd / 1000.0);
+        setQuestionTimeouts(halvedRoundTime / 1000.0);
+    }
+
+    public void displayNewEmoji(String name, String reaction) {
+        questionFrameCtrl.displayNewEmoji(name, reaction);
     }
 
     /**
@@ -455,14 +519,6 @@ public class MainCtrl implements MainCtrlRequirements {
         currentQuestionCtrl.removeIncorrectAnswer();
     }
 
-    /**
-     * Disconnects the player from a game
-     */
-    public void disconnect() {
-        // TODO stop long polling
-        serverUtils.disconnect(game.getId(), player);
-        showMainFrame();
-    }
 
     /**
      * Shows leaderboard
@@ -482,6 +538,10 @@ public class MainCtrl implements MainCtrlRequirements {
 
     public void halveRemainingTime() {
         questionFrameCtrl.halveRemainingTime();
+    }
+
+    public void updateSmallLeaderboard() {
+        questionFrameCtrl.setLeaderboardContents(game.getPlayers());
     }
 
     /**
@@ -505,7 +565,6 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     public void showLobbyFrame() {
         primaryStage.setScene(lobbyFrame);
-
     }
 
     /**
@@ -516,7 +575,57 @@ public class MainCtrl implements MainCtrlRequirements {
     }
 
     public void toggleModalVisibility() {
-        // TODO toggle visibility of modal ("do you really want to disconnect?")
-        // TODO inform player that they are runing game for others
+
+        if (exitCheck.isFocused()) {
+            exitCheck.close();
+        } else {
+            exitCheck.showAndWait();
+        }
+    }
+
+    /**
+     * Shows final screen frame (after playing the game)
+     */
+    private void showFinalScreen() {
+        finalScreenCtrl.setPoints(player.getScore());
+        questionFrameCtrl.setCenterContent(finalScreen, false);
+    }
+
+    public void exitGameChecker(int type) {
+        exitPopUpCtrl.setType(type);
+        toggleModalVisibility();
+    }
+
+    /**
+     * Disconnects the player from a game
+     */
+    public void disconnect(int type, String buttonID) {
+        // TODO stop long polling
+        if (type == 0 && buttonID.equals("yesButton")) {
+            gameOngoing = false;
+            serverUtils.disconnect(game.getId(), player);
+            toggleModalVisibility();
+            showMainFrame();
+        }
+        if (type == 0 && buttonID.equals("noButton")) {
+            toggleModalVisibility();
+        }
+        if (type == 1 && buttonID.equals("yesButton")) {
+            gameOngoing = false;
+            toggleModalVisibility();
+            primaryStage.close();
+        }
+        if (type == 1 && buttonID.equals("noButton")) {
+            toggleModalVisibility();
+        }
+        if (type == 2 && buttonID.equals("yesButton")) {
+            gameOngoing = false;
+            serverUtils.disconnect(game.getId(), player);
+            toggleModalVisibility();
+            showMainFrame();
+        }
+        if (type == 2 && buttonID.equals("noButton")) {
+            toggleModalVisibility();
+        }
     }
 }

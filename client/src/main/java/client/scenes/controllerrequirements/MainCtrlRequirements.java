@@ -8,17 +8,9 @@ public interface MainCtrlRequirements {
     /**
      * Is called when a player chooses disconnects from the game
      */
-    void disconnect();
+    void disconnect(int type, String buttonID);
 
-    /**
-     *
-     */
-    void startSingleplayerGame();
-
-    /**
-     * Called by LobbyCtrl
-     */
-    void startMultiplayerGame();
+    void startGame(boolean isMultiplayerGame);
 
     /**
      * The score that the user would get if they answer INSTANTLY
