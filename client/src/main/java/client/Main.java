@@ -127,8 +127,7 @@ public class Main extends Application {
 
         var exitPopUp = FXML.load(ExitPopUpCtrl.class, "client/scenes/ExitPopUp.fxml");
 
-        var addActivityDialog = FXML.load(AddActivityDialogCtrl.class, "client/scenes/AddActivityDialog.fxml",
-                       "client/css/adminPage.css");
+        var addActivityDialog = FXML.load(AddActivityDialogCtrl.class, "client/scenes/AddActivityDialog.fxml");
 
         mainCtrl.initialize(serverUtils, gameUtils,
             lobbyUtils, timeUtils,
