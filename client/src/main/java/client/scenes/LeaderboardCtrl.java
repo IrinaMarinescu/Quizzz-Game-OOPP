@@ -132,7 +132,7 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      *     <li>bronze for 3rd place</li>
      * </ul>
      *
-     * @param entry a LeaderboardEntry instance, with the player to add on the bar chart.
+     * @param entry  a LeaderboardEntry instance, with the player to add on the bar chart.
      * @param colour the colour of the bar
      */
     private void generateSerie(LeaderboardEntry entry, String colour) {
@@ -141,7 +141,7 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
 
         barChart.getData().add(serie);
 
-        for (XYChart.Data<String, Integer> data : serie.getData())  {
+        for (XYChart.Data<String, Integer> data : serie.getData()) {
             data.getNode().setStyle("-fx-bar-fill: " + colour + ";");
         }
     }
@@ -159,9 +159,12 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      */
     protected String getMedal(int place) {
         switch (place) {
-            case 1: return gold;
-            case 2: return silver;
-            default: return bronze;
+            case 1:
+                return gold;
+            case 2:
+                return silver;
+            default:
+                return bronze;
         }
     }
 
@@ -206,7 +209,6 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
 
     /**
      * Sets both the labels for the page and table title to the values needed for the specific leaderboard type.
-     *
      */
     protected void formatLabels() {
         if (!test) {
@@ -235,7 +237,6 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
         return type;
     }
 
-
     /**
      * Returns the maximum size of the leaderboard (how many entries to show at max)
      *
@@ -244,7 +245,6 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     public int getMaxSize() {
         return maxSize;
     }
-
 
     /**
      * Sets the type of the leaderboard.
@@ -259,7 +259,6 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     protected void setType(int type) {
         this.type = type;
     }
-
 
     /**
      * Sets the maximum size of the leaderboard

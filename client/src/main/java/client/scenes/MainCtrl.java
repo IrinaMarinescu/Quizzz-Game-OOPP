@@ -46,8 +46,8 @@ import javafx.util.Pair;
  */
 public class MainCtrl implements MainCtrlRequirements {
 
-    public static final int ROUND_TIME = 10;
-    public static final int OVERVIEW_TIME = 5;
+    public static final int ROUND_TIME = 1;
+    public static final int OVERVIEW_TIME = 1;
     public static final int LEADERBOARD_TIME = 10;
     public static final int TOTAL_ROUNDS = 20;
 
@@ -267,7 +267,7 @@ public class MainCtrl implements MainCtrlRequirements {
      */
     @Override
     public void startMultiplayerGame() {
-        intermediateLeaderboardShown = true;
+        intermediateLeaderboardShown = false;
         isMultiplayerGame = true;
         timeoutRoundCheck = 1;
         gameOngoing = true;
@@ -302,16 +302,15 @@ public class MainCtrl implements MainCtrlRequirements {
      * Executes the next event (question, leaderboard, game over)
      */
     private void nextEvent() {
-        game.setPlayers(serverUtils.getUpdatedScores(game.getId()));
-
         if (isMultiplayerGame) {
             // The current event is the intermediate leaderboard
             if (game.getRound() == TOTAL_ROUNDS / 2 && !intermediateLeaderboardShown) {
                 intermediateLeaderboardShown = true;
-                showLeaderboard(game.getPlayers(), 10, "intermediate");
+                Platform.runLater(() -> showLeaderboard(game.getPlayers(), 10, "intermediate"));
+                questionFrameCtrl.setRemainingTime(LEADERBOARD_TIME);
 
                 timeUtils.runAfterDelay(() -> {
-                    showQuestionFrame();
+                    Platform.runLater(this::showQuestionFrame);
                     nextEvent();
                 }, LEADERBOARD_TIME);
                 return;
@@ -320,10 +319,9 @@ public class MainCtrl implements MainCtrlRequirements {
             // The current event is the final leaderboard; the game is over
             if (game.getRound() == TOTAL_ROUNDS) {
                 gameOngoing = false;
-                showLeaderboard(game.getPlayers(), 10, "final");
+                Platform.runLater(() -> showLeaderboard(game.getPlayers(), 10, "final"));
                 return;
             }
-            questionFrameCtrl.setLeaderboardContents(game.getPlayers());
         } else if (game.getRound() == TOTAL_ROUNDS) {
             gameOngoing = false;
             showFinalScreen();
