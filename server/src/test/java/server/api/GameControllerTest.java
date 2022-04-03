@@ -22,8 +22,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.ResponseEntity;
 import server.database.ActivityRepository;
 import server.dependedoncomponents.ActivityControllerDOC;
 import server.dependedoncomponents.LobbyCtrlDOC;
@@ -49,8 +49,7 @@ public class GameControllerTest {
     void setup() {
         Activity activity = new Activity("id", "abc/abc.png", "Hello world?", 123, "www.google.com");
         Question question = new Question(List.of(activity), "world", 0, "TrueFalse");
-        ActivityControllerDOC activityControllerDOC =
-            new ActivityControllerDOC(repo, new RandomDOC(0), fileStorageService, question);
+        activityControllerDOC = new ActivityControllerDOC(repo, new RandomDOC(0), fileStorageService, question);
         lobbyCtrlDOC = new LobbyCtrlDOC();
 
         sut = new GameController(activityControllerDOC, lobbyCtrlDOC);
@@ -58,7 +57,7 @@ public class GameControllerTest {
 
     @Test
     void constructor() {
-        assertEquals(activityControllerDOC, sut.activityController);
+        assertSame(activityControllerDOC, sut.activityController);
         assertTrue(sut.games instanceof HashMap);
     }
 
