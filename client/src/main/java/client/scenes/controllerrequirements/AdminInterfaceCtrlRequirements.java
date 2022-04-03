@@ -6,7 +6,7 @@ import java.util.List;
 public interface AdminInterfaceCtrlRequirements {
 
     /**
-     * Initializes the page with a set list of activities.
+     * Populates the admin interface with the given list of activities.
      *
      * @param activities the list of activities to populate the table with.
      */
@@ -33,4 +33,17 @@ public interface AdminInterfaceCtrlRequirements {
      * Issues a delete to an activity in the database, based on the activity the user has selected from the table.
      */
     void deleteSelectedActivity();
+
+    /**
+     * Opens a new dialog which prompts the user to enter the details for a new activity.
+    */
+    void showAddDialog();
+
+    /**
+     * Adds a new activity to the table.
+     * Happens after the activity is added from the dialog.
+     *
+     * @param activity the activity to add to the table
+     */
+    void addActivityToTable(Activity activity);
 }

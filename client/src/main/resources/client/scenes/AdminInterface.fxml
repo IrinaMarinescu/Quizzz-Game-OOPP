@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -20,8 +20,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
-<AnchorPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@../css/adminPage.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminInterfaceCtrl">
+<AnchorPane fx:id="root" prefHeight="900.0" prefWidth="1600.0" stylesheets="@../css/adminPage.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.AdminInterfaceCtrl">
     <children>
         <BorderPane layoutX="-1.0" layoutY="-1.0" prefHeight="900.0" prefWidth="1600.0">
             <top>
@@ -66,7 +65,7 @@
                                 <Insets left="20.0" top="20.0" />
                             </VBox.margin>
                         </Button>
-                        <TableView fx:id="activityTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720" prefWidth="700">
+                        <TableView fx:id="activityTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="700">
                             <columns>
                                 <TableColumn fx:id="activityId" editable="false" prefWidth="300.0" sortable="false" text="ID" />
                                 <TableColumn fx:id="activityTitle" editable="false" prefWidth="420.0" sortable="false" text="Title" />
@@ -78,6 +77,21 @@
                         <Tooltip id="tooltip" text="Click on this activity to update or delete it" />
                      </tooltip>
                         </TableView>
+                  <GridPane>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="713.7547459342635" minWidth="10.0" prefWidth="238.09436372490137" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="713.7547459342635" minWidth="10.0" prefWidth="284.2830136368056" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="384.999985192076" minWidth="10.0" prefWidth="256.92453813400107" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Button onMouseClicked="#showAddDialog" mnemonicParsing="false" prefHeight="31.0" prefWidth="283.0" text="add new activity" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     </children>
+                  </GridPane>
                     </children>
                 </VBox>
 

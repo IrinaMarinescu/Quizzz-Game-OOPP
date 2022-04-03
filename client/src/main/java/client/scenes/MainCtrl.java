@@ -109,6 +109,9 @@ public class MainCtrl implements MainCtrlRequirements {
     private FinalScreenCtrl finalScreenCtrl;
     private Node finalScreen;
 
+    private AddActivityDialogCtrl activityDialogCtrl;
+    private Scene activityDialog;
+
     private WaitingScreenCtrl waitingScreenCtrl;
     private Node waitingScreen;
 
@@ -147,6 +150,7 @@ public class MainCtrl implements MainCtrlRequirements {
                            Pair<QuestionOneImageCtrl, Parent> questionOneImage,
                            Pair<InsteadOfQuestionCtrl, Parent> insteadOfQuestion,
                            Pair<FinalScreenCtrl, Parent> finalScreen,
+                           Pair<AddActivityDialogCtrl, Parent> addActivityDialog,
                            Pair<WaitingScreenCtrl, Parent> waitingScreen,
                            Pair<ExitPopUpCtrl, Parent> exitPopUp) {
 
@@ -209,6 +213,9 @@ public class MainCtrl implements MainCtrlRequirements {
         this.finalScreenCtrl = finalScreen.getKey();
         this.finalScreen = finalScreen.getValue();
 
+        this.activityDialogCtrl = addActivityDialog.getKey();
+        this.activityDialog = new Scene(addActivityDialog.getValue());
+
         this.exitPopUpCtrl = exitPopUp.getKey();
 
         this.waitingScreenCtrl = waitingScreen.getKey();
@@ -228,6 +235,16 @@ public class MainCtrl implements MainCtrlRequirements {
 
         this.game = new Game();
         primaryStage.show();
+    }
+
+    public void showAddActivityDialog(Stage stage) {
+        activityDialogCtrl.reset(stage);
+        stage.setScene(activityDialog);
+        stage.setFullScreen(false);
+        stage.initOwner(primaryStage);
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
     }
 
     public ServerUtils getServerUtils() {

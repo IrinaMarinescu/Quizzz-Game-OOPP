@@ -96,8 +96,8 @@ public class OpenQuestionCtrl implements QuestionRequirements {
             Platform.runLater(() -> entryField.requestFocus());
         });
 
-        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
-            + question.getActivities().get(0).imagePath;
+        String imagePath = mainCtrl.getServerUtils().getServerIP() + "api/activities/image/"
+            + question.getActivities().get(0).id;
         Image image = new Image(imagePath, 480, 500, true, false);
         imageField.setImage(image);
     }

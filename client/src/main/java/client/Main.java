@@ -18,6 +18,7 @@ package client;
 
 import static com.google.inject.Guice.createInjector;
 
+import client.scenes.AddActivityDialogCtrl;
 import client.scenes.AdminInterfaceCtrl;
 import client.scenes.ExitPopUpCtrl;
 import client.scenes.FinalScreenCtrl;
@@ -126,6 +127,8 @@ public class Main extends Application {
 
         var exitPopUp = FXML.load(ExitPopUpCtrl.class, "client/scenes/ExitPopUp.fxml");
 
+        var addActivityDialog = FXML.load(AddActivityDialogCtrl.class, "client/scenes/AddActivityDialog.fxml");
+
         mainCtrl.initialize(serverUtils, gameUtils,
             lobbyUtils, timeUtils,
             primaryStage, mainFrame,
@@ -133,6 +136,7 @@ public class Main extends Application {
             adminInterface, questionFrame,
             questionTrueFalse, openQuestion,
             questionThreePictures, questionOneImage,
-            insteadOfQuestion, finalScreen, waitingScreen, exitPopUp);
+            insteadOfQuestion, finalScreen,
+            addActivityDialog, waitingScreen, exitPopUp);
     }
 }
