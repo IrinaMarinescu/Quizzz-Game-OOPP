@@ -33,7 +33,6 @@ public class GameController {
 
     private final ActivityController activityController;
     private final LobbyController lobbyController;
-    private final LongPollingController longPollingController;
 
     /**
      * Set up an empty game map, activityController and lobbyController, so it's possible to call methods from there
@@ -41,12 +40,10 @@ public class GameController {
      * @param activityController ActivityController object
      * @param lobbyController    LobbyController object
      */
-    public GameController(ActivityController activityController, LobbyController lobbyController,
-                          LongPollingController longPollingController) {
+    public GameController(ActivityController activityController, LobbyController lobbyController) {
         games = new HashMap<>();
         this.activityController = activityController;
         this.lobbyController = lobbyController;
-        this.longPollingController = longPollingController;
     }
 
     /**

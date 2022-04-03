@@ -101,4 +101,11 @@ public class Game {
             }
         }
     }
+
+    /**
+     * Sets the id of the game to null, effectively disabling all features that interact the game
+     */
+    public void terminate() {
+        id = null;
+    }
 }

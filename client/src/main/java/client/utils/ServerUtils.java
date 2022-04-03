@@ -19,7 +19,6 @@ package client.utils;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import commons.Activity;
-import commons.Game;
 import commons.LeaderboardEntry;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -113,15 +112,6 @@ public class ServerUtils {
             .request(APPLICATION_JSON) //
             .accept(APPLICATION_JSON) //
             .post(Entity.entity(entry, APPLICATION_JSON), LeaderboardEntry.class);
-    }
-
-    public Game getGame() {
-        // TODO make request to server to get game object
-        return null;
-    }
-
-    public void sendPointsGained(UUID gameId, LeaderboardEntry player, int pointsGained) {
-        // TODO send to server the number of points that have been gained
     }
 
     public void disconnect(UUID gameId, LeaderboardEntry player) {

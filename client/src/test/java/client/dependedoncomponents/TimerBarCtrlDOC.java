@@ -20,4 +20,9 @@ public class TimerBarCtrlDOC extends TimerBarCtrl implements SupportsLogging {
     public void halveRemainingTime() {
         log("halve");
     }
+
+    @Override
+    public void resize(double value) {
+        log("resize" + value);
+    }
 }

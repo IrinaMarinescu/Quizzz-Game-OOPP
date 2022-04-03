@@ -28,7 +28,6 @@ import client.scenes.questioncontrollers.OpenQuestionCtrl;
 import client.scenes.questioncontrollers.QuestionOneImageCtrl;
 import client.scenes.questioncontrollers.QuestionThreePicturesCtrl;
 import client.scenes.questioncontrollers.QuestionTrueFalseCtrl;
-import client.utils.LongPollingUtils;
 import client.utils.ServerUtils;
 import client.utils.TimeUtils;
 import com.google.inject.Binder;
@@ -59,7 +58,5 @@ public class MyModule implements Module {
          * **/
         binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
         binder.bind(TimeUtils.class).in(Scopes.SINGLETON);
-        binder.bind(LongPollingUtils.class).in(Scopes.SINGLETON);
-
     }
 }

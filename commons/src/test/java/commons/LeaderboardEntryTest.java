@@ -1,6 +1,7 @@
 package commons;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -29,6 +30,18 @@ class LeaderboardEntryTest {
     @Test
     void getScore() {
         assertSame(24, sut.getScore());
+    }
+
+    @Test
+    void gainToStringZero() {
+        assertEquals("", sut.gainToString());
+    }
+
+    @Test
+    void setScore() {
+        sut.setScore(40);
+        assertSame(40, sut.getScore());
+        assertEquals("+16", sut.gainToString());
     }
 
     @Test
@@ -64,6 +77,12 @@ class LeaderboardEntryTest {
         assertNotEquals(sorted, unsorted);
         assertEquals(sorted.get(0), unsorted.get(1));
         assertEquals(sorted.get(1), unsorted.get(0));
+    }
+
+    @Test
+    void hasSameName() {
+        assertTrue(sut.hasSameName(new LeaderboardEntry("James", 123)));
+        assertFalse(sut.hasSameName(new LeaderboardEntry("M", 123)));
     }
 
     @Test

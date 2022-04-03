@@ -25,4 +25,19 @@ public class MainCtrlDOC extends MainCtrl implements SupportsLogging {
     public void startGame(boolean isMultiplayerGame) {
         log("game");
     }
+
+    @Override
+    public String getUsername() {
+        return "testName";
+    }
+
+    @Override
+    public void exitGameChecker(int type) {
+        log("exitChecker");
+    }
+
+    @Override
+    public void showMainFrame() {
+        log("mainFrame");
+    }
 }

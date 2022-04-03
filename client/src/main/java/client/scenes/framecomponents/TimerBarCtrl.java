@@ -42,15 +42,13 @@ public class TimerBarCtrl {
         this.timeUtils = timeUtils;
 
         animation = new Timeline(
-            new KeyFrame(
-                Duration.ZERO,
-                new KeyValue(timerBar.progressProperty(), 0)
-            ),
+            new KeyFrame(Duration.ZERO),
             new KeyFrame(
                 Duration.ZERO,
                 new KeyValue(timerBar.progressProperty(), 1)
             )
         );
+        setAnimationLength(0.0);
         animation.setOnFinished(event -> animationPlaying = false);
     }
 
@@ -62,11 +60,7 @@ public class TimerBarCtrl {
     public void setRemainingTime(double seconds) {
         timerBar.getStyleClass().remove("fast");
 
-        animation.getKeyFrames().set(0, new KeyFrame(
-            Duration.seconds(seconds),
-            new KeyValue(timerBar.progressProperty(), 0)
-        ));
-
+        setAnimationLength(seconds);
         animationPlaying = true;
         totalProgress = 0.0;
         currentAnimationLength = seconds * 1000;
@@ -101,11 +95,7 @@ public class TimerBarCtrl {
 
         totalProgress += (now() - currentAnimationStartTime) / currentAnimationLength;
         currentAnimationLength /= 2.0;
-
-        animation.getKeyFrames().set(0, new KeyFrame(
-            Duration.millis(currentAnimationLength),
-            new KeyValue(timerBar.progressProperty(), 0)
-        ));
+        setAnimationLength(currentAnimationLength / 1000.0);
 
         playAnimation();
     }
@@ -119,5 +109,17 @@ public class TimerBarCtrl {
         if (newWidth >= 1600.0) {
             timerBar.setPrefWidth(newWidth);
         }
+    }
+
+    /**
+     * Sets the length of the timer bar animation
+     *
+     * @param seconds The length of the animation
+     */
+    void setAnimationLength(double seconds) {
+        animation.getKeyFrames().set(0, new KeyFrame(
+            Duration.seconds(seconds),
+            new KeyValue(timerBar.progressProperty(), 0)
+        ));
     }
 }

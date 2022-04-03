@@ -67,7 +67,7 @@ public class MainCtrl implements MainCtrlRequirements {
     private int timeoutRoundCheck;
     private boolean questionAnswered;
     private String currentQuestionType;
-    boolean gameOngoing = false;
+    public boolean gameOngoing = false;
 
     private ServerUtils serverUtils;
     private GameUtils gameUtils;
@@ -226,6 +226,7 @@ public class MainCtrl implements MainCtrlRequirements {
         primaryStage.setTitle("Quizzzzz!");
         showMainFrame();
 
+        this.game = new Game();
         primaryStage.show();
     }
 
@@ -333,6 +334,10 @@ public class MainCtrl implements MainCtrlRequirements {
      * Executes the next event (question, leaderboard, game over)
      */
     private void nextEvent() {
+        if (game.getId() == null) {
+            return;
+        }
+
         questionStartTime = timeUtils.now();
         questionEndTime = questionStartTime + ROUND_TIME * 1000.0;
 
@@ -415,6 +420,10 @@ public class MainCtrl implements MainCtrlRequirements {
      * @param delay The time until the end of the question
      */
     void setQuestionTimeouts(double delay) {
+        if (game.getId() == null) {
+            return;
+        }
+
         int expectedRound = game.getRound();
         UUID expectedGame = game.getId();
         timeUtils.runAfterDelay(() -> {
@@ -436,7 +445,6 @@ public class MainCtrl implements MainCtrlRequirements {
             Platform.runLater(() -> questionFrameCtrl.addPoints(pointsGained));
             player.setScore(player.getScore() + pointsGained);
             questionFrameCtrl.toggleJokerUsability(false);
-            serverUtils.sendPointsGained(game.getId(), player, pointsGained);
             if (currentQuestionType.equals("trueFalseQuestion") || currentQuestionType.equals("openQuestion")) {
                 questionFrameCtrl.setWrongAnswerJoker(true);
             }
@@ -493,7 +501,7 @@ public class MainCtrl implements MainCtrlRequirements {
     /**
      * Calls questionFrameCtrl to display an emoji chosen by a player
      *
-     * @param name the name of the player who clicked an emoji
+     * @param name     the name of the player who clicked an emoji
      * @param reaction the chosen emoji
      */
     public void displayNewEmoji(String name, String reaction) {
@@ -503,7 +511,7 @@ public class MainCtrl implements MainCtrlRequirements {
     /**
      * Calls questionFrameCtrl to display a joker chosen by a player
      *
-     * @param name the name of the player who used a joker
+     * @param name  the name of the player who used a joker
      * @param joker the chosen joker
      */
     public void displayNewJoker(String name, String joker) {
@@ -517,7 +525,6 @@ public class MainCtrl implements MainCtrlRequirements {
     public void eliminateWrongAnswer() {
         currentQuestionCtrl.removeIncorrectAnswer();
     }
-
 
     /**
      * Shows leaderboard
@@ -533,10 +540,6 @@ public class MainCtrl implements MainCtrlRequirements {
 
     public String getUsername() {
         return player.getName();
-    }
-
-    public void halveRemainingTime() {
-        questionFrameCtrl.halveRemainingTime();
     }
 
     public void updateSmallLeaderboard() {
@@ -601,7 +604,9 @@ public class MainCtrl implements MainCtrlRequirements {
     public void disconnect(int type, String buttonID) {
         // TODO stop long polling
         if (type == 0 && buttonID.equals("yesButton")) {
+            game.terminate();
             gameOngoing = false;
+
             serverUtils.disconnect(game.getId(), player);
             toggleModalVisibility();
             showMainFrame();
@@ -610,6 +615,7 @@ public class MainCtrl implements MainCtrlRequirements {
             toggleModalVisibility();
         }
         if (type == 1 && buttonID.equals("yesButton")) {
+            game.terminate();
             gameOngoing = false;
             toggleModalVisibility();
             primaryStage.close();
@@ -618,6 +624,7 @@ public class MainCtrl implements MainCtrlRequirements {
             toggleModalVisibility();
         }
         if (type == 2 && buttonID.equals("yesButton")) {
+            game.terminate();
             gameOngoing = false;
             serverUtils.disconnect(game.getId(), player);
             toggleModalVisibility();
