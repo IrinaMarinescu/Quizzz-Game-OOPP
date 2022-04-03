@@ -10,3 +10,19 @@ Button {
 
     -fx-focus-color: transparent;
 }
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.data0.chart-bar {
+    -fx-background-color: gold;
+}
+
+.data1.chart-bar {
+    -fx-background-color: silver;
+}
+
+.data2.chart-bar {
+    -fx-background-color: chocolate;
+}

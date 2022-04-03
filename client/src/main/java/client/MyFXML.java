@@ -43,19 +43,14 @@ public class MyFXML {
      *
      * @param c          The controller class representation of the node of which an instance is to be loaded
      * @param pathToFXML The relative path to the FXML file of this node
-     * @param pathToCSS  The relative path to the CSS file of this node (passing null as an argument will apply no CSS)
      * @param <T>        The controller of the node that is returned
      * @return A pair containing the controller and the node corresponding to the provided FXML file
      */
-    public <T> Pair<T, Parent> load(Class<T> c, String pathToFXML, String pathToCSS) {
+    public <T> Pair<T, Parent> load(Class<T> c, String pathToFXML) {
         try {
             URL FXMLLocation = MyFXML.class.getClassLoader().getResource(pathToFXML);
             var loader = new FXMLLoader(FXMLLocation, null, null, new MyFactory(), StandardCharsets.UTF_8);
             Parent parent = loader.load();
-
-            if (pathToCSS != null) {
-                parent.getStylesheets().add(pathToCSS);
-            }
 
             T ctrl = loader.getController();
             return new Pair<>(ctrl, parent);

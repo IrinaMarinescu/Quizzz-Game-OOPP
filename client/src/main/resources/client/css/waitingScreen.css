@@ -1,0 +1,8 @@
+@import 'global.css';
+
+Button {
+    -fx-pref-height: 200;
+    -fx-pref-width: 450;
+    -fx-background-color: -lightBlue;
+    -fx-font-size: 96;
+}

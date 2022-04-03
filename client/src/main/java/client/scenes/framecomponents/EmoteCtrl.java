@@ -64,7 +64,7 @@ public class EmoteCtrl {
             return;
         }
 
-        var emoteContainer = loader.load(EmoteContainerCtrl.class, "client/scenes/EmoteContainer.fxml", null);
+        var emoteContainer = loader.load(EmoteContainerCtrl.class, "client/scenes/EmoteContainer.fxml");
         emoteContainer.getKey().initialize(name, pathToImage);
 
         Platform.runLater(() -> {
