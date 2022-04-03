@@ -20,11 +20,20 @@ public interface AddActivityDialogCtrlRequirements {
     void reset(Stage stage);
 
     /**
-     * Sets the error text area visible with a given text.
+     * Sets the feedback text area visible with a given text,
+     * as an error.
      *
-     * @param text the text to show in the error area.
+     * @param text the text to show in the feedback area.
      */
     void showErrorText(String text);
+
+    /**
+     * Sets the feedback text area visible with a given text,
+     * as a success message.
+     *
+     * @param text the text to show in the feedback area.
+     */
+    void showSuccessText(String text);
 
     /**
      * Opens a file chooser window to prompt the user to upload an image.

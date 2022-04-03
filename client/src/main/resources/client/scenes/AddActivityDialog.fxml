@@ -43,7 +43,7 @@
                   <TextField fx:id="activityTitle" promptText="activity title" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextField fx:id="activityConsumption" promptText="activity consumption (in Wh)" layoutX="19.0" layoutY="44.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <TextField fx:id="activitySource" promptText="activity source" layoutX="19.0" layoutY="168.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <Text fx:id="errorText" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Some error here" textAlignment="CENTER" wrappingWidth="414.7756824493408" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                  <Text fx:id="feedbackText" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Some error here" textAlignment="CENTER" wrappingWidth="414.7756824493408" GridPane.columnIndex="1" GridPane.rowIndex="5">
                      <font>
                         <Font size="16.0" />
                      </font>

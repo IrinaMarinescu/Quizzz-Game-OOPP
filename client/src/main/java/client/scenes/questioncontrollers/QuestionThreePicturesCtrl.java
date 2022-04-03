@@ -10,7 +10,6 @@ import java.util.stream.IntStream;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -116,8 +115,8 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
     }
 
     private void placeImage(int i) {
-        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
-                + question.getActivities().get(i).imagePath;
+        String imagePath = mainCtrl.getServerUtils().getServerIP() + "api/activities/image/"
+                + question.getActivities().get(i).id;
         Image image = new Image(imagePath, 480, 500, true, false);
         switch (i) {
             case 0:

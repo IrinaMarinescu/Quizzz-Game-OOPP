@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -32,7 +33,7 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
     @FXML
     private TextField activitySource;
     @FXML
-    private Text errorText;
+    private Text feedbackText;
     @FXML
     private ImageView activityImage;
 
@@ -68,17 +69,43 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
      */
     public void reset(Stage stage) {
         this.stage = stage;
-        errorText.setVisible(false);
+        feedbackText.setVisible(false);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param text the text to show in the error area.
+     * @param text the text to show in the feedback area.
      */
     public void showErrorText(String text) {
-        errorText.setText(text);
-        errorText.setVisible(true);
+        showText(text, true);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param text the text to show in the feedback area.
+     */
+    public void showSuccessText(String text) {
+        showText(text, false);
+    }
+
+    /**
+     * Internal helper method that shows the feedback text area with
+     * a given text and a specific colour.
+     *
+     * @param text the text to show in the feedback area.
+     * @param error a boolean value, indicating whether the text is an error or not.
+     */
+    protected void showText(String text, boolean error) {
+        feedbackText.setText(text);
+        feedbackText.setVisible(true);
+        if (error) {
+            feedbackText.setFill(Color.RED);
+        } else {
+            feedbackText.setFill(Color.GREEN);
+        }
     }
 
     /**
@@ -123,12 +150,13 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
         if (file == null) {
             throw new InvalidDataException("Invalid file!");
         }
-        boolean equalsOne = false;
+
         Optional<String> extension = getExtension(file.getName());
         if (extension.isEmpty()) {
             throw new InvalidDataException("The file must have an extension!");
         }
 
+        boolean equalsOne = false;
         for (String s : acceptedExtensions) {
             if (s.equalsIgnoreCase(extension.get())) {
                 equalsOne = true;
@@ -171,7 +199,7 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
             validateFormData();
             Activity newActivity =
                 new Activity(
-                    activityId.getText(), createPath(activityId.getText()),
+                    activityId.getText(), createPath(activityId.getText(), uploadedImage),
                     activityTitle.getText(), Long.parseLong(activityConsumption.getText()),
                     activitySource.getText()
                 );
@@ -179,15 +207,28 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
             boolean success = serverUtils.addActivity(newActivity, uploadedImage);
             if (success) {
                 adminInterfaceCtrl.addActivityToTable(newActivity);
-                showErrorText("Activity was added successfully!");
+                showSuccessText("Activity was added successfully!");
+
+                resetActivityFields();
             }
         } catch (Exception e) {
             showErrorText(e.getMessage());
         }
     }
 
-    public void validateFormData() throws InvalidDataException {
-        validateFormDataHelper(activityId.getText());
+    /**
+     * Internal helper method. Resets all the fields after adding a new activity.
+     */
+    private void resetActivityFields() {
+        activityId.setText("");
+        activityTitle.setText("");
+        activityConsumption.setText("");
+        activitySource.setText("");
+        activityImage.setImage(
+            new Image(
+                "https://png.pngtree.com/png-vector/20210604/ourmid/pngtree-gray-network-placeholder-png-image_3416659.jpg",
+                270, 200, false, false)
+        );
     }
 
     /**
@@ -196,7 +237,29 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
      * @throws InvalidDataException exception thrown if any of the fields are not valid
      * (either an already existing ID was written, or no image was uploaded)
      */
-    public void validateFormDataHelper(String id) throws InvalidDataException {
+    public void validateFormData() throws InvalidDataException {
+        validateFormDataHelper(activityId.getText(), activityConsumption.getText());
+    }
+
+    /**
+     * Internal helper method that helps with form data validation.
+     *
+     * @param id the id of the activity to validate
+     * @param consumption the consumption of the activity to validate
+     * @throws InvalidDataException exception thrown if no image was
+     * uploaded, the id is not alphanumeric or the consumption is
+     * invalid (not an integer, a negative number, etc.)
+     */
+    protected void validateFormDataHelper(String id, String consumption) throws InvalidDataException {
+        try {
+            long c = Long.parseLong(consumption);
+            if (c < 0) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException e) {
+            throw new InvalidDataException("The consumption value is not valid! It should be a positive integer.");
+        }
+
         if (!id.matches("^[a-zA-Z0-9]*$")) {
             throw new InvalidDataException("Only alphanumerical characters are accepted as activity IDs!");
         }
@@ -219,8 +282,8 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
      * @param id the ID of the activity
      * @return the appropriate path for the image.
      */
-    private String createPath(String id) {
-        return id + getExtension(uploadedImage.getName()).get();
+    protected String createPath(String id, File image) {
+        return id + getExtension(image.getName()).get();
     }
 
 }

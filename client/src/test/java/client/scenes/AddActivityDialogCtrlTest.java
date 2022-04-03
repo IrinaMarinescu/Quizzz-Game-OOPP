@@ -52,7 +52,27 @@ class AddActivityDialogCtrlTest {
     @Test
     public void testValidateNonAlphanumeric() {
         assertThrows(InvalidDataException.class, () -> {
-            activityDialogCtrl.validateFormDataHelper(";");
+            activityDialogCtrl.validateFormDataHelper(";", "50");
         });
+    }
+
+    @Test
+    public void testValidateNegativeNumber() {
+        assertThrows(InvalidDataException.class, () -> {
+            activityDialogCtrl.validateFormDataHelper("sss", "-50");
+        });
+    }
+
+    @Test
+    public void testValidateNotAnInteger() {
+        assertThrows(InvalidDataException.class, () -> {
+            activityDialogCtrl.validateFormDataHelper("sss", "50.5");
+        });
+    }
+
+    @Test
+    public void testCreatePath() {
+        assertEquals("ss.jpg",
+            activityDialogCtrl.createPath("ss", new File("test.jpg")));
     }
 }
