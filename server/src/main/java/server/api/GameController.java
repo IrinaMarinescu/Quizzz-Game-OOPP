@@ -24,14 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/game")
 public class GameController {
 
-    private final Map<UUID, Game> games;
+    final Map<UUID, Game> games;
 
     private final ObjectMapper mapper = new ObjectMapper();
     private String json;
     private UUID receivingGameId;
     private UUID receivingFeaturesId;
 
-    private final ActivityController activityController;
+    final ActivityController activityController;
     private final LobbyController lobbyController;
 
     /**

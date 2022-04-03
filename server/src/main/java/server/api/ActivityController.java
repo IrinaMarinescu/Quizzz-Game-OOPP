@@ -41,6 +41,9 @@ public class ActivityController {
         return s == null || s.isEmpty();
     }
 
+    /**
+     * @return All activities in the database
+     */
     @GetMapping(path = {"", "/"})
     public List<Activity> getAll() {
         return repo.findAll();
@@ -96,6 +99,7 @@ public class ActivityController {
             return ResponseEntity.badRequest().build();
         }
 
+        totalRecords--;
         repo.deleteById(activity.id);
         return ResponseEntity.ok(candidate);
     }
