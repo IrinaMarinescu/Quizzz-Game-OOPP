@@ -144,13 +144,15 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
                 usernameError.setText("Your name cannot contain a comma. Try again.");
                 displayUsernameError(true);
             }
-            mainCtrl.setPlayer(username.getText(), 0);
-            writeToFile();
-            mainCtrl.joinLobby();
+            else {
+                mainCtrl.setPlayer(username.getText(), 0);
+                writeToFile();
+                mainCtrl.joinLobby();
+            }
         } else if (!lobbyUtils.validateUsername(serverIP.getText())) {
-            usernameError.setText("The username is already taken. Try again.");
             displayServerIPError(true);
         } else {
+            usernameError.setText("The username is already taken. Try again.");
             displayUsernameError(true);
         }
     }
