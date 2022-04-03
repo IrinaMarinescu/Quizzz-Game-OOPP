@@ -71,7 +71,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        displayUsernameError(false);
+        displayUsernameError(false, "");
         displayServerIPError(false);
         try {
             Scanner scanner = new Scanner(userInfo);
@@ -113,13 +113,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
      */
     public void startSingleplayerGame() {
         if (serverUtils.validateIP(serverIP.getText())) {
-            if (username.getText().equals("")) {
-                usernameError.setText("Your name cannot be empty. Try again.");
-                displayUsernameError(true);
-            } else if (username.getText().contains(",")) {
-                usernameError.setText("Your name cannot contain a comma. Try again.");
-                displayUsernameError(true);
-            } else {
+            if (validateUserName()) {
                 serverUtils.setServerIP(serverIP.getText());
                 mainCtrl.setPlayer(username.getText(), 0);
                 writeToFile();
@@ -137,14 +131,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     public void joinLobby() {
         if (serverUtils.validateIP(serverIP.getText()) && lobbyUtils.validateUsername(username.getText())) {
             serverUtils.setServerIP(serverIP.getText());
-            if (username.getText().equals("")) {
-                usernameError.setText("Your name cannot be empty. Try again.");
-                displayUsernameError(true);
-            } else if (username.getText().contains(",")) {
-                usernameError.setText("Your name cannot contain a comma. Try again.");
-                displayUsernameError(true);
-            }
-            else {
+            if (validateUserName()) {
                 mainCtrl.setPlayer(username.getText(), 0);
                 writeToFile();
                 mainCtrl.joinLobby();
@@ -152,8 +139,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
         } else if (!lobbyUtils.validateUsername(serverIP.getText())) {
             displayServerIPError(true);
         } else {
-            usernameError.setText("The username is already taken. Try again.");
-            displayUsernameError(true);
+            displayUsernameError(true, "The username is already taken. Try again.");
         }
     }
 
@@ -192,7 +178,8 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
      * @param show If true displays the error otherwise hides it
      */
     @Override
-    public void displayUsernameError(boolean show) {
+    public void displayUsernameError(boolean show, String errorMessage) {
+        usernameError.setText(errorMessage);
         usernameError.setVisible(show);
     }
 
@@ -206,6 +193,21 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
         serverIPError.setVisible(show);
     }
 
+    /**
+     * Checks whether the username is valid, so that it does not contain a comma and is not empty
+     *
+     * @return true if the username is valid, false if it is not
+     */
+    public boolean validateUserName() {
+        if (username.getText().equals("")) {
+            displayUsernameError(true, "Your name cannot be empty. Try again.");
+            return false;
+        } else if (username.getText().contains(",")) {
+            displayUsernameError(true, "Your name cannot contain a comma. Try again.");
+            return false;
+        }
+        return true;
+    }
 
     /**
      * Provides functionality for keybindings to accelerate certain actions
