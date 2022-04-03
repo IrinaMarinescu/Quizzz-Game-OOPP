@@ -454,9 +454,10 @@ public class MainCtrl implements MainCtrlRequirements {
     @Override
     public void addPoints(long baseScore) {
         questionAnswered = true;
-           if (baseScore != 0) {
+        if (baseScore != 0) {
             double progress = ((double) (timeUtils.now() - questionStartTime)) / (questionEndTime - questionStartTime);
-            pointsGained = currentQuestionType.equals("openQuestion") ? 
+            pointsGained = currentQuestionType.equals("openQuestion")
+                    ?
                 (int) ((1.0 - progress) * (double) baseScore) :
                 (int) (50.0 + 0.5 * (1.0 - progress) * (double) baseScore);
             if (doublePoints) {
