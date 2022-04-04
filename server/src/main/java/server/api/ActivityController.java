@@ -57,6 +57,9 @@ public class ActivityController {
         return s == null || s.isEmpty();
     }
 
+    /**
+     * @return All activities in the database
+     */
     @GetMapping(path = {"", "/"})
     public List<Activity> getAll() {
         return repo.findAll();

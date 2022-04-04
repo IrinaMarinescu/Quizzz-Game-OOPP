@@ -8,6 +8,9 @@ import commons.Activity;
 import commons.LeaderboardEntry;
 import commons.Question;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -58,5 +61,15 @@ public class LobbyControllerTest {
         assertTrue(sut.getLobby().isUsernameTaken("Per"));
         sut.createGame(List.of(question));
         assertFalse(sut.getLobby().isUsernameTaken("Per"));
+    }
+
+    @Test
+    void receivePoll() {
+        UUID testId = UUID.randomUUID();
+        CompletableFuture.delayedExecutor(10, TimeUnit.MILLISECONDS).execute(() -> {
+            sut.dispatch(testId);
+        });
+
+        assertNotNull(sut.receivePoll(testId));
     }
 }

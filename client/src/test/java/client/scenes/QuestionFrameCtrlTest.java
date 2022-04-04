@@ -7,33 +7,20 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import client.dependedoncomponents.EmoteCtrlDOC;
+import client.dependedoncomponents.GameUtilsDOC;
 import client.dependedoncomponents.MainCtrlDOC;
 import client.dependedoncomponents.TimeUtilsDOC;
 import client.dependedoncomponents.TimerBarCtrlDOC;
 import commons.LeaderboardEntry;
 import java.util.List;
+import javafx.event.ActionEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-/**
- * Sadly, fully testing this class has proven impossible.
- * <p>
- * Most methods work heavily with FXML;
- * Button elements (fields) marked with @FXML cannot be assigned new values without causing an error.
- * <p>
- * Using FXMLLoader is not possible because an injector cannot be set up to target QuestionFrameCtrlTest
- * <p>
- * Most methods in this class are very simplistic FXML manipulations, unlikely to be buggy.
- * <p>
- * Most complex logic is extracted into 3 other test classes, which are tested thoroughly:
- * - EmoteContainerCtrlTest
- * - EmoteCtrlTest
- * - TimerBarCtrlTest
- */
 
 class QuestionFrameCtrlTest {
 
@@ -42,6 +29,7 @@ class QuestionFrameCtrlTest {
     private TimeUtilsDOC timeUtilsDOC;
     private EmoteCtrlDOC emoteCtrlDOC;
     private TimerBarCtrlDOC timerBarCtrlDOC;
+    private GameUtilsDOC gameUtilsDOC;
 
     /**
      * Setup for tests
@@ -52,8 +40,9 @@ class QuestionFrameCtrlTest {
         mainCtrlDOC = new MainCtrlDOC();
         emoteCtrlDOC = new EmoteCtrlDOC();
         timerBarCtrlDOC = new TimerBarCtrlDOC();
+        gameUtilsDOC = new GameUtilsDOC();
 
-        sut = new QuestionFrameCtrl(null, timeUtilsDOC, null, mainCtrlDOC, timerBarCtrlDOC, emoteCtrlDOC);
+        sut = new QuestionFrameCtrl(null, timeUtilsDOC, gameUtilsDOC, mainCtrlDOC, timerBarCtrlDOC, emoteCtrlDOC);
 
         sut.test = true;
         sut.sideLeaderboard = new VBox();
@@ -68,24 +57,6 @@ class QuestionFrameCtrlTest {
         assertNotNull(sut);
         assertSame(mainCtrlDOC, sut.mainCtrl);
     }
-
-    /*
-    @Test
-    public void setCenterContentOne() {
-        assertNull(sut.borderPane.getCenter());
-        sut.setCenterContent(new Circle());
-        assertEquals(Circle.class, sut.borderPane.getCenter().getClass());
-    }
-
-    @Test
-    public void setCenterContentMultiple() {
-        assertNull(sut.borderPane.getCenter());
-        sut.setCenterContent(new Circle());
-        sut.setCenterContent(new Circle());
-        sut.setCenterContent(new Rectangle());
-        assertEquals(Rectangle.class, sut.borderPane.getCenter().getClass());
-    }
-     */
 
     @Test
     public void setLeaderboardContentsOne() {
@@ -154,7 +125,17 @@ class QuestionFrameCtrlTest {
         assertTrue(sut.emoticonSelectionField.isVisible());
     }
 
-    //    TODO: test sending reactions when serverUtils is in place
+    @Test
+    void addReaction() {
+        Rectangle source = new Rectangle();
+        source.setId("testId");
+
+        ActionEvent e = new ActionEvent(source, null);
+        sut.addReaction(e);
+
+        assertSame(1, gameUtilsDOC.countLogs("EMOJItestNametestId"));
+        assertSame(1, gameUtilsDOC.countLogs());
+    }
 
     @Test
     public void displayNewEmoji() {
@@ -163,6 +144,13 @@ class QuestionFrameCtrlTest {
         sut.displayNewEmoji("Best", "Test");
 
         assertEquals(List.of("helloworld", "LoremIpsum", "BestTest"), emoteCtrlDOC.logs);
+    }
+
+    @Test
+    public void displayNewJoker() {
+        sut.displayNewJoker("hello", "world");
+
+        assertEquals(List.of("Jokerhelloworld"), emoteCtrlDOC.logs);
     }
 
     @Test
@@ -175,14 +163,33 @@ class QuestionFrameCtrlTest {
 
     @Test
     public void halveRemainingTime() {
-    /*
         sut.halveRemainingTime();
         sut.halveRemainingTime();
         sut.halveRemainingTime();
 
         assertSame(3, timerBarCtrlDOC.countLogs());
         assertSame(3, timerBarCtrlDOC.countLogs("halve"));
-    */
+    }
+
+    @Test
+    public void resizeTimerBar() {
+        assertTrue(timerBarCtrlDOC.noLogs());
+        sut.resizeTimerBar(1.6);
+        assertEquals("resize" + 1.6, timerBarCtrlDOC.getLog(0));
+    }
+
+    @Test
+    void noGameDisconnect() {
+        mainCtrlDOC.gameOngoing = true;
+        sut.disconnect();
+        assertEquals("exitChecker", mainCtrlDOC.getLog(0));
+    }
+
+    @Test
+    void gamePresentDisconnect() {
+        mainCtrlDOC.gameOngoing = false;
+        sut.disconnect();
+        assertEquals("mainFrame", mainCtrlDOC.getLog(0));
     }
 
     @Test
@@ -192,5 +199,10 @@ class QuestionFrameCtrlTest {
         assertFalse(sut.sideLeaderboard.isVisible());
         sut.keyPressed(KeyCode.L);
         assertTrue(sut.sideLeaderboard.isVisible());
+    }
+
+    @Test
+    void keyESCAPE() {
+        noGameDisconnect();
     }
 }

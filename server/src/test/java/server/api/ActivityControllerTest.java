@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import server.ActivityFilter;
 import server.database.ActivityRepository;
@@ -82,6 +83,34 @@ class ActivityControllerTest {
         List<Activity> res = sut.fetchRandom(5);
 
         assertSame(2, res.size());
+    }
+
+    @Test
+    void deleteActivity() {
+        Activity a = new Activity("A", "ss/ss.png", "flying a plane", 10, "b");
+        sut.importActivities(List.of(
+            a,
+            new Activity("B", "ss/sds.png", "TITLE", 20, "google.com")
+        ));
+
+        sut.deleteActivity(a);
+        List<Activity> res = sut.fetchRandom(4);
+        assertSame(1, res.size());
+
+        Activity notPresent = new Activity("C", null, null, 9, null);
+        assertEquals(ResponseEntity.badRequest().build(), sut.deleteActivity(notPresent));
+    }
+
+    @Test
+    void updateActivity() {
+        sut.importActivities(List.of(
+            new Activity("A", "ss/ss.png", "flying a plane", 10, "b")
+        ));
+
+        Activity changed = new Activity("A", "ss/ss.png", "flying a big plane", 10, "b");
+        sut.updateActivity(changed);
+        Activity res = sut.fetchRandom(1).get(0);
+        assertEquals("flying a big plane", res.title);
     }
 
     @Test
@@ -203,6 +232,7 @@ class ActivityControllerTest {
         assertEquals("test", newActivity.title);
     }
 
+    @Test
     void generateThreePicturesQuestion() {
         sut.importActivities(List.of(
             new Activity("00-b", "ss/ss.png", "flying a plane", 10, "b"),
@@ -213,7 +243,7 @@ class ActivityControllerTest {
         sut.generateThreePicturesQuestion(2, res);
         Question q = res.get(0);
 
-        assertEquals("Which consumes more?", q.getQuestion());
+        assertEquals("What consumes the most?", q.getQuestion());
     }
 
     @Test

@@ -96,7 +96,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
 
     boolean isMultiplayerGame;
     private int gameScore;
-    private int questionNumber;
+    int questionNumber;
     private List<LeaderboardEntry> previousEntries;
 
     /**
@@ -317,7 +317,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      * <p>
      */
     @FXML
-    private void addReaction(ActionEvent e) {
+    void addReaction(ActionEvent e) {
         gameUtils.sendFeature("EMOJI", mainCtrl.getUsername(), ((Node) e.getSource()).getId());
     }
 
@@ -331,6 +331,12 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         emoteCtrl.addReaction(name, reaction);
     }
 
+    /**
+     * Adds a new joker to be displayed
+     *
+     * @param name     The name of the player sending the joker
+     * @param reaction A string representing the reaction
+     */
     public void displayNewJoker(String name, String reaction) {
         emoteCtrl.addJoker(name, reaction);
     }
@@ -436,7 +442,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      * Disconnects from the game
      */
     @FXML
-    private void disconnect() {
+    void disconnect() {
         if (mainCtrl.gameOngoing) {
             mainCtrl.exitGameChecker(2);
         } else {
