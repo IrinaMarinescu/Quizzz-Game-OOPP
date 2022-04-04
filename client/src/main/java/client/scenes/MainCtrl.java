@@ -68,7 +68,7 @@ public class MainCtrl implements MainCtrlRequirements {
     private int timeoutRoundCheck;
     private boolean questionAnswered;
     private String currentQuestionType;
-    boolean gameOngoing = false;
+    public boolean gameOngoing = false;
 
     private ServerUtils serverUtils;
     private GameUtils gameUtils;
@@ -110,6 +110,9 @@ public class MainCtrl implements MainCtrlRequirements {
     private FinalScreenCtrl finalScreenCtrl;
     private Node finalScreen;
 
+    private AddActivityDialogCtrl activityDialogCtrl;
+    private Scene activityDialog;
+
     private WaitingScreenCtrl waitingScreenCtrl;
     private Node waitingScreen;
 
@@ -148,6 +151,7 @@ public class MainCtrl implements MainCtrlRequirements {
                            Pair<QuestionOneImageCtrl, Parent> questionOneImage,
                            Pair<InsteadOfQuestionCtrl, Parent> insteadOfQuestion,
                            Pair<FinalScreenCtrl, Parent> finalScreen,
+                           Pair<AddActivityDialogCtrl, Parent> addActivityDialog,
                            Pair<WaitingScreenCtrl, Parent> waitingScreen,
                            Pair<ExitPopUpCtrl, Parent> exitPopUp) {
 
@@ -210,6 +214,9 @@ public class MainCtrl implements MainCtrlRequirements {
         this.finalScreenCtrl = finalScreen.getKey();
         this.finalScreen = finalScreen.getValue();
 
+        this.activityDialogCtrl = addActivityDialog.getKey();
+        this.activityDialog = new Scene(addActivityDialog.getValue());
+
         this.exitPopUpCtrl = exitPopUp.getKey();
 
         this.waitingScreenCtrl = waitingScreen.getKey();
@@ -225,10 +232,20 @@ public class MainCtrl implements MainCtrlRequirements {
         exitCheck.initStyle(StageStyle.TRANSPARENT);
 
         primaryStage.setTitle("Quizzzzz!");
-//        showLeaderboard(new ArrayList<>(), 10, "intermediate");
         showMainFrame();
 
+        this.game = new Game();
         primaryStage.show();
+    }
+
+    public void showAddActivityDialog(Stage stage) {
+        activityDialogCtrl.reset(stage);
+        stage.setScene(activityDialog);
+        stage.setFullScreen(false);
+        stage.initOwner(primaryStage);
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
     }
 
     public ServerUtils getServerUtils() {
@@ -335,6 +352,10 @@ public class MainCtrl implements MainCtrlRequirements {
      * Executes the next event (question, leaderboard, game over)
      */
     private void nextEvent() {
+        if (game.getId() == null) {
+            return;
+        }
+
         questionStartTime = timeUtils.now();
         questionEndTime = questionStartTime + ROUND_TIME * 1000.0;
 
@@ -417,6 +438,10 @@ public class MainCtrl implements MainCtrlRequirements {
      * @param delay The time until the end of the question
      */
     void setQuestionTimeouts(double delay) {
+        if (game.getId() == null) {
+            return;
+        }
+
         int expectedRound = game.getRound();
         UUID expectedGame = game.getId();
         timeUtils.runAfterDelay(() -> {
@@ -438,7 +463,6 @@ public class MainCtrl implements MainCtrlRequirements {
             Platform.runLater(() -> questionFrameCtrl.addPoints(pointsGained));
             player.setScore(player.getScore() + pointsGained);
             questionFrameCtrl.toggleJokerUsability(false);
-            serverUtils.sendPointsGained(game.getId(), player, pointsGained);
             if (currentQuestionType.equals("trueFalseQuestion") || currentQuestionType.equals("openQuestion")) {
                 questionFrameCtrl.setWrongAnswerJoker(true);
             }
@@ -458,7 +482,10 @@ public class MainCtrl implements MainCtrlRequirements {
         questionAnswered = true;
         if (baseScore != 0) {
             double progress = ((double) (timeUtils.now() - questionStartTime)) / (questionEndTime - questionStartTime);
-            pointsGained = (int) (50.0 + 0.5 * (1.0 - progress) * (double) baseScore);
+            pointsGained = currentQuestionType.equals("openQuestion")
+                ?
+                (int) ((1.0 - progress) * (double) baseScore) :
+                (int) (50.0 + 0.5 * (1.0 - progress) * (double) baseScore);
             if (doublePoints) {
                 pointsGained *= 2;
             }
@@ -492,8 +519,24 @@ public class MainCtrl implements MainCtrlRequirements {
         setQuestionTimeouts(halvedRoundTime / 1000.0);
     }
 
+    /**
+     * Calls questionFrameCtrl to display an emoji chosen by a player
+     *
+     * @param name     the name of the player who clicked an emoji
+     * @param reaction the chosen emoji
+     */
     public void displayNewEmoji(String name, String reaction) {
         questionFrameCtrl.displayNewEmoji(name, reaction);
+    }
+
+    /**
+     * Calls questionFrameCtrl to display a joker chosen by a player
+     *
+     * @param name  the name of the player who used a joker
+     * @param joker the chosen joker
+     */
+    public void displayNewJoker(String name, String joker) {
+        questionFrameCtrl.displayNewJoker(name, joker);
     }
 
     /**
@@ -503,7 +546,6 @@ public class MainCtrl implements MainCtrlRequirements {
     public void eliminateWrongAnswer() {
         currentQuestionCtrl.removeIncorrectAnswer();
     }
-
 
     /**
      * Shows leaderboard
@@ -519,10 +561,6 @@ public class MainCtrl implements MainCtrlRequirements {
 
     public String getUsername() {
         return player.getName();
-    }
-
-    public void halveRemainingTime() {
-        questionFrameCtrl.halveRemainingTime();
     }
 
     public void updateSmallLeaderboard() {
@@ -587,7 +625,9 @@ public class MainCtrl implements MainCtrlRequirements {
     public void disconnect(int type, String buttonID) {
         // TODO stop long polling
         if (type == 0 && buttonID.equals("yesButton")) {
+            game.terminate();
             gameOngoing = false;
+
             serverUtils.disconnect(game.getId(), player);
             toggleModalVisibility();
             showMainFrame();
@@ -596,6 +636,7 @@ public class MainCtrl implements MainCtrlRequirements {
             toggleModalVisibility();
         }
         if (type == 1 && buttonID.equals("yesButton")) {
+            game.terminate();
             gameOngoing = false;
             toggleModalVisibility();
             primaryStage.close();
@@ -604,6 +645,7 @@ public class MainCtrl implements MainCtrlRequirements {
             toggleModalVisibility();
         }
         if (type == 2 && buttonID.equals("yesButton")) {
+            game.terminate();
             gameOngoing = false;
             serverUtils.disconnect(game.getId(), player);
             toggleModalVisibility();

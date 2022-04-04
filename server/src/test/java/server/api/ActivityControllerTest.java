@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.OK;
 
 import commons.Activity;
 import commons.Question;
@@ -16,9 +17,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import server.ActivityFilter;
 import server.database.ActivityRepository;
 import server.dependedoncomponents.RandomDOC;
+import server.services.FileStorageService;
 
 /**
  * The @DataJpaTest annotation helps in creating an in-memory environment in which to test database queries.
@@ -31,15 +36,17 @@ class ActivityControllerTest {
     @Autowired
     private ActivityRepository repo;
 
+    @MockBean
+    private FileStorageService fileStorageService;
+
     private ActivityController sut;
 
     private Activity activity;
     private Activity nullActivity;
 
-
     @BeforeEach
     public void setUp() {
-        sut = new ActivityController(repo, new Random(), new ActivityFilter());
+        sut = new ActivityController(repo, new Random(), fileStorageService, new ActivityFilter());
         activity = new Activity("00-a", "ss/ss.png", "a", 5, "b");
         nullActivity = new Activity(null, null, null, 0, null);
     }
@@ -79,11 +86,47 @@ class ActivityControllerTest {
     }
 
     @Test
+    void deleteActivity() {
+        Activity a = new Activity("A", "ss/ss.png", "flying a plane", 10, "b");
+        sut.importActivities(List.of(
+            a,
+            new Activity("B", "ss/sds.png", "TITLE", 20, "google.com")
+        ));
+
+        sut.deleteActivity(a);
+        List<Activity> res = sut.fetchRandom(4);
+        assertSame(1, res.size());
+
+        Activity notPresent = new Activity("C", null, null, 9, null);
+        assertEquals(ResponseEntity.badRequest().build(), sut.deleteActivity(notPresent));
+    }
+
+    @Test
+    void updateActivity() {
+        sut.importActivities(List.of(
+            new Activity("A", "ss/ss.png", "flying a plane", 10, "b")
+        ));
+
+        Activity changed = new Activity("A", "ss/ss.png", "flying a big plane", 10, "b");
+        sut.updateActivity(changed);
+        Activity res = sut.fetchRandom(1).get(0);
+        assertEquals("flying a big plane", res.title);
+    }
+
+    @Test
     public void testAdd() {
         var s = sut.add(activity);
         Activity activity = repo.findById("00-a");
 
         assertEquals(activity.consumptionInWh, 5);
+    }
+
+    @Test
+    public void testAddPutImage() {
+        MockMultipartFile file = new MockMultipartFile("test", "test.txt", "text/plain", "some test ".getBytes());
+        var s = sut.addImage("A", "ss/ss.png", "flying a plane", "10", "b", file);
+
+        assertEquals(OK, s.getStatusCode());
     }
 
     @Test
@@ -123,7 +166,7 @@ class ActivityControllerTest {
 
     @Test
     void trueFalseQuestionType1() {
-        sut = new ActivityController(repo, new RandomDOC(0), new ActivityFilter());
+        sut = new ActivityController(repo, new RandomDOC(0), fileStorageService, new ActivityFilter());
         sut.importActivities(List.of(new Activity("00-b", "ss/ss.png", "flying a plane", 10, "b")));
         List<Question> res = new ArrayList<>();
         sut.generateTrueFalseQuestion(0, res);
@@ -135,7 +178,7 @@ class ActivityControllerTest {
 
     @Test
     void trueFalseQuestionType2() {
-        sut = new ActivityController(repo, new RandomDOC(1), new ActivityFilter());
+        sut = new ActivityController(repo, new RandomDOC(1), fileStorageService, new ActivityFilter());
         sut.importActivities(List.of(
             new Activity("00-b", "ss/ss.png", "flying a plane", 10, "b"),
             new Activity("054-b", "ss/sds.png", "TITLE", 15, "google.com"))
@@ -189,6 +232,7 @@ class ActivityControllerTest {
         assertEquals("test", newActivity.title);
     }
 
+    @Test
     void generateThreePicturesQuestion() {
         sut.importActivities(List.of(
             new Activity("00-b", "ss/ss.png", "flying a plane", 10, "b"),
@@ -199,7 +243,7 @@ class ActivityControllerTest {
         sut.generateThreePicturesQuestion(2, res);
         Question q = res.get(0);
 
-        assertEquals("Which consumes more?", q.getQuestion());
+        assertEquals("What consumes the most?", q.getQuestion());
     }
 
     @Test
@@ -230,5 +274,12 @@ class ActivityControllerTest {
 
         assertEquals("What can you do instead of using a lamp?", q.getQuestion());
         assertEquals("flying a plane", q.getActivities().get(q.getCorrectAnswer()).title);
+    }
+
+    @Test
+    void countZeros() {
+        assertEquals(3, sut.countZeros(123000));
+        assertEquals(1, sut.countZeros(12050));
+        assertEquals(0, sut.countZeros(12345));
     }
 }

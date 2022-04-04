@@ -96,8 +96,8 @@ public class OpenQuestionCtrl implements QuestionRequirements {
             Platform.runLater(() -> entryField.requestFocus());
         });
 
-        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
-            + question.getActivities().get(0).imagePath;
+        String imagePath = mainCtrl.getServerUtils().getServerIP() + "api/activities/image/"
+            + question.getActivities().get(0).id;
         Image image = new Image(imagePath, 480, 500, true, false);
         imageField.setImage(image);
     }
@@ -179,6 +179,11 @@ public class OpenQuestionCtrl implements QuestionRequirements {
         this.question = question;
     }
 
+    /**
+     * Allows the user to use the enter button to submit the answer
+     *
+     * @param e the key that is pressed
+     */
     public void keyPressed(KeyCode e) {
         if (e == KeyCode.ENTER) {
             submit();

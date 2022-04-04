@@ -169,7 +169,7 @@ public class GameUtils {
                 if (value.equals("HALVE_TIME") && !mainCtrl.getPlayer().hasSameName(new LeaderboardEntry(name, 0))) {
                     Platform.runLater(mainCtrl::halveTime);
                 }
-                // TODO other jokers
+                Platform.runLater(() -> mainCtrl.displayNewJoker(name, value));
                 break;
             case "SCORE":
                 mainCtrl.getGame().updateScores(new LeaderboardEntry(name, Integer.parseInt(value)));

@@ -68,8 +68,8 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
 
         Platform.runLater(() -> {
             this.questionOutput.setText(question.getQuestion());
-            String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
-                + question.getActivities().get(0).imagePath;
+            String imagePath = mainCtrl.getServerUtils().getServerIP() + "api/activities/image/"
+                + question.getActivities().get(0).id;
             Image image = new Image(imagePath, 400, 400, true, false);
             imageOutput.setImage(image);
             trueButton.setText("True");

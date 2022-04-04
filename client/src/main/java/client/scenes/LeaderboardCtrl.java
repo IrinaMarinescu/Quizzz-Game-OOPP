@@ -120,15 +120,14 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      * @return a Label with properties of the entry and the set colour
      */
     private HBox generateBar(LeaderboardEntry entry, double width, String colour) {
-        HBox row = new HBox();
-
         Text name = new Text(
             entry.getName().equals(mainCtrl.getUsername()) ? "You (" + entry.getName() + ")" : entry.getName());
         name.getStyleClass().add("leaderboardText");
         Text score = new Text(Integer.toString(entry.getScore()));
         score.getStyleClass().add("leaderboardText");
-
         Region region = new Region();
+        HBox row = new HBox();
+
         HBox.setHgrow(region, Priority.ALWAYS);
 
         row.getChildren().add(name);

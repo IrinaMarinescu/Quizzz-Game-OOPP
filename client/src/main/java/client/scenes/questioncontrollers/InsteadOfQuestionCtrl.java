@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Random;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -150,8 +148,8 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
         this.positionCorrectAnswer = question.getCorrectAnswer();
         String correctAnswer = question.getActivities().get(positionCorrectAnswer).title;
 
-        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
-                + question.getActivities().get(3).imagePath;
+        String imagePath = mainCtrl.getServerUtils().getServerIP() + "api/activities/image/"
+                + question.getActivities().get(3).id;
         Image image = new Image(imagePath, 480, 500, true, false);
         imageField.setImage(image);
 
@@ -221,6 +219,11 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
         boxes.get(removedAnswer).setDisable(true);
     }
 
+    /**
+     * Allows the user to use the keyboard to select an answer
+     *
+     * @param e the key that is pressed
+     */
     public void keyPressed(KeyCode e) {
         switch (e) {
             case DIGIT1:

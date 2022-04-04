@@ -6,15 +6,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import server.ActivityFilter;
 import server.database.ActivityRepository;
+import server.services.FileStorageService;
 
 /**
  * This controller creates API endpoints for activities.
@@ -30,17 +39,27 @@ public class ActivityController {
     private final Random rand;
     private final ActivityFilter activityFilter;
 
-    public ActivityController(ActivityRepository repo, Random random, ActivityFilter activityFilter) {
+    @Autowired
+    private final FileStorageService fileStorageService;
+
+    public ActivityController(ActivityRepository repo, Random random,
+            FileStorageService fileStorageService, ActivityFilter activityFilter) {
         this.repo = repo;
         this.rand = random;
         this.totalRecords = this.repo.count();
+        this.fileStorageService = fileStorageService;
+        fileStorageService.init("images");
         this.activityFilter = activityFilter;
     }
+
 
     private static boolean nullOrEmpty(String s) {
         return s == null || s.isEmpty();
     }
 
+    /**
+     * @return All activities in the database
+     */
     @GetMapping(path = {"", "/"})
     public List<Activity> getAll() {
         return repo.findAll();
@@ -96,7 +115,10 @@ public class ActivityController {
             return ResponseEntity.badRequest().build();
         }
 
+        totalRecords--;
         repo.deleteById(activity.id);
+        fileStorageService.delete(activity.imagePath);
+
         return ResponseEntity.ok(candidate);
     }
 
@@ -157,6 +179,33 @@ public class ActivityController {
 
         totalRecords = repo.count();
         return ResponseEntity.ok(saved);
+    }
+
+
+    @PostMapping(path = {"/contribute"}, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<String> addImage(
+            @RequestParam String id,
+            @RequestParam(name = "image_path") String imagePath,
+            @RequestParam String title,
+            @RequestParam(name = "consumption_in_wh") String consumptionInWh,
+            @RequestParam String source,
+            @RequestPart MultipartFile file) {
+
+        Activity activity = new Activity(id, imagePath, title, Long.parseLong(consumptionInWh), source);
+
+        totalRecords++;
+        repo.save(activity);
+        fileStorageService.save(file, imagePath);
+        return ResponseEntity.ok("success");
+    }
+
+    @GetMapping("/image/{id}")
+    @ResponseBody
+    public ResponseEntity<Resource> getFile(@PathVariable String id) {
+        Activity activity = repo.findById(id);
+        Resource file = fileStorageService.load(activity.imagePath);
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
 
@@ -287,6 +336,11 @@ public class ActivityController {
         long actualConsumption = a.consumptionInWh;
         int zeros = countZeros(actualConsumption);
         double fifteenPercent = ((double) actualConsumption) / 100.00 * 15.00;
+        if (Math.floor(Math.log10(actualConsumption)) == 0) {
+            //even though the variable name is fifteenPercent, for the one-digit numbers the range is actually 50% to
+            //prevent the options from being too close
+            fifteenPercent = ((double) actualConsumption / 100.00 * 50.00);
+        }
         long max = (long) Math.ceil(actualConsumption + fifteenPercent);
         long min = (long) Math.floor(actualConsumption - fifteenPercent);
         long randomConsumption = (long) Math.floor(Math.random() * (max - min + 1) + min);
