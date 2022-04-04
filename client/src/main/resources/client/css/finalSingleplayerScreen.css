@@ -1,0 +1,7 @@
+@import 'global.css';
+
+#rectangle {
+    -fx-background-colour: -topBarColour;
+    -fx-background-radius: 40;
+    -fx-padding: 0 30 0 30;
+}

@@ -219,6 +219,11 @@ public class InsteadOfQuestionCtrl implements QuestionRequirements {
         boxes.get(removedAnswer).setDisable(true);
     }
 
+    /**
+     * Allows the user to use the keyboard to select an answer
+     *
+     * @param e the key that is pressed
+     */
     public void keyPressed(KeyCode e) {
         switch (e) {
             case DIGIT1:

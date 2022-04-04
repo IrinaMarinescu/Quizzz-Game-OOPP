@@ -245,4 +245,11 @@ class ActivityControllerTest {
         assertEquals("What can you do instead of using a lamp?", q.getQuestion());
         assertEquals("flying a plane", q.getActivities().get(q.getCorrectAnswer()).title);
     }
+
+    @Test
+    void countZeros() {
+        assertEquals(3, sut.countZeros(123000));
+        assertEquals(1, sut.countZeros(12050));
+        assertEquals(0, sut.countZeros(12345));
+    }
 }

@@ -1,6 +1,5 @@
 package client.scenes;
 
-import client.scenes.controllerrequirements.LobbyCtrlRequirements;
 import client.utils.GameUtils;
 import commons.LeaderboardEntry;
 import commons.Lobby;
@@ -20,7 +19,7 @@ import javax.inject.Inject;
 /**
  * The Lobby class
  */
-public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
+public class LobbyCtrl implements Initializable {
 
     @FXML
     private TableColumn<String, String> name;

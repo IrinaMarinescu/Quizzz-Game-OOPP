@@ -333,6 +333,11 @@ public class ActivityController {
         long actualConsumption = a.consumptionInWh;
         int zeros = countZeros(actualConsumption);
         double fifteenPercent = ((double) actualConsumption) / 100.00 * 15.00;
+        if (Math.floor(Math.log10(actualConsumption)) == 0) {
+            //even though the variable name is fifteenPercent, for the one-digit numbers the range is actually 50% to
+            //prevent the options from being too close
+            fifteenPercent = ((double) actualConsumption / 100.00 * 50.00);
+        }
         long max = (long) Math.ceil(actualConsumption + fifteenPercent);
         long min = (long) Math.floor(actualConsumption - fifteenPercent);
         long randomConsumption = (long) Math.floor(Math.random() * (max - min + 1) + min);
