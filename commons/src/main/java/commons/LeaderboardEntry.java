@@ -140,4 +140,9 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     public int hashCode() {
         return Objects.hash(getName(), getScore());
     }
+
+    @Override
+    public String toString() {
+        return "LeaderboardEntry{" + "name='" + name + '\'' + ", score=" + score + '}';
+    }
 }

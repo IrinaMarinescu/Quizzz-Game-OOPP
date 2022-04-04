@@ -20,7 +20,7 @@
 <BorderPane prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.MainFrameCtrl">
     <top>
-        <BorderPane fx:id="topBar" prefHeight="75" prefWidth="1600" BorderPane.alignment="CENTER">
+        <BorderPane fx:id="topBar" prefHeight="80" prefWidth="1600" BorderPane.alignment="CENTER">
             <left>
                 <HBox fx:id="trophyBox" BorderPane.alignment="CENTER">
                     <Button fx:id="trophy" mnemonicParsing="false" onAction="#openLeaderboard"

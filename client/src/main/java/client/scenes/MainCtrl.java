@@ -49,6 +49,7 @@ import javafx.util.Pair;
  */
 public class MainCtrl implements MainCtrlRequirements {
 
+
     public static final int ROUND_TIME = 10;
     public static final int OVERVIEW_TIME = 5;
     public static final int WAITING_TIME = 5;
@@ -362,10 +363,11 @@ public class MainCtrl implements MainCtrlRequirements {
             // The current event is the intermediate leaderboard
             if (game.getRound() == TOTAL_ROUNDS / 2 && !intermediateLeaderboardShown) {
                 intermediateLeaderboardShown = true;
-                showLeaderboard(game.getPlayers(), 10, "intermediate");
+                Platform.runLater(() -> showLeaderboard(game.getPlayers(), 10, "intermediate"));
+                questionFrameCtrl.setRemainingTime(LEADERBOARD_TIME);
 
                 timeUtils.runAfterDelay(() -> {
-                    showQuestionFrame();
+                    Platform.runLater(this::showQuestionFrame);
                     nextEvent();
                 }, LEADERBOARD_TIME);
                 return;
@@ -374,12 +376,10 @@ public class MainCtrl implements MainCtrlRequirements {
             // The current event is the final leaderboard; the game is over
             if (game.getRound() == TOTAL_ROUNDS) {
                 gameOngoing = false;
+                Platform.runLater(() -> showLeaderboard(game.getPlayers(), 10, "final"));
                 questionFrameCtrl.toggleJokerUsability(false);
-                showLeaderboard(game.getPlayers(), 10, "final");
                 return;
             }
-
-            updateSmallLeaderboard();
         } else if (game.getRound() == TOTAL_ROUNDS) {
             gameOngoing = false;
             questionFrameCtrl.toggleJokerUsability(false);
@@ -389,6 +389,7 @@ public class MainCtrl implements MainCtrlRequirements {
 
         // The current event is a question
         game.incrementRound();
+
         setQuestionTimeouts(ROUND_TIME);
         Platform.runLater(() -> questionFrameCtrl.incrementQuestionNumber());
         questionFrameCtrl.setRemainingTime(ROUND_TIME);
@@ -482,7 +483,7 @@ public class MainCtrl implements MainCtrlRequirements {
         if (baseScore != 0) {
             double progress = ((double) (timeUtils.now() - questionStartTime)) / (questionEndTime - questionStartTime);
             pointsGained = currentQuestionType.equals("openQuestion")
-                    ?
+                ?
                 (int) ((1.0 - progress) * (double) baseScore) :
                 (int) (50.0 + 0.5 * (1.0 - progress) * (double) baseScore);
             if (doublePoints) {
