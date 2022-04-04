@@ -50,8 +50,8 @@ import javafx.util.Pair;
 public class MainCtrl implements MainCtrlRequirements {
 
 
-    public static final int ROUND_TIME = 10;
-    public static final int OVERVIEW_TIME = 5;
+    public static final int ROUND_TIME = 2;
+    public static final int OVERVIEW_TIME = 1;
     public static final int WAITING_TIME = 5;
     public static final int LEADERBOARD_TIME = 10;
     public static final int TOTAL_ROUNDS = 20;
@@ -225,6 +225,7 @@ public class MainCtrl implements MainCtrlRequirements {
         exitCheck.initStyle(StageStyle.TRANSPARENT);
 
         primaryStage.setTitle("Quizzzzz!");
+//        showLeaderboard(new ArrayList<>(), 10, "intermediate");
         showMainFrame();
 
         primaryStage.show();

@@ -5,36 +5,27 @@ import com.google.inject.Inject;
 import commons.LeaderboardEntry;
 import java.util.List;
 import java.util.stream.Collectors;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.XYChart;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Pair;
 
 public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
 
     @FXML
-    private TableView<LeaderboardEntry> leaderboard;
-    @FXML
-    private TableColumn<LeaderboardEntry, String> playerColumn;
-    @FXML
-    private TableColumn<LeaderboardEntry, String> scoreColumn;
+    private VBox leaderboard;
     @FXML
     private Text pageTitle;
     @FXML
     private Button back;
     @FXML
-    private GridPane buttonGrid;
-    @FXML
-    private BarChart<String, Integer> barChart;
+    private HBox buttonsPart;
 
     /**
      * Field <code>type</code> in <code>LeaderboardCtrl</code>
@@ -50,9 +41,15 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     public static final int TYPE_INTERMED = 2;
     public static final int TYPE_FINAL = 3;
 
-    public static final String gold = "gold";
-    public static final String silver = "silver";
-    public static final String bronze = "chocolate";
+    public static final String FIRST_PLACE = "firstPlace";
+    public static final String SECOND_PLACE = "secondPlace";
+    public static final String THIRD_PLACE = "thirdPlace";
+    public static final String ODD_PLACE = "lightBlue";
+    public static final String EVEN_PLACE = "lightishBlue";
+
+
+    public static final int minBarWidth = 300;
+    public static final int changeBarWidth = 700;
 
 
     private final MainCtrl mainCtrl;
@@ -79,11 +76,9 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      */
     @Override
     public void initialize(List<LeaderboardEntry> entries, int maxSize, String type) {
+        System.out.println(entries);
         setMaxSize(maxSize);
         setLeaderboardType(type);
-
-        playerColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getName()));
-        scoreColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().scoreToString()));
 
         fillLeaderboard(sortEntries(entries));
     }
@@ -101,70 +96,79 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     /**
      * Helper method. Fills the FXML with the entries.
      *
-     * @param entries the entries to be put in the leaderboard, in any order. The method will sort the entries by score.
+     * @param entries the sorted by score entries to be put in the leaderboard
      */
     private void fillLeaderboard(List<LeaderboardEntry> entries) {
-        barChart.getData().clear();
-        barChart.setLegendVisible(false);
-
-        for (int i = 1; i <= 3; i++) {
-            if (entries.size() >= i) {
-                generateSerie(entries.get(i - 1), getMedal(i));
-            }
+        leaderboard.getChildren().clear();
+        if (entries.isEmpty()) {
+            return;
         }
 
-        if (entries.size() >= 3) {
-            ObservableList<LeaderboardEntry> data = FXCollections.observableList(
-                entries.subList(3, entries.size()).stream().map(
-                    p -> p.equals(mainCtrl.getPlayer())
-                        ? new LeaderboardEntry("You (" + p.getName() + ")", p.getScore()) :
-                        p).collect(Collectors.toList()));
-            leaderboard.setItems(data);
+        int maxScore = entries.get(0).getScore();
+        System.out.println("maxScore: " + maxScore);
+        for (LeaderboardEntry e : entries) {
+            System.out.println(e);
+        }
+
+        System.out.println(entries);
+
+        for (int i = 0; i < entries.size(); i++) {
+            leaderboard.getChildren()
+                .add(generateBar(entries.get(i), (double) entries.get(i).getScore() / maxScore, getColor(i)));
         }
     }
 
     /**
-     * Generate a new series on the bar chart with data from a leaderboard entry.
-     * Also sets the colour of the bar according to the number of points the player got:
-     * <ul>
-     *     <li>gold for 1st place</li>
-     *     <li>silver for 2nd place</li>
-     *     <li>bronze for 3rd place</li>
-     * </ul>
+     * Generate a new bar with appropriate width, color and name of the player
      *
-     * @param entry  a LeaderboardEntry instance, with the player to add on the bar chart.
+     * @param entry  a LeaderboardEntry instance, with the player to add on the leaderboard
+     * @param width  value from 0 to 1, describing how long the bar should be
      * @param colour the colour of the bar
+     * @return a Label with properties of the entry and the set colour
      */
-    private void generateSerie(LeaderboardEntry entry, String colour) {
-        XYChart.Series<String, Integer> serie = new XYChart.Series<>();
-        serie.getData().add(new XYChart.Data<>(entry.getName(), entry.getScore()));
+    private HBox generateBar(LeaderboardEntry entry, double width, String colour) {
+        HBox row = new HBox();
 
-        barChart.getData().add(serie);
+        Text name = new Text(
+            entry.getName().equals(mainCtrl.getUsername()) ? "You (" + entry.getName() + ")" : entry.getName());
+        name.getStyleClass().add("leaderboardText");
+        Text score = new Text(Integer.toString(entry.getScore()));
+        score.getStyleClass().add("leaderboardText");
 
-        for (XYChart.Data<String, Integer> data : serie.getData()) {
-            data.getNode().setStyle("-fx-bar-fill: " + colour + ";");
-        }
+        Region region = new Region();
+        HBox.setHgrow(region, Priority.ALWAYS);
+
+        row.getChildren().add(name);
+        row.getChildren().add(region);
+        row.getChildren().add(score);
+
+        row.setAlignment(Pos.CENTER_LEFT);
+        row.setStyle("-fx-background-color: -" + colour + ";");
+        row.setMinWidth(minBarWidth + changeBarWidth * width);
+        row.setPrefWidth(minBarWidth + changeBarWidth * width);
+        row.setMaxWidth(minBarWidth + changeBarWidth * width);
+
+        row.getStyleClass().add("leaderboardBox");
+
+        return row;
     }
 
     /**
      * Returns a colour based on the place the player got.
      *
-     * @param place an integer from 1, 2, or 3.
+     * @param place an integer of place the player has
      * @return a HEX colour based on the place in the leaderboard.
-     * <ul>
-     *     <li>gold for 1st place</li>
-     *     <li>silver for 2nd place</li>
-     *     <li>bronze for 3rd place</li>
-     * </ul>
      */
-    protected String getMedal(int place) {
+    protected String getColor(int place) {
         switch (place) {
+            case 0:
+                return FIRST_PLACE;
             case 1:
-                return gold;
+                return SECOND_PLACE;
             case 2:
-                return silver;
+                return THIRD_PLACE;
             default:
-                return bronze;
+                return place % 2 == 0 ? EVEN_PLACE : ODD_PLACE;
         }
     }
 
@@ -203,7 +207,7 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
         buttonGridVisible = gridVisibility;
         if (!test) {
             back.setVisible(buttonVisibility);
-            buttonGrid.setVisible(gridVisibility);
+            buttonsPart.setVisible(gridVisibility);
         }
     }
 
