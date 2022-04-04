@@ -76,7 +76,6 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      */
     @Override
     public void initialize(List<LeaderboardEntry> entries, int maxSize, String type) {
-        System.out.println(entries);
         setMaxSize(maxSize);
         setLeaderboardType(type);
 
@@ -104,13 +103,7 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
             return;
         }
 
-        int maxScore = entries.get(0).getScore();
-        System.out.println("maxScore: " + maxScore);
-        for (LeaderboardEntry e : entries) {
-            System.out.println(e);
-        }
-
-        System.out.println(entries);
+        int maxScore = entries.get(0).getScore() == 0 ? 1 : entries.get(0).getScore();
 
         for (int i = 0; i < entries.size(); i++) {
             leaderboard.getChildren()
