@@ -235,6 +235,7 @@ public class MainCtrl implements MainCtrlRequirements {
         showMainFrame();
 
         this.game = new Game();
+        this.player = new LeaderboardEntry(",", 0);
         primaryStage.show();
     }
 

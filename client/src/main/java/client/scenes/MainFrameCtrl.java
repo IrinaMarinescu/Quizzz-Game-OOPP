@@ -42,7 +42,8 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
 
     private long lastEscapeKeyPressTime;
 
-    private final File userInfo = new File("user-info/user-info.txt");
+    // This filepath works on Windows
+    private File userInfo = new File("src/main/resources/client/user-info/user-info.txt");
 
     @FXML
     private TextField username;
@@ -73,6 +74,11 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     public void initialize(URL location, ResourceBundle resources) {
         displayUsernameError(false, "");
         displayServerIPError(false);
+
+        if (!userInfo.exists()) {
+            // This filepath works on macOS
+            userInfo = new File("client/src/main/resources/client/user-info/user-info.txt");
+        }
         try {
             Scanner scanner = new Scanner(userInfo);
             scanner.useDelimiter(",");
