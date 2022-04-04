@@ -59,9 +59,3 @@ TextField, Button {
     -fx-font-size: 100;
     -fx-font-family: 'Roboto Black', sans-serif;
 }
-
-.error {
-    -fx-fill: crimson;
-    -fx-font-size: 15;
-    -fx-font-family: 'Roboto Regular', sans-serif;
-}

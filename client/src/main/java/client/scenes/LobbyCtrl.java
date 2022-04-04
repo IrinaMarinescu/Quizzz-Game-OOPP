@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.text.Text;
 import javax.inject.Inject;
 
 /**
@@ -25,6 +26,8 @@ public class LobbyCtrl implements Initializable {
     private TableColumn<String, String> name;
     @FXML
     private TableView<String> table;
+    @FXML
+    private Text startGameError;
 
     private final GameUtils gameUtils;
 
@@ -57,6 +60,7 @@ public class LobbyCtrl implements Initializable {
         name.setCellValueFactory(s -> new SimpleStringProperty(s.getValue()));
         table.setItems(list);
         this.lobby = new Lobby();
+        displayStartGameError(false);
     }
 
 
@@ -65,7 +69,12 @@ public class LobbyCtrl implements Initializable {
      */
     @FXML
     public void initializeMultiplayerGame() {
-        gameUtils.startMultiplayerGame();
+        if (lobby.getPlayers().size() > 1) {
+            displayStartGameError(false);
+            gameUtils.startMultiplayerGame();
+        } else {
+            displayStartGameError(true);
+        }
     }
 
     /**
@@ -90,6 +99,15 @@ public class LobbyCtrl implements Initializable {
         list = FXCollections.observableArrayList(lobby.getPlayers().stream().map(LeaderboardEntry::getName).collect(
             Collectors.toList()));
         table.setItems(list);
+    }
+
+    /**
+     * Display the start game error
+     *
+     * @param show If true displays the error otherwise hides it
+     */
+    public void displayStartGameError(boolean show) {
+        startGameError.setVisible(show);
     }
 
     public void keyPressed(KeyCode e) {
