@@ -1,28 +1,34 @@
 @import 'global.css';
 @import 'smallLeaderboard.css';
 
+* {
+    -firstPlace: gold;
+    -secondPlace: silver;
+    -thirdPlace: chocolate;
+}
+
 Button {
     -fx-background-color: -greenish;
     -fx-background-radius: 40;
-    -fx-pref-height: 30;
+    -fx-pref-height: 45;
     -fx-padding: 0 60 0 60;
-    -fx-font-size: 15;
+    -fx-font-size: 20;
 
     -fx-focus-color: transparent;
 }
 
-.chart-plot-background {
-    -fx-background-color: transparent;
+#leaderboard {
+    -fx-padding: 50;
 }
 
-.data0.chart-bar {
-    -fx-background-color: gold;
+.leaderboardBox {
+    -fx-pref-height: 50;
+    -fx-text-alignment: justify;
+    -fx-padding: 0 20 0 20;
 }
 
-.data1.chart-bar {
-    -fx-background-color: silver;
-}
-
-.data2.chart-bar {
-    -fx-background-color: chocolate;
+.leaderboardText {
+    -fx-fill: white;
+    -fx-font-family: 'Roboto Bold', sans-serif;
+    -fx-font-size: 28;
 }

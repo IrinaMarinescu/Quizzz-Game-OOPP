@@ -58,6 +58,21 @@ class LeaderboardCtrlTest {
     }
 
     @Test
+    void testMedalGold() {
+        assertEquals(LeaderboardCtrl.FIRST_PLACE, leaderboardCtrl.getColor(0));
+    }
+
+    @Test
+    void testMedalSilver() {
+        assertEquals(LeaderboardCtrl.SECOND_PLACE, leaderboardCtrl.getColor(1));
+    }
+
+    @Test
+    void testMedalBronze() {
+        assertEquals(LeaderboardCtrl.THIRD_PLACE, leaderboardCtrl.getColor(2));
+    }
+
+    @Test
     void testTypeSet() {
         leaderboardCtrl.setLeaderboardType("solo");
         assertEquals("Global Leaderboard", leaderboardCtrl.texts.getKey());
