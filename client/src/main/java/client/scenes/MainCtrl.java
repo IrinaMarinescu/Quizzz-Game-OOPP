@@ -363,13 +363,13 @@ public class MainCtrl implements MainCtrlRequirements {
             // The current event is the intermediate leaderboard
             if (game.getRound() == TOTAL_ROUNDS / 2 && !intermediateLeaderboardShown) {
                 intermediateLeaderboardShown = true;
-                Platform.runLater(() -> showLeaderboard(game.getPlayers(), 10, "intermediate"));
-                questionFrameCtrl.setRemainingTime(LEADERBOARD_TIME);
 
                 timeUtils.runAfterDelay(() -> {
                     Platform.runLater(this::showQuestionFrame);
                     nextEvent();
                 }, LEADERBOARD_TIME);
+
+                Platform.runLater(() -> showLeaderboard(game.getPlayers(), 10, "intermediate"));
                 return;
             }
 
