@@ -133,6 +133,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     public void joinLobby() {
         if (serverUtils.validateIP(serverIP.getText()) && lobbyUtils.validateUsername(username.getText())) {
             displayServerIPError(false);
+            displayUsernameError(false, "");
             serverUtils.setServerIP(serverIP.getText());
             if (validateUserName()) {
                 displayUsernameError(false, "");
@@ -140,9 +141,11 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
                 writeToFile();
                 mainCtrl.joinLobby();
             }
-        } else if (!lobbyUtils.validateUsername(serverIP.getText())) {
+        } else if (!serverUtils.validateIP(serverIP.getText())) {
+            displayUsernameError(false, "");
             displayServerIPError(true);
         } else {
+            displayServerIPError(false);
             displayUsernameError(true, "The username is already taken. Try again.");
         }
     }
@@ -228,7 +231,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
             case ESCAPE:
                 mainCtrl.toggleModalVisibility();
                 break;
-            case CONTROL:
+            case A:
                 showAdmin();
                 break;
             case S:

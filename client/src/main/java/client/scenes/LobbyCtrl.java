@@ -82,6 +82,7 @@ public class LobbyCtrl implements Initializable {
      */
     @FXML
     public void goBack() {
+        displayStartGameError(false);
         mainCtrl.playerLeavesLobby();
     }
 
