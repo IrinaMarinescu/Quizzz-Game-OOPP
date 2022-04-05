@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import client.dependedoncomponents.LeaderboardCtrlDOC;
 import client.dependedoncomponents.MainCtrlDOC;
+import client.utils.LobbyUtils;
+import client.utils.ServerUtils;
 import commons.LeaderboardEntry;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +25,15 @@ class LeaderboardCtrlTest {
 
     @BeforeEach
     void setUp() {
-        leaderboardCtrl = new LeaderboardCtrlDOC(new MainCtrlDOC());
+        var mainCtrl = new MainCtrlDOC();
+        var serverUtils = new ServerUtils();
+        var lobbyUtils = new LobbyUtils(new ServerUtils(), mainCtrl);
+        var mainFrameCtrl = new MainFrameCtrl(serverUtils, lobbyUtils, mainCtrl);
+
+        leaderboardCtrl = new LeaderboardCtrlDOC(
+            mainCtrl, serverUtils, lobbyUtils, mainFrameCtrl
+        );
+
         placeHolderEntries = List.of(
             new LeaderboardEntry("Someone", 100),
             new LeaderboardEntry("test", 500),

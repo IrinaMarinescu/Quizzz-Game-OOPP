@@ -181,7 +181,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
             serverUtils.setServerIP(serverIP.getText());
             mainCtrl.showAdminInterface();
         } else {
-            System.out.println("invalid ip!");
+            displayServerIPError(true);
         }
     }
 
