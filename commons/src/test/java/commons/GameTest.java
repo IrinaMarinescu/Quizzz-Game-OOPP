@@ -2,6 +2,7 @@ package commons;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -81,4 +82,19 @@ class GameTest {
         sut.incrementRound();
         assertSame(question, sut.nextQuestion());
     }
+
+    @Test
+    void updateScores() {
+        assertSame(3, players.get(1).getScore());
+        sut.updateScores(new LeaderboardEntry("Michael", 54));
+        assertSame(54, players.get(1).getScore());
+    }
+
+    @Test
+    void terminate() {
+        assertNotNull(sut.getId());
+        sut.terminate();
+        assertNull(sut.getId());
+    }
+
 }

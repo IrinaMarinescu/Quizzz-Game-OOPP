@@ -21,6 +21,7 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     private QuestionFrameCtrl questionFrameCtrl;
     private Question question;
     private long answer;
+    private static final int MISS_VALUE = 50;
 
     @FXML
     Button submitButton;
@@ -67,7 +68,7 @@ public class OpenQuestionCtrl implements QuestionRequirements {
             submitButton.setDisable(true);
             long correctAnswer = this.question.getActivities().get(0).consumptionInWh;
             long percentageOff = ((Math.abs(correctAnswer - this.answer)) / correctAnswer) * 100;
-            long baseScore = 100 - percentageOff / 2;
+            long baseScore = 100 - (percentageOff * (100 / MISS_VALUE));
             if (baseScore < 0) {
                 baseScore = 0;
             }
@@ -96,8 +97,8 @@ public class OpenQuestionCtrl implements QuestionRequirements {
             Platform.runLater(() -> entryField.requestFocus());
         });
 
-        String imagePath = mainCtrl.getServerUtils().getServerIP() + "images/"
-            + question.getActivities().get(0).imagePath;
+        String imagePath = mainCtrl.getServerUtils().getServerIP() + "api/activities/image/"
+            + question.getActivities().get(0).id;
         Image image = new Image(imagePath, 480, 500, true, false);
         imageField.setImage(image);
     }
@@ -179,6 +180,11 @@ public class OpenQuestionCtrl implements QuestionRequirements {
         this.question = question;
     }
 
+    /**
+     * Allows the user to use the enter button to submit the answer
+     *
+     * @param e the key that is pressed
+     */
     public void keyPressed(KeyCode e) {
         if (e == KeyCode.ENTER) {
             submit();

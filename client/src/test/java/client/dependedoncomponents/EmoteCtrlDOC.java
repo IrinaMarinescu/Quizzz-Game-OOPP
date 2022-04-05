@@ -15,4 +15,9 @@ public class EmoteCtrlDOC extends EmoteCtrl implements SupportsLogging {
     public void addReaction(String name, String reaction) {
         log(name + reaction);
     }
+
+    @Override
+    public void addJoker(String name, String reaction) {
+        log("Joker" + name + reaction);
+    }
 }

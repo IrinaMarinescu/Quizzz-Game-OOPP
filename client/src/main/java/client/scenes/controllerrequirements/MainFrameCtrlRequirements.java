@@ -4,7 +4,7 @@ import javafx.scene.input.KeyCode;
 
 public interface MainFrameCtrlRequirements {
 
-    void displayUsernameError(boolean show);
+    void displayUsernameError(boolean show, String errorMessage);
 
     void displayServerIPError(boolean show);
 

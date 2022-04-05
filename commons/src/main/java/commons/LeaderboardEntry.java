@@ -19,7 +19,7 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
 
     private String name;
     private int score;
-    private int gain;
+    private Integer gain;
 
     /**
      * Constructor
@@ -139,5 +139,10 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
     @Override
     public int hashCode() {
         return Objects.hash(getName(), getScore());
+    }
+
+    @Override
+    public String toString() {
+        return "LeaderboardEntry{" + "name='" + name + '\'' + ", score=" + score + '}';
     }
 }

@@ -16,6 +16,7 @@
 
 package client;
 
+import client.scenes.AddActivityDialogCtrl;
 import client.scenes.AdminInterfaceCtrl;
 import client.scenes.LeaderboardCtrl;
 import client.scenes.MainCtrl;
@@ -28,7 +29,6 @@ import client.scenes.questioncontrollers.OpenQuestionCtrl;
 import client.scenes.questioncontrollers.QuestionOneImageCtrl;
 import client.scenes.questioncontrollers.QuestionThreePicturesCtrl;
 import client.scenes.questioncontrollers.QuestionTrueFalseCtrl;
-import client.utils.LongPollingUtils;
 import client.utils.ServerUtils;
 import client.utils.TimeUtils;
 import com.google.inject.Binder;
@@ -54,12 +54,11 @@ public class MyModule implements Module {
         binder.bind(QuestionOneImageCtrl.class).in(Scopes.SINGLETON);
         binder.bind(QuestionThreePicturesCtrl.class).in(Scopes.SINGLETON);
         binder.bind(QuestionTrueFalseCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(AddActivityDialogCtrl.class).in(Scopes.SINGLETON);
         /**
          * bind utilies below
          * **/
         binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
         binder.bind(TimeUtils.class).in(Scopes.SINGLETON);
-        binder.bind(LongPollingUtils.class).in(Scopes.SINGLETON);
-
     }
 }

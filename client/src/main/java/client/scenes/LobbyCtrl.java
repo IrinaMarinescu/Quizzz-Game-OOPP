@@ -1,6 +1,5 @@
 package client.scenes;
 
-import client.scenes.controllerrequirements.LobbyCtrlRequirements;
 import client.utils.GameUtils;
 import commons.LeaderboardEntry;
 import commons.Lobby;
@@ -15,17 +14,20 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.text.Text;
 import javax.inject.Inject;
 
 /**
  * The Lobby class
  */
-public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
+public class LobbyCtrl implements Initializable {
 
     @FXML
     private TableColumn<String, String> name;
     @FXML
     private TableView<String> table;
+    @FXML
+    private Text startGameError;
 
     private final GameUtils gameUtils;
 
@@ -58,6 +60,7 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
         name.setCellValueFactory(s -> new SimpleStringProperty(s.getValue()));
         table.setItems(list);
         this.lobby = new Lobby();
+        displayStartGameError(false);
     }
 
 
@@ -66,7 +69,12 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
      */
     @FXML
     public void initializeMultiplayerGame() {
-        gameUtils.startMultiplayerGame();
+        if (lobby.getPlayers().size() > 1) {
+            displayStartGameError(false);
+            gameUtils.startMultiplayerGame();
+        } else {
+            displayStartGameError(true);
+        }
     }
 
     /**
@@ -74,6 +82,7 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
      */
     @FXML
     public void goBack() {
+        displayStartGameError(false);
         mainCtrl.playerLeavesLobby();
     }
 
@@ -91,6 +100,15 @@ public class LobbyCtrl implements Initializable, LobbyCtrlRequirements {
         list = FXCollections.observableArrayList(lobby.getPlayers().stream().map(LeaderboardEntry::getName).collect(
             Collectors.toList()));
         table.setItems(list);
+    }
+
+    /**
+     * Display the start game error
+     *
+     * @param show If true displays the error otherwise hides it
+     */
+    public void displayStartGameError(boolean show) {
+        startGameError.setVisible(show);
     }
 
     public void keyPressed(KeyCode e) {

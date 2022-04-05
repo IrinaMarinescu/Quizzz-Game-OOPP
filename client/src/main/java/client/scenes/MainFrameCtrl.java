@@ -42,7 +42,8 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
 
     private long lastEscapeKeyPressTime;
 
-    private final File userInfo = new File("src/main/resources/client/user-info/user-info.txt");
+    // This filepath works on Windows
+    private File userInfo = new File("src/main/resources/client/user-info/user-info.txt");
 
     @FXML
     private TextField username;
@@ -71,8 +72,13 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        displayUsernameError(false);
+        displayUsernameError(false, "");
         displayServerIPError(false);
+
+        if (!userInfo.exists()) {
+            // This filepath works on macOS
+            userInfo = new File("client/src/main/resources/client/user-info/user-info.txt");
+        }
         try {
             Scanner scanner = new Scanner(userInfo);
             scanner.useDelimiter(",");
@@ -113,10 +119,14 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
      */
     public void startSingleplayerGame() {
         if (serverUtils.validateIP(serverIP.getText())) {
-            serverUtils.setServerIP(serverIP.getText());
-            mainCtrl.setPlayer(username.getText(), 0);
-            writeToFile();
-            mainCtrl.startGame(false);
+            displayServerIPError(false);
+            if (validateUserName()) {
+                displayUsernameError(false, "");
+                serverUtils.setServerIP(serverIP.getText());
+                mainCtrl.setPlayer(username.getText(), 0);
+                writeToFile();
+                mainCtrl.startGame(false);
+            }
         } else {
             displayServerIPError(true);
         }
@@ -128,14 +138,21 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
      */
     public void joinLobby() {
         if (serverUtils.validateIP(serverIP.getText()) && lobbyUtils.validateUsername(username.getText())) {
+            displayServerIPError(false);
+            displayUsernameError(false, "");
             serverUtils.setServerIP(serverIP.getText());
-            mainCtrl.setPlayer(username.getText(), 0);
-            writeToFile();
-            mainCtrl.joinLobby();
-        } else if (!lobbyUtils.validateUsername(serverIP.getText())) {
+            if (validateUserName()) {
+                displayUsernameError(false, "");
+                mainCtrl.setPlayer(username.getText(), 0);
+                writeToFile();
+                mainCtrl.joinLobby();
+            }
+        } else if (!serverUtils.validateIP(serverIP.getText())) {
+            displayUsernameError(false, "");
             displayServerIPError(true);
         } else {
-            displayUsernameError(true);
+            displayServerIPError(false);
+            displayUsernameError(true, "The username is already taken. Try again.");
         }
     }
 
@@ -174,7 +191,8 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
      * @param show If true displays the error otherwise hides it
      */
     @Override
-    public void displayUsernameError(boolean show) {
+    public void displayUsernameError(boolean show, String errorMessage) {
+        usernameError.setText(errorMessage);
         usernameError.setVisible(show);
     }
 
@@ -188,6 +206,21 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
         serverIPError.setVisible(show);
     }
 
+    /**
+     * Checks whether the username is valid, so that it does not contain a comma and is not empty
+     *
+     * @return true if the username is valid, false if it is not
+     */
+    public boolean validateUserName() {
+        if (username.getText().equals("")) {
+            displayUsernameError(true, "Your name cannot be empty. Try again.");
+            return false;
+        } else if (username.getText().contains(",")) {
+            displayUsernameError(true, "Your name cannot contain a comma. Try again.");
+            return false;
+        }
+        return true;
+    }
 
     /**
      * Provides functionality for keybindings to accelerate certain actions
@@ -204,7 +237,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
             case ESCAPE:
                 mainCtrl.toggleModalVisibility();
                 break;
-            case CONTROL:
+            case A:
                 showAdmin();
                 break;
             case S:

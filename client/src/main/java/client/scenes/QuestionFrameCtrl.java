@@ -96,7 +96,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
 
     boolean isMultiplayerGame;
     private int gameScore;
-    private int questionNumber;
+    int questionNumber;
     private List<LeaderboardEntry> previousEntries;
 
     /**
@@ -315,10 +315,9 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     /**
      * Method to be run when a user chooses to send an emoticon
      * <p>
-     * TODO: make this send a request to the server, delete placeholders
      */
     @FXML
-    private void addReaction(ActionEvent e) {
+    void addReaction(ActionEvent e) {
         gameUtils.sendFeature("EMOJI", mainCtrl.getUsername(), ((Node) e.getSource()).getId());
     }
 
@@ -330,6 +329,16 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      */
     public void displayNewEmoji(String name, String reaction) {
         emoteCtrl.addReaction(name, reaction);
+    }
+
+    /**
+     * Adds a new joker to be displayed
+     *
+     * @param name     The name of the player sending the joker
+     * @param reaction A string representing the reaction
+     */
+    public void displayNewJoker(String name, String reaction) {
+        emoteCtrl.addJoker(name, reaction);
     }
 
     /**
@@ -393,9 +402,11 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         switch (joker.getId()) {
             case "doublePoints":
                 mainCtrl.doublePoints();
+                gameUtils.sendFeature("JOKER", mainCtrl.getUsername(), "DOUBLE_POINTS");
                 break;
             case "eliminateWrongAnswer":
                 mainCtrl.eliminateWrongAnswer();
+                gameUtils.sendFeature("JOKER", mainCtrl.getUsername(), "ELIMINATE_ANSWER");
                 break;
             case "halveTime":
                 gameUtils.sendFeature("JOKER", mainCtrl.getUsername(), "HALVE_TIME");
@@ -431,7 +442,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      * Disconnects from the game
      */
     @FXML
-    private void disconnect() {
+    void disconnect() {
         if (mainCtrl.gameOngoing) {
             mainCtrl.exitGameChecker(2);
         } else {
