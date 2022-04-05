@@ -78,12 +78,24 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
     @FXML
     VBox boxC;
 
+    /**
+     * Injects the necessary dependencies
+     *
+     * @param mainCtrl          - the main front-end controller
+     * @param questionFrameCtrl - the scene in which it has to be injected
+     */
     @Inject
     public QuestionThreePicturesCtrl(MainCtrl mainCtrl, QuestionFrameCtrl questionFrameCtrl) {
         this.mainCtrl = mainCtrl;
         this.questionFrameCtrl = questionFrameCtrl;
     }
 
+    /**
+     * Groups the buttons and resets the visibility of the ticks and crosses
+     * set the question text
+     *
+     * @param question - the Question to be shown on the screen
+     */
     @Override
     public void initialize(Question question) {
         this.question = question;
@@ -104,6 +116,11 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
         });
     }
 
+    /**
+     * Sets the text and the images of the buttons
+     *
+     * @param question - the Question to be shown on the screen
+     */
     public void setAnswers(Question question) {
         Platform.runLater(() -> {
             for (int i = 0; i < question.getActivities().size(); i++) {
@@ -114,9 +131,14 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
         });
     }
 
+    /**
+     * Sets the path of the activity images and adds the image to the answer
+     *
+     * @param i - the number of the activity
+     */
     private void placeImage(int i) {
         String imagePath = mainCtrl.getServerUtils().getServerIP() + "api/activities/image/"
-                + question.getActivities().get(i).id;
+            + question.getActivities().get(i).id;
         Image image = new Image(imagePath, 480, 500, true, false);
         switch (i) {
             case 0:
@@ -133,26 +155,37 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
         }
     }
 
-
+    /**
+     * Sets the chosen answer as A
+     */
     @FXML
     void answerASelected() {
         this.selectedAnswerButton = 0;
         setChosenAnswer();
     }
 
+    /**
+     * Sets the chosen answer as B
+     */
     @FXML
     void answerBSelected() {
         this.selectedAnswerButton = 1;
         setChosenAnswer();
     }
 
+    /**
+     * Sets the chosen answer as C
+     */
     @FXML
     void answerCSelected() {
         this.selectedAnswerButton = 2;
         setChosenAnswer();
     }
 
-    private void setChosenAnswer() {
+    /**
+     * Checks to see if the selected answer was correct or not and disables the buttons
+     */
+    protected void setChosenAnswer() {
         if (boxes.get(selectedAnswerButton).isDisabled()) {
             return;
         }
@@ -171,7 +204,7 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
     }
 
     /**
-     * reveals the correct answer by switching the visibility of the ticks and crosses
+     * Reveals the correct answer by switching the visibility of the ticks and crosses
      */
     @Override
     public void revealCorrectAnswer() {
@@ -184,6 +217,9 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
         }
     }
 
+    /**
+     * Method that removes on of the wrong answers when the removeIncorrectAnswer joker is used
+     */
     @Override
     public void removeIncorrectAnswer() {
         int upperBound = 3;
@@ -207,10 +243,20 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
         boxes.get(removedAnswer).setOpacity(0.5);
     }
 
+    /**
+     * Getter of the question
+     *
+     * @return question - the current question
+     */
     public Question getQuestion() {
         return question;
     }
 
+    /**
+     * Shortcuts
+     *
+     * @param e - the key that is pressed
+     */
     public void keyPressed(KeyCode e) {
         switch (e) {
             case DIGIT1:
@@ -231,6 +277,52 @@ public class QuestionThreePicturesCtrl implements QuestionRequirements {
             default:
                 break;
         }
+    }
+
+    /**
+     * Returns the main controller of the question
+     *
+     * @return the main front-end controller
+     */
+    public MainCtrl getMainCtrl() {
+        return mainCtrl;
+    }
+
+    /**
+     * Returns the selected answer button
+     *
+     * @return the number of the button the user selected, where 0 is button A, 1 is button B and 2 is button C
+     */
+    public int getSelectedAnswerButton() {
+        return selectedAnswerButton;
+    }
+
+    /**
+     * Returns the position of the correct answer
+     *
+     * @return the number of the button with the answer, where 0 is button A, 1 is button B and 2 is button C
+     */
+    public int getPositionCorrectAnswer() {
+        return positionCorrectAnswer;
+    }
+
+    /**
+     * Sets the position of the correct answer
+     *
+     * @param positionCorrectAnswer the button with the correct answer, where 0 is button A,
+     *                              1 is button B and 2 is button C
+     */
+    public void setPositionCorrectAnswer(int positionCorrectAnswer) {
+        this.positionCorrectAnswer = positionCorrectAnswer;
+    }
+
+    /**
+     * Sets the question displayed in the controller
+     *
+     * @param question the Question that should be shown in the screen
+     */
+    public void setQuestion(Question question) {
+        this.question = question;
     }
 
 }

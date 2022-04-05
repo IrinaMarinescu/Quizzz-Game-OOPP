@@ -615,6 +615,11 @@ public class MainCtrl implements MainCtrlRequirements {
         questionFrameCtrl.setCenterContent(finalScreen, false);
     }
 
+    /**
+     * Sets the type of the attempted exit and makes the pop up appear
+     *
+     * @param type - 0 if window exit or 1 if main menu exit
+     */
     public void exitGameChecker(int type) {
         exitPopUpCtrl.setType(type);
         toggleModalVisibility();
@@ -655,5 +660,14 @@ public class MainCtrl implements MainCtrlRequirements {
         if (type == 2 && buttonID.equals("noButton")) {
             toggleModalVisibility();
         }
+    }
+
+    /**
+     * Returns gameOnGoing
+     *
+     * @return true if there is an ongoing game; false otherwise
+     */
+    public boolean getGameOngoing() {
+        return this.gameOngoing;
     }
 }

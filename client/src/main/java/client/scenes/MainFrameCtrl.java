@@ -156,6 +156,9 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
         }
     }
 
+    /**
+     * Saves in a file the last used server IP as well as the username of the player
+     */
     private void writeToFile() {
         PrintWriter writer = null;
         try {
