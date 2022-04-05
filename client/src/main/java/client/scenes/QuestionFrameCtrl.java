@@ -371,13 +371,15 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
     private void setJokerEnabled(Button joker, boolean enable, boolean repeat) {
         ObservableList<String> style = joker.getStyleClass();
         Platform.runLater(() -> {
-            if (enable) {
-                do {
-                    style.remove("usedJoker");
-                    if (!style.contains("usedJoker")) {
-                        style.add("clickableGreen");
-                    }
-                } while (repeat && style.contains("usedJoker"));
+            if (repeat && enable) {
+                style.clear();
+                style.add("clickableGreen");
+                style.add("circle");
+            } else if (enable) {
+                style.remove("usedJoker");
+                if (!style.contains("usedJoker")) {
+                    style.add("clickableGreen");
+                }
             } else {
                 style.add("usedJoker");
                 style.remove("clickableGreen");

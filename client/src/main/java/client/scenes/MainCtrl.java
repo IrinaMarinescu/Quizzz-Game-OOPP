@@ -301,7 +301,7 @@ public class MainCtrl implements MainCtrlRequirements {
             UUID expectedGameId = game.getId();
             timeUtils.runAfterDelay(() -> {
                 if (expectedGameId.equals(game.getId())) {
-                    nextEvent(game.getId());
+                    nextEvent();
                     questionFrameCtrl.toggleJokerUsability(true, false);
                 }
             }, WAITING_TIME);
@@ -321,7 +321,7 @@ public class MainCtrl implements MainCtrlRequirements {
             this.game = gameUtils.startSingleplayer();
             questionFrameCtrl.initializeSingleplayerGame();
             showQuestionFrame();
-            nextEvent(game.getId());
+            nextEvent();
         }
 
         this.player.setScore(0);
@@ -351,11 +351,9 @@ public class MainCtrl implements MainCtrlRequirements {
 
     /**
      * Executes the next event (question, leaderboard, game over)
-     *
-     * @param expectedId The ID of the game corresponding to this nextEvent call
      */
-    private void nextEvent(UUID expectedId) {
-        if (game.getId() == null || !expectedId.equals(game.getId())) {
+    private void nextEvent() {
+        if (game.getId() == null) {
             return;
         }
 
@@ -368,9 +366,14 @@ public class MainCtrl implements MainCtrlRequirements {
                 intermediateLeaderboardShown = true;
                 currentQuestionCtrl = null;
 
+                UUID nextRoundGame = game.getId();
                 timeUtils.runAfterDelay(() -> {
+                    if (!nextRoundGame.equals(game.getId())) {
+                        return;
+                    }
+
                     Platform.runLater(this::showQuestionFrame);
-                    nextEvent(game.getId());
+                    nextEvent();
                 }, LEADERBOARD_TIME);
 
                 Platform.runLater(() -> showLeaderboard(game.getPlayers(), 10, "intermediate"));
@@ -458,8 +461,13 @@ public class MainCtrl implements MainCtrlRequirements {
             Platform.runLater(() -> {
                 double timeLeft = OVERVIEW_TIME + timeSkipped / 1000.0;
                 questionFrameCtrl.setRemainingTime(timeLeft);
+
+                UUID nextRoundGame = game.getId();
                 timeUtils.runAfterDelay(() -> {
-                    nextEvent(game.getId());
+                    if (!nextRoundGame.equals(game.getId())) {
+                        return;
+                    }
+                    nextEvent();
                     questionFrameCtrl.toggleJokerUsability(true, false);
                 }, timeLeft);
             });
