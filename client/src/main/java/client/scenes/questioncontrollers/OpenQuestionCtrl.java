@@ -21,6 +21,7 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     private QuestionFrameCtrl questionFrameCtrl;
     private Question question;
     private long answer;
+    private final static int MISS_VALUE = 50;
 
     @FXML
     Button submitButton;
@@ -67,7 +68,7 @@ public class OpenQuestionCtrl implements QuestionRequirements {
             submitButton.setDisable(true);
             long correctAnswer = this.question.getActivities().get(0).consumptionInWh;
             long percentageOff = ((Math.abs(correctAnswer - this.answer)) / correctAnswer) * 100;
-            long baseScore = 100 - percentageOff / 2;
+            long baseScore = 100 - (percentageOff * (100 / MISS_VALUE));
             if (baseScore < 0) {
                 baseScore = 0;
             }
