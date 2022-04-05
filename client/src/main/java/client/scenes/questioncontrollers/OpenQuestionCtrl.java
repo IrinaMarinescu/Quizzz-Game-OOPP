@@ -21,7 +21,7 @@ public class OpenQuestionCtrl implements QuestionRequirements {
     private QuestionFrameCtrl questionFrameCtrl;
     private Question question;
     private long answer;
-    private final static int MISS_VALUE = 50;
+    private static final int MISS_VALUE = 50;
 
     @FXML
     Button submitButton;
