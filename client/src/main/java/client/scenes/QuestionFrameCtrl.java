@@ -176,19 +176,15 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         scoreField.setText("0");
         helpMenuScore.setText("0");
         helpPointsGained.setText("+0");
-
-        for (Button joker : jokers) {
-            if (joker.getStyleClass().contains("usedJoker")) {
-                setJokerEnabled(joker, true);
-            }
-        }
+        toggleJokerUsability(true, true);
+        emoteCtrl.reset();
 
         if (isMultiplayerGame) {
             setLeaderboardContents(players);
         } else {
             sideLeaderboard.setVisible(false);
             setEmoticonField(false);
-            setJokerEnabled(halveTime, false);
+            setJokerEnabled(halveTime, false, false);
         }
     }
 
@@ -372,16 +368,19 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      * @param joker  The Button referring to the joker to be enabled / disabled
      * @param enable Whether to enable the joker
      */
-    private void setJokerEnabled(Button joker, boolean enable) {
+    private void setJokerEnabled(Button joker, boolean enable, boolean repeat) {
+        ObservableList<String> style = joker.getStyleClass();
         Platform.runLater(() -> {
             if (enable) {
-                joker.getStyleClass().remove("usedJoker");
-                if (!joker.getStyleClass().contains("usedJoker")) {
-                    joker.getStyleClass().add("clickableGreen");
-                }
+                do {
+                    style.remove("usedJoker");
+                    if (!style.contains("usedJoker")) {
+                        style.add("clickableGreen");
+                    }
+                } while (repeat && style.contains("usedJoker"));
             } else {
-                joker.getStyleClass().add("usedJoker");
-                joker.getStyleClass().remove("clickableGreen");
+                style.add("usedJoker");
+                style.remove("clickableGreen");
             }
         });
     }
@@ -397,7 +396,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
         if (joker.getStyleClass().contains("usedJoker")) {
             return;
         }
-        setJokerEnabled(joker, false);
+        setJokerEnabled(joker, false, false);
 
         switch (joker.getId()) {
             case "doublePoints":
@@ -423,9 +422,9 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      *
      * @param enabled Whether the jokers are to be made enabled
      */
-    public void toggleJokerUsability(boolean enabled) {
+    public void toggleJokerUsability(boolean enabled, boolean repeat) {
         for (Button joker : jokers) {
-            setJokerEnabled(joker, enabled);
+            setJokerEnabled(joker, enabled, repeat);
         }
     }
 
@@ -435,7 +434,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
      * @param enabled Whether the wrong answer joker is enabled
      */
     public void setWrongAnswerJoker(boolean enabled) {
-        setJokerEnabled(eliminateWrongAnswer, enabled);
+        setJokerEnabled(eliminateWrongAnswer, enabled, false);
     }
 
     /**

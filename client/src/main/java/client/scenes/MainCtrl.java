@@ -54,7 +54,7 @@ public class MainCtrl implements MainCtrlRequirements {
     public static final int OVERVIEW_TIME = 5;
     public static final int WAITING_TIME = 5;
     public static final int LEADERBOARD_TIME = 10;
-    public static final int TOTAL_ROUNDS = 20;
+    public static final int TOTAL_ROUNDS = 2;
 
     private LeaderboardEntry player;
     private Game game;
@@ -301,18 +301,18 @@ public class MainCtrl implements MainCtrlRequirements {
             UUID expectedGameId = game.getId();
             timeUtils.runAfterDelay(() -> {
                 if (expectedGameId.equals(game.getId())) {
-                    nextEvent();
-                    questionFrameCtrl.toggleJokerUsability(true);
+                    nextEvent(game.getId());
+                    questionFrameCtrl.toggleJokerUsability(true, false);
                 }
             }, WAITING_TIME);
 
             lobbyUtils.setActive(false);
             gameUtils.setActive("game", false);
             gameUtils.setActive("features", true);
-            questionFrameCtrl.toggleJokerUsability(false);
+            questionFrameCtrl.initializeMultiplayerGame(this.game.getPlayers());
+            questionFrameCtrl.toggleJokerUsability(false, false);
             waitingScreenCtrl.reset();
             questionFrameCtrl.setCenterContent(waitingScreen, false);
-            questionFrameCtrl.initializeMultiplayerGame(this.game.getPlayers());
             showQuestionFrame();
 
             Platform.runLater(() -> questionFrameCtrl.setRemainingTime(
@@ -321,9 +321,10 @@ public class MainCtrl implements MainCtrlRequirements {
             this.game = gameUtils.startSingleplayer();
             questionFrameCtrl.initializeSingleplayerGame();
             showQuestionFrame();
-            nextEvent();
+            nextEvent(game.getId());
         }
 
+        this.player.setScore(0);
         intermediateLeaderboardShown = false;
         this.isMultiplayerGame = isMultiplayerGame;
         timeoutRoundCheck = 1;
@@ -351,8 +352,8 @@ public class MainCtrl implements MainCtrlRequirements {
     /**
      * Executes the next event (question, leaderboard, game over)
      */
-    private void nextEvent() {
-        if (game.getId() == null) {
+    private void nextEvent(UUID expectedId) {
+        if (game.getId() == null || !expectedId.equals(game.getId())) {
             return;
         }
 
@@ -366,7 +367,7 @@ public class MainCtrl implements MainCtrlRequirements {
 
                 timeUtils.runAfterDelay(() -> {
                     Platform.runLater(this::showQuestionFrame);
-                    nextEvent();
+                    nextEvent(game.getId());
                 }, LEADERBOARD_TIME);
 
                 Platform.runLater(() -> showLeaderboard(game.getPlayers(), 10, "intermediate"));
@@ -377,12 +378,12 @@ public class MainCtrl implements MainCtrlRequirements {
             if (game.getRound() == TOTAL_ROUNDS) {
                 disconnect(-1, "none");
                 Platform.runLater(() -> showLeaderboard(game.getPlayers(), 10, "final"));
-                questionFrameCtrl.toggleJokerUsability(false);
+                questionFrameCtrl.toggleJokerUsability(false, false);
                 return;
             }
         } else if (game.getRound() == TOTAL_ROUNDS) {
             gameOngoing = false;
-            questionFrameCtrl.toggleJokerUsability(false);
+            questionFrameCtrl.toggleJokerUsability(false, false);
             showFinalScreen();
             return;
         }
@@ -453,8 +454,8 @@ public class MainCtrl implements MainCtrlRequirements {
                 double timeLeft = OVERVIEW_TIME + timeSkipped / 1000.0;
                 questionFrameCtrl.setRemainingTime(timeLeft);
                 timeUtils.runAfterDelay(() -> {
-                    nextEvent();
-                    questionFrameCtrl.toggleJokerUsability(true);
+                    nextEvent(game.getId());
+                    questionFrameCtrl.toggleJokerUsability(true, false);
                 }, timeLeft);
             });
 
@@ -462,7 +463,7 @@ public class MainCtrl implements MainCtrlRequirements {
             currentQuestionCtrl.revealCorrectAnswer();
             Platform.runLater(() -> questionFrameCtrl.addPoints(pointsGained));
             player.setScore(player.getScore() + pointsGained);
-            questionFrameCtrl.toggleJokerUsability(false);
+            questionFrameCtrl.toggleJokerUsability(false, false);
             if (currentQuestionType.equals("trueFalseQuestion") || currentQuestionType.equals("openQuestion")) {
                 questionFrameCtrl.setWrongAnswerJoker(true);
             }

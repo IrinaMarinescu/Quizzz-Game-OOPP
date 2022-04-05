@@ -133,4 +133,11 @@ public class EmoteCtrl {
             fade.play();
         }
     }
+
+    /**
+     * Remove all visible emojis from
+     */
+    public void reset() {
+        reactionContainer.getChildren().clear();
+    }
 }
