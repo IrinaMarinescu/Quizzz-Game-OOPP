@@ -36,7 +36,7 @@ public class EmoteContainerCtrlTest {
     @Test
     public void urlResourceExists() {
         try {
-            sut.initialize("James", "client/emoticons/face-angry-solid.png");
+            sut.initialize("James", "client/emoticons/face-angry-solid.png", "black");
         } catch (RuntimeException e) {
 
             // if the URL is invalid, the exception just a simple RuntimeException
@@ -47,7 +47,7 @@ public class EmoteContainerCtrlTest {
     @Test
     public void sameName() {
         try {
-            sut.initialize("testName", "client/emoticons/face-angry-solid.png");
+            sut.initialize("testName", "client/emoticons/face-angry-solid.png", "black");
         } catch (RuntimeException e) {
             assertEquals("You", sut.person.getText());
         }

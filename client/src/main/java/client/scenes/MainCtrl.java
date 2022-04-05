@@ -315,9 +315,8 @@ public class MainCtrl implements MainCtrlRequirements {
             questionFrameCtrl.initializeMultiplayerGame(this.game.getPlayers());
             showQuestionFrame();
 
-            Platform.runLater(() -> {
-                questionFrameCtrl.setRemainingTime(WAITING_TIME - (timeUtils.now() - questionStartTime) / 1000.0);
-            });
+            Platform.runLater(() -> questionFrameCtrl.setRemainingTime(
+                WAITING_TIME - (timeUtils.now() - questionStartTime) / 1000.0));
         } else {
             this.game = gameUtils.startSingleplayer();
             questionFrameCtrl.initializeSingleplayerGame();
@@ -376,7 +375,7 @@ public class MainCtrl implements MainCtrlRequirements {
 
             // The current event is the final leaderboard; the game is over
             if (game.getRound() == TOTAL_ROUNDS) {
-                gameOngoing = false;
+                disconnect(-1, "none");
                 Platform.runLater(() -> showLeaderboard(game.getPlayers(), 10, "final"));
                 questionFrameCtrl.toggleJokerUsability(false);
                 return;
@@ -621,39 +620,25 @@ public class MainCtrl implements MainCtrlRequirements {
     }
 
     /**
-     * Disconnects the player from a game
+     * Disconnects the player from a game, terminates background processes
      */
     public void disconnect(int type, String buttonID) {
-        // TODO stop long polling
-        if (type == 0 && buttonID.equals("yesButton")) {
-            game.terminate();
+        if (buttonID.equals("noButton")) {
+            toggleModalVisibility();
+        } else {
+            gameUtils.sendFeature("JOKER", getUsername(), "DISCONNECT");
             gameOngoing = false;
+            game.terminate();
+            lobbyUtils.setActive(false);
+            gameUtils.setActive("game", false);
+            gameUtils.setActive("features", false);
 
-            serverUtils.disconnect(game.getId(), player);
-            toggleModalVisibility();
-            showMainFrame();
-        }
-        if (type == 0 && buttonID.equals("noButton")) {
-            toggleModalVisibility();
-        }
-        if (type == 1 && buttonID.equals("yesButton")) {
-            game.terminate();
-            gameOngoing = false;
-            toggleModalVisibility();
-            primaryStage.close();
-        }
-        if (type == 1 && buttonID.equals("noButton")) {
-            toggleModalVisibility();
-        }
-        if (type == 2 && buttonID.equals("yesButton")) {
-            game.terminate();
-            gameOngoing = false;
-            serverUtils.disconnect(game.getId(), player);
-            toggleModalVisibility();
-            showMainFrame();
-        }
-        if (type == 2 && buttonID.equals("noButton")) {
-            toggleModalVisibility();
+            if (type == 1) {
+                System.exit(0);
+            } else if (type == 2) {
+                toggleModalVisibility();
+                showMainFrame();
+            }
         }
     }
 }

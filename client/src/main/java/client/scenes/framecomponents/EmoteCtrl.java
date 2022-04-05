@@ -65,7 +65,7 @@ public class EmoteCtrl {
         }
 
         var emoteContainer = loader.load(EmoteContainerCtrl.class, "client/scenes/EmoteContainer.fxml");
-        emoteContainer.getKey().initialize(name, pathToImage);
+        emoteContainer.getKey().initialize(name, pathToImage, "-greenish");
 
         Platform.runLater(() -> {
             reactionContainer.getChildren().add(0, emoteContainer.getValue());
@@ -81,10 +81,11 @@ public class EmoteCtrl {
     /**
      * Displays a joker chosen by a player
      *
-     * @param name the name of player who used a joker
+     * @param name  the name of player who used a joker
      * @param joker the joker that is chosen
      */
     public void addJoker(String name, String joker) {
+        String color = "-darkCyan";
         String pathToImage = "";
         switch (joker) {
             case "HALVE_TIME":
@@ -96,11 +97,15 @@ public class EmoteCtrl {
             case "ELIMINATE_ANSWER":
                 pathToImage = "client/icons/lightbulb-regular.png";
                 break;
+            case "DISCONNECT":
+                pathToImage = "client/icons/arrow-left.png";
+                color = "crimson";
+                break;
             default:
         }
 
         var emoteContainer = loader.load(EmoteContainerCtrl.class, "client/scenes/EmoteContainer.fxml");
-        emoteContainer.getKey().initialize(name, pathToImage);
+        emoteContainer.getKey().initialize(name, pathToImage, color);
 
         Platform.runLater(() -> {
             reactionContainer.getChildren().add(0, emoteContainer.getValue());

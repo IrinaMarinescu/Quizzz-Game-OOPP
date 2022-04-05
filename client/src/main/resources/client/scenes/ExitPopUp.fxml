@@ -13,7 +13,7 @@
         <Rectangle id="popUpContainer" fx:id="rectangle" arcHeight="5.0" arcWidth="5.0" fill="#05668d" height="352.0" layoutX="16.0" layoutY="24.0" stroke="TRANSPARENT" strokeType="INSIDE" style="-fx-arc-height: 50; -fx-arc-width: 50;" width="568.0" />
         <TextFlow layoutX="57.0" layoutY="82.0" prefHeight="117.0" prefWidth="486.0" textAlignment="CENTER">
             <children>
-                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Are you sure you want to exit?" textAlignment="CENTER" wrappingWidth="309.365234375">
+                <Text fx:id="question" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Are you sure you want to exit?" textAlignment="CENTER" wrappingWidth="309.365234375">
                     <font>
                         <Font size="44.0" />
                     </font>
