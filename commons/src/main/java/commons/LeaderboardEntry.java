@@ -19,7 +19,7 @@ public class LeaderboardEntry implements Comparable<LeaderboardEntry> {
 
     private String name;
     private int score;
-    private int gain;
+    private Integer gain;
 
     /**
      * Constructor
