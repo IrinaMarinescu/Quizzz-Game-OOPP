@@ -38,6 +38,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -48,7 +49,6 @@ import javafx.util.Pair;
  * Coordinates actions between different screens
  */
 public class MainCtrl implements MainCtrlRequirements {
-
 
     public static final int ROUND_TIME = 10;
     public static final int OVERVIEW_TIME = 5;
@@ -351,6 +351,8 @@ public class MainCtrl implements MainCtrlRequirements {
 
     /**
      * Executes the next event (question, leaderboard, game over)
+     *
+     * @param expectedId The ID of the game corresponding to this nextEvent call
      */
     private void nextEvent(UUID expectedId) {
         if (game.getId() == null || !expectedId.equals(game.getId())) {
@@ -364,6 +366,7 @@ public class MainCtrl implements MainCtrlRequirements {
             // The current event is the intermediate leaderboard
             if (game.getRound() == TOTAL_ROUNDS / 2 && !intermediateLeaderboardShown) {
                 intermediateLeaderboardShown = true;
+                currentQuestionCtrl = null;
 
                 timeUtils.runAfterDelay(() -> {
                     Platform.runLater(this::showQuestionFrame);
@@ -377,12 +380,14 @@ public class MainCtrl implements MainCtrlRequirements {
             // The current event is the final leaderboard; the game is over
             if (game.getRound() == TOTAL_ROUNDS) {
                 disconnect(-1, "none");
+                currentQuestionCtrl = null;
                 Platform.runLater(() -> showLeaderboard(game.getPlayers(), 10, "final"));
                 questionFrameCtrl.toggleJokerUsability(false, false);
                 return;
             }
         } else if (game.getRound() == TOTAL_ROUNDS) {
             gameOngoing = false;
+            currentQuestionCtrl = null;
             questionFrameCtrl.toggleJokerUsability(false, false);
             showFinalScreen();
             return;
@@ -598,8 +603,10 @@ public class MainCtrl implements MainCtrlRequirements {
         primaryStage.setScene(questionFrame);
     }
 
+    /**
+     * Toggle the visibility of the exit pop-up
+     */
     public void toggleModalVisibility() {
-
         if (exitCheck.isFocused()) {
             exitCheck.close();
         } else {
@@ -615,6 +622,11 @@ public class MainCtrl implements MainCtrlRequirements {
         questionFrameCtrl.setCenterContent(finalScreen, false);
     }
 
+    /**
+     * Configure events before showing exit pop-up
+     *
+     * @param type The type of the exit request
+     */
     public void exitGameChecker(int type) {
         exitPopUpCtrl.setType(type);
         toggleModalVisibility();
@@ -622,6 +634,9 @@ public class MainCtrl implements MainCtrlRequirements {
 
     /**
      * Disconnects the player from a game, terminates background processes
+     *
+     * @param type     The type of the exit request
+     * @param buttonID The id of the button calling disconnect
      */
     public void disconnect(int type, String buttonID) {
         if (buttonID.equals("noButton")) {
@@ -633,12 +648,28 @@ public class MainCtrl implements MainCtrlRequirements {
             lobbyUtils.setActive(false);
             gameUtils.setActive("game", false);
             gameUtils.setActive("features", false);
+            currentQuestionCtrl = null;
 
             if (type == 1) {
                 System.exit(0);
             } else if (type == 2) {
                 toggleModalVisibility();
                 showMainFrame();
+            }
+        }
+    }
+
+    /**
+     * Processes a key press
+     *
+     * @param e The keycode of the pressed key
+     */
+    public void dispatchKeyPress(KeyCode e) {
+        if (currentQuestionCtrl != null) {
+            currentQuestionCtrl.keyPressed(e);
+        } else if (game.getRound() == TOTAL_ROUNDS) {
+            if (!isMultiplayerGame) {
+                finalScreenCtrl.keyPressed(e);
             }
         }
     }

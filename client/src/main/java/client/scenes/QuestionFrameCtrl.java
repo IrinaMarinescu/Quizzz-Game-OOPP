@@ -475,7 +475,7 @@ public class QuestionFrameCtrl implements Initializable, QuestionFrameRequiremen
                 disconnect();
                 break;
             default:
-                mainCtrl.currentQuestionCtrl.keyPressed(e);
+                mainCtrl.dispatchKeyPress(e);
                 break;
         }
     }
