@@ -1,6 +1,7 @@
 package client.dependedoncomponents;
 
 import client.scenes.MainCtrl;
+import commons.Lobby;
 
 /**
  * For testing MainCtrl
@@ -22,6 +23,16 @@ public class MainCtrlDOC extends MainCtrl implements SupportsLogging {
     }
 
     @Override
+    public void joinLobby() {
+        log("joinedLobby");
+    }
+
+    @Override
+    public void doublePoints() {
+        log("doubledPoints");
+    }
+
+    @Override
     public void startGame(boolean isMultiplayerGame) {
         log("game");
     }
@@ -39,5 +50,15 @@ public class MainCtrlDOC extends MainCtrl implements SupportsLogging {
     @Override
     public void showMainFrame() {
         log("mainFrame");
+    }
+
+    @Override
+    public void disconnect(int type, String buttonID) {
+        log("attemptedDisconnect");
+    }
+
+    @Override
+    public void setLobby(Lobby lobby) {
+        log("setLobby");
     }
 }
