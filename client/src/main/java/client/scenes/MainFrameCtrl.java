@@ -42,7 +42,8 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
 
     private long lastEscapeKeyPressTime;
 
-    private final File userInfo = new File("user-info/user-info.txt");
+    // This filepath works on Windows
+    private File userInfo = new File("src/main/resources/client/user-info/user-info.txt");
 
     @FXML
     private TextField username;
@@ -73,6 +74,11 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
     public void initialize(URL location, ResourceBundle resources) {
         displayUsernameError(false, "");
         displayServerIPError(false);
+
+        if (!userInfo.exists()) {
+            // This filepath works on macOS
+            userInfo = new File("client/src/main/resources/client/user-info/user-info.txt");
+        }
         try {
             Scanner scanner = new Scanner(userInfo);
             scanner.useDelimiter(",");
@@ -113,7 +119,9 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
      */
     public void startSingleplayerGame() {
         if (serverUtils.validateIP(serverIP.getText())) {
+            displayServerIPError(false);
             if (validateUserName()) {
+                displayUsernameError(false, "");
                 serverUtils.setServerIP(serverIP.getText());
                 mainCtrl.setPlayer(username.getText(), 0);
                 writeToFile();
@@ -130,15 +138,20 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
      */
     public void joinLobby() {
         if (serverUtils.validateIP(serverIP.getText()) && lobbyUtils.validateUsername(username.getText())) {
+            displayServerIPError(false);
+            displayUsernameError(false, "");
             serverUtils.setServerIP(serverIP.getText());
             if (validateUserName()) {
+                displayUsernameError(false, "");
                 mainCtrl.setPlayer(username.getText(), 0);
                 writeToFile();
                 mainCtrl.joinLobby();
             }
-        } else if (!lobbyUtils.validateUsername(serverIP.getText())) {
+        } else if (!serverUtils.validateIP(serverIP.getText())) {
+            displayUsernameError(false, "");
             displayServerIPError(true);
         } else {
+            displayServerIPError(false);
             displayUsernameError(true, "The username is already taken. Try again.");
         }
     }
@@ -224,7 +237,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
             case ESCAPE:
                 mainCtrl.toggleModalVisibility();
                 break;
-            case CONTROL:
+            case A:
                 showAdmin();
                 break;
             case S:
