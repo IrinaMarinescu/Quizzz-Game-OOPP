@@ -14,7 +14,7 @@ Enjoy the game!
 |---|---|----------------------------------|
 | ![](https://secure.gravatar.com/avatar/b4b2377134a5db565b9ee30727daa206?s=180&d=identicon&size=50) | Per Skullerud | P.M.Skullerud@student.tudelft.nl |
 | ![](https://secure.gravatar.com/avatar/5ec558ba962f139a04572dbb90051cf9?s=180&d=identicon&size=50) | Krzysztof Muniak | K.Muniak@student.tudelft.nl      |
-| <img src="https://secure.gravatar.com/avatar/9b498f4dab0f22afbcdcac94b67ec66c?s=800&d=identicon" height=50 width=50> | Irina-Ioana Marinescu | I.I.Marinescu@student.tudelft.nl |
+| <img src="https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/4762/avatar.png?width=400" height=50 width=50> | Irina-Ioana Marinescu | I.I.Marinescu@student.tudelft.nl |
 |<img src="https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/4522/avatar.png?width=400" width="50" height="50"> | Andrei Visoiu | A.I.Visoiu@student.tudelft.nl    |
 | <img src="https://secure.gravatar.com/avatar/ecda8f54079e20a5f22fc7b4c1dae20f?s=180&d=identicon" width="50" height="50"> | Yannick Zuurbier | Y.R.Zuurbier@student.tudelft.nl  |
 | <img src="https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/4626/avatar.png?width=400" width="50" height="50"> | Mirella Günther | M.Gunther-1@student.tudelft.nl   |
@@ -39,11 +39,11 @@ Or with HTTPS:
 `
 https://gitlab.ewi.tudelft.nl/cse1105/2021-2022/team-repositories/oopp-group-26/repository-template.git
 `
-From here, you can use the commands 'gradle build' to build the project, 'gradle bootRun' to start the server-side and 'gradle run' to start the client-side.
+From here, you can use the commands `gradle build` to build the project, `gradle bootRun` to start the server-side and `gradle run` to start the client-side.
 
-Before you can really start to play, you need to import the activities and the images that are to be used in the application. We recommend to download the zip file 'ZIP archive with activities and images' found at https://gitlab.ewi.tudelft.nl/cse1105/2021-2022/activity-bank/-/releases. Make sure that the server is running in the background by using the 'gradle bootRun' command. Whilst the server is running, use Postman and run it as POST with 'localhost:8080/api/activities/import' as the link and the downloaded activities.json file as a raw body. This will import the activities including their titles, their consumptions, their source and their image pathways into the database. Additionally, the images have to be imported separately: the numbered folders in the downloaded zip folder have to manually be imported into the directory with the path 'server/images'.
+Before you can really start to play, you need to import the activities and the images that are to be used in the application. We recommend downloading the zip file 'ZIP archive with activities and images' found at `https://gitlab.ewi.tudelft.nl/cse1105/2021-2022/activity-bank/-/releases`. Make sure that the server is running in the background by using the `gradle bootRun` command. Whilst the server is running, use Postman and run it as POST with `localhost:8080/api/activities/import` as the link and the downloaded activities.json file as a raw body. This will import the activities including their titles, their consumptions, their source and their image pathways into the database. Additionally, the images have to be imported separately: the numbered folders in the downloaded zip folder have to manually be imported into the directory with the path 'server/images'.
 
-Now the game is ready to be run. Ideally, it is run on a display with a 1600 x 900 resolution, as this allows the full screens to be shown. To then run game itself, yyou can again use the 'gradle bootRun' and 'gradle run' commands.
+Now the game is ready to be run. Ideally, it is run on a display with a 1600 x 900 resolution, as this allows the full screens to be shown. To then run game itself, you can again use the `gradle bootRun` and `gradle run` commands.
 
 ## How to contribute to it
 
