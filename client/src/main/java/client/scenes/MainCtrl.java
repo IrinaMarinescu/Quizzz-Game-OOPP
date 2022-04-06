@@ -54,7 +54,7 @@ public class MainCtrl implements MainCtrlRequirements {
     public static final int OVERVIEW_TIME = 5;
     public static final int WAITING_TIME = 5;
     public static final int LEADERBOARD_TIME = 10;
-    public static final int TOTAL_ROUNDS = 2;
+    public static final int TOTAL_ROUNDS = 20;
 
     private LeaderboardEntry player;
     private Game game;
@@ -650,7 +650,9 @@ public class MainCtrl implements MainCtrlRequirements {
         if (buttonID.equals("noButton")) {
             toggleModalVisibility();
         } else {
-            gameUtils.sendFeature("JOKER", getUsername(), "DISCONNECT");
+            if (type != -1) {
+                gameUtils.sendFeature("JOKER", getUsername(), "DISCONNECT");
+            }
             gameOngoing = false;
             game.terminate();
             lobbyUtils.setActive(false);
@@ -659,6 +661,7 @@ public class MainCtrl implements MainCtrlRequirements {
             currentQuestionCtrl = null;
 
             if (type == 1) {
+                playerLeavesLobby();
                 System.exit(0);
             } else if (type == 2) {
                 toggleModalVisibility();
@@ -680,14 +683,5 @@ public class MainCtrl implements MainCtrlRequirements {
                 finalScreenCtrl.keyPressed(e);
             }
         }
-    }
-
-    /**
-     * Returns gameOnGoing
-     *
-     * @return true if there is an ongoing game; false otherwise
-     */
-    public boolean getGameOngoing() {
-        return this.gameOngoing;
     }
 }

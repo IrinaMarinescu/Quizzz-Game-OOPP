@@ -139,5 +139,6 @@ public class EmoteCtrl {
      */
     public void reset() {
         reactionContainer.getChildren().clear();
+        visibleEmotes = 0;
     }
 }

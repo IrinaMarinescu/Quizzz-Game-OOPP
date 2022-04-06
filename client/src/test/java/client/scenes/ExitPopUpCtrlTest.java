@@ -1,10 +1,12 @@
 package client.scenes;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import client.dependedoncomponents.ExitPopUpCtrlDOC;
 import client.dependedoncomponents.MainCtrlDOC;
+import javafx.scene.text.Text;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +19,7 @@ public class ExitPopUpCtrlTest {
     public void setup() {
         mainCtrlDOC = new MainCtrlDOC();
         sut = new ExitPopUpCtrlDOC(mainCtrlDOC);
+        sut.question = new Text();
     }
 
     @Test
@@ -27,7 +30,8 @@ public class ExitPopUpCtrlTest {
 
     @Test
     public void setTypeTest() {
-        sut.setType(0);
-        assertSame(0, sut.getType());
+        sut.setType(1);
+        assertSame(1, sut.getType());
+        assertEquals("Are you sure you want to close the application?", sut.question.getText());
     }
 }

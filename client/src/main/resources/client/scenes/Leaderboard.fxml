@@ -8,40 +8,43 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<BorderPane prefHeight="900.0" prefWidth="1600.0" minWidth="-Infinity" stylesheets="@../css/leaderboardPage.css"
-            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="client.scenes.LeaderboardCtrl">
+
+<BorderPane minWidth="-Infinity" prefHeight="900.0" prefWidth="1600.0" stylesheets="@../css/leaderboardPage.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.LeaderboardCtrl">
     <top>
-        <BorderPane fx:id="topBar" prefHeight="80" prefWidth="1600" minWidth="-Infinity" BorderPane.alignment="CENTER">
+        <BorderPane fx:id="topBar" minWidth="-Infinity" prefHeight="80" prefWidth="1600" BorderPane.alignment="CENTER">
             <left>
                 <HBox BorderPane.alignment="CENTER">
-                    <Button fx:id="back" mnemonicParsing="false" onAction="#backToMainFrame"
-                            styleClass="clickableGreen">
+                    <Button fx:id="back" mnemonicParsing="false" onAction="#backToMainFrame" styleClass="clickableGreen">
                         <tooltip>
-                            <Tooltip id="tooltip" text="Return to main menu [ESC]"/>
+                            <Tooltip id="tooltip" text="Return to main menu [ESC]" />
                         </tooltip>
                     </Button>
                 </HBox>
             </left>
             <center>
-                <Text fx:id="pageTitle" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="Global Leaderboard" BorderPane.alignment="CENTER">
+                <Text fx:id="pageTitle" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Global Leaderboard" BorderPane.alignment="CENTER">
                     <font>
-                        <Font name="System Bold" size="48.0"/>
+                        <Font name="System Bold" size="48.0" />
                     </font>
                 </Text>
             </center>
         </BorderPane>
     </top>
     <center>
-        <VBox fx:id="mainPart" prefHeight="700" prefWidth="600" BorderPane.alignment="CENTER" alignment="TOP_CENTER">
-            <VBox fx:id="leaderboard" prefHeight="600" maxWidth="1000">
+        <VBox fx:id="mainPart" alignment="TOP_CENTER" prefHeight="700" prefWidth="600" BorderPane.alignment="CENTER">
+            <VBox fx:id="leaderboard" maxWidth="1000" prefHeight="600">
             </VBox>
-            <Region VBox.vgrow="ALWAYS"/>
-            <HBox fx:id="buttonsPart" prefHeight="100" maxWidth="600" BorderPane.alignment="CENTER" alignment="CENTER">
-                <Button mnemonicParsing="false" onMouseClicked="#backToMainFrame" text="back to main menu"/>
-                <Region HBox.hgrow="SOMETIMES"/>
-                <Button mnemonicParsing="false" onMouseClicked="#playAgain" text="play again"/>
+            <Region VBox.vgrow="ALWAYS" />
+            <HBox fx:id="buttonsPart" alignment="CENTER" maxWidth="600" prefHeight="100" BorderPane.alignment="CENTER">
+                <Button mnemonicParsing="false" onMouseClicked="#backToMainFrame" styleClass="clickableGreen" text="back to main menu">
+               <tooltip>
+                  <Tooltip id="tooltip" text="Return to the welcome screen [ESC]" />
+               </tooltip></Button>
+                <Region HBox.hgrow="SOMETIMES" />
+                <Button mnemonicParsing="false" onMouseClicked="#playAgain" styleClass="clickableGreen" text="play again">
+               <tooltip>
+                  <Tooltip id="tooltip" text="Rejoin the multiplayer lobby [M]" />
+               </tooltip></Button>
             </HBox>
         </VBox>
     </center>
