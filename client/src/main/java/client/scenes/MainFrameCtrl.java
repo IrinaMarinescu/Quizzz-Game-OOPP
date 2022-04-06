@@ -153,6 +153,9 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
         }
     }
 
+    /**
+     * Saves in a file the last used server IP as well as the username of the player
+     */
     private void writeToFile() {
         PrintWriter writer;
         try {
@@ -178,7 +181,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
             serverUtils.setServerIP(serverIP.getText());
             mainCtrl.showAdminInterface();
         } else {
-            System.out.println("invalid ip!");
+            displayServerIPError(true);
         }
     }
 

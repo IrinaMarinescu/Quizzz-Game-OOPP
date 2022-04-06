@@ -631,9 +631,9 @@ public class MainCtrl implements MainCtrlRequirements {
     }
 
     /**
-     * Configure events before showing exit pop-up
+     * Sets the type of the attempted exit and makes the pop up appear
      *
-     * @param type The type of the exit request
+     * @param type - 0 if window exit or 1 if main menu exit
      */
     public void exitGameChecker(int type) {
         exitPopUpCtrl.setType(type);
@@ -680,5 +680,14 @@ public class MainCtrl implements MainCtrlRequirements {
                 finalScreenCtrl.keyPressed(e);
             }
         }
+    }
+
+    /**
+     * Returns gameOnGoing
+     *
+     * @return true if there is an ongoing game; false otherwise
+     */
+    public boolean getGameOngoing() {
+        return this.gameOngoing;
     }
 }

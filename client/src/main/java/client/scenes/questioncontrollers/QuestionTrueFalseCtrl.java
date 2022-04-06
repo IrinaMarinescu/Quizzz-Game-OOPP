@@ -51,12 +51,24 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
     @FXML
     ImageView wrongFalse;
 
+    /**
+     * Injects the necessary dependencies
+     *
+     * @param mainCtrl          - the main front-end controller
+     * @param questionFrameCtrl - the scene in which it has to be injected
+     */
     @Inject
     public QuestionTrueFalseCtrl(MainCtrl mainCtrl, QuestionFrameCtrl questionFrameCtrl) {
         this.mainCtrl = mainCtrl;
         this.questionFrameCtrl = questionFrameCtrl;
     }
 
+    /**
+     * Groups the buttons and resets the visibility of the ticks and crosses
+     * set the question text
+     *
+     * @param question - the Question to be shown on the screen
+     */
     @Override
     public void initialize(Question question) {
         this.question = question;
@@ -84,19 +96,29 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
         });
     }
 
+    /**
+     * Sets the chosen answer as True
+     */
     @FXML
     void trueSelected() {
         this.selectedAnswerButton = 0;
         setChosenAnswer();
     }
 
+    /**
+     * Sets the chosen answer as False
+     */
     @FXML
     void falseSelected() {
         this.selectedAnswerButton = 1;
         setChosenAnswer();
     }
 
-    private void setChosenAnswer() {
+
+    /**
+     * Checks to see if the selected answer was correct or not and disables the buttons
+     */
+    protected void setChosenAnswer() {
         for (int i = 0; i < 2; i++) {
             answers.get(i).setDisable(true);
             if (i != selectedAnswerButton) {
@@ -111,6 +133,9 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
         }
     }
 
+    /**
+     * Reveals the correct answer by switching the visibility of the ticks and crosses
+     */
     @Override
     public void revealCorrectAnswer() {
         correct.get(positionCorrectAnswer).setVisible(true);
@@ -126,6 +151,11 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
     public void removeIncorrectAnswer() {
     }
 
+    /**
+     * Getter of the question
+     *
+     * @return question - the current question
+     */
     public Question getQuestion() {
         return question;
     }
@@ -146,4 +176,51 @@ public class QuestionTrueFalseCtrl implements QuestionRequirements {
                 break;
         }
     }
+
+    /**
+     * Returns the main controller of the question
+     *
+     * @return the main front-end controller
+     */
+    public MainCtrl getMainCtrl() {
+        return mainCtrl;
+    }
+
+    /**
+     * Returns the selected answer button
+     *
+     * @return the number of the button the user selected, where 0 is button A, 1 is button B and 2 is button C
+     */
+    public int getSelectedAnswerButton() {
+        return selectedAnswerButton;
+    }
+
+    /**
+     * Returns the position of the correct answer
+     *
+     * @return the number of the button with the answer, where 0 is button A, 1 is button B and 2 is button C
+     */
+    public int getPositionCorrectAnswer() {
+        return positionCorrectAnswer;
+    }
+
+    /**
+     * Sets the position of the correct answer
+     *
+     * @param positionCorrectAnswer the button with the correct answer, where 0 is True,
+     *                              and 1 is False
+     */
+    public void setPositionCorrectAnswer(int positionCorrectAnswer) {
+        this.positionCorrectAnswer = positionCorrectAnswer;
+    }
+
+    /**
+     * Sets the question displayed in the controller
+     *
+     * @param question the Question that should be shown in the screen
+     */
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
 }

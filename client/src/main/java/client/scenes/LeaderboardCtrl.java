@@ -1,6 +1,8 @@
 package client.scenes;
 
 import client.scenes.controllerrequirements.LeaderboardCtrlRequirements;
+import client.utils.LobbyUtils;
+import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.LeaderboardEntry;
 import java.util.List;
@@ -53,6 +55,10 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
 
 
     private final MainCtrl mainCtrl;
+    private final ServerUtils serverUtils;
+    private final LobbyUtils lobbyUtils;
+    private final MainFrameCtrl mainFrameCtrl;
+
     private int type;
     private int maxSize;
 
@@ -62,8 +68,12 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
     protected boolean test = false;
 
     @Inject
-    public LeaderboardCtrl(MainCtrl mainCtrl) {
+    public LeaderboardCtrl(MainCtrl mainCtrl, ServerUtils serverUtils,
+                   LobbyUtils lobbyUtils, MainFrameCtrl mainFrameCtrl) {
         this.mainCtrl = mainCtrl;
+        this.serverUtils = serverUtils;
+        this.lobbyUtils = lobbyUtils;
+        this.mainFrameCtrl = mainFrameCtrl;
     }
 
     /**
@@ -216,7 +226,8 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
      * Redirects the player to play a game of the same type again.
      */
     public void playAgain() {
-        // TODO: implement logic for starting another game
+        mainCtrl.showMainFrame();
+        mainFrameCtrl.joinLobby();
     }
 
     /**
