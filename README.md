@@ -28,7 +28,18 @@ Enjoy the game!
 
 ## How to run it
 
-To run the game, you first need to download the repository, which can be found at https://gitlab.ewi.tudelft.nl/cse1105/2021-2022/team-repositories/oopp-group-26/repository-template, as a zip file. You should then unzip the file and navigate to the location where the downloaded file is located via the terminal. From here, you can use the commands 'gradle build' to build the project, 'gradle bootRun' to start the server-side and 'gradle run' to start the client-side.
+To run the game, you first need to download the repository, which can be found at https://gitlab.ewi.tudelft.nl/cse1105/2021-2022/team-repositories/oopp-group-26/repository-template, as a zip file. You should then unzip the file and navigate to the location where the downloaded file is located via the terminal. 
+Alternatively, if you want to use the git command line, you can do, if you want to clone with SSH:
+
+`
+git clone git@gitlab.ewi.tudelft.nl:cse1105/2021-2022/team-repositories/oopp-group-26/repository-template.git
+`
+
+Or with HTTPS:
+`
+https://gitlab.ewi.tudelft.nl/cse1105/2021-2022/team-repositories/oopp-group-26/repository-template.git
+`
+From here, you can use the commands 'gradle build' to build the project, 'gradle bootRun' to start the server-side and 'gradle run' to start the client-side.
 
 Before you can really start to play, you need to import the activities and the images that are to be used in the application. We recommend to download the zip file 'ZIP archive with activities and images' found at https://gitlab.ewi.tudelft.nl/cse1105/2021-2022/activity-bank/-/releases. Make sure that the server is running in the background by using the 'gradle bootRun' command. Whilst the server is running, use Postman and run it as POST with 'localhost:8080/api/activities/import' as the link and the downloaded activities.json file as a raw body. This will import the activities including their titles, their consumptions, their source and their image pathways into the database. Additionally, the images have to be imported separately: the numbered folders in the downloaded zip folder have to manually be imported into the directory with the path 'server/images'.
 
