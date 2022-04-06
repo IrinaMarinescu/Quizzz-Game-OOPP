@@ -10,14 +10,14 @@ Enjoy the game!
 
 ## Group members
 
-| Profile Picture | Name | Email                            |
-|---|---|----------------------------------|
-| ![](https://secure.gravatar.com/avatar/b4b2377134a5db565b9ee30727daa206?s=180&d=identicon&size=50) | Per Skullerud | P.M.Skullerud@student.tudelft.nl |
-| ![](https://secure.gravatar.com/avatar/5ec558ba962f139a04572dbb90051cf9?s=180&d=identicon&size=50) | Krzysztof Muniak | K.Muniak@student.tudelft.nl      |
-| <img src="https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/4762/avatar.png?width=400" height=50 width=50> | Irina-Ioana Marinescu | I.I.Marinescu@student.tudelft.nl |
-|<img src="https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/4522/avatar.png?width=400" width="50" height="50"> | Andrei Visoiu | A.I.Visoiu@student.tudelft.nl    |
+| Profile Picture                                                                                                          | Name | Email                            |
+|--------------------------------------------------------------------------------------------------------------------------|---|----------------------------------|
+| <img src="https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/5046/avatar.png?width=400" width="50" height="50">   | Per Skullerud | P.M.Skullerud@student.tudelft.nl |
+| <img src="https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/4739/avatar.png?width=400" width="50" height="50">  | Krzysztof Muniak | K.Muniak@student.tudelft.nl    |
+| <img src="https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/4762/avatar.png?width=400" height=50 width=50>      | Irina-Ioana Marinescu | I.I.Marinescu@student.tudelft.nl |
+| <img src="https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/4522/avatar.png?width=400" width="50" height="50">  | Andrei Visoiu | A.I.Visoiu@student.tudelft.nl    |
 | <img src="https://secure.gravatar.com/avatar/ecda8f54079e20a5f22fc7b4c1dae20f?s=180&d=identicon" width="50" height="50"> | Yannick Zuurbier | Y.R.Zuurbier@student.tudelft.nl  |
-| <img src="https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/4626/avatar.png?width=400" width="50" height="50"> | Mirella Günther | M.Gunther-1@student.tudelft.nl   |
+| <img src="https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/4626/avatar.png?width=400" width="50" height="50">  | Mirella Günther | M.Gunther-1@student.tudelft.nl   |
 
 ## Software requirements
 
@@ -28,7 +28,7 @@ Enjoy the game!
 
 ## How to run it
 
-To run the game, you first need to download the repository, which can be found at https://gitlab.ewi.tudelft.nl/cse1105/2021-2022/team-repositories/oopp-group-26/repository-template, as a zip file. You should then unzip the file and navigate to the location where the downloaded file is located via the terminal. 
+To run the game, you first need to download the repository, which can be found at `https://gitlab.ewi.tudelft.nl/cse1105/2021-2022/team-repositories/oopp-group-26/repository-template`, as a zip file. You should then unzip the file and navigate to the location where the downloaded file is located via the terminal. 
 Alternatively, if you want to use the git command line, you can do, if you want to clone with SSH:
 
 `
