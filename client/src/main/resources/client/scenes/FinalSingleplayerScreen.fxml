@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -24,6 +25,9 @@
             <Font size="50.0" />
          </font>
       </Text>
-      <Button fx:id="playAgain" layoutX="425.0" layoutY="534.0" mnemonicParsing="false" onAction="#playAgain" prefHeight="110.0" prefWidth="319.0" text="Play Again" />
+      <Button fx:id="playAgain" layoutX="425.0" layoutY="534.0" mnemonicParsing="false" onAction="#playAgain" prefHeight="110.0" prefWidth="319.0" styleClass="clickableGreen" text="Play Again">
+         <tooltip>
+            <Tooltip id="tooltip" text="Play another singleplayer game [S]" />
+         </tooltip></Button>
    </children>
 </Pane>

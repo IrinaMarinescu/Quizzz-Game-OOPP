@@ -4,6 +4,7 @@ import client.scenes.MainCtrl;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javax.inject.Inject;
 
@@ -18,6 +19,8 @@ public class EmoteContainerCtrl {
     public ImageView emoticon;
     @FXML
     public Text person;
+    @FXML
+    private BorderPane featureBackground;
 
     @Inject
     public EmoteContainerCtrl(MainCtrl mainCtrl) {
@@ -30,8 +33,9 @@ public class EmoteContainerCtrl {
      * @param name        Name of person
      * @param pathToImage The path to the image
      */
-    public void initialize(String name, String pathToImage) {
+    public void initialize(String name, String pathToImage, String color) {
         person.setText(name.equals(mainCtrl.getUsername()) ? "You" : name);
         emoticon.setImage(new Image(pathToImage));
+        featureBackground.setStyle("-fx-background-color: " + color);
     }
 }

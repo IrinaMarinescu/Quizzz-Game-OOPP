@@ -40,8 +40,6 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
 
     private final MainCtrl mainCtrl;
 
-    private long lastEscapeKeyPressTime;
-
     // This filepath works on Windows
     private File userInfo = new File("src/main/resources/client/user-info/user-info.txt");
 
@@ -89,7 +87,6 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        this.lastEscapeKeyPressTime = 0;
     }
 
     /**
@@ -160,7 +157,7 @@ public class MainFrameCtrl implements Initializable, MainFrameCtrlRequirements {
      * Saves in a file the last used server IP as well as the username of the player
      */
     private void writeToFile() {
-        PrintWriter writer = null;
+        PrintWriter writer;
         try {
             writer = new PrintWriter(userInfo);
             if (serverIP.getText().equals("")) {

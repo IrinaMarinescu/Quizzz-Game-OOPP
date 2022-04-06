@@ -4,6 +4,7 @@ import client.utils.ServerUtils;
 import commons.LeaderboardEntry;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 import javafx.scene.text.Text;
 import javax.inject.Inject;
 
@@ -41,5 +42,11 @@ public class FinalScreenCtrl {
     @FXML
     public void playAgain() {
         mainCtrl.startGame(false);
+    }
+
+    public void keyPressed(KeyCode code) {
+        if (code == KeyCode.S) {
+            playAgain();
+        }
     }
 }

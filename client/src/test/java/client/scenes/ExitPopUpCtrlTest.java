@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import client.dependedoncomponents.ExitPopUpCtrlDOC;
 import client.dependedoncomponents.MainCtrlDOC;
+import javafx.scene.text.Text;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,17 +18,12 @@ public class ExitPopUpCtrlTest {
     public void setup() {
         mainCtrlDOC = new MainCtrlDOC();
         sut = new ExitPopUpCtrlDOC(mainCtrlDOC);
+        sut.question = new Text();
     }
 
     @Test
     public void constructorTest() {
         assertNotNull(sut);
         assertSame(mainCtrlDOC, sut.getMainCtrl());
-    }
-
-    @Test
-    public void setTypeTest() {
-        sut.setType(0);
-        assertSame(0, sut.getType());
     }
 }

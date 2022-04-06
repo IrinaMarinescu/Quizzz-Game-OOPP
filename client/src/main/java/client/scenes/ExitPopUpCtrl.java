@@ -23,7 +23,7 @@ public class ExitPopUpCtrl {
     Button noButton;
 
     @FXML
-    Text text;
+    Text question;
 
     /**
      * Injects the necessary dependencies
@@ -53,6 +53,11 @@ public class ExitPopUpCtrl {
      */
     public void setType(int type) {
         this.type = type;
+        if (type == 1) {
+            question.setText("Are you sure you want to close the application?");
+        } else {
+            question.setText("Are you sure you want to leave the game?");
+        }
     }
 
     /**

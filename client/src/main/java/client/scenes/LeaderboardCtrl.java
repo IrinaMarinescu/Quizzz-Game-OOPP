@@ -69,7 +69,7 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
 
     @Inject
     public LeaderboardCtrl(MainCtrl mainCtrl, ServerUtils serverUtils,
-                   LobbyUtils lobbyUtils, MainFrameCtrl mainFrameCtrl) {
+                           LobbyUtils lobbyUtils, MainFrameCtrl mainFrameCtrl) {
         this.mainCtrl = mainCtrl;
         this.serverUtils = serverUtils;
         this.lobbyUtils = lobbyUtils;
@@ -289,12 +289,12 @@ public class LeaderboardCtrl implements LeaderboardCtrlRequirements {
                 if (type == TYPE_SOLO || type == TYPE_FINAL) {
                     backToMainFrame();
                 } else {
-                    mainCtrl.exitGameChecker(1);
+                    mainCtrl.exitGameChecker(2);
                 }
                 break;
             case M:
                 if (type == TYPE_FINAL) {
-                    // TODO rejoin lobby
+                    playAgain();
                 }
                 break;
             default:
