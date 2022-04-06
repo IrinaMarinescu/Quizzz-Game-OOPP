@@ -125,10 +125,6 @@ public class ServerUtils {
             .post(Entity.entity(entry, APPLICATION_JSON), LeaderboardEntry.class);
     }
 
-    public void disconnect(UUID gameId, LeaderboardEntry player) {
-        // TODO send data to server that the player disconnected
-    }
-
     /**
      * Fetch the list of all the activities stored in the database
      *

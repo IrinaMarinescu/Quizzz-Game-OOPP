@@ -106,7 +106,6 @@
             <property name="tokens"
                       value="COMMA, SEMI, TYPECAST, LITERAL_IF, LITERAL_ELSE,
                     LITERAL_WHILE, LITERAL_DO, LITERAL_FOR, DO_WHILE"/>
-            <!-- TODO: add ELLIPSIS, LITERAL_SWITCH, LAMBDA to tokens when checkstyle 10.0 comes out -->
         </module>
         <module name="WhitespaceAround">
             <property name="allowEmptyConstructors" value="true"/>
