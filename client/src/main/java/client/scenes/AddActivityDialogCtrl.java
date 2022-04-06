@@ -95,7 +95,7 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
      * Internal helper method that shows the feedback text area with
      * a given text and a specific colour.
      *
-     * @param text the text to show in the feedback area.
+     * @param text  the text to show in the feedback area.
      * @param error a boolean value, indicating whether the text is an error or not.
      */
     protected void showText(String text, boolean error) {
@@ -124,6 +124,7 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
                     new Image(upload.toURI().toString(),
                         270, 200, false, false)
                 );
+                showSuccessText("Image uploaded successfully");
                 setUploadedImage(upload);
             }
         } catch (Exception e) {
@@ -144,7 +145,7 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
      *
      * @param file the file the user has uploaded
      * @throws InvalidDataException exception thrown if the file has some invalid properties (extension, size)
-     * @throws IOException exception thrown if there were problems reading the file
+     * @throws IOException          exception thrown if there were problems reading the file
      */
     public void validateFileProperties(File file) throws InvalidDataException, IOException {
         if (file == null) {
@@ -235,7 +236,7 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
      * {@inheritDoc}
      *
      * @throws InvalidDataException exception thrown if any of the fields are not valid
-     * (either an already existing ID was written, or no image was uploaded)
+     *                              (either an already existing ID was written, or no image was uploaded)
      */
     public void validateFormData() throws InvalidDataException {
         validateFormDataHelper(activityId.getText(), activityConsumption.getText());
@@ -244,11 +245,11 @@ public class AddActivityDialogCtrl implements AddActivityDialogCtrlRequirements 
     /**
      * Internal helper method that helps with form data validation.
      *
-     * @param id the id of the activity to validate
+     * @param id          the id of the activity to validate
      * @param consumption the consumption of the activity to validate
      * @throws InvalidDataException exception thrown if no image was
-     * uploaded, the id is not alphanumeric or the consumption is
-     * invalid (not an integer, a negative number, etc.)
+     *                              uploaded, the id is not alphanumeric or the consumption is
+     *                              invalid (not an integer, a negative number, etc.)
      */
     protected void validateFormDataHelper(String id, String consumption) throws InvalidDataException {
         try {
