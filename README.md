@@ -13,7 +13,7 @@ Enjoy the game!
 | Profile Picture | Name | Email                            |
 |---|---|----------------------------------|
 | ![](https://secure.gravatar.com/avatar/b4b2377134a5db565b9ee30727daa206?s=180&d=identicon&size=50) | Per Skullerud | P.M.Skullerud@student.tudelft.nl |
-| ![](https://secure.gravatar.com/avatar/5ec558ba962f139a04572dbb90051cf9?s=180&d=identicon&size=50) | Krzysztof Muniak | K.Muniak@student.tudelft.nl      |
+| <img src="https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/4739/avatar.png?width=400" width="50" height="50"> | Krzysztof Muniak | K.Muniak@student.tudelft.nl    |
 | <img src="https://secure.gravatar.com/avatar/9b498f4dab0f22afbcdcac94b67ec66c?s=800&d=identicon" height=50 width=50> | Irina-Ioana Marinescu | I.I.Marinescu@student.tudelft.nl |
 |<img src="https://gitlab.ewi.tudelft.nl/uploads/-/system/user/avatar/4522/avatar.png?width=400" width="50" height="50"> | Andrei Visoiu | A.I.Visoiu@student.tudelft.nl    |
 | <img src="https://secure.gravatar.com/avatar/ecda8f54079e20a5f22fc7b4c1dae20f?s=180&d=identicon" width="50" height="50"> | Yannick Zuurbier | Y.R.Zuurbier@student.tudelft.nl  |
